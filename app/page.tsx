@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -20,7 +20,7 @@ import {
   User,
 } from "lucide-react"
 
-export default function PresentationLanding() {
+function PresentationLandingContent() {
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [expandedClass, setExpandedClass] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -87,8 +87,16 @@ export default function PresentationLanding() {
       cards: [
         { name: "021", desc: "Producto complejo con clientes reales", url: "https://from021.io/" },
         { name: "ChatFaker", desc: "App simple de propósito único", url: "https://chatfaker.online/" },
-        { name: "Habitly", desc: "Features + DB; lección: credenciales expuestas", url: "https://habitly-iota.vercel.app/" },
-        { name: "Portal Nativas", desc: "APIs, mapas, datos geográficos, UI", url: "https://especiesnativas.vercel.app/" },
+        {
+          name: "Habitly",
+          desc: "Features + DB; lección: credenciales expuestas",
+          url: "https://habitly-iota.vercel.app/",
+        },
+        {
+          name: "Portal Nativas",
+          desc: "APIs, mapas, datos geográficos, UI",
+          url: "https://especiesnativas.vercel.app/",
+        },
       ],
     },
     {
@@ -264,6 +272,17 @@ export default function PresentationLanding() {
                 </div>
               </Button>
               <Button
+                onClick={() => toggleSection("comercial")}
+                variant="outline"
+                size="lg"
+                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <TrendingUp className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <span className="text-center leading-tight">Información Comercial</span>
+                </div>
+              </Button>
+              <Button
                 onClick={() => toggleSection("preguntas")}
                 variant="outline"
                 size="lg"
@@ -277,449 +296,486 @@ export default function PresentationLanding() {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-12">
-        {activeSection === "about" && (
-          <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
-            <CardContent className="p-10">
-              <div className="flex items-center gap-3 mb-8">
-                <h3 className="text-4xl font-bold text-card-foreground">About Us</h3>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                <div className="text-center group">
-                  <div className="relative mb-6">
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
-                      <img
-                        src="/images/franco-new.png"
-                        alt="Franco Zan"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                      />
-                    </div>
-                  </div>
-                  <h4 className="text-2xl font-bold text-card-foreground mb-4">Franco Zan</h4>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed">
-                    <p>
-                      Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
-                      estrategias digitales.
-                    </p>
-                    <p>
-                      Responsable de Product & DLT Strategy en Ruuts.
-                    </p>
-                    <p>Negocios Digitales, Universidad de San
-                    Andrés. Especializado en DeFi en Duke University.</p>
-                  </div>
+        <div className="container mx-auto px-4 py-12">
+          {activeSection === "about" && (
+            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-10">
+                <div className="flex items-center gap-3 mb-8">
+                  <h3 className="text-4xl font-bold text-card-foreground">About Us</h3>
                 </div>
 
-                <div className="text-center group">
-                  <div className="relative mb-6">
-                    <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
-                      <img
-                        src="/images/greta-new.png"
-                        alt="Greta Gawianski"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                      />
-                    </div>
-                  </div>
-                  <h4 className="text-2xl font-bold text-card-foreground mb-4">Greta Gawianski</h4>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed">
-                    <p>
-                      Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles, Productos
-                      Digitales y tecnología Blockchain.
-                    </p>
-                    <p>Impact Officer Global Shapers Community y Product Owner en Open Earth Foundation.</p>
-                    <p>
-                      Lic. Comunicación Universidad de San Andrés, donde coordinó los programas Blockchain y
-                      Criptoactivos.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {activeSection === "intro" && (
-          <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
-            <CardContent className="p-10">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
-                    <Code className="h-6 w-6 text-accent" />
-                  </div>
-                  <h3 className="text-4xl font-bold text-card-foreground">Introducción al Vibe Coding</h3>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span>
-                    {currentSlide + 1} / {slidesIntro.length}
-                  </span>
-                </div>
-              </div>
-
-              <div className="min-h-[500px] mb-8">
-                {currentSlide === 0 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[0].title}</h4>
-                      <div className="space-y-4 max-w-4xl mx-auto">
-                        {slidesIntro[0].points.map((point, index) => (
-                          <div key={index} className="flex items-start gap-3 text-left">
-                            <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0" />
-                            <p className="text-lg text-muted-foreground leading-relaxed">{point}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-8 p-6 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
-                        <p className="text-2xl font-bold text-accent">{slidesIntro[0].highlight}</p>
+                <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+                  <div className="text-center group">
+                    <div className="relative mb-6">
+                      <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
+                        <img
+                          src="/images/franco-new.png"
+                          alt="Franco Zan"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                        />
                       </div>
                     </div>
+                    <h4 className="text-2xl font-bold text-card-foreground mb-4">Franco Zan</h4>
+                    <div className="space-y-4 text-muted-foreground leading-relaxed">
+                      <p>
+                        Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
+                        estrategias digitales.
+                      </p>
+                      <p>Responsable de Product & DLT Strategy en Ruuts.</p>
+                      <p>Negocios Digitales, Universidad de San Andrés. Especializado en DeFi en Duke University.</p>
+                    </div>
                   </div>
-                )}
 
-                {currentSlide === 1 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[1].title}</h4>
-                      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                        {slidesIntro[1].points.map((point, index) => (
-                          <div
-                            key={index}
-                            className="p-6 bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors"
-                          >
-                            <div className="flex items-center gap-3 mb-3">
-                              <TrendingUp className="h-5 w-5 text-accent" />
-                              <p className="font-semibold text-card-foreground">{point.split(":")[0]}</p>
+                  <div className="text-center group">
+                    <div className="relative mb-6">
+                      <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
+                        <img
+                          src="/images/greta-new.png"
+                          alt="Greta Gawianski"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
+                        />
+                      </div>
+                    </div>
+                    <h4 className="text-2xl font-bold text-card-foreground mb-4">Greta Gawianski</h4>
+                    <div className="space-y-4 text-muted-foreground leading-relaxed">
+                      <p>
+                        Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles, Productos
+                        Digitales y tecnología Blockchain.
+                      </p>
+                      <p>Impact Officer Global Shapers Community y Product Owner en Open Earth Foundation.</p>
+                      <p>
+                        Lic. Comunicación Universidad de San Andrés, donde coordinó los programas Blockchain y
+                        Criptoactivos.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeSection === "intro" && (
+            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-10">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
+                      <Code className="h-6 w-6 text-accent" />
+                    </div>
+                    <h3 className="text-4xl font-bold text-card-foreground">Introducción al Vibe Coding</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>
+                      {currentSlide + 1} / {slidesIntro.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="min-h-[500px] mb-8">
+                  {currentSlide === 0 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[0].title}</h4>
+                        <div className="space-y-4 max-w-4xl mx-auto">
+                          {slidesIntro[0].points.map((point, index) => (
+                            <div key={index} className="flex items-start gap-3 text-left">
+                              <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0" />
+                              <p className="text-lg text-muted-foreground leading-relaxed">{point}</p>
                             </div>
-                            <p className="text-muted-foreground text-left">{point.split(":")[1]}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-8 p-4 bg-accent/10 rounded-lg">
-                        <p className="text-lg font-semibold text-accent">{slidesIntro[1].note}</p>
+                          ))}
+                        </div>
+                        <div className="mt-8 p-6 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
+                          <p className="text-2xl font-bold text-accent">{slidesIntro[0].highlight}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {currentSlide === 2 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[2].title}</h4>
-                      <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                        {slidesIntro[2].cards.map((app, index) => (
-                          <div
-                            key={index}
-                            className="bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors overflow-hidden"
-                          >
-                            <div className="p-4 border-b border-border/30 bg-card/80">
-                              <div className="flex items-center gap-3">
-                                <Grid3X3 className="h-5 w-5 text-accent" />
-                                <h5 className="text-lg font-bold text-card-foreground">{app.name}</h5>
+                  {currentSlide === 1 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[1].title}</h4>
+                        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                          {slidesIntro[1].points.map((point, index) => (
+                            <div
+                              key={index}
+                              className="p-6 bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors"
+                            >
+                              <div className="flex items-center gap-3 mb-3">
+                                <TrendingUp className="h-5 w-5 text-accent" />
+                                <p className="font-semibold text-card-foreground">{point.split(":")[0]}</p>
                               </div>
-                              <p className="text-sm text-muted-foreground mt-2">{app.desc}</p>
+                              <p className="text-muted-foreground text-left">{point.split(":")[1]}</p>
                             </div>
-                            <div className="relative h-80 bg-white">
-                              <iframe
-                                src={app.url}
-                                className="w-full h-full border-0"
-                                title={app.name}
-                                loading="lazy"
-                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                              />
-                              <div className="absolute inset-0 bg-transparent pointer-events-none" />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {currentSlide === 3 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[3].title}</h4>
-                      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                        <div className="p-8 bg-emerald-50 rounded-xl border border-emerald-200">
-                          <div className="flex items-center gap-3 mb-6">
-                            <Zap className="h-6 w-6 text-emerald-600" />
-                            <h5 className="text-xl font-bold text-emerald-800">Pros</h5>
-                          </div>
-                          <ul className="space-y-3 text-left">
-                            {slidesIntro[3].pros.map((pro, index) => (
-                              <li key={index} className="flex items-center gap-3 text-emerald-700">
-                                <div className="w-2 h-2 bg-emerald-500 rounded-full" />
-                                <span className="font-medium">{pro}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          ))}
                         </div>
-                        <div className="p-8 bg-amber-50 rounded-xl border border-amber-200">
-                          <div className="flex items-center gap-3 mb-6">
-                            <AlertTriangle className="h-6 w-6 text-amber-600" />
-                            <h5 className="text-xl font-bold text-amber-800">Contras</h5>
-                          </div>
-                          <ul className="space-y-3 text-left">
-                            {slidesIntro[3].cons.map((con, index) => (
-                              <li key={index} className="flex items-center gap-3 text-amber-700">
-                                <div className="w-2 h-2 bg-amber-500 rounded-full" />
-                                <span className="font-medium">{con}</span>
-                              </li>
-                            ))}
-                          </ul>
+                        <div className="mt-8 p-4 bg-accent/10 rounded-lg">
+                          <p className="text-lg font-semibold text-accent">{slidesIntro[1].note}</p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {currentSlide === 4 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[4].title}</h4>
-                      <div className="space-y-8 max-w-4xl mx-auto">
-                        {Object.entries(slidesIntro[4].stacks).map(([category, tools], index) => (
-                          <div key={index} className="p-6 bg-muted/50 rounded-xl border border-border/50">
-                            <h5 className="text-lg font-semibold text-card-foreground mb-4 capitalize">
-                              {category === "nocode"
-                                ? "No-Code"
-                                : category === "db"
-                                  ? "Database"
-                                  : category === "ai"
-                                    ? "AI"
-                                    : "Infrastructure"}
-                            </h5>
-                            <div className="flex flex-wrap gap-3 justify-center">
-                              {tools.map((tool, toolIndex) => (
-                                <span
-                                  key={toolIndex}
-                                  className="px-4 py-2 bg-accent/10 text-accent rounded-full font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
-                                >
-                                  {tool}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="mt-8 p-4 bg-accent/10 rounded-lg">
-                        <p className="text-lg font-semibold text-accent">{slidesIntro[4].subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {currentSlide === 5 && (
-                  <div className="animate-in fade-in-0 duration-300">
-                    <div className="text-center mb-8">
-                      <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[5].title}</h4>
-                      <div className="max-w-4xl mx-auto">
-                        <div className="flex items-center justify-center gap-4 mb-8 p-8 bg-muted/50 rounded-xl border border-border/50">
-                          <div className="flex items-center justify-center gap-4 text-lg font-semibold text-card-foreground">
-                            <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Idea</span>
-                            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                            <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Vibe coding</span>
-                            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                            <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">MVP</span>
-                            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                            <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Feedback</span>
-                          </div>
-                        </div>
-                        <div className="p-8 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
-                          <p className="text-2xl font-bold text-accent">{slidesIntro[5].highlight}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center justify-between">
-                <Button
-                  onClick={prevSlide}
-                  variant="outline"
-                  size="lg"
-                  className="flex items-center gap-2 bg-card/50 border-border hover:border-accent hover:bg-accent/10 hover:text-accent"
-                  disabled={currentSlide === 0}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  Anterior
-                </Button>
-
-                <div className="flex items-center gap-2">
-                  {slidesIntro.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => goToSlide(index)}
-                      className={`w-3 h-3 rounded-full transition-colors ${
-                        index === currentSlide ? "bg-accent" : "bg-muted-foreground/30"
-                      }`}
-                    />
-                  ))}
-                </div>
-
-                <Button
-                  onClick={nextSlide}
-                  variant="outline"
-                  size="lg"
-                  className="flex items-center gap-2 bg-card/50 border-border hover:border-accent hover:bg-accent/10 hover:text-accent"
-                  disabled={currentSlide === slidesIntro.length - 1}
-                >
-                  Siguiente
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-
-              <div className="mt-6 text-center text-sm text-muted-foreground">
-                <p>Usa las flechas del teclado ← → para navegar</p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {activeSection === "programa" && (
-          <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
-            <CardContent className="p-10">
-              <div className="flex items-center gap-3 mb-8">
-                <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
-                  <Calendar className="h-6 w-6 text-accent" />
-                </div>
-                <h3 className="text-4xl font-bold text-card-foreground">Qué haremos en el Programa</h3>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-8 mb-12">
-                <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                  <h4 className="text-xl font-semibold mb-4 text-accent">Destinado a</h4>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Emprendedores, líderes de producto y diseño, intrapreneurs y profesionales no-técnicos que quieran
-                    innovar en su sector y multiplicar su impacto apalancándose en herramientas No-Code e IA para lanzar
-                    prototipos funcionales y agilizar la dinámica de sus equipos, reduciendo tiempos y costos de
-                    desarrollo, validando ideas en días en lugar de meses y generando resultados tangibles que
-                    fortalezcan su posición competitiva y profesional.
-                  </p>
-                </div>
-                <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                  <h4 className="text-xl font-semibold mb-4 text-accent">Modalidad</h4>
-                  <p className="text-muted-foreground leading-relaxed">
-                    En 6 encuentros de 2,5 hs teórico-prácticos online sincrónicos, contaremos con material de estudio
-                    asincrónico complementario, y desarrollaremos un MVP de una web app funcional utilizando
-                    herramientas no-code e inteligencia artificial.
-                  </p>
-                </div>
-              </div>
-
-                 <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                 <h4 className="text-xl font-semibold mb-4 text-accent">Roadmap</h4>
-                 <div className="flex justify-between items-center">
-                   <div className="flex-1">
-                     <div className="text-center">
-                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                         <User className="h-4 w-4 text-white" />
-                       </div>
-                       <p className="text-muted-foreground">Zero</p>
-                     </div>
-                   </div>
-                   <div className="flex-1 border-t-2 border-accent"></div>
-                   <div className="flex-1">
-                     <div className="text-center">
-                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                         <Code className="h-4 w-4 text-white" />
-                       </div>
-                       <p className="text-muted-foreground">Vibe-coding</p>
-                     </div>
-                   </div>
-                   <div className="flex-1 border-t-2 border-accent"></div>
-                   <div className="flex-1">
-                     <div className="text-center">
-                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                         <Sparkles className="h-4 w-4 text-white" />
-                       </div>
-                       <p className="text-muted-foreground">AI-Assisted Product Engineer</p>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-
-              <div className="space-y-4">
-                {programClasses.map((classItem) => (
-                  <div key={classItem.number} className="border border-border/50 rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => toggleClass(classItem.number)}
-                      className="w-full p-6 text-left hover:bg-muted/50 transition-colors flex items-center justify-between group"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold text-lg">
-                          {classItem.number}
-                        </div>
-                        <div>
-                          <h4 className="text-xl font-semibold text-card-foreground group-hover:text-accent transition-colors">
-                            Clase {classItem.number}: {classItem.title}
-                          </h4>
-                          <p className="text-muted-foreground text-sm mt-1">{classItem.date}</p>
-                        </div>
-                      </div>
-                      <div className="flex-shrink-0">
-                        {expandedClass === classItem.number ? (
-                          <ChevronDown className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                        ) : (
-                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                        )}
-                      </div>
-                    </button>
-
-                    {expandedClass === classItem.number && (
-                      <div className="px-6 pb-6 animate-in slide-in-from-top-2 duration-300">
-                        <div className="pl-14 space-y-3">
-                          {classItem.description.map((item, index) => (
-                            <div key={index} className="flex items-start gap-3">
-                              <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                              <p className="text-muted-foreground leading-relaxed">{item}</p>
+                  {currentSlide === 2 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[2].title}</h4>
+                        <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                          {slidesIntro[2].cards.map((app, index) => (
+                            <div
+                              key={index}
+                              className="bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors overflow-hidden"
+                            >
+                              <div className="p-4 border-b border-border/30 bg-card/80">
+                                <div className="flex items-center gap-3">
+                                  <Grid3X3 className="h-5 w-5 text-accent" />
+                                  <h5 className="text-lg font-bold text-card-foreground">{app.name}</h5>
+                                </div>
+                                <p className="text-sm text-muted-foreground mt-2">{app.desc}</p>
+                              </div>
+                              <div className="relative h-80 bg-white">
+                                <iframe
+                                  src={app.url}
+                                  className="w-full h-full border-0"
+                                  title={app.name}
+                                  loading="lazy"
+                                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                                />
+                                <div className="absolute inset-0 bg-transparent pointer-events-none" />
+                              </div>
                             </div>
                           ))}
                         </div>
                       </div>
-                    )}
-                  </div>
-                ))}
-              </div>
+                    </div>
+                  )}
 
-              <div className="mt-8 p-6 bg-accent/5 rounded-xl border border-accent/20">
-                <h4 className="text-xl font-semibold mb-4 text-accent text-center">Entregable Final</h4>
-                <p className="text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
-                  <strong>MVP funcional</strong> que incluye: Landing page profesional, Dashboard interactivo, Base de
-                  datos configurada, Hosting en producción, y Sistema de autenticación completo.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+                  {currentSlide === 3 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[3].title}</h4>
+                        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                          <div className="p-8 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <div className="flex items-center gap-3 mb-6">
+                              <Zap className="h-6 w-6 text-emerald-600" />
+                              <h5 className="text-xl font-bold text-emerald-800">Pros</h5>
+                            </div>
+                            <ul className="space-y-3 text-left">
+                              {slidesIntro[3].pros.map((pro, index) => (
+                                <li key={index} className="flex items-center gap-3 text-emerald-700">
+                                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                                  <span className="font-medium">{pro}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="p-8 bg-amber-50 rounded-xl border border-amber-200">
+                            <div className="flex items-center gap-3 mb-6">
+                              <AlertTriangle className="h-6 w-6 text-amber-600" />
+                              <h5 className="text-xl font-bold text-amber-800">Contras</h5>
+                            </div>
+                            <ul className="space-y-3 text-left">
+                              {slidesIntro[3].cons.map((con, index) => (
+                                <li key={index} className="flex items-center gap-3 text-amber-700">
+                                  <div className="w-2 h-2 bg-amber-500 rounded-full" />
+                                  <span className="font-medium">{con}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
-        {activeSection === "preguntas" && (
-          <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
-            <CardContent className="p-10 text-center">
-              <div className="max-w-3xl mx-auto">
-                <div className="p-4 bg-accent/10 rounded-full w-fit mx-auto mb-8">
-                  <MessageCircle className="h-12 w-12 text-accent" />
+                  {currentSlide === 4 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[4].title}</h4>
+                        <div className="space-y-8 max-w-4xl mx-auto">
+                          {Object.entries(slidesIntro[4].stacks).map(([category, tools], index) => (
+                            <div key={index} className="p-6 bg-muted/50 rounded-xl border border-border/50">
+                              <h5 className="text-lg font-semibold text-card-foreground mb-4 capitalize">
+                                {category === "nocode"
+                                  ? "No-Code"
+                                  : category === "db"
+                                    ? "Database"
+                                    : category === "ai"
+                                      ? "AI"
+                                      : "Infrastructure"}
+                              </h5>
+                              <div className="flex flex-wrap gap-3 justify-center">
+                                {tools.map((tool, toolIndex) => (
+                                  <span
+                                    key={toolIndex}
+                                    className="px-4 py-2 bg-accent/10 text-accent rounded-full font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+                                  >
+                                    {tool}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-8 p-4 bg-accent/10 rounded-lg">
+                          <p className="text-lg font-semibold text-accent">{slidesIntro[4].subtitle}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {currentSlide === 5 && (
+                    <div className="animate-in fade-in-0 duration-300">
+                      <div className="text-center mb-8">
+                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[5].title}</h4>
+                        <div className="max-w-4xl mx-auto">
+                          <div className="flex items-center justify-center gap-4 mb-8 p-8 bg-muted/50 rounded-xl border border-border/50">
+                            <div className="flex items-center justify-center gap-4 text-lg font-semibold text-card-foreground">
+                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Idea</span>
+                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Vibe coding</span>
+                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">MVP</span>
+                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Feedback</span>
+                            </div>
+                          </div>
+                          <div className="p-8 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
+                            <p className="text-2xl font-bold text-accent">{slidesIntro[5].highlight}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-5xl font-bold mb-8 text-card-foreground">¿Preguntas?</h3>
 
-                <p className="text-xl text-muted-foreground leading-relaxed mb-12">
-                  Este es el momento perfecto para resolver todas tus dudas sobre el programa, la metodología Vibe
-                  Coding, y cómo puedes aplicar estas herramientas en tus proyectos.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+                <div className="flex items-center justify-between">
+                  <Button
+                    onClick={prevSlide}
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 bg-card/50 border-border hover:border-accent hover:bg-accent/10 hover:text-accent"
+                    disabled={currentSlide === 0}
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Anterior
+                  </Button>
 
-      <footer className="bg-card/30 py-12 mt-20 border-t border-border/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-muted-foreground text-lg">Universidad de San Andrés - Programa NO-CODE & AI</p>
-          <p className="text-muted-foreground mt-2">Programación para No Programadores</p>
+                  <div className="flex items-center gap-2">
+                    {slidesIntro.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToSlide(index)}
+                        className={`w-3 h-3 rounded-full transition-colors ${
+                          index === currentSlide ? "bg-accent" : "bg-muted-foreground/30"
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <Button
+                    onClick={nextSlide}
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center gap-2 bg-card/50 border-border hover:border-accent hover:bg-accent/10 hover:text-accent"
+                    disabled={currentSlide === slidesIntro.length - 1}
+                  >
+                    Siguiente
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="mt-6 text-center text-sm text-muted-foreground">
+                  <p>Usa las flechas del teclado ← → para navegar</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeSection === "programa" && (
+            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-10">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
+                    <Calendar className="h-6 w-6 text-accent" />
+                  </div>
+                  <h3 className="text-4xl font-bold text-card-foreground">Qué haremos en el Programa</h3>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8 mb-12">
+                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                    <h4 className="text-xl font-semibold mb-4 text-accent">Destinado a</h4>
+                    <p className="text-muted-foreground leading-relaxed">
+                      Emprendedores, líderes de producto y diseño, intrapreneurs y profesionales no-técnicos que quieran
+                      innovar en su sector y multiplicar su impacto apalancándose en herramientas No-Code e IA para
+                      lanzar prototipos funcionales y agilizar la dinámica de sus equipos, reduciendo tiempos y costos
+                      de desarrollo, validando ideas en días en lugar de meses y generando resultados tangibles que
+                      fortalezcan su posición competitiva y profesional.
+                    </p>
+                  </div>
+                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                    <h4 className="text-xl font-semibold mb-4 text-accent">Modalidad</h4>
+                    <p className="text-muted-foreground leading-relaxed">
+                      En 6 encuentros de 2,5 hs teórico-prácticos online sincrónicos, contaremos con material de estudio
+                      asincrónico complementario, y desarrollaremos un MVP de una web app funcional utilizando
+                      herramientas no-code e inteligencia artificial.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                  <h4 className="text-xl font-semibold mb-4 text-accent">Roadmap</h4>
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1">
+                      <div className="text-center">
+                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                          <User className="h-4 w-4 text-white" />
+                        </div>
+                        <p className="text-muted-foreground">Zero</p>
+                      </div>
+                    </div>
+                    <div className="flex-1 border-t-2 border-accent"></div>
+                    <div className="flex-1">
+                      <div className="text-center">
+                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                          <Code className="h-4 w-4 text-white" />
+                        </div>
+                        <p className="text-muted-foreground">Vibe-coding</p>
+                      </div>
+                    </div>
+                    <div className="flex-1 border-t-2 border-accent"></div>
+                    <div className="flex-1">
+                      <div className="text-center">
+                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                          <Sparkles className="h-4 w-4 text-white" />
+                        </div>
+                        <p className="text-muted-foreground">AI-Assisted Product Engineer</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {programClasses.map((classItem) => (
+                    <div key={classItem.number} className="border border-border/50 rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => toggleClass(classItem.number)}
+                        className="w-full p-6 text-left hover:bg-muted/50 transition-colors flex items-center justify-between group"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="flex-shrink-0 w-10 h-10 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold text-lg">
+                            {classItem.number}
+                          </div>
+                          <div>
+                            <h4 className="text-xl font-semibold text-card-foreground group-hover:text-accent transition-colors">
+                              Clase {classItem.number}: {classItem.title}
+                            </h4>
+                            <p className="text-muted-foreground text-sm mt-1">{classItem.date}</p>
+                          </div>
+                        </div>
+                        <div className="flex-shrink-0">
+                          {expandedClass === classItem.number ? (
+                            <ChevronDown className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
+                          )}
+                        </div>
+                      </button>
+
+                      {expandedClass === classItem.number && (
+                        <div className="px-6 pb-6 animate-in slide-in-from-top-2 duration-300">
+                          <div className="pl-14 space-y-3">
+                            {classItem.description.map((item, index) => (
+                              <div key={index} className="flex items-start gap-3">
+                                <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                                <p className="text-muted-foreground leading-relaxed">{item}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 p-6 bg-accent/5 rounded-xl border border-accent/20">
+                  <h4 className="text-xl font-semibold mb-4 text-accent text-center">Entregable Final</h4>
+                  <p className="text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
+                    <strong>MVP funcional</strong> que incluye: Landing page profesional, Dashboard interactivo, Base de
+                    datos configurada, Hosting en producción, y Sistema de autenticación completo.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeSection === "comercial" && (
+            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-10">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
+                    <TrendingUp className="h-6 w-6 text-accent" />
+                  </div>
+                  <h3 className="text-4xl font-bold text-card-foreground">Información Comercial</h3>
+                </div>
+
+                <div className="max-w-5xl mx-auto">
+                  <div className="bg-white rounded-xl overflow-hidden shadow-lg border border-border/20">
+                    <img
+                      src="/images/commercial-info.png"
+                      alt="Información comercial del programa NO-CODE & AI"
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeSection === "preguntas" && (
+            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+              <CardContent className="p-10 text-center">
+                <div className="max-w-3xl mx-auto">
+                  <div className="p-4 bg-accent/10 rounded-full w-fit mx-auto mb-8">
+                    <MessageCircle className="h-12 w-12 text-accent" />
+                  </div>
+                  <h3 className="text-5xl font-bold mb-8 text-card-foreground">¿Preguntas?</h3>
+
+                  <p className="text-xl text-muted-foreground leading-relaxed mb-12">
+                    Este es el momento perfecto para resolver todas tus dudas sobre el programa, la metodología Vibe
+                    Coding, y cómo puedes aplicar estas herramientas en tus proyectos.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
-      </footer>
+
+        <footer className="bg-card/30 py-12 mt-20 border-t border-border/50 backdrop-blur-sm">
+          <div className="container mx-auto px-4 text-center">
+            <p className="text-muted-foreground text-lg">Universidad de San Andrés - Programa NO-CODE & AI</p>
+            <p className="text-muted-foreground mt-2">Programación para No Programadores</p>
+          </div>
+        </footer>
+      </div>
     </div>
+  )
+}
+
+export default function PresentationLanding() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Cargando...</p>
+          </div>
+        </div>
+      }
+    >
+      <PresentationLandingContent />
+    </Suspense>
   )
 }
