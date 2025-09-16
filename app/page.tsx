@@ -85,10 +85,10 @@ export default function PresentationLanding() {
       id: 3,
       title: "Apps creadas con este enfoque",
       cards: [
-        { name: "021", desc: "Producto complejo con clientes reales" },
-        { name: "ChatFaker", desc: "App simple de propósito único" },
-        { name: "Habitly", desc: "Features + DB; lección: credenciales expuestas" },
-        { name: "Portal Nativas", desc: "APIs, mapas, datos geográficos, UI" },
+        { name: "021", desc: "Producto complejo con clientes reales", url: "https://from021.io/" },
+        { name: "ChatFaker", desc: "App simple de propósito único", url: "https://chatfaker.online/" },
+        { name: "Habitly", desc: "Features + DB; lección: credenciales expuestas", url: "https://habitly-iota.vercel.app/" },
+        { name: "Portal Nativas", desc: "APIs, mapas, datos geográficos, UI", url: "https://especiesnativas.vercel.app/" },
       ],
     },
     {
@@ -192,9 +192,9 @@ export default function PresentationLanding() {
       <div className="relative bg-background overflow-hidden">
         <div className="absolute top-6 left-6 z-10">
           <img
-            src="/images/udesa-logo.png"
+            src="/images/udesa-png.svg"
             alt="Universidad de San Andrés"
-            className="h-16 w-auto opacity-90 hover:opacity-100 transition-opacity"
+            className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
           />
         </div>
 
@@ -305,10 +305,10 @@ export default function PresentationLanding() {
                       estrategias digitales.
                     </p>
                     <p>
-                      Responsable de Product & DLT Strategy en Ruuts. Lic. Negocios Digitales, Universidad de San
-                      Andrés.
+                      Responsable de Product & DLT Strategy en Ruuts.
                     </p>
-                    <p>Especializado en DeFi en Duke University.</p>
+                    <p>Negocios Digitales, Universidad de San
+                    Andrés. Especializado en DeFi en Duke University.</p>
                   </div>
                 </div>
 
@@ -406,17 +406,29 @@ export default function PresentationLanding() {
                   <div className="animate-in fade-in-0 duration-300">
                     <div className="text-center mb-8">
                       <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[2].title}</h4>
-                      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                      <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
                         {slidesIntro[2].cards.map((app, index) => (
                           <div
                             key={index}
-                            className="p-8 bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors hover:scale-105 duration-300"
+                            className="bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors overflow-hidden"
                           >
-                            <div className="flex items-center gap-3 mb-4">
-                              <Grid3X3 className="h-6 w-6 text-accent" />
-                              <h5 className="text-xl font-bold text-card-foreground">{app.name}</h5>
+                            <div className="p-4 border-b border-border/30 bg-card/80">
+                              <div className="flex items-center gap-3">
+                                <Grid3X3 className="h-5 w-5 text-accent" />
+                                <h5 className="text-lg font-bold text-card-foreground">{app.name}</h5>
+                              </div>
+                              <p className="text-sm text-muted-foreground mt-2">{app.desc}</p>
                             </div>
-                            <p className="text-muted-foreground text-left leading-relaxed">{app.desc}</p>
+                            <div className="relative h-80 bg-white">
+                              <iframe
+                                src={app.url}
+                                className="w-full h-full border-0"
+                                title={app.name}
+                                loading="lazy"
+                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                              />
+                              <div className="absolute inset-0 bg-transparent pointer-events-none" />
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -596,6 +608,38 @@ export default function PresentationLanding() {
                   </p>
                 </div>
               </div>
+
+                 <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                 <h4 className="text-xl font-semibold mb-4 text-accent">Roadmap</h4>
+                 <div className="flex justify-between items-center">
+                   <div className="flex-1">
+                     <div className="text-center">
+                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                         <User className="h-4 w-4 text-white" />
+                       </div>
+                       <p className="text-muted-foreground">Zero</p>
+                     </div>
+                   </div>
+                   <div className="flex-1 border-t-2 border-accent"></div>
+                   <div className="flex-1">
+                     <div className="text-center">
+                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                         <Code className="h-4 w-4 text-white" />
+                       </div>
+                       <p className="text-muted-foreground">Vibe-coding</p>
+                     </div>
+                   </div>
+                   <div className="flex-1 border-t-2 border-accent"></div>
+                   <div className="flex-1">
+                     <div className="text-center">
+                       <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
+                         <Sparkles className="h-4 w-4 text-white" />
+                       </div>
+                       <p className="text-muted-foreground">AI-Assisted Product Engineer</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
 
               <div className="space-y-4">
                 {programClasses.map((classItem) => (
