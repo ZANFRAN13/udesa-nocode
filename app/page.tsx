@@ -198,12 +198,20 @@ function PresentationLandingContent() {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative bg-background overflow-hidden">
-        <div className="absolute top-6 left-6 z-10">
+        <div className="absolute top-6 left-6 z-10 flex items-center gap-8">
           <img
             src="/images/udesa-png.svg"
             alt="Universidad de San Andrés"
             className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
           />
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-white font-light">con el apoyo de: </span>
+            <img
+              src="/images/v0-logo-dark.webp"
+              alt="v0 Logo"
+              className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
+            />
+          </div>
         </div>
 
         <div className="absolute inset-0">
@@ -237,62 +245,69 @@ function PresentationLandingContent() {
               Aprendé a desarrollar aplicaciones sin saber programar
             </p>
 
-            <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-              <Button
-                onClick={() => toggleSection("about")}
-                variant="outline"
-                size="lg"
-                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <User className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                  <span className="text-center leading-tight">About Us</span>
-                </div>
-              </Button>
-              <Button
-                onClick={() => toggleSection("intro")}
-                variant="outline"
-                size="lg"
-                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <Users className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                  <span className="text-center leading-tight">Introducción al Vibe Coding</span>
-                </div>
-              </Button>
-              <Button
-                onClick={() => toggleSection("programa")}
-                variant="outline"
-                size="lg"
-                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <Calendar className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                  <span className="text-center leading-tight">Qué haremos en el Programa</span>
-                </div>
-              </Button>
-              <Button
-                onClick={() => toggleSection("comercial")}
-                variant="outline"
-                size="lg"
-                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <TrendingUp className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                  <span className="text-center leading-tight">Información Comercial</span>
-                </div>
-              </Button>
-              <Button
-                onClick={() => toggleSection("preguntas")}
-                variant="outline"
-                size="lg"
-                className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                  <span className="text-center leading-tight">Preguntas & Cierre</span>
-                </div>
-              </Button>
+            <div className="max-w-6xl mx-auto space-y-8">
+              {/* Primera fila - 3 botones */}
+              <div className="grid md:grid-cols-3 gap-6">
+                <Button
+                  onClick={() => toggleSection("about")}
+                  variant="outline"
+                  size="lg"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <User className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span className="text-center leading-tight">About Us</span>
+                  </div>
+                </Button>
+                <Button
+                  onClick={() => toggleSection("intro")}
+                  variant="outline"
+                  size="lg"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <Users className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span className="text-center leading-tight">Introducción al Vibe Coding</span>
+                  </div>
+                </Button>
+                <Button
+                  onClick={() => toggleSection("programa")}
+                  variant="outline"
+                  size="lg"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <Calendar className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span className="text-center leading-tight">Qué haremos en el Programa</span>
+                  </div>
+                </Button>
+              </div>
+              
+              {/* Segunda fila - 2 botones centrados */}
+              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <Button
+                  onClick={() => toggleSection("comercial")}
+                  variant="outline"
+                  size="lg"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <TrendingUp className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span className="text-center leading-tight">Información Comercial</span>
+                  </div>
+                </Button>
+                <Button
+                  onClick={() => toggleSection("preguntas")}
+                  variant="outline"
+                  size="lg"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                    <span className="text-center leading-tight">Preguntas & Cierre</span>
+                  </div>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
