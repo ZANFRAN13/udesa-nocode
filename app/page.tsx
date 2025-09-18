@@ -403,7 +403,7 @@ function PresentationLandingContent() {
                       />
                     </div>
                     <h4 className="text-2xl font-bold text-card-foreground mb-4">Franco Zan</h4>
-                    <div className="space-y-4 text-muted-foreground leading-relaxed">
+                    <div className="space-y-4 text-card-foreground leading-relaxed max-w-md mx-auto">
                       <p>
                         Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
                         estrategias digitales.
@@ -426,7 +426,7 @@ function PresentationLandingContent() {
                       />
                     </div>
                     <h4 className="text-2xl font-bold text-card-foreground mb-4">Greta Gawianski</h4>
-                    <div className="space-y-4 text-muted-foreground leading-relaxed">
+                    <div className="space-y-4 text-card-foreground leading-relaxed max-w-md mx-auto">
                       <p>
                         Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles, Productos
                         Digitales y tecnología Blockchain.
@@ -523,23 +523,63 @@ function PresentationLandingContent() {
                   <h3 className="text-4xl font-bold text-card-foreground">Qué haremos en el Programa</h3>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-8 mb-12">
-                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                    <h4 className="text-xl font-semibold mb-4 text-accent">Destinado a</h4>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Emprendedores, líderes de producto y diseño, intrapreneurs y profesionales no-técnicos que quieran
-                      innovar en su sector y multiplicar su impacto apalancándose en herramientas No-Code e IA para
-                      lanzar prototipos funcionales y agilizar la dinámica de sus equipos, reduciendo tiempos y costos
-                      de desarrollo, validando ideas en días en lugar de meses y generando resultados tangibles que
-                      fortalezcan su posición competitiva y profesional.
-                    </p>
+                <div className="space-y-8 mb-12">
+                  {/* Destinado a and Modalidad side by side */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Destinado a */}
+                    <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                      <h4 className="text-xl font-semibold mb-4 text-accent">Destinado a</h4>
+                      <ul className="space-y-2 text-card-foreground leading-relaxed">
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>Emprendedores</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>Líderes de producto y diseño</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>Intrapreneurs</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>Profesionales no-técnicos</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* Modalidad */}
+                    <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                      <h4 className="text-xl font-semibold mb-4 text-accent">Modalidad</h4>
+                      <ul className="space-y-2 text-card-foreground leading-relaxed">
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>6 encuentros de 2,5 hs teórico-prácticos online sincrónicos</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>Contaremos con material de estudio asincrónico complementario</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                          <span>
+                            Desarrollaremos un MVP de una web app funcional utilizando herramientas no-code e
+                            inteligencia artificial
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
+
+                  {/* Objetivo - full width */}
                   <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                    <h4 className="text-xl font-semibold mb-4 text-accent">Modalidad</h4>
-                    <p className="text-muted-foreground leading-relaxed">
-                      En 6 encuentros de 2,5 hs teórico-prácticos online sincrónicos, contaremos con material de estudio
-                      asincrónico complementario, y desarrollaremos un MVP de una web app funcional utilizando
-                      herramientas no-code e inteligencia artificial.
+                    <h4 className="text-xl font-semibold mb-4 text-accent">Objetivo</h4>
+                    <p className="text-card-foreground leading-relaxed">
+                      Aprender a innovar y multiplicar el impacto apalancándose en herramientas No-Code e IA para lanzar
+                      prototipos funcionales y agilizar la dinámica de sus equipos, reduciendo tiempos y costos de
+                      desarrollo, validando ideas en días en lugar de meses y generando resultados tangibles que
+                      fortalezcan su posición competitiva y profesional.
                     </p>
                   </div>
                 </div>
