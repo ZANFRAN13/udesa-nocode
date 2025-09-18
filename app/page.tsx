@@ -4,8 +4,6 @@ import { useState, useEffect, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
-  ChevronRight,
-  ChevronDown,
   Users,
   Calendar,
   MessageCircle,
@@ -192,8 +190,10 @@ function PresentationLandingContent() {
     { id: 6, image: "/images/slide-7.jpeg", alt: "Tweet de Andrej Karpathy sobre vibe coding" },
     { id: 7, image: "/images/slide-8.jpeg", alt: "Qué cambió - MVP 2017 vs MVP 2025" },
     { id: 8, image: "/images/slide-9.jpeg", alt: "Vibe coding - herramientas y comparación" },
-    { id: 9, image: "/images/slide-10.jpeg", alt: "Fases de desarrollo vibe coding" },
-    { id: 10, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
+    { id: 9, image: "/images/slide-10-new.jpeg", alt: "Qué, cómo y cuándo usarlo - perspectivas sobre vibe coding" },
+    { id: 10, image: "/images/slide-9-new.jpeg", alt: "Cómo funciona - principios básicos de las tecnologías" },
+    { id: 11, image: "/images/slide-10.jpeg", alt: "Fases de desarrollo vibe coding" },
+    { id: 12, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
   ]
 
   const programClasses = [
@@ -582,84 +582,118 @@ function PresentationLandingContent() {
                       fortalezcan su posición competitiva y profesional.
                     </p>
                   </div>
-                </div>
 
-                <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
-                  <h4 className="text-xl font-semibold mb-4 text-accent">Roadmap</h4>
-                  <div className="flex justify-between items-center">
-                    <div className="flex-1">
+                  {/* Profesores */}
+                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                    <h4 className="text-xl font-semibold mb-6 text-accent">Profesores</h4>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {/* Maria Frances Gaska */}
                       <div className="text-center">
-                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                          <User className="h-4 w-4 text-white" />
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/maria-frances-gaska.png"
+                            alt="Maria Frances Gaska"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
                         </div>
-                        <p className="text-muted-foreground">Zero</p>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Maria Frances Gaska</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          CTO & cofounder en Instituto Humai. Docente de datos, machine learning e IA. Trabajó en
+                          diversas startups como AI engineer y como arquitecta de soluciones de IA en AWS.
+                        </p>
                       </div>
-                    </div>
-                    <div className="flex-1 border-t-2 border-accent"></div>
-                    <div className="flex-1">
+
+                      {/* Greta Gawianski */}
                       <div className="text-center">
-                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                          <Code className="h-4 w-4 text-white" />
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/greta-new.png"
+                            alt="Greta Gawianski"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
                         </div>
-                        <p className="text-muted-foreground">Vibe-coding</p>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Greta Gawianski</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles,
+                          Productos Digitales y tecnología Blockchain. Impact Officer Global Shapers Community y Product
+                          Owner en Open Earth Foundation. Lic. Comunicación Universidad de San Andrés, donde coordinó
+                          los programas Blockchain y Criptoactivos.
+                        </p>
                       </div>
-                    </div>
-                    <div className="flex-1 border-t-2 border-accent"></div>
-                    <div className="flex-1">
+
+                      {/* Ariel Mathov */}
                       <div className="text-center">
-                        <div className="w-8 h-8 bg-accent rounded-full mx-auto mb-2 flex items-center justify-center">
-                          <Sparkles className="h-4 w-4 text-white" />
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/ariel-mathov.png"
+                            alt="Ariel Mathov"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
                         </div>
-                        <p className="text-muted-foreground">AI-Assisted Product Engineer</p>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Ariel Mathov</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          Fundador from021.io. Especialista en productos digitales (mobile apps & SaaS), fundó Almaya, y
+                          previamente trabajó en Wolox, creando el área Diseño de Negocios Digitales. Ingeniero
+                          Industrial UBA.
+                        </p>
+                      </div>
+
+                      {/* Pablo Sciolla */}
+                      <div className="text-center">
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/pablo-sciolla.png"
+                            alt="Pablo Sciolla"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
+                        </div>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Pablo Sciolla</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          Especialista en datos, inteligencia artificial y tecnologías emergentes. Profesor de Cátedra
+                          de la Universidad de San Andrés. Coordinador académico del programa IA para Negocios.
+                          Ingeniero en Sistemas de Información, UTN. Se desempeñó como Senior Manager de la división de
+                          Advisory de EY.
+                        </p>
+                      </div>
+
+                      {/* Esteban Suárez */}
+                      <div className="text-center">
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/esteban-suarez.png"
+                            alt="Esteban Suárez"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
+                        </div>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Esteban Suárez</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          Developer Relations en v0 (Vercel), en donde posibilita que las personas conviertan ideas en
+                          aplicaciones web, desarrollando integraciones, plantillas y recursos para la comunidad que
+                          muestran cómo v0 elimina las barreras técnicas.
+                        </p>
+                      </div>
+
+                      {/* Franco Zan */}
+                      <div className="text-center">
+                        <div className="relative mb-4">
+                          <img
+                            src="/images/franco-new.png"
+                            alt="Franco Zan"
+                            className="w-24 h-24 rounded-full mx-auto object-cover border-2 border-accent/20"
+                          />
+                        </div>
+                        <h5 className="text-lg font-semibold text-card-foreground mb-2">Franco Zan</h5>
+                        <p className="text-sm text-card-foreground leading-relaxed">
+                          Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
+                          estrategias digitales. Responsable de Product & DLT Strategy en Ruuts. Lic. Negocios
+                          Digitales, Universidad de San Andrés. Especializado en DeFi en Duke University.
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  {programClasses.map((classItem) => (
-                    <div key={classItem.number} className="border border-border/50 rounded-xl overflow-hidden">
-                      <button
-                        onClick={() => toggleClass(classItem.number)}
-                        className="w-full p-6 text-left hover:bg-muted/50 transition-colors flex items-center justify-between group"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="flex-shrink-0 w-10 h-10 bg-accent text-accent-foreground rounded-full flex items-center justify-center font-bold text-lg">
-                            {classItem.number}
-                          </div>
-                          <div>
-                            <h4 className="text-xl font-semibold text-card-foreground group-hover:text-accent transition-colors">
-                              Clase {classItem.number}: {classItem.title}
-                            </h4>
-                            <p className="text-muted-foreground text-sm mt-1">{classItem.date}</p>
-                          </div>
-                        </div>
-                        <div className="flex-shrink-0">
-                          {expandedClass === classItem.number ? (
-                            <ChevronDown className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                          ) : (
-                            <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                          )}
-                        </div>
-                      </button>
-
-                      {expandedClass === classItem.number && (
-                        <div className="px-6 pb-6 animate-in slide-in-from-top-2 duration-300">
-                          <div className="pl-14 space-y-3">
-                            {classItem.description.map((item, index) => (
-                              <div key={index} className="flex items-start gap-3">
-                                <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
-                                <p className="text-muted-foreground leading-relaxed">{item}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-8 p-6 bg-accent/5 rounded-xl border border-accent/20">
+                <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
                   <h4 className="text-xl font-semibold mb-4 text-accent text-center">Entregable Final</h4>
                   <p className="text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
                     <strong>MVP funcional</strong> que incluye: Landing page profesional, Dashboard interactivo, Base de
