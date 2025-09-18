@@ -14,16 +14,25 @@ import {
   Zap,
   ArrowRight,
   ArrowLeft,
-  Grid3X3,
   TrendingUp,
-  AlertTriangle,
   User,
+  Camera,
+  Palette,
+  Music,
+  Target,
+  Database,
+  Shield,
+  BarChart3,
+  CreditCard,
+  Mail,
+  GitBranch,
 } from "lucide-react"
 
 function PresentationLandingContent() {
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [expandedClass, setExpandedClass] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
 
   const toggleSection = (section: string) => {
     setActiveSection(activeSection === section ? null : section)
@@ -45,11 +54,27 @@ function PresentationLandingContent() {
     setCurrentSlide(index)
   }
 
+  const nextAboutSlide = () => {
+    setCurrentAboutSlide((prev) => (prev + 1) % aboutSlides.length)
+  }
+
+  const prevAboutSlide = () => {
+    setCurrentAboutSlide((prev) => (prev - 1 + aboutSlides.length) % aboutSlides.length)
+  }
+
+  const goToAboutSlide = (index: number) => {
+    setCurrentAboutSlide(index)
+  }
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (activeSection === "intro") {
         if (e.key === "ArrowRight") nextSlide()
         if (e.key === "ArrowLeft") prevSlide()
+      }
+      if (activeSection === "about") {
+        if (e.key === "ArrowRight") nextAboutSlide()
+        if (e.key === "ArrowLeft") prevAboutSlide()
       }
     }
 
@@ -57,71 +82,118 @@ function PresentationLandingContent() {
       window.addEventListener("keydown", handleKeyDown)
       return () => window.removeEventListener("keydown", handleKeyDown)
     }
-  }, [activeSection, currentSlide])
+  }, [activeSection, currentSlide, currentAboutSlide])
 
-  const slidesIntro = [
+  const aboutSlides = [
     {
       id: 1,
-      title: "El nuevo paradigma del desarrollo",
-      points: [
-        "IA generativa + no-code para crear productos rápido, barato y en colaboración.",
-        "Referencias: Karpathy y Guillermo Rauch.",
-        "De orquestar componentes con lenguaje natural, no sólo codear líneas.",
-      ],
-      highlight: "De idea a producto en días, no meses",
+      title: "La industria del software cambió",
+      content: "simple_title",
     },
     {
       id: 2,
-      title: "Impacto real en el mundo",
-      points: [
-        "Marketing: campañas personalizadas y automatizadas",
-        "Educación: materiales personalizados para cada estudiante",
-        "Salud: resúmenes clínicos y análisis de datos médicos",
-        "Software: apps desarrolladas por no técnicos",
+      title: "Por qué la industria del software cambió",
+      subtitle: "Ya pasó con otros",
+      examples: [
+        { icon: Camera, old: "Canon", new: "Celular", category: "Fotos" },
+        { icon: Palette, old: "Photoshop", new: "Canva", category: "Diseño" },
+        { icon: Music, old: "Estudio", new: "Ableton", category: "Música" },
       ],
-      note: "Más iteración, menos costo",
     },
     {
       id: 3,
-      title: "Apps creadas con este enfoque",
-      cards: [
-        { name: "021", desc: "Producto complejo con clientes reales", url: "https://from021.io/" },
-        { name: "ChatFaker", desc: "App simple de propósito único", url: "https://chatfaker.online/" },
-        {
-          name: "Habitly",
-          desc: "Features + DB; lección: credenciales expuestas",
-          url: "https://habitly-iota.vercel.app/",
-        },
-        {
-          name: "Portal Nativas",
-          desc: "APIs, mapas, datos geográficos, UI",
-          url: "https://especiesnativas.vercel.app/",
-        },
-      ],
+      title: "Por qué la industria del software cambió",
+      subtitle: "Más fácil hacer software",
+      content: "simple_subtitle",
     },
     {
       id: 4,
-      title: "Pros y Contras",
-      pros: ["Velocidad", "Democratización", "Costo bajo"],
-      cons: ["Seguridad/Escalado", "Integraciones complejas", "Riesgo prototipos zombie"],
+      title: "Infraestructura para la escalabilidad del producto",
+      content: "infrastructure",
     },
     {
       id: 5,
-      title: "Universo de herramientas",
-      stacks: {
-        nocode: ["V0", "Lovable", "Webflow"],
-        db: ["Supabase", "Firebase"],
-        ai: ["ChatGPT", "Claude", "Gemini", "OpenAI Functions"],
-        infra: ["Vercel", "GitHub"],
-      },
-      subtitle: "Todo conversa por APIs + contextos",
+      title: "Hay mucho más oportunidades para generalistas",
+      subtitle: "La industria requiere saber de tecnología, negocio y usuario al mismo tiempo",
+      content: "opportunities",
     },
     {
       id: 6,
-      title: "Cómo lo aplicamos",
-      points: ["Idea → Vibe coding → MVP → Feedback"],
-      highlight: "El cuello de botella ya no es el código: es la creatividad",
+      title: "Trabajar en producto hoy",
+      subtitle: "Qué cambió",
+      comparison: {
+        "2017": {
+          research: "1.5 meses",
+          design: "1 mes",
+          dev: "3 meses",
+          roles: "diferenciados",
+          generalista: "100% gestión",
+          distribution: "compleja",
+          opportunities: "VC",
+        },
+        "2025": {
+          research: "semanas",
+          design: "semanas",
+          dev: "semanas",
+          roles: "integrados",
+          generalista: "hands-on",
+          distribution: "más difícil aún",
+          opportunities: "+ VC + bootstrapped",
+        },
+      },
     },
+    {
+      id: 7,
+      title: "Full-stack: más simple, menos flexible",
+      subtitle: "Vibe coding*",
+      note: "*término creado por Karpathy",
+      description: "Diseño funcional, front-end",
+      tools: ["Cursor", "Windsurf", "Lovable", "Replit"],
+      vs: "Full-stack: menos simple, más flexible",
+      concept: "Desarrollar con prompts en lenguaje natural, definir producto",
+    },
+    {
+      id: 8,
+      title: "Fases de desarrollo vibe coding",
+      phases: [
+        { number: 1, title: "Estructura funcional", desc: "Diseño y desarrollo front" },
+        { number: 2, title: "Acceder y guardar info", desc: "Autenticación, base de datos, deploy" },
+        { number: 3, title: "Integraciones", desc: "LLMs, analytics, pagos, mensajes" },
+      ],
+    },
+    {
+      id: 9,
+      title: "Esqueleto de un producto",
+      components: [
+        { name: "Autenticación", icon: Shield },
+        { name: "Hosting & Deploy", icon: Zap },
+        { name: "Automation", icon: Target },
+        { name: "Pagos", icon: CreditCard },
+        { name: "Diseño & Dev", icon: Palette },
+        { name: "Mensajes", icon: Mail },
+        { name: "Analytics", icon: BarChart3 },
+        { name: "Base de datos", icon: Database },
+        { name: "Repositorio", icon: GitBranch },
+        { name: "LLMs", icon: Sparkles },
+      ],
+    },
+  ]
+
+  const slidesIntro = [
+    { id: 1, image: "/images/slide-1.jpeg", alt: "La industria del software cambió" },
+    {
+      id: 2,
+      image: "/images/slide-2.jpeg",
+      alt: "Por qué la industria del software cambió - ejemplos con fotos, diseño, música",
+    },
+    { id: 3, image: "/images/slide-4.jpeg", alt: "Design thinking process - 6 fases" },
+    { id: 4, image: "/images/slide-5.jpeg", alt: "Design thinking iterativo" },
+    { id: 5, image: "/images/slide-6.jpeg", alt: "Trabajar en producto hoy - oportunidades para generalistas" },
+    { id: 6, image: "/images/slide-7.jpeg", alt: "Tweet de Andrej Karpathy sobre vibe coding" },
+    { id: 7, image: "/images/slide-8.jpeg", alt: "Qué cambió - MVP 2017 vs MVP 2025" },
+    { id: 8, image: "/images/slide-9.jpeg", alt: "Vibe coding - herramientas y comparación" },
+    { id: 9, image: "/images/slide-10.jpeg", alt: "Fases de desarrollo vibe coding" },
+    { id: 10, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
   ]
 
   const programClasses = [
@@ -282,7 +354,7 @@ function PresentationLandingContent() {
                   </div>
                 </Button>
               </div>
-              
+
               {/* Segunda fila - 2 botones centrados */}
               <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
                 <Button
@@ -321,15 +393,14 @@ function PresentationLandingContent() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                  <div className="text-center group">
+                  {/* Franco Profile */}
+                  <div className="text-center">
                     <div className="relative mb-6">
-                      <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
-                        <img
-                          src="/images/franco-new.png"
-                          alt="Franco Zan"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                        />
-                      </div>
+                      <img
+                        src="/images/franco-new.png"
+                        alt="Franco Zan"
+                        className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-accent/20"
+                      />
                     </div>
                     <h4 className="text-2xl font-bold text-card-foreground mb-4">Franco Zan</h4>
                     <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -337,20 +408,22 @@ function PresentationLandingContent() {
                         Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
                         estrategias digitales.
                       </p>
-                      <p>Responsable de Product & DLT Strategy en Ruuts.</p>
-                      <p>Negocios Digitales, Universidad de San Andrés. Especializado en DeFi en Duke University.</p>
+                      <p>
+                        Responsable de Product & DLT Strategy en Ruuts. Lic. Negocios Digitales, Universidad de San
+                        Andrés.
+                      </p>
+                      <p>Especializado en DeFi en Duke University.</p>
                     </div>
                   </div>
 
-                  <div className="text-center group">
+                  {/* Greta Profile */}
+                  <div className="text-center">
                     <div className="relative mb-6">
-                      <div className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-accent/20 group-hover:border-accent/40 transition-colors duration-300">
-                        <img
-                          src="/images/greta-new.png"
-                          alt="Greta Gawianski"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
-                        />
-                      </div>
+                      <img
+                        src="/images/greta-new.png"
+                        alt="Greta Gawianski"
+                        className="w-48 h-48 rounded-full mx-auto object-cover border-4 border-accent/20"
+                      />
                     </div>
                     <h4 className="text-2xl font-bold text-card-foreground mb-4">Greta Gawianski</h4>
                     <div className="space-y-4 text-muted-foreground leading-relaxed">
@@ -388,181 +461,13 @@ function PresentationLandingContent() {
                 </div>
 
                 <div className="min-h-[500px] mb-8">
-                  {currentSlide === 0 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[0].title}</h4>
-                        <div className="space-y-4 max-w-4xl mx-auto">
-                          {slidesIntro[0].points.map((point, index) => (
-                            <div key={index} className="flex items-start gap-3 text-left">
-                              <div className="w-2 h-2 bg-accent rounded-full mt-3 flex-shrink-0" />
-                              <p className="text-lg text-muted-foreground leading-relaxed">{point}</p>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="mt-8 p-6 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
-                          <p className="text-2xl font-bold text-accent">{slidesIntro[0].highlight}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {currentSlide === 1 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[1].title}</h4>
-                        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                          {slidesIntro[1].points.map((point, index) => (
-                            <div
-                              key={index}
-                              className="p-6 bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors"
-                            >
-                              <div className="flex items-center gap-3 mb-3">
-                                <TrendingUp className="h-5 w-5 text-accent" />
-                                <p className="font-semibold text-card-foreground">{point.split(":")[0]}</p>
-                              </div>
-                              <p className="text-muted-foreground text-left">{point.split(":")[1]}</p>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="mt-8 p-4 bg-accent/10 rounded-lg">
-                          <p className="text-lg font-semibold text-accent">{slidesIntro[1].note}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {currentSlide === 2 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[2].title}</h4>
-                        <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto">
-                          {slidesIntro[2].cards.map((app, index) => (
-                            <div
-                              key={index}
-                              className="bg-muted/50 rounded-xl border border-border/50 hover:border-accent/30 transition-colors overflow-hidden"
-                            >
-                              <div className="p-4 border-b border-border/30 bg-card/80">
-                                <div className="flex items-center gap-3">
-                                  <Grid3X3 className="h-5 w-5 text-accent" />
-                                  <h5 className="text-lg font-bold text-card-foreground">{app.name}</h5>
-                                </div>
-                                <p className="text-sm text-muted-foreground mt-2">{app.desc}</p>
-                              </div>
-                              <div className="relative h-80 bg-white">
-                                <iframe
-                                  src={app.url}
-                                  className="w-full h-full border-0"
-                                  title={app.name}
-                                  loading="lazy"
-                                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                                />
-                                <div className="absolute inset-0 bg-transparent pointer-events-none" />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {currentSlide === 3 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[3].title}</h4>
-                        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                          <div className="p-8 bg-emerald-50 rounded-xl border border-emerald-200">
-                            <div className="flex items-center gap-3 mb-6">
-                              <Zap className="h-6 w-6 text-emerald-600" />
-                              <h5 className="text-xl font-bold text-emerald-800">Pros</h5>
-                            </div>
-                            <ul className="space-y-3 text-left">
-                              {slidesIntro[3].pros.map((pro, index) => (
-                                <li key={index} className="flex items-center gap-3 text-emerald-700">
-                                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
-                                  <span className="font-medium">{pro}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="p-8 bg-amber-50 rounded-xl border border-amber-200">
-                            <div className="flex items-center gap-3 mb-6">
-                              <AlertTriangle className="h-6 w-6 text-amber-600" />
-                              <h5 className="text-xl font-bold text-amber-800">Contras</h5>
-                            </div>
-                            <ul className="space-y-3 text-left">
-                              {slidesIntro[3].cons.map((con, index) => (
-                                <li key={index} className="flex items-center gap-3 text-amber-700">
-                                  <div className="w-2 h-2 bg-amber-500 rounded-full" />
-                                  <span className="font-medium">{con}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {currentSlide === 4 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[4].title}</h4>
-                        <div className="space-y-8 max-w-4xl mx-auto">
-                          {Object.entries(slidesIntro[4].stacks).map(([category, tools], index) => (
-                            <div key={index} className="p-6 bg-muted/50 rounded-xl border border-border/50">
-                              <h5 className="text-lg font-semibold text-card-foreground mb-4 capitalize">
-                                {category === "nocode"
-                                  ? "No-Code"
-                                  : category === "db"
-                                    ? "Database"
-                                    : category === "ai"
-                                      ? "AI"
-                                      : "Infrastructure"}
-                              </h5>
-                              <div className="flex flex-wrap gap-3 justify-center">
-                                {tools.map((tool, toolIndex) => (
-                                  <span
-                                    key={toolIndex}
-                                    className="px-4 py-2 bg-accent/10 text-accent rounded-full font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
-                                  >
-                                    {tool}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="mt-8 p-4 bg-accent/10 rounded-lg">
-                          <p className="text-lg font-semibold text-accent">{slidesIntro[4].subtitle}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {currentSlide === 5 && (
-                    <div className="animate-in fade-in-0 duration-300">
-                      <div className="text-center mb-8">
-                        <h4 className="text-3xl font-bold mb-6 text-accent">{slidesIntro[5].title}</h4>
-                        <div className="max-w-4xl mx-auto">
-                          <div className="flex items-center justify-center gap-4 mb-8 p-8 bg-muted/50 rounded-xl border border-border/50">
-                            <div className="flex items-center justify-center gap-4 text-lg font-semibold text-card-foreground">
-                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Idea</span>
-                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Vibe coding</span>
-                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">MVP</span>
-                              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-                              <span className="px-4 py-2 bg-accent/10 text-accent rounded-lg">Feedback</span>
-                            </div>
-                          </div>
-                          <div className="p-8 bg-gradient-to-r from-accent/10 to-primary/10 rounded-xl border border-accent/20">
-                            <p className="text-2xl font-bold text-accent">{slidesIntro[5].highlight}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                  <div className="animate-in fade-in-0 duration-300 flex items-center justify-center">
+                    <img
+                      src={slidesIntro[currentSlide].image || "/placeholder.svg"}
+                      alt={slidesIntro[currentSlide].alt}
+                      className="max-w-full max-h-[500px] object-contain rounded-lg shadow-lg"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex items-center justify-between">
