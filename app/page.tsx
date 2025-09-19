@@ -586,6 +586,48 @@ function PresentationLandingContent() {
                     </p>
                   </div>
 
+                  {/* Cronograma Clase a Clase */}
+                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                    <h4 className="text-xl font-semibold mb-6 text-accent">Cronograma Clase a Clase</h4>
+                    <div className="space-y-4">
+                      {programClasses.map((classItem) => (
+                        <div key={classItem.number} className="border border-border/30 rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleClass(classItem.number)}
+                            className="w-full p-4 text-left bg-card/50 hover:bg-card/70 transition-colors flex items-center justify-between"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-8 h-8 bg-accent text-background rounded-full flex items-center justify-center font-semibold text-sm">
+                                {classItem.number}
+                              </div>
+                              <div>
+                                <h5 className="font-semibold text-card-foreground">{classItem.title}</h5>
+                                <p className="text-sm text-muted-foreground">{classItem.date}</p>
+                              </div>
+                            </div>
+                            <div
+                              className={`transform transition-transform ${expandedClass === classItem.number ? "rotate-180" : ""}`}
+                            >
+                              <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                            </div>
+                          </button>
+                          {expandedClass === classItem.number && (
+                            <div className="p-4 bg-card/30 border-t border-border/30 animate-in slide-in-from-top-2 duration-200">
+                              <ul className="space-y-2">
+                                {classItem.description.map((item, index) => (
+                                  <li key={index} className="flex items-start gap-3 text-card-foreground">
+                                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
+                                    <span className="text-sm leading-relaxed">{item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Profesores */}
                   <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
                     <h4 className="text-xl font-semibold mb-6 text-accent">Profesores</h4>
