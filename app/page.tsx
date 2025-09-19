@@ -187,13 +187,16 @@ function PresentationLandingContent() {
     { id: 3, image: "/images/slide-4.jpeg", alt: "Design thinking process - 6 fases" },
     { id: 4, image: "/images/slide-5.jpeg", alt: "Design thinking iterativo" },
     { id: 5, image: "/images/slide-6.jpeg", alt: "Trabajar en producto hoy - oportunidades para generalistas" },
-    { id: 6, image: "/images/slide-7.jpeg", alt: "Tweet de Andrej Karpathy sobre vibe coding" },
+    {
+      id: 6,
+      image: "/images/slide-6-new.jpeg",
+      alt: "Tweet de Andrej Karpathy sobre vibe coding - definición y explicación",
+    },
     { id: 7, image: "/images/slide-8.jpeg", alt: "Qué cambió - MVP 2017 vs MVP 2025" },
     { id: 8, image: "/images/slide-9.jpeg", alt: "Vibe coding - herramientas y comparación" },
     { id: 9, image: "/images/slide-10-new.jpeg", alt: "Qué, cómo y cuándo usarlo - perspectivas sobre vibe coding" },
-    { id: 10, image: "/images/slide-9-new.jpeg", alt: "Cómo funciona - principios básicos de las tecnologías" },
-    { id: 11, image: "/images/slide-10.jpeg", alt: "Fases de desarrollo vibe coding" },
-    { id: 12, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
+    { id: 10, image: "/images/slide-10.jpeg", alt: "Fases de desarrollo vibe coding" },
+    { id: 11, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
   ]
 
   const programClasses = [
@@ -324,7 +327,7 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("about")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
                 >
                   <div className="flex flex-col items-center gap-2">
                     <User className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
@@ -335,7 +338,7 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("intro")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
                 >
                   <div className="flex flex-col items-center gap-2">
                     <Users className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
@@ -346,7 +349,7 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("programa")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
                 >
                   <div className="flex flex-col items-center gap-2">
                     <Calendar className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
@@ -361,7 +364,7 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("comercial")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
                 >
                   <div className="flex flex-col items-center gap-2">
                     <TrendingUp className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
@@ -372,7 +375,7 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("preguntas")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-border hover:border-accent hover:bg-accent/10 hover:text-accent group px-4 bg-card/50 backdrop-blur-sm"
+                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
                 >
                   <div className="flex flex-col items-center gap-2">
                     <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
@@ -431,7 +434,7 @@ function PresentationLandingContent() {
                         Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles, Productos
                         Digitales y tecnología Blockchain.
                       </p>
-                      <p>Impact Officer Global Shapers Community y Product Owner en Open Earth Foundation.</p>
+                      <p>Impact Officer Global Shapers Community y Product Manager en Open Earth Foundation.</p>
                       <p>
                         Lic. Comunicación Universidad de San Andrés, donde coordinó los programas Blockchain y
                         Criptoactivos.
@@ -616,7 +619,7 @@ function PresentationLandingContent() {
                         <p className="text-sm text-card-foreground leading-relaxed">
                           Especialista en Diseño Estratégico de Negocios con experiencia en Metodologías Ágiles,
                           Productos Digitales y tecnología Blockchain. Impact Officer Global Shapers Community y Product
-                          Owner en Open Earth Foundation. Lic. Comunicación Universidad de San Andrés, donde coordinó
+                          Manager en Open Earth Foundation. Lic. Comunicación Universidad de San Andrés, donde coordinó
                           los programas Blockchain y Criptoactivos.
                         </p>
                       </div>
