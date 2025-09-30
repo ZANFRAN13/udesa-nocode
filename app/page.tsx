@@ -24,6 +24,9 @@ import {
   CreditCard,
   Mail,
   GitBranch,
+  Bot,
+  Wrench,
+  Play,
 } from "lucide-react"
 
 function PresentationLandingContent() {
@@ -199,6 +202,30 @@ function PresentationLandingContent() {
     { id: 11, image: "/images/slide-11.jpeg", alt: "Esqueleto de un producto" },
   ]
 
+  const roadmapSteps = [
+    {
+      id: 1,
+      title: "Cero",
+      subtitle: "Pensador/Diseñador",
+      icon: Play,
+      description: "Punto de partida para profesionales no-técnicos",
+    },
+    {
+      id: 2,
+      title: "Vibe-coding",
+      subtitle: "Creador aficionado",
+      icon: Code,
+      description: "Crear aplicaciones simples usando lenguaje natural e IA",
+    },
+    {
+      id: 3,
+      title: "AI-Assisted Product Engineer",
+      subtitle: "Creador competente",
+      icon: Bot,
+      description: "Dominio de No-Code e IA para aportes funcionales y escalables",
+    },
+  ]
+
   const programClasses = [
     {
       number: 1,
@@ -331,7 +358,7 @@ function PresentationLandingContent() {
                 >
                   <div className="flex flex-col items-center gap-2">
                     <User className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
-                    <span className="text-center leading-tight">About Us</span>
+                    <span className="text-center leading-tight">Sobre nosotros</span>
                   </div>
                 </Button>
                 <Button
@@ -392,7 +419,7 @@ function PresentationLandingContent() {
             <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
-                  <h3 className="text-4xl font-bold text-card-foreground">About Us</h3>
+                  <h3 className="text-4xl font-bold text-card-foreground">Coordinadores Académicos	</h3>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -412,10 +439,10 @@ function PresentationLandingContent() {
                         estrategias digitales.
                       </p>
                       <p>
-                        Responsable de Product & DLT Strategy en Ruuts. Lic. Negocios Digitales, Universidad de San
-                        Andrés.
+                        Responsable de Product & DLT Strategy en Ruuts.
                       </p>
-                      <p>Especializado en DeFi en Duke University.</p>
+                      <p>Negocios Digitales, Universidad de San
+                      Andrés. Especializado en DeFi en Duke University.</p>
                     </div>
                   </div>
 
@@ -586,6 +613,46 @@ function PresentationLandingContent() {
                     </p>
                   </div>
 
+                  {/* Roadmap */}
+                  <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
+                    <h4 className="text-xl font-semibold mb-4 text-accent">Roadmap</h4>
+                    <div className="max-w-3xl mx-auto">
+                      <div className="relative">
+                        {/* Pasos del roadmap */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                          {/* Línea de conexión horizontal - desde el centro del primer icono al último */}
+                          <div className="hidden md:block absolute top-8 h-0.5 bg-gradient-to-r from-accent/60 via-accent/40 to-accent/60 z-0" style={{left: '12.5%', right: '12.5%'}}></div>
+                          {roadmapSteps.map((step, index) => {
+                            const IconComponent = step.icon
+                            return (
+                              <div key={step.id} className="text-center relative">
+                                {/* Contenedor del icono con número integrado */}
+                                <div className="relative mb-3 flex justify-center">
+                                  <div className="w-16 h-16 bg-card rounded-full border-3 border-accent/30 flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 group relative z-10">
+                                    <IconComponent className="h-6 w-6 text-accent group-hover:text-accent/80 transition-colors" />
+                                    {/* Número del paso - más pegado al icono */}
+                                    <div className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-accent text-background rounded-full flex items-center justify-center font-bold text-xs shadow-sm border border-background">
+                                      {step.id}
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* Contenido del paso */}
+                                <div className="space-y-1">
+                                  <h5 className="text-base font-bold text-card-foreground">{step.title}</h5>
+                                  <p className="text-xs font-medium text-accent">{step.subtitle}</p>
+                                  <p className="text-xs text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                                    {step.description}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Cronograma Clase a Clase */}
                   <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
                     <h4 className="text-xl font-semibold mb-6 text-accent">Cronograma Clase a Clase</h4>
@@ -741,7 +808,7 @@ function PresentationLandingContent() {
                 <div className="p-6 bg-accent/5 rounded-xl border border-accent/20">
                   <h4 className="text-xl font-semibold mb-4 text-accent text-center">Entregable Final</h4>
                   <p className="text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto">
-                    <strong>MVP funcional</strong> que incluye: Landing page profesional, Dashboard interactivo, Base de
+                    <strong>MVP funcional</strong> que incluye: Landing page profesional, funcionalidades principales, Base de
                     datos configurada, Hosting en producción, y Sistema de autenticación completo.
                   </p>
                 </div>
