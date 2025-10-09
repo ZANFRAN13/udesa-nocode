@@ -1,0 +1,11 @@
+<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="120" rx="8" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  <rect x="12" y="12" width="176" height="30" rx="4" fill="#e9ecef" stroke="#dee2e6" stroke-width="1"/>
+  <text x="20" y="30" font-family="Arial, sans-serif" font-size="12" fill="#495057">Sección 1</text>
+  <polygon points="170,22 175,27 170,32" fill="#6c757d"/>
+  <rect x="12" y="50" width="176" height="30" rx="4" fill="#007bff" stroke="#0056b3" stroke-width="1"/>
+  <text x="20" y="68" font-family="Arial, sans-serif" font-size="12" fill="white">Sección 2 (Expandida)</text>
+  <polygon points="175,60 170,65 175,70" fill="white"/>
+  <rect x="20" y="88" width="160" height="20" rx="2" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <text x="24" y="100" font-family="Arial, sans-serif" font-size="10" fill="#6c757d">Contenido expandido...</text>
+</svg>

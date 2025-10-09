@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
+import dynamic from "next/dynamic"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -27,13 +29,46 @@ import {
   Bot,
   Wrench,
   Play,
+  LogIn,
 } from "lucide-react"
 
+// Client-only Twitter component to avoid hydration issues
+const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://platform.twitter.com/widgets.js'
+    script.async = true
+    script.charset = 'utf-8'
+    document.body.appendChild(script)
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
+
+  return (
+    <div className="flex justify-center mb-12">
+      <blockquote className="twitter-tweet" data-theme="dark" data-width="400" data-dnt="true">
+        <p lang="en" dir="ltr">
+          The AI-assisted product engineer of the future<br /><br /> 
+          <a href="https://t.co/UwBWmHpuFs">pic.twitter.com/UwBWmHpuFs</a>
+        </p>
+        &mdash; Guillermo Rauch (@rauchg) 
+        <a href="https://twitter.com/rauchg/status/1687460501771689984?ref_src=twsrc%5Etfw">August 4, 2023</a>
+      </blockquote>
+    </div>
+  )
+}), { ssr: false })
+
 function PresentationLandingContent() {
+  const router = useRouter()
   const [activeSection, setActiveSection] = useState<string | null>(null)
   const [expandedClass, setExpandedClass] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
+
+  const handleLogin = () => {
+    router.push('/dashboard')
+  }
 
   const toggleSection = (section: string) => {
     setActiveSection(activeSection === section ? null : section)
@@ -307,13 +342,25 @@ function PresentationLandingContent() {
             className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
           />
           <div className="flex items-center gap-3">
-            <span className="text-sm text-white font-light">con el apoyo de: </span>
+            <span className="text-sm text-white font-light">CON EL APOYO DE:  </span>
             <img
               src="/images/v0-logo-dark.webp"
               alt="v0 Logo"
               className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
             />
           </div>
+        </div>
+
+        <div className="absolute top-6 right-6 z-10">
+          <Button
+            onClick={handleLogin}
+            variant="outline"
+            size="lg"
+            className="bg-black/50 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 hover:border-accent hover:text-accent transition-all duration-300"
+          >
+            <LogIn className="h-4 w-4 mr-2" />
+            Ingresar
+          </Button>
         </div>
 
         <div className="absolute inset-0">
@@ -336,16 +383,16 @@ function PresentationLandingContent() {
 
         <div className="relative container mx-auto px-4 py-20 text-center">
           <div className="max-w-5xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-background rounded-full text-sm font-medium mb-8 border border-accent/20 animate-glow">
+            {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-background rounded-full text-sm font-medium mb-8 border border-accent/20 animate-glow">
               <Sparkles className="h-4 w-4" />
               Universidad de San Andrés
-            </div>
+            </div> */}
 
             <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance text-foreground">Programa NO-CODE & AI</h1>
-            <h2 className="text-2xl md:text-3xl mb-8 text-accent font-semibold">Charla Informativa</h2>
             <p className="text-xl md:text-2xl mb-16 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed">
               Aprendé a desarrollar aplicaciones sin saber programar
             </p>
+            <TwitterEmbed />
 
             <div className="max-w-6xl mx-auto space-y-8">
               {/* Primera fila - 3 botones */}
@@ -797,7 +844,7 @@ function PresentationLandingContent() {
                         <h5 className="text-lg font-semibold text-card-foreground mb-2">Franco Zan</h5>
                         <p className="text-sm text-card-foreground leading-relaxed">
                           Emprendedor en tecnología y ciencia con experiencia en diseño y liderazgo de productos y
-                          estrategias digitales. Responsable de Product & DLT Strategy en Ruuts. Lic. Negocios
+                          estrategias digitales. Responsable de Product & DLT Strategy en Ruuts. Negocios
                           Digitales, Universidad de San Andrés. Especializado en DeFi en Duke University.
                         </p>
                       </div>

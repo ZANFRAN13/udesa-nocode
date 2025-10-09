@@ -1,0 +1,284 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
+  BookOpen,
+  GraduationCap,
+  Video,
+  Users,
+  ChevronDown,
+  ChevronRight,
+  ArrowLeft,
+  LogOut,
+} from "lucide-react"
+
+export default function Dashboard() {
+  const router = useRouter()
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClient()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      setLoading(false)
+    }
+
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null)
+        if (event === 'SIGNED_OUT') {
+          router.push('/login')
+        }
+      }
+    )
+
+    return () => subscription.unsubscribe()
+  }, [router, supabase])
+
+  const toggleSection = (sectionId: string) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }))
+  }
+
+  const handleBackToHome = () => {
+    router.push('/')
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    router.push('/login')
+    return null
+  }
+
+  const handleItemClick = (sectionId: string, item: string) => {
+    if (sectionId === "material-complementario" && item === "Recursos de diseño") {
+      router.push('/dashboard/glossary')
+    }
+  }
+
+  const sections = [
+    {
+      id: "material-complementario",
+      title: "Material Complementario",
+      icon: BookOpen,
+      description: "Recursos adicionales y lecturas recomendadas",
+      content: [
+        "Guías de herramientas No-Code",
+        "Artículos sobre Vibe Coding",
+        "Templates y plantillas",
+        "Recursos de diseño",
+        "Documentación técnica",
+      ]
+    },
+    {
+      id: "material-clase",
+      title: "Material de Clase",
+      icon: GraduationCap,
+      description: "Presentaciones y contenido de las clases",
+      content: [
+        "Slides de presentaciones",
+        "Ejercicios prácticos",
+        "Casos de estudio",
+        "Ejemplos de código",
+        "Worksheets y actividades"
+      ]
+    },
+    {
+      id: "clases-grabadas",
+      title: "Clases Grabadas",
+      icon: Video,
+      description: "Grabaciones de todas las sesiones del programa",
+      content: [
+        "Clase 1: La revolución de Producto",
+        "Clase 2: Definamos IA",
+        "Clase 3: De idea a Producto",
+        "Clase 4: Haciendo que funcione",
+        "Clase 5: Lanzamiento y luego qué?",
+        "Clase 6: Demo y futuro"
+      ]
+    },
+    {
+      id: "comunidad",
+      title: "Comunidad",
+      icon: Users,
+      description: "Espacio de interacción con otros estudiantes",
+      content: [
+        "Foro de discusión",
+        "Grupos de trabajo",
+        "Proyectos colaborativos",
+        "Networking",
+        "Eventos y meetups"
+      ]
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Button
+                onClick={handleBackToHome}
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Volver al inicio
+              </Button>
+              <div className="h-6 w-px bg-border" />
+              <div className="flex items-center gap-3">
+                <img
+                  src="/images/udesa-png.svg"
+                  alt="Universidad de San Andrés"
+                  className="h-8 w-auto"
+                />
+                <h1 className="text-xl font-semibold text-foreground">
+                  Dashboard - Programa NO-CODE & AI
+                </h1>
+              </div>
+            </div>
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Cerrar sesión
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-foreground mb-2">
+              Bienvenido al Dashboard
+            </h2>
+            <p className="text-muted-foreground">
+              Accede a todo el contenido del programa, materiales de clase y conecta con la comunidad.
+            </p>
+          </div>
+
+          <div className="grid gap-6">
+            {sections.map((section) => {
+              const IconComponent = section.icon
+              const isOpen = openSections[section.id]
+
+              return (
+                <Card key={section.id} className="overflow-hidden border border-border/50 shadow-sm">
+                  <Collapsible
+                    open={isOpen}
+                    onOpenChange={() => toggleSection(section.id)}
+                  >
+                    <CollapsibleTrigger asChild>
+                      <CardHeader className="cursor-pointer hover:bg-accent/5 transition-colors">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
+                              <IconComponent className="h-6 w-6 text-accent" />
+                            </div>
+                            <div>
+                              <CardTitle className="text-xl font-semibold text-foreground">
+                                {section.title}
+                              </CardTitle>
+                              <p className="text-sm text-muted-foreground mt-1">
+                                {section.description}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {isOpen ? (
+                              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                            ) : (
+                              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                            )}
+                          </div>
+                        </div>
+                      </CardHeader>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <CardContent className="pt-0">
+                        <div className="border-t border-border/30 pt-6">
+                          <div className="grid gap-3">
+                            {section.content.map((item, index) => {
+                              const isClickable = section.id === "material-complementario" && item === "Recursos de diseño"
+                              return (
+                                <div
+                                  key={index}
+                                  onClick={() => handleItemClick(section.id, item)}
+                                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors border border-transparent ${
+                                    isClickable 
+                                      ? "bg-accent/10 hover:bg-accent/20 cursor-pointer hover:border-accent/30" 
+                                      : "bg-accent/5 hover:bg-accent/10 cursor-pointer hover:border-accent/20"
+                                  }`}
+                                >
+                                  <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
+                                  <span className={`text-foreground ${isClickable ? "font-medium" : ""}`}>
+                                    {item}
+                                  </span>
+                                  {isClickable && (
+                                    <span className="ml-auto text-xs text-accent">
+                                      Glosario UI →
+                                    </span>
+                                  )}
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </Card>
+              )
+            })}
+          </div>
+
+          {/* Footer info */}
+          <div className="mt-12 text-center">
+            <p className="text-muted-foreground text-sm">
+              ¿Necesitas ayuda? Contacta a los coordinadores académicos o utiliza el foro de la comunidad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

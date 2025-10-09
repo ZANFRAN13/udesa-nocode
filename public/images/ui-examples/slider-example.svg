@@ -1,0 +1,25 @@
+<svg width="300" height="200" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="200" fill="#F8FAFC"/>
+  
+  <!-- Container -->
+  <rect x="30" y="40" width="240" height="120" rx="8" fill="white" stroke="#E5E7EB" stroke-width="1"/>
+  
+  <!-- Volume Slider -->
+  <text x="45" y="70" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="500">Volumen</text>
+  <rect x="45" y="80" width="180" height="4" rx="2" fill="#E5E7EB"/>
+  <rect x="45" y="80" width="108" height="4" rx="2" fill="#3B82F6"/>
+  <circle cx="153" cy="82" r="8" fill="#3B82F6" stroke="white" stroke-width="2"/>
+  <text x="235" y="86" fill="#6B7280" font-family="Arial, sans-serif" font-size="10">60%</text>
+  
+  <!-- Brightness Slider -->
+  <text x="45" y="115" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="500">Brillo</text>
+  <rect x="45" y="125" width="180" height="4" rx="2" fill="#E5E7EB"/>
+  <rect x="45" y="125" width="144" height="4" rx="2" fill="#F59E0B"/>
+  <circle cx="189" cy="127" r="8" fill="#F59E0B" stroke="white" stroke-width="2"/>
+  <text x="235" y="131" fill="#6B7280" font-family="Arial, sans-serif" font-size="10">80%</text>
+  
+  <!-- Icons -->
+  <text x="25" y="86" fill="#6B7280" font-family="Arial, sans-serif" font-size="12">🔊</text>
+  <text x="25" y="131" fill="#6B7280" font-family="Arial, sans-serif" font-size="12">☀️</text>
+</svg>
