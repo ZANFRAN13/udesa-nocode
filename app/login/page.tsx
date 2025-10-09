@@ -23,6 +23,10 @@ export default function LoginPage() {
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Prevent double submission
+    if (loading) return
+    
     setLoading(true)
     setError(null)
     setMessage(null)
@@ -45,7 +49,6 @@ export default function LoginPage() {
       }
     } catch (error: any) {
       setError(error.message)
-    } finally {
       setLoading(false)
     }
   }
@@ -123,15 +126,22 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full relative" 
                 disabled={loading}
               >
-                {loading 
-                  ? 'Cargando...' 
-                  : isSignUp 
-                    ? 'Crear cuenta' 
-                    : 'Iniciar sesión'
-                }
+                {loading && (
+                  <div className="absolute left-4">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  </div>
+                )}
+                <span className={loading ? 'opacity-70' : ''}>
+                  {loading 
+                    ? 'Procesando...' 
+                    : isSignUp 
+                      ? 'Crear cuenta' 
+                      : 'Iniciar sesión'
+                  }
+                </span>
               </Button>
             </form>
 
