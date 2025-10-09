@@ -25,7 +25,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un elemento de interfaz que se expande en el lugar para exponer información oculta. Los *accordions* se usan frecuentemente para comprimir contenido en páginas largas y son especialmente útiles en móviles. Los *accordions* usualmente se representan con una etiqueta y una flecha o signo más.",
     relatedTerms: ["tab-bar"],
     example: "Secciones de preguntas frecuentes donde las preguntas se pueden hacer clic para revelar respuestas, o secciones de menú móvil.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/accordion.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/accordion.jpg"
   },
   {
     id: "anchor-link",
@@ -34,7 +34,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un *[link](#link)* que permite a los usuarios navegar de una ubicación a otra dentro de la misma página. Los *anchor links* se usan frecuentemente para implementar tablas de contenido dentro de la página.",
     relatedTerms: ["link"],
     example: "Enlaces de tabla de contenidos que saltan a diferentes secciones de un artículo largo.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/anchor-text.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/anchor-text.jpg"
   },
   {
     id: "back-to-top-button",
@@ -43,7 +43,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un *[button](#button)* que lleva a los usuarios de vuelta al inicio de la página, donde usualmente se ubican la interfaz de navegación u otros controles importantes. Usualmente se implementa como un *[floating-button](#floating-button)* ubicado en la esquina inferior derecha de la página y es particularmente útil en páginas móviles largas.",
     relatedTerms: ["floating-button", "button"],
     example: "Botón de flecha que aparece al hacer scroll hacia abajo en páginas largas para regresar rápidamente al inicio.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/back-to-top-button.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/back-to-top.jpg"
   },
   {
     id: "badge",
@@ -51,7 +51,7 @@ export const uiTermsData: UITerm[] = [
     category: "Indicators",
     description: "Indica una notificación (usualmente como un punto) o un conteo de elementos (usualmente como un número). Un *badge* usualmente aparece encima de un *[icon](#icon)* (como un carrito de compras o ícono de mensajes) para dirigir la atención a ese elemento.",
     example: "Punto rojo con número en el ícono de una app de mensajería mostrando el conteo de mensajes no leídos.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/badge.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/badge.jpg"
   },
   {
     id: "bottom-sheet",
@@ -78,7 +78,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un elemento de interfaz que ejecutará una acción determinada (ej. enviar un formulario, iniciar un proceso) cuando los usuarios hacen clic o tocan. Está compuesto por un área objetivo clickeable con una etiqueta que usualmente describe la acción que se ejecutará. Los botones digitales frecuentemente se asemejan a botones físicos.",
     relatedTerms: ["floating-button", "back-to-top-button", "split-button"],
     example: "Botón de enviar en formularios, botón Agregar al Carrito en e-commerce, o botones de llamada a la acción.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/button.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/button.jpg"
   },
   {
     id: "calendar-picker",
@@ -113,7 +113,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un control de entrada que puede aparecer solo o en una lista de *checkboxes*. Por sí solo, un *checkbox* permite a los usuarios seleccionar entre dos estados: marcado y desmarcado. Una lista de *checkboxes* se usa para permitir a los usuarios seleccionar múltiples opciones de un conjunto.",
     relatedTerms: ["radio-button", "toggle"],
     example: "Aceptación de términos y condiciones, múltiples opciones de filtro en búsquedas, o selección de características.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/checkbox.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/checkbox.jpg"
   },
   {
     id: "combo-box",
@@ -149,7 +149,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un término general para elementos de interfaz interactivos que permiten a los usuarios realizar acciones o ingresar datos.",
     relatedTerms: ["input-control", "button", "slider"],
     example: "Cualquier elemento interactivo como botones, deslizadores, casillas de verificación o campos de entrada.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/control.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/control.jpg"
   },
   {
     id: "date-picker",
@@ -158,7 +158,7 @@ export const uiTermsData: UITerm[] = [
     description: "Un control de entrada diseñado específicamente para seleccionar fechas. Puede implementarse como *[calendar-picker](#calendar-picker)*, selectores desplegables, o *[wheel-style-date-picker](#wheel-style-date-picker)*.",
     relatedTerms: ["calendar-picker", "wheel-style-date-picker"],
     example: "Selección de fechas en sistemas de reservas, formularios o aplicaciones de programación.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/date-picker.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/date-picker.jpg"
   },
   {
     id: "dialog",
@@ -310,7 +310,7 @@ export const uiTermsData: UITerm[] = [
     description: "Una barra horizontal o vertical que contiene enlaces de navegación, típicamente ubicada en la parte superior o lateral de una página web para ayudar a los usuarios a navegar entre diferentes secciones o páginas.",
     relatedTerms: ["breadcrumbs", "menu", "menu-bar"],
     example: "Menú principal en la parte superior de sitios web con enlaces a Inicio, Acerca de, Servicios, Contacto.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/navigation-bar.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/nav-bar.jpg"
   },
   {
     id: "navigation-menu",
@@ -430,7 +430,7 @@ export const uiTermsData: UITerm[] = [
   },
   {
     id: "side-sheet",
-    name: "Side Sheet (Drawer, Flyout)",
+    name: "Side Bar (Side Sheet, Drawer, Flyout)",
     category: "Overlays",
     description: "Un tipo de *[overlay](#overlay)* que se desliza desde el borde izquierdo o derecho de la pantalla, usualmente cubriendo una parte significativa de la pantalla. Puede ser modal o no-modal.",
     relatedTerms: ["overlay", "bottom-sheet", "drawer-menu"],
@@ -552,7 +552,56 @@ export const uiTermsData: UITerm[] = [
     description: "Un *[date-picker](#date-picker)* específico de iOS que permite a los usuarios seleccionar valores de fecha y hora usando una interfaz tipo rueda rotatoria, con ruedas separadas para día, mes, año, y a veces componentes de tiempo.",
     relatedTerms: ["calendar-picker", "date-picker", "wheel-picker"],
     example: "Selección de fecha y hora en aplicaciones iOS usando interfaz de rueda giratoria para cada componente.",
-    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/wheel-style-date-picker.jpg"
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/wheel-date-picker.jpg"
+  },
+  {
+    id: "above-the-fold",
+    name: "Above the fold",
+    category: "Layout",
+    description: "Área visible de una página web sin hacer scroll. Suele concentrar el contenido y acciones más importantes.",
+    example: "Colocar el titular, subtítulo y CTA principal de una landing inmediatamente \"above the fold\"."
+  },
+  {
+    id: "collapsible",
+    name: "Collapsible",
+    category: "Layout",
+    description: "Sección o componente que puede expandirse/contraerse para mostrar u ocultar contenido.",
+    example: "Un *[accordion](#accordion)* de FAQ donde cada pregunta es \"colapsable\" y al tocarla se despliega la respuesta. O una *[side bar](#side-sheet)* que se despliega o se contrae al hacer clic en un botón."
+  },
+  {
+    id: "responsive",
+    name: "Responsive",
+    category: "Layout",
+    description: "Diseño que se adapta fluida y correctamente a diferentes tamaños de pantalla y orientaciones.",
+    example: "Un layout que pasa de tres columnas en desktop a una columna en móvil manteniendo legibilidad."
+  },
+  {
+    id: "desktop-app",
+    name: "Desktop (app)",
+    category: "Layout",
+    description: "Aplicación diseñada para usarse en equipos de escritorio o laptop, optimizada para mouse/teclado y pantallas grandes.",
+    example: "Microsoft Excel, Chrome son apps originalmente diseñadas para desktop."
+  },
+  {
+    id: "mobile-app",
+    name: "Mobile (app)",
+    category: "Layout",
+    description: "Aplicación diseñada para teléfonos, centrada en gestos táctiles, uso en movimiento y pantallas pequeñas.",
+    example: "WhatsApp, Instagram, Spotify son apps originalmente diseñadas para smartphone."
+  },
+  {
+    id: "web-app",
+    name: "Web (app)",
+    category: "Layout",
+    description: "Aplicación que se ejecuta en el navegador, independiente del sistema operativo, accesible mediante URL.",
+    example: "Home-banking, Canva, Gmail son apps originalmente diseñadas para web."
+  },
+  {
+    id: "hover",
+    name: "Hover",
+    category: "Controls",
+    description: "Estado de interacción cuando el puntero se posiciona sobre un elemento (no disponible en pantallas táctiles puras).",
+    example: "Un botón que al hacer \"hover\" eleva la sombra y cambia el color del fondo para indicar interactividad."
   }
 ]
 

@@ -82,8 +82,20 @@ export default function Dashboard() {
   }
 
   const handleItemClick = (sectionId: string, item: string) => {
-    if (sectionId === "material-complementario" && item === "Recursos de diseño") {
+    if (sectionId === "material-complementario" && item === "Vocabulario de diseño: UI") {
       router.push('/dashboard/glossary')
+    }
+    if (sectionId === "material-complementario" && item === "Vocabulario de diseño:CSS") {
+      router.push('/dashboard/glossary/css')
+    }
+    if (sectionId === "material-complementario" && item === "Vocabulario de desarrollo") {
+      router.push('/dashboard/glossary/development')
+    }
+    if (sectionId === "comunidad" && item === "Comunidad de WhatsApp") {
+      window.open('https://chat.whatsapp.com/GKcXD6NINyJL36qbm3U6VX?mode=ems_qr_t', '_blank')
+    }
+    if (sectionId === "comunidad" && item === "Beneficios Exclusivos") {
+      router.push('/dashboard/benefits')
     }
   }
 
@@ -94,11 +106,13 @@ export default function Dashboard() {
       icon: BookOpen,
       description: "Recursos adicionales y lecturas recomendadas",
       content: [
-        "Guías de herramientas No-Code",
-        "Artículos sobre Vibe Coding",
+        "Herramientas No-Code",
+        "Artículos",
+        "Bibliografía y Videos",
         "Templates y plantillas",
-        "Recursos de diseño",
-        "Documentación técnica",
+        "Vocabulario de diseño: UI",
+        "Vocabulario de diseño:CSS",
+        "Vocabulario de desarrollo",
       ]
     },
     {
@@ -108,9 +122,9 @@ export default function Dashboard() {
       description: "Presentaciones y contenido de las clases",
       content: [
         "Slides de presentaciones",
-        "Ejercicios prácticos",
-        "Casos de estudio",
-        "Ejemplos de código",
+        // "Ejercicios prácticos",
+        // "Casos de estudio",
+        // "Ejemplos de código",
         "Worksheets y actividades"
       ]
     },
@@ -134,11 +148,13 @@ export default function Dashboard() {
       icon: Users,
       description: "Espacio de interacción con otros estudiantes",
       content: [
-        "Foro de discusión",
-        "Grupos de trabajo",
-        "Proyectos colaborativos",
-        "Networking",
-        "Eventos y meetups"
+        "Comunidad de WhatsApp",
+        "Beneficios Exclusivos"
+        // "Foro de discusión",
+        // "Grupos de trabajo",
+        // "Proyectos colaborativos",
+        // "Networking",
+        // "Eventos y meetups"
       ]
     }
   ]
@@ -238,7 +254,13 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-6">
                           <div className="grid gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = section.id === "material-complementario" && item === "Recursos de diseño"
+                              const isClickable = (section.id === "material-complementario" && (item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
+                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos"))
+                              const isUI = item === "Vocabulario de diseño: UI"
+                              const isCSS = item === "Vocabulario de diseño:CSS"
+                              const isDev = item === "Vocabulario de desarrollo"
+                              const isWhatsApp = item === "Comunidad de WhatsApp"
+                              const isBenefits = item === "Beneficios Exclusivos"
                               return (
                                 <div
                                   key={index}
@@ -255,7 +277,11 @@ export default function Dashboard() {
                                   </span>
                                   {isClickable && (
                                     <span className="ml-auto text-xs text-accent">
-                                      Glosario UI →
+                                      {isUI ? "Glosario UI →" : 
+                                       isCSS ? "Glosario CSS →" : 
+                                       isDev ? "Glosario Dev →" :
+                                       isWhatsApp ? "WhatsApp →" :
+                                       isBenefits ? "Beneficios →" : ""}
                                     </span>
                                   )}
                                 </div>
