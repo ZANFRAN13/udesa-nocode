@@ -24,6 +24,7 @@ import {
 export default function Dashboard() {
   const router = useRouter()
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
+  const [expandedClass, setExpandedClass] = useState<string | null>(null)
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
@@ -82,6 +83,9 @@ export default function Dashboard() {
   }
 
   const handleItemClick = (sectionId: string, item: string) => {
+    if (sectionId === "material-complementario" && item === "Herramientas No-Code") {
+      router.push('/dashboard/nocode-tools')
+    }
     if (sectionId === "material-complementario" && item === "Vocabulario de diseño: UI") {
       router.push('/dashboard/glossary')
     }
@@ -97,6 +101,14 @@ export default function Dashboard() {
     if (sectionId === "comunidad" && item === "Beneficios Exclusivos") {
       router.push('/dashboard/benefits')
     }
+    // Handle class video toggles
+    if (sectionId === "clases-grabadas") {
+      setExpandedClass(expandedClass === item ? null : item)
+    }
+  }
+
+  const classVideos: Record<string, string> = {
+    "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   const sections = [
@@ -254,35 +266,60 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-6">
                           <div className="grid gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
+                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos"))
+                              const isNoCode = item === "Herramientas No-Code"
                               const isUI = item === "Vocabulario de diseño: UI"
                               const isCSS = item === "Vocabulario de diseño:CSS"
                               const isDev = item === "Vocabulario de desarrollo"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
                               const isBenefits = item === "Beneficios Exclusivos"
+                              const hasVideo = section.id === "clases-grabadas" && classVideos[item]
+                              const isExpanded = expandedClass === item
+                              
                               return (
-                                <div
-                                  key={index}
-                                  onClick={() => handleItemClick(section.id, item)}
-                                  className={`flex items-center gap-3 p-3 rounded-lg transition-colors border border-transparent ${
-                                    isClickable 
-                                      ? "bg-accent/10 hover:bg-accent/20 cursor-pointer hover:border-accent/30" 
-                                      : "bg-accent/5 hover:bg-accent/10 cursor-pointer hover:border-accent/20"
-                                  }`}
-                                >
-                                  <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
-                                  <span className={`text-foreground ${isClickable ? "font-medium" : ""}`}>
-                                    {item}
-                                  </span>
-                                  {isClickable && (
-                                    <span className="ml-auto text-xs text-accent">
-                                      {isUI ? "Glosario UI →" : 
-                                       isCSS ? "Glosario CSS →" : 
-                                       isDev ? "Glosario Dev →" :
-                                       isWhatsApp ? "WhatsApp →" :
-                                       isBenefits ? "Beneficios →" : ""}
+                                <div key={index}>
+                                  <div
+                                    onClick={() => handleItemClick(section.id, item)}
+                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors border border-transparent ${
+                                      isClickable || hasVideo
+                                        ? "bg-accent/10 hover:bg-accent/20 cursor-pointer hover:border-accent/30" 
+                                        : "bg-accent/5 hover:bg-accent/10 cursor-pointer hover:border-accent/20"
+                                    }`}
+                                  >
+                                    <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
+                                    <span className={`text-foreground ${isClickable || hasVideo ? "font-medium" : ""}`}>
+                                      {item}
                                     </span>
+                                    {isClickable && (
+                                      <span className="ml-auto text-xs text-accent">
+                                        {isNoCode ? "Herramientas →" :
+                                         isUI ? "Glosario UI →" : 
+                                         isCSS ? "Glosario CSS →" : 
+                                         isDev ? "Glosario Dev →" :
+                                         isWhatsApp ? "WhatsApp →" :
+                                         isBenefits ? "Beneficios →" : ""}
+                                      </span>
+                                    )}
+                                    {hasVideo && (
+                                      <span className="ml-auto text-xs text-accent flex items-center gap-1">
+                                        <Video className="h-3 w-3" />
+                                        {isExpanded ? "Ocultar video" : "Ver video"}
+                                      </span>
+                                    )}
+                                  </div>
+                                  
+                                  {hasVideo && isExpanded && (
+                                    <div className="mt-3 p-4 bg-accent/5 rounded-lg border border-accent/20 animate-in slide-in-from-top-2 duration-200">
+                                      <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                                        <iframe
+                                          src={classVideos[item]}
+                                          className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
+                                          allowFullScreen
+                                          allow="autoplay"
+                                        />
+                                      </div>
+                                    </div>
                                   )}
                                 </div>
                               )

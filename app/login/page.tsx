@@ -39,13 +39,17 @@ export default function LoginPage() {
         })
         if (error) throw error
         setMessage('Check your email for the confirmation link!')
+        setLoading(false)
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         })
         if (error) throw error
+        // Navigate immediately
         router.push('/dashboard')
+        // Reset loading state after navigation starts
+        setTimeout(() => setLoading(false), 100)
       }
     } catch (error: any) {
       setError(error.message)

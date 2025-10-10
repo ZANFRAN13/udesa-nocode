@@ -1,8 +1,19 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect, Suspense, useRef } from "react"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
+
+// Declare Twitter widgets type
+declare global {
+  interface Window {
+    twttr?: {
+      widgets: {
+        load: () => void
+      }
+    }
+  }
+}
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import {
@@ -34,27 +45,161 @@ import {
 
 // Client-only Twitter component to avoid hydration issues
 const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
+  const [currentTweet, setCurrentTweet] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+  
+  const tweets = [
+    {
+      id: 0,
+      url: "https://twitter.com/karpathy/status/1617979122625712128",
+      text: "The hottest new programming language is English",
+      author: "Andrej Karpathy",
+      handle: "@karpathy",
+      date: "January 24, 2023"
+    },
+    {
+      id: 1,
+      url: "https://twitter.com/rauchg/status/1687460501771689984",
+      text: "The AI-assisted product engineer of the future",
+      author: "Guillermo Rauch",
+      handle: "@rauchg",
+      date: "August 4, 2023"
+    },
+    {
+      id: 2,
+      url: "https://twitter.com/karpathy/status/1886192184808149383",
+      text: "There's a new kind of coding I call \"vibe coding\", where you fully give in to the vibes, embrace exponentials, and forget that the code even exists. It's possible because the LLMs (e.g. Cursor Composer w Sonnet) are getting too good. Also I just talk to Composer with SuperWhisper…",
+      author: "Andrej Karpathy",
+      handle: "@karpathy",
+      date: "February 2, 2025"
+    },
+    {
+      id: 3,
+      url: "https://twitter.com/rauchg/status/1917594199693877446",
+      text: "Given enough tokens, all bugs are shallow",
+      author: "Guillermo Rauch",
+      handle: "@rauchg",
+      date: "April 30, 2025"
+    }
+  ]
+
   useEffect(() => {
     const script = document.createElement('script')
     script.src = 'https://platform.twitter.com/widgets.js'
     script.async = true
     script.charset = 'utf-8'
     document.body.appendChild(script)
+    
     return () => {
+      if (document.body.contains(script)) {
       document.body.removeChild(script)
+      }
     }
   }, [])
 
+  useEffect(() => {
+    // Auto-rotate tweets every 6 seconds, but only if not paused
+    if (isPaused) return
+    
+    const interval = setInterval(() => {
+      setCurrentTweet((prev) => (prev + 1) % tweets.length)
+    }, 6000)
+    
+    return () => {
+      clearInterval(interval)
+    }
+  }, [isPaused, tweets.length])
+
+  const getVisibleTweets = () => {
+    const prev = (currentTweet - 1 + tweets.length) % tweets.length
+    const next = (currentTweet + 1) % tweets.length
+    return [prev, currentTweet, next]
+  }
+
+  const visibleIndices = getVisibleTweets()
+
+  const handleMouseEnter = () => {
+    setIsPaused(true)
+  }
+
+  const handleMouseLeave = () => {
+    setIsPaused(false)
+  }
+
+  const handleTweetClick = (index: number) => {
+    if (index !== currentTweet) {
+      setCurrentTweet(index)
+    }
+  }
+
   return (
-    <div className="flex justify-center mb-12">
-      <blockquote className="twitter-tweet" data-theme="dark" data-width="400" data-dnt="true">
-        <p lang="en" dir="ltr">
-          The AI-assisted product engineer of the future<br /><br /> 
-          <a href="https://t.co/UwBWmHpuFs">pic.twitter.com/UwBWmHpuFs</a>
-        </p>
-        &mdash; Guillermo Rauch (@rauchg) 
-        <a href="https://twitter.com/rauchg/status/1687460501771689984?ref_src=twsrc%5Etfw">August 4, 2023</a>
+    <div 
+      ref={containerRef}
+      className="relative mb-8 min-h-[500px] flex items-center justify-center overflow-visible py-4"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="relative w-full max-w-7xl mx-auto px-4">
+        {/* Render all tweets but position them absolutely */}
+        {tweets.map((tweet, index) => {
+          const position = visibleIndices.indexOf(index)
+          const isVisible = position !== -1
+          const isCenter = position === 1
+          const isLeft = position === 0
+          const isRight = position === 2
+          
+          // Adjusted spacing: closer to center but not overlapping
+          let translateX = '0%'
+          if (isLeft) translateX = '-85%'  // Closer than -120%
+          if (isRight) translateX = '85%'   // Closer than 120%
+          
+          // Special scaling for tweet id: 1 (vibe coding with video)
+          const isLargeTweet = tweet.id === 1
+          const centerScale = isLargeTweet ? 0.85 : 1.1
+          const sideScale = isLargeTweet ? 0.58 : 0.75
+          const scale = isCenter ? centerScale : sideScale
+          
+          // Align all tweets by their top edge when centered
+          // Use transform-origin: top to scale from top edge
+          // Background tweets are positioned slightly higher for better visual balance
+          const verticalOffset = isCenter ? '-240px' : '-180px'
+          
+          return (
+            <div
+              key={index}
+              className={`absolute left-1/2 top-1/2 transition-all duration-700 ease-in-out ${
+                isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              } ${isCenter ? 'z-20' : 'z-10'}`}
+              style={{
+                transform: `translate(-50%, 0%) translateX(${translateX}) translateY(${verticalOffset}) scale(${scale})`,
+                transformOrigin: 'top center',
+                width: '450px',
+              }}
+              onClick={() => !isCenter && handleTweetClick(index)}
+            >
+              <div 
+                className={`${!isCenter ? 'opacity-40 cursor-pointer hover:opacity-60 transition-opacity' : ''}`}
+                style={{ pointerEvents: isCenter ? 'auto' : 'none' }}
+              >
+                <blockquote 
+                  className="twitter-tweet" 
+                  data-theme="dark" 
+                  data-dnt="true"
+                  data-conversation="none"
+                >
+                  <p lang="en" dir="ltr">{tweet.text}</p>
+                  &mdash; {tweet.author} ({tweet.handle}){' '}
+                  <a href={tweet.url} target="_blank" rel="noopener noreferrer">
+                    {tweet.date}
+                  </a>
       </blockquote>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      
     </div>
   )
 }), { ssr: false })
@@ -381,15 +526,15 @@ function PresentationLandingContent() {
 
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
 
-        <div className="relative container mx-auto px-4 py-20 text-center">
+        <div className="relative container mx-auto px-4 py-12 text-center">
           <div className="max-w-5xl mx-auto">
             {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-background rounded-full text-sm font-medium mb-8 border border-accent/20 animate-glow">
               <Sparkles className="h-4 w-4" />
               Universidad de San Andrés
             </div> */}
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-balance text-foreground mt-12">Programa NO-CODE & AI</h1>
-            <p className="text-xl md:text-2xl mb-16 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-balance text-foreground mt-16">Programa NO-CODE & AI</h1>
+            <p className="text-lg md:text-xl mb-6 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed">
               Aprendé a desarrollar aplicaciones sin saber programar
             </p>
             <TwitterEmbed />

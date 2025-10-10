@@ -124,8 +124,8 @@ export function DevGlossaryTerm({ term, isExpanded = false, onToggle, onTermClic
               </div>
             )}
 
-            {/* Visual Example */}
-            {term.imageUrl && (
+            {/* Visual Example - Single Image */}
+            {term.imageUrl && !term.imageUrls && (
               <div>
                 <h4 className="text-sm font-medium text-foreground mb-2">Ejemplo Visual</h4>
                 <div className="rounded-lg overflow-hidden border border-border/30 bg-accent/5 p-4">
@@ -139,6 +139,29 @@ export function DevGlossaryTerm({ term, isExpanded = false, onToggle, onTermClic
                       target.style.display = 'none';
                     }}
                   />
+                </div>
+              </div>
+            )}
+
+            {/* Visual Examples - Multiple Images */}
+            {term.imageUrls && term.imageUrls.length > 0 && (
+              <div>
+                <h4 className="text-sm font-medium text-foreground mb-2">Ejemplos Visuales</h4>
+                <div className="space-y-4">
+                  {term.imageUrls.map((imageUrl, index) => (
+                    <div key={index} className="rounded-lg overflow-hidden border border-border/30 bg-accent/5 p-4">
+                      <img
+                        src={imageUrl}
+                        alt={`Ejemplo visual ${index + 1} de ${term.name}`}
+                        className="w-full max-w-2xl mx-auto rounded-md shadow-sm"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

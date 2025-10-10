@@ -7,6 +7,7 @@ export interface DevTerm {
   example?: string
   codeExample?: string
   imageUrl?: string
+  imageUrls?: string[]
   tags?: string[]
 }
 
@@ -703,8 +704,8 @@ nombre = "Carlos";           // Ahora nombre es "Carlos"
     id: "console-log",
     name: "Console Log",
     category: "Development",
-    description: "Comando que muestra información en la consola del navegador o terminal. Es como escribir en un cuaderno para ver qué está pasando en tu código.",
-    example: "Usar console.log() para ver el valor de una variable, mostrar mensajes de error, o verificar que tu código funciona correctamente.",
+    description: "Comando que muestra información en la consola del navegador o terminal. Es como escribir en un cuaderno para ver qué está pasando en tu código. **IMPORTANTE:** En la consola también aparecen los errores de tu aplicación, por lo que es fundamental saber cómo abrirla.\n\n**Cómo abrir la consola del navegador:**\n- **Windows:** Presiona `F12` o `Ctrl + Shift + I`, luego haz clic en la pestaña 'Console'\n- **Mac:** Presiona `Cmd + Option + I`, luego haz clic en la pestaña 'Console'\n- **Alternativa:** Click derecho en la página → 'Inspeccionar' → pestaña 'Console'",
+    example: "Usar console.log() para ver el valor de una variable, mostrar mensajes de error, o verificar que tu código funciona correctamente. También revisa la consola para encontrar errores que puedan estar rompiendo tu aplicación. Ver imágenes de ayuda abajo para saber cómo abrir la consola.",
     codeExample: `// Ejemplos básicos de console.log
 console.log("Hola mundo");           // Mostrar texto
 console.log(42);                     // Mostrar número
@@ -724,6 +725,10 @@ console.log(persona);                // {nombre: "Carlos", edad: 30}
 console.error("¡Error!");            // Mensaje de error (rojo)
 console.warn("Advertencia");         // Mensaje de advertencia (amarillo)
 console.info("Información");         // Mensaje informativo (azul)`,
+    imageUrls: [
+      "/images/glossary-help/helplog1.png",
+      "/images/glossary-help/helplog2.png"
+    ],
     tags: ["basics"]
   }
 ]
