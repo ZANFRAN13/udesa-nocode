@@ -13,7 +13,7 @@ export const uiTermsData: UITerm[] = [
     id: "2d-matrix",
     name: "2D Matrix",
     category: "Controls",
-    description: "Un control de entrada especializado utilizado principalmente en aplicaciones complejas para modificar simultáneamente múltiples parámetros relacionados dibujando una curva compleja. La interacción con este control típicamente ocurre haciendo clic en un punto de una curva existente, luego arrastrando ese punto a una nueva ubicación. Las matrices 2D son útiles cuando hay dos parámetros que dependen uno del otro (como las curvas de luminancia y RGB en aplicaciones de edición de fotos) y que típicamente se modificarán juntos.",
+    description: "Un *[control](#control)* de entrada especializado utilizado principalmente en aplicaciones complejas para modificar simultáneamente múltiples parámetros relacionados dibujando una curva compleja. La interacción con este control típicamente ocurre haciendo clic en un punto de una curva existente, luego arrastrando ese punto a una nueva ubicación. Las matrices 2D son útiles cuando hay dos parámetros que dependen uno del otro (como las curvas de luminancia y RGB en aplicaciones de edición de fotos) y que típicamente se modificarán juntos.",
     relatedTerms: ["range-control", "slider", "knob", "input-control"],
     example: "Ajustes de curvas RGB en software de edición de fotos como Photoshop o Lightroom.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/2d-matrix.jpg"
@@ -23,7 +23,7 @@ export const uiTermsData: UITerm[] = [
     name: "Accordion",
     category: "Navigation",
     description: "Un elemento de interfaz que se expande en el lugar para exponer información oculta. Los *accordions* se usan frecuentemente para comprimir contenido en páginas largas y son especialmente útiles en móviles. Los *accordions* usualmente se representan con una etiqueta y una flecha o signo más.",
-    relatedTerms: ["tab-bar"],
+    relatedTerms: ["tab-bar", "collapsible", "expandable-menu"],
     example: "Secciones de preguntas frecuentes donde las preguntas se pueden hacer clic para revelar respuestas, o secciones de menú móvil.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/accordion.jpg"
   },
@@ -50,6 +50,7 @@ export const uiTermsData: UITerm[] = [
     name: "Badge",
     category: "Indicators",
     description: "Indica una notificación (usualmente como un punto) o un conteo de elementos (usualmente como un número). Un *badge* usualmente aparece encima de un *[icon](#icon)* (como un carrito de compras o ícono de mensajes) para dirigir la atención a ese elemento.",
+    relatedTerms: ["icon", "progress-indicator"],
     example: "Punto rojo con número en el ícono de una app de mensajería mostrando el conteo de mensajes no leídos.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/badge.jpg"
   },
@@ -85,7 +86,7 @@ export const uiTermsData: UITerm[] = [
     name: "Calendar Picker",
     category: "Controls",
     description: "Un tipo especial de *[date-picker](#date-picker)* que permite a los usuarios seleccionar una fecha desde una representación visual de un calendario. Cuando se activa, típicamente muestra un calendario de vista mensual que los usuarios pueden navegar para elegir un día, mes y año específicos.",
-    relatedTerms: ["date-picker", "wheel-style-date-picker", "input-control"],
+    relatedTerms: ["date-picker", "wheel-style-date-picker", "input-control", "picker"],
     example: "Selección de fechas en formularios de reservas o interfaces de programación de eventos.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/calendar-picker.jpg"
   },
@@ -102,7 +103,8 @@ export const uiTermsData: UITerm[] = [
     id: "carousel",
     name: "Carousel",
     category: "Layout",
-    description: "Un elemento de diseño que muestra un conjunto rotativo de elementos (usualmente imágenes). Los usuarios pueden navegar a través de los elementos del *carousel* manualmente, usando flechas, botones, o desplazamiento horizontal, o el *carousel* puede rotar automáticamente a través de las imágenes en su conjunto. Los *carousels* pueden ahorrar espacio de pantalla ya que pueden ajustar muchos elementos en un área pequeña.",
+    description: "Un elemento de diseño que muestra un conjunto rotativo de elementos (usualmente imágenes). Los usuarios pueden navegar a través de los elementos del *carousel* manualmente, usando flechas, *[button](#button)*, o desplazamiento horizontal, o el *carousel* puede rotar automáticamente a través de las imágenes en su conjunto. Los *carousels* pueden ahorrar espacio de pantalla ya que pueden ajustar muchos elementos en un área pequeña.",
+    relatedTerms: ["button"],
     example: "Galerías de imágenes en páginas de productos o deslizadores de contenido destacado en páginas de inicio.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/carousel.jpg"
   },
@@ -110,8 +112,8 @@ export const uiTermsData: UITerm[] = [
     id: "checkbox",
     name: "Checkbox",
     category: "Controls",
-    description: "Un control de entrada que puede aparecer solo o en una lista de *checkboxes*. Por sí solo, un *checkbox* permite a los usuarios seleccionar entre dos estados: marcado y desmarcado. Una lista de *checkboxes* se usa para permitir a los usuarios seleccionar múltiples opciones de un conjunto.",
-    relatedTerms: ["radio-button", "toggle"],
+    description: "Un *[control](#control)* de entrada que puede aparecer solo o en una lista de *checkboxes*. Por sí solo, un *checkbox* permite a los usuarios seleccionar entre dos estados: marcado y desmarcado. Una lista de *checkboxes* se usa para permitir a los usuarios seleccionar múltiples opciones de un conjunto.",
+    relatedTerms: ["radio-button", "toggle", "input-control"],
     example: "Aceptación de términos y condiciones, múltiples opciones de filtro en búsquedas, o selección de características.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/checkbox.jpg"
   },
@@ -119,8 +121,8 @@ export const uiTermsData: UITerm[] = [
     id: "combo-box",
     name: "Combo Box",
     category: "Controls",
-    description: "Una combinación de una *[dropdown-list](#dropdown-list)* y un campo de entrada de texto, permitiendo a los usuarios seleccionar de opciones predefinidas o escribir su propia entrada.",
-    relatedTerms: ["dropdown-list", "textbox"],
+    description: "Una combinación de una *[dropdown-list](#dropdown-list)* y un campo de entrada de texto (*[textbox](#textbox)*), permitiendo a los usuarios seleccionar de opciones predefinidas o escribir su propia entrada.",
+    relatedTerms: ["dropdown-list", "textbox", "input-control"],
     example: "Campo de selección de país que permite escribir para filtrar o ingresar un valor personalizado.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/combo-box.jpg"
   },
@@ -147,16 +149,16 @@ export const uiTermsData: UITerm[] = [
     name: "Control",
     category: "Controls",
     description: "Un término general para elementos de interfaz interactivos que permiten a los usuarios realizar acciones o ingresar datos.",
-    relatedTerms: ["input-control", "button", "slider"],
-    example: "Cualquier elemento interactivo como botones, deslizadores, casillas de verificación o campos de entrada.",
+    relatedTerms: ["input-control", "button", "slider", "checkbox", "radio-button"],
+    example: "Cualquier elemento interactivo como *[button](#button)*, *[slider](#slider)*, *[checkbox](#checkbox)* o campos de entrada.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/control.jpg"
   },
   {
     id: "date-picker",
     name: "Date Picker",
     category: "Controls",
-    description: "Un control de entrada diseñado específicamente para seleccionar fechas. Puede implementarse como *[calendar-picker](#calendar-picker)*, selectores desplegables, o *[wheel-style-date-picker](#wheel-style-date-picker)*.",
-    relatedTerms: ["calendar-picker", "wheel-style-date-picker"],
+    description: "Un *[control](#control)* de entrada diseñado específicamente para seleccionar fechas. Puede implementarse como *[calendar-picker](#calendar-picker)*, selectores desplegables, o *[wheel-style-date-picker](#wheel-style-date-picker)*.",
+    relatedTerms: ["calendar-picker", "wheel-style-date-picker", "input-control", "picker"],
     example: "Selección de fechas en sistemas de reservas, formularios o aplicaciones de programación.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/20/date-picker.jpg"
   },
@@ -164,8 +166,8 @@ export const uiTermsData: UITerm[] = [
     id: "dialog",
     name: "Dialog",
     category: "Overlays",
-    description: "Una ventana modal que aparece encima del contenido principal, requiriendo interacción del usuario antes de proceder. Los *dialogs* interrumpen el flujo de trabajo del usuario para presentar información importante o recopilar entrada.",
-    relatedTerms: ["overlay"],
+    description: "Una ventana *[modal](#modal)* que aparece encima del contenido principal, requiriendo interacción del usuario antes de proceder. Los *dialogs* interrumpen el flujo de trabajo del usuario para presentar información importante o recopilar entrada.",
+    relatedTerms: ["modal", "overlay", "popup", "lightbox"],
     example: "Diálogos de confirmación para eliminar elementos o mensajes de alerta que requieren reconocimiento del usuario.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/dialog.jpg"
   },
@@ -174,16 +176,16 @@ export const uiTermsData: UITerm[] = [
     name: "Drawer Menu",
     category: "Navigation",
     description: "Un panel de navegación que se desliza desde el borde de la pantalla, típicamente usado en aplicaciones móviles. También conocido como menú hamburguesa.",
-    relatedTerms: ["side-sheet", "navigation-menu"],
-    example: "Navegación de aplicación móvil que se desliza desde la izquierda al tocar el ícono de hamburguesa.",
+    relatedTerms: ["side-sheet", "navigation-menu", "menu", "icon"],
+    example: "Navegación de aplicación móvil que se desliza desde la izquierda al tocar el *[icon](#icon)* de hamburguesa.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/drawer-menu.jpg"
   },
   {
     id: "dropdown-list",
     name: "Dropdown List",
     category: "Controls",
-    description: "Un control que muestra una lista de opciones cuando se activa, permitiendo a los usuarios seleccionar un elemento de la lista.",
-    relatedTerms: ["dropdown-menu", "combo-box"],
+    description: "Un *[control](#control)* que muestra una lista de opciones cuando se activa, permitiendo a los usuarios seleccionar un elemento de la lista.",
+    relatedTerms: ["dropdown-menu", "combo-box", "listbox", "input-control"],
     example: "Lista desplegable de selección de país en formularios de registro u opciones de ordenamiento en resultados de búsqueda.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/dropdown-list.jpg"
   },
@@ -191,17 +193,17 @@ export const uiTermsData: UITerm[] = [
     id: "dropdown-menu",
     name: "Dropdown Menu (Pulldown Menu, Linear Menu)",
     category: "Navigation",
-    description: "A menu that appears below a trigger element when activated, displaying a vertical list of options or actions that users can select from.",
-    relatedTerms: ["menu", "submenu", "contextual menu"],
-    example: "User account menu in headers or category navigation in e-commerce sites.",
+    description: "Un *[menu](#menu)* que aparece debajo de un elemento disparador cuando se activa, mostrando una lista vertical de opciones o acciones que los usuarios pueden seleccionar.",
+    relatedTerms: ["menu", "submenu", "contextual-menu", "dropdown-list"],
+    example: "Menú de cuenta de usuario en encabezados o navegación de categorías en sitios de e-commerce.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/dropdown-menu.jpg"
   },
   {
     id: "expandable-menu",
     name: "Expandable Menu",
     category: "Navigation",
-    description: "Un sistema de menú donde los elementos pueden expandirse para revelar sub-elementos u opciones adicionales, creando una estructura de navegación jerárquica.",
-    relatedTerms: ["accordion", "submenu"],
+    description: "Un sistema de *[menu](#menu)* donde los elementos pueden expandirse para revelar sub-elementos u opciones adicionales, creando una estructura de navegación jerárquica.",
+    relatedTerms: ["accordion", "submenu", "menu", "collapsible"],
     example: "Vista de árbol del explorador de archivos o navegación de categorías anidadas en sistemas de gestión de contenido.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/expandable-menu.jpg"
   },
@@ -219,7 +221,8 @@ export const uiTermsData: UITerm[] = [
     name: "Icon",
     category: "Visual Elements",
     description: "Una pequeña representación gráfica de un programa, característica o concepto. Los *icons* se usan para comunicar rápidamente significado y funcionalidad a los usuarios sin requerir texto.",
-    example: "Ícono de inicio para navegación, ícono de papelera para eliminar, ícono de corazón para favoritos, o ícono de hamburguesa para menús.",
+    relatedTerms: ["button", "badge"],
+    example: "Ícono de inicio para navegación, ícono de papelera para eliminar, ícono de corazón para favoritos, o ícono de hamburguesa para *[menu](#menu)*.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/icon.jpg"
   },
   {
@@ -235,8 +238,8 @@ export const uiTermsData: UITerm[] = [
     id: "input-stepper",
     name: "Input Stepper",
     category: "Controls",
-    description: "Un *[input-control](#input-control)* numérico con botones de incremento y decremento, permitiendo a los usuarios ajustar valores en pasos predefinidos.",
-    relatedTerms: ["input-control", "slider"],
+    description: "Un *[input-control](#input-control)* numérico con *[button](#button)* de incremento y decremento, permitiendo a los usuarios ajustar valores en pasos predefinidos.",
+    relatedTerms: ["input-control", "slider", "button"],
     example: "Selectores de cantidad en carritos de compras o ajustadores de valores numéricos en configuraciones.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/input-stepper.jpg"
   },
@@ -244,8 +247,8 @@ export const uiTermsData: UITerm[] = [
     id: "knob",
     name: "Knob (Virtual Knob)",
     category: "Controls",
-    description: "Un control circular que los usuarios pueden rotar para ajustar valores, imitando perillas físicas encontradas en equipos de audio o electrodomésticos.",
-    relatedTerms: ["slider", "range-control"],
+    description: "Un *[control](#control)* circular que los usuarios pueden rotar para ajustar valores, imitando perillas físicas encontradas en equipos de audio o electrodomésticos.",
+    relatedTerms: ["slider", "range-control", "input-control"],
     example: "Controles de volumen en aplicaciones de audio o ajustes de temperatura en aplicaciones de hogar inteligente.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/knob.jpg"
   },
@@ -253,8 +256,8 @@ export const uiTermsData: UITerm[] = [
     id: "lightbox",
     name: "Lightbox",
     category: "Overlays",
-    description: "Una técnica de *[overlay](#overlay)* que muestra imágenes o contenido en una ventana modal sobre un fondo oscurecido, enfocando la atención en el contenido mostrado.",
-    relatedTerms: ["dialog", "overlay"],
+    description: "Una técnica de *[overlay](#overlay)* que muestra imágenes o contenido en una ventana *[modal](#modal)* sobre un fondo oscurecido, enfocando la atención en el contenido mostrado.",
+    relatedTerms: ["modal", "dialog", "overlay"],
     example: "Galerías de imágenes donde hacer clic en una miniatura abre la imagen completa en un overlay lightbox.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/lightbox.jpg"
   },
@@ -271,8 +274,8 @@ export const uiTermsData: UITerm[] = [
     id: "listbox",
     name: "Listbox",
     category: "Controls",
-    description: "Un control que presenta una lista de opciones en una caja desplazable, permitiendo a los usuarios seleccionar uno o múltiples elementos.",
-    relatedTerms: ["dropdown-list"],
+    description: "Un *[control](#control)* que presenta una lista de opciones en una caja desplazable, permitiendo a los usuarios seleccionar uno o múltiples elementos.",
+    relatedTerms: ["dropdown-list", "input-control", "scrollbar"],
     example: "Listas de selección múltiple en formularios o interfaces de selección de archivos en aplicaciones.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/listbox.jpg"
   },
@@ -284,6 +287,15 @@ export const uiTermsData: UITerm[] = [
     relatedTerms: ["dropdown-menu", "navigation-menu"],
     example: "Menús de navegación grandes en sitios de e-commerce mostrando categorías, subcategorías y productos destacados.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/megamenu.jpg"
+  },
+  {
+    id: "modal",
+    name: "Modal",
+    category: "Overlays",
+    description: "Una ventana o *[overlay](#overlay)* que aparece encima del contenido principal de la página, bloqueando la interacción con el resto de la interfaz hasta que el usuario la cierre o complete una acción. Los modales requieren atención inmediata del usuario y típicamente oscurecen el contenido de fondo.",
+    relatedTerms: ["dialog", "overlay", "lightbox", "popup"],
+    example: "Ventanas emergentes de confirmación, formularios de inicio de sesión superpuestos, galerías de imágenes en pantalla completa, o avisos que requieren que el usuario haga clic en 'Aceptar' o 'Cancelar' antes de continuar.",
+    imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/dialog.jpg"
   },
   {
     id: "menu",
@@ -298,8 +310,8 @@ export const uiTermsData: UITerm[] = [
     id: "menu-bar",
     name: "Menu Bar",
     category: "Navigation",
-    description: "Una barra horizontal que contiene múltiples títulos de menú, típicamente encontrada en la parte superior de aplicaciones de escritorio.",
-    relatedTerms: ["navigation-bar", "ribbon"],
+    description: "Una barra horizontal que contiene múltiples títulos de *[menu](#menu)*, típicamente encontrada en la parte superior de aplicaciones de escritorio.",
+    relatedTerms: ["navigation-bar", "ribbon", "menu"],
     example: "Menús Archivo, Editar, Ver, Ayuda en aplicaciones de escritorio como Microsoft Word o Adobe Photoshop.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/menu-bar.jpg"
   },
@@ -307,8 +319,8 @@ export const uiTermsData: UITerm[] = [
     id: "navigation-bar",
     name: "Navigation Bar",
     category: "Navigation",
-    description: "Una barra horizontal o vertical que contiene enlaces de navegación, típicamente ubicada en la parte superior o lateral de una página web para ayudar a los usuarios a navegar entre diferentes secciones o páginas.",
-    relatedTerms: ["breadcrumbs", "menu", "menu-bar"],
+    description: "Una barra horizontal o vertical que contiene *[link](#link)* de navegación, típicamente ubicada en la parte superior o lateral de una página web para ayudar a los usuarios a navegar entre diferentes secciones o páginas.",
+    relatedTerms: ["breadcrumbs", "menu", "menu-bar", "link"],
     example: "Menú principal en la parte superior de sitios web con enlaces a Inicio, Acerca de, Servicios, Contacto.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/nav-bar.jpg"
   },
@@ -316,8 +328,8 @@ export const uiTermsData: UITerm[] = [
     id: "navigation-menu",
     name: "Navigation Menu",
     category: "Navigation",
-    description: "Una colección de enlaces u opciones que ayudan a los usuarios a navegar a través de la estructura de un sitio web o aplicación.",
-    relatedTerms: ["menu", "navigation-bar"],
+    description: "Una colección de *[link](#link)* u opciones que ayudan a los usuarios a navegar a través de la estructura de un sitio web o aplicación.",
+    relatedTerms: ["menu", "navigation-bar", "drawer-menu", "link"],
     example: "Navegación primaria en encabezados de sitios web o cajones de navegación de aplicaciones.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/navigation-menu.jpg"
   },
@@ -325,17 +337,17 @@ export const uiTermsData: UITerm[] = [
     id: "overlay",
     name: "Overlay",
     category: "Overlays",
-    description: "Un elemento de interfaz que aparece encima del contenido principal, típicamente usado para modales, *[tooltip](#tooltip)*, menús desplegables, u otro contenido temporal.",
-    relatedTerms: ["dialog", "tooltip"],
-    example: "Ventanas modales, menús desplegables, tooltips, o cualquier contenido que aparece sobre la interfaz principal.",
+    description: "Un elemento de interfaz que aparece encima del contenido principal, típicamente usado para *[modal](#modal)*, *[tooltip](#tooltip)*, menús desplegables, u otro contenido temporal.",
+    relatedTerms: ["modal", "dialog", "tooltip", "popup"],
+    example: "Ventanas *[modal](#modal)*, menús desplegables, *[tooltip](#tooltip)*, o cualquier contenido que aparece sobre la interfaz principal.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/overlay.jpg"
   },
   {
     id: "picker",
     name: "Picker",
     category: "Controls",
-    description: "Un control que permite a los usuarios seleccionar de un conjunto de opciones predefinidas, frecuentemente implementado como ruedas, listas o cuadrículas.",
-    relatedTerms: ["wheel-picker", "date-picker"],
+    description: "Un *[control](#control)* que permite a los usuarios seleccionar de un conjunto de opciones predefinidas, frecuentemente implementado como ruedas, listas o cuadrículas.",
+    relatedTerms: ["wheel-picker", "date-picker", "calendar-picker"],
     example: "Selectores de tiempo, selectores de color, o selectores de opciones en aplicaciones móviles.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/picker.jpg"
   },
@@ -343,8 +355,8 @@ export const uiTermsData: UITerm[] = [
     id: "pie-menu",
     name: "Pie Menu (Radial Menu)",
     category: "Navigation",
-    description: "Un menú circular donde las opciones están organizadas alrededor de un punto central, permitiendo selección rápida a través de gestos direccionales.",
-    relatedTerms: ["contextual-menu"],
+    description: "Un *[menu](#menu)* circular donde las opciones están organizadas alrededor de un punto central, permitiendo selección rápida a través de gestos direccionales.",
+    relatedTerms: ["contextual-menu", "menu"],
     example: "Menús radiales en software de diseño o interfaces de juegos para selección rápida de herramientas o acciones.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/pie-menu.jpg"
   },
@@ -371,7 +383,7 @@ export const uiTermsData: UITerm[] = [
     name: "Progress Bar",
     category: "Indicators",
     description: "Un indicador visual que muestra el progreso de completación de una tarea o proceso, típicamente apareciendo como una barra horizontal que se llena a medida que el proceso avanza.",
-    relatedTerms: ["progress-indicator", "spinner"],
+    relatedTerms: ["progress-indicator", "spinner", "skeleton-screen"],
     example: "Progreso de carga de archivos, estado de completación de formularios, o progreso de carga en aplicaciones.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/progress-bar.jpg"
   },
@@ -388,8 +400,8 @@ export const uiTermsData: UITerm[] = [
     id: "radio-button",
     name: "Radio Button",
     category: "Controls",
-    description: "Un control de entrada que permite a los usuarios seleccionar una opción de un conjunto de opciones mutuamente excluyentes. Los *radio buttons* típicamente se presentan en grupos donde solo una opción puede seleccionarse a la vez.",
-    relatedTerms: ["checkbox"],
+    description: "Un *[control](#control)* de entrada que permite a los usuarios seleccionar una opción de un conjunto de opciones mutuamente excluyentes. Los *radio buttons* típicamente se presentan en grupos donde solo una opción puede seleccionarse a la vez.",
+    relatedTerms: ["checkbox", "input-control", "segmented-button"],
     example: "Selección de género, elección de método de pago, o selecciones de opción única en formularios.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/radio-button.jpg"
   },
@@ -397,8 +409,8 @@ export const uiTermsData: UITerm[] = [
     id: "range-control",
     name: "Range Control (Continuous Control)",
     category: "Controls",
-    description: "Un control que permite a los usuarios seleccionar un valor de un rango continuo, típicamente implementado como *[slider](#slider)* o *[knob](#knob)*.",
-    relatedTerms: ["slider", "knob"],
+    description: "Un *[control](#control)* que permite a los usuarios seleccionar un valor de un rango continuo, típicamente implementado como *[slider](#slider)* o *[knob](#knob)*.",
+    relatedTerms: ["slider", "knob", "input-control"],
     example: "Controles de volumen, ajustes de brillo, o cualquier interfaz de selección de valor continuo.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/range-control.jpg"
   },
@@ -406,8 +418,8 @@ export const uiTermsData: UITerm[] = [
     id: "ribbon",
     name: "Ribbon",
     category: "Navigation",
-    description: "Una interfaz de comandos que organiza características y funciones en un conjunto de pestañas, con cada pestaña conteniendo comandos específicos para una actividad particular. Popularizado por las aplicaciones de Microsoft Office.",
-    relatedTerms: ["tab-bar", "menu-bar"],
+    description: "Una interfaz de comandos que organiza características y funciones en un conjunto de pestañas (*[tab-bar](#tab-bar)*), con cada pestaña conteniendo comandos específicos para una actividad particular. Popularizado por las aplicaciones de Microsoft Office.",
+    relatedTerms: ["tab-bar", "menu-bar", "button"],
     example: "Interfaz ribbon de Microsoft Office con pestañas Inicio, Insertar, Diseño conteniendo herramientas relacionadas.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/ribbon.jpg"
   },
@@ -416,6 +428,7 @@ export const uiTermsData: UITerm[] = [
     name: "Scrollbar",
     category: "Controls",
     description: "Un elemento usado para indicar y controlar la porción de un contenedor o página que es visible en la pantalla. Consiste en una pista y una manija arrastrable para navegación a través del contenido.",
+    relatedTerms: ["slider"],
     example: "Barras de desplazamiento verticales en páginas web o barras de desplazamiento horizontales para tablas y contenido ancho.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/scrollbar.jpg"
   },
@@ -423,8 +436,8 @@ export const uiTermsData: UITerm[] = [
     id: "segmented-button",
     name: "Segmented Button (Segmented Control)",
     category: "Controls",
-    description: "Un elemento de interfaz de usuario que muestra un grupo de botones conectados dispuestos en una fila horizontal, permitiendo a los usuarios hacer selecciones de múltiples opciones segmentadas.",
-    relatedTerms: ["button", "toggle"],
+    description: "Un elemento de interfaz de usuario que muestra un grupo de *[button](#button)* conectados dispuestos en una fila horizontal, permitiendo a los usuarios hacer selecciones de múltiples opciones segmentadas.",
+    relatedTerms: ["button", "toggle", "radio-button"],
     example: "Cambiadores de vista (vista de lista/cuadrícula), interruptores de filtro, o selectores de opciones en aplicaciones móviles.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/segmented-button.jpg"
   },
@@ -451,7 +464,7 @@ export const uiTermsData: UITerm[] = [
     name: "Slider",
     category: "Controls",
     description: "Un elemento de interfaz que permite a los usuarios ajustar un valor o navegar a través de un rango moviendo un indicador (manija) a lo largo de una pista horizontal o vertical. Apropiado cuando los valores exactos pueden ser difíciles de cuantificar.",
-    relatedTerms: ["range-control", "knob"],
+    relatedTerms: ["range-control", "knob", "input-control", "input-stepper"],
     example: "Control de volumen, ajuste de brillo, filtros de rango de precios, o cualquier selección de valor continuo.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/slider.jpg"
   },
@@ -459,8 +472,8 @@ export const uiTermsData: UITerm[] = [
     id: "snackbar",
     name: "Snackbar (Toast)",
     category: "Indicators",
-    description: "Un diálogo no-modal transitorio que usualmente informa al usuario sobre el estado de un proceso y desaparece automáticamente después de un tiempo breve, sin requerir interacción del usuario.",
-    relatedTerms: ["dialog", "overlay"],
+    description: "Un *[dialog](#dialog)* no-modal transitorio que usualmente informa al usuario sobre el estado de un proceso y desaparece automáticamente después de un tiempo breve, sin requerir interacción del usuario.",
+    relatedTerms: ["dialog", "overlay", "popup"],
     example: "Mensajes de éxito después de guardar datos, notificaciones de error, o confirmaciones de acción de deshacer.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/snackbar.jpg"
   },
@@ -486,9 +499,9 @@ export const uiTermsData: UITerm[] = [
     id: "state-switch-control",
     name: "State-Switch Control",
     category: "Controls",
-    description: "Un control diseñado para mover el sistema entre dos estados mutuamente excluyentes (ej. encendido/apagado, silenciado/no silenciado). Los *[toggle](#toggle)* son un tipo de control de cambio de estado.",
-    relatedTerms: ["toggle"],
-    example: "Botones de silencio, interruptores de encendido, o cualquier control de estado binario en interfaces.",
+    description: "Un *[control](#control)* diseñado para mover el sistema entre dos estados mutuamente excluyentes (ej. encendido/apagado, silenciado/no silenciado). Los *[toggle](#toggle)* son un tipo de control de cambio de estado.",
+    relatedTerms: ["toggle", "checkbox", "button"],
+    example: "*[Button](#button)* de silencio, interruptores de encendido, o cualquier control de estado binario en interfaces.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/state-switch-control.jpg"
   },
   {
@@ -505,7 +518,7 @@ export const uiTermsData: UITerm[] = [
     name: "Tab Bar (Tabs)",
     category: "Navigation",
     description: "Un elemento de interfaz de usuario que permite a los usuarios ver selectivamente un solo panel de contenido de entre una lista de opciones disponibles. Las pestañas tradicionalmente se muestran horizontalmente.",
-    relatedTerms: ["accordion", "anchor-link", "ribbon"],
+    relatedTerms: ["accordion", "anchor-link", "ribbon", "segmented-button"],
     example: "Paneles de configuraciones, secciones de información de productos (Descripción, Reseñas, Especificaciones), o pestañas del navegador.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/tab-bar.jpg"
   },
@@ -523,7 +536,7 @@ export const uiTermsData: UITerm[] = [
     name: "Toggle (Toggle Switch, Switch)",
     category: "Controls",
     description: "Un *[state-switch-control](#state-switch-control)* usualmente representado como un deslizador entre dos posiciones: encendido y apagado. Equivalente digital de un interruptor de luz físico, debe indicar claramente el estado actual.",
-    relatedTerms: ["state-switch-control", "checkbox"],
+    relatedTerms: ["state-switch-control", "checkbox", "segmented-button"],
     example: "Interruptores de modo oscuro, configuraciones de notificaciones en aplicaciones móviles, o interruptores de habilitar/deshabilitar características.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/toggle.jpg"
   },
@@ -531,9 +544,9 @@ export const uiTermsData: UITerm[] = [
     id: "tooltip",
     name: "Tooltip",
     category: "Overlays",
-    description: "Un pequeño *[overlay](#overlay)* que muestra mensajes breves e informativos que aparecen cuando un usuario interactúa con un elemento, usualmente iniciado a través de gestos de hover del mouse o teclado.",
-    relatedTerms: ["overlay", "popup-tip"],
-    example: "Texto de ayuda que aparece al pasar el cursor sobre íconos, botones o campos de formulario para contexto adicional.",
+    description: "Un pequeño *[overlay](#overlay)* que muestra mensajes breves e informativos que aparecen cuando un usuario interactúa con un elemento, usualmente iniciado a través de gestos de *[hover](#hover)* del mouse o teclado.",
+    relatedTerms: ["overlay", "popup-tip", "popup", "hover"],
+    example: "Texto de ayuda que aparece al pasar el cursor sobre *[icon](#icon)*, *[button](#button)* o campos de formulario para contexto adicional.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/tooltip.jpg"
   },
   {
@@ -541,7 +554,7 @@ export const uiTermsData: UITerm[] = [
     name: "Wheel Picker",
     category: "Controls",
     description: "Un *[picker](#picker)* específico de iOS que muestra opciones usando una interfaz tipo rueda que los usuarios pueden girar verticalmente para seleccionar valores.",
-    relatedTerms: ["wheel-style-date-picker", "picker"],
+    relatedTerms: ["wheel-style-date-picker", "picker", "input-control"],
     example: "Ruedas de selección de tiempo en aplicaciones iOS o selectores de opciones con interfaz de rueda giratoria.",
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/wheel-picker.jpg"
   },
@@ -559,27 +572,31 @@ export const uiTermsData: UITerm[] = [
     name: "Above the fold",
     category: "Layout",
     description: "Área visible de una página web sin hacer scroll. Suele concentrar el contenido y acciones más importantes.",
-    example: "Colocar el titular, subtítulo y CTA principal de una landing inmediatamente \"above the fold\"."
+    relatedTerms: ["button", "navigation-bar"],
+    example: "Colocar el titular, subtítulo y *[button](#button)* CTA principal de una landing inmediatamente \"above the fold\"."
   },
   {
     id: "collapsible",
     name: "Collapsible",
     category: "Layout",
     description: "Sección o componente que puede expandirse/contraerse para mostrar u ocultar contenido.",
-    example: "Un *[accordion](#accordion)* de FAQ donde cada pregunta es \"colapsable\" y al tocarla se despliega la respuesta. O una *[side bar](#side-sheet)* que se despliega o se contrae al hacer clic en un botón."
+    relatedTerms: ["accordion", "expandable-menu", "side-sheet"],
+    example: "Un *[accordion](#accordion)* de FAQ donde cada pregunta es \"colapsable\" y al tocarla se despliega la respuesta. O una *[side-sheet](#side-sheet)* que se despliega o se contrae al hacer clic en un *[button](#button)*."
   },
   {
     id: "responsive",
     name: "Responsive",
     category: "Layout",
     description: "Diseño que se adapta fluida y correctamente a diferentes tamaños de pantalla y orientaciones.",
-    example: "Un layout que pasa de tres columnas en desktop a una columna en móvil manteniendo legibilidad."
+    relatedTerms: ["mobile-app", "desktop-app", "web-app"],
+    example: "Un layout que pasa de tres columnas en *[desktop-app](#desktop-app)* a una columna en *[mobile-app](#mobile-app)* manteniendo legibilidad."
   },
   {
     id: "desktop-app",
     name: "Desktop (app)",
     category: "Layout",
     description: "Aplicación diseñada para usarse en equipos de escritorio o laptop, optimizada para mouse/teclado y pantallas grandes.",
+    relatedTerms: ["mobile-app", "web-app", "responsive"],
     example: "Microsoft Excel, Chrome son apps originalmente diseñadas para desktop."
   },
   {
@@ -587,6 +604,7 @@ export const uiTermsData: UITerm[] = [
     name: "Mobile (app)",
     category: "Layout",
     description: "Aplicación diseñada para teléfonos, centrada en gestos táctiles, uso en movimiento y pantallas pequeñas.",
+    relatedTerms: ["desktop-app", "web-app", "responsive"],
     example: "WhatsApp, Instagram, Spotify son apps originalmente diseñadas para smartphone."
   },
   {
@@ -594,6 +612,7 @@ export const uiTermsData: UITerm[] = [
     name: "Web (app)",
     category: "Layout",
     description: "Aplicación que se ejecuta en el navegador, independiente del sistema operativo, accesible mediante URL.",
+    relatedTerms: ["desktop-app", "mobile-app", "responsive"],
     example: "Home-banking, Canva, Gmail son apps originalmente diseñadas para web."
   },
   {
@@ -601,7 +620,8 @@ export const uiTermsData: UITerm[] = [
     name: "Hover",
     category: "Controls",
     description: "Estado de interacción cuando el puntero se posiciona sobre un elemento (no disponible en pantallas táctiles puras).",
-    example: "Un botón que al hacer \"hover\" eleva la sombra y cambia el color del fondo para indicar interactividad."
+    relatedTerms: ["button", "tooltip", "popup"],
+    example: "Un *[button](#button)* que al hacer \"hover\" eleva la sombra y cambia el color del fondo para indicar interactividad."
   }
 ]
 

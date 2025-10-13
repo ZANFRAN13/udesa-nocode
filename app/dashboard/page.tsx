@@ -25,22 +25,12 @@ export default function Dashboard() {
   const router = useRouter()
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
+  // Setup auth listener only for sign out events
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setLoading(false)
-    }
-
-    getUser()
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        setUser(session?.user ?? null)
         if (event === 'SIGNED_OUT') {
           router.push('/login')
         }
@@ -64,22 +54,6 @@ export default function Dashboard() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/')
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Cargando...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!user) {
-    router.push('/login')
-    return null
   }
 
   const handleItemClick = (sectionId: string, item: string) => {

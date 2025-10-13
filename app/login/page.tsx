@@ -46,10 +46,9 @@ export default function LoginPage() {
           password,
         })
         if (error) throw error
-        // Navigate immediately
-        router.push('/dashboard')
-        // Reset loading state after navigation starts
-        setTimeout(() => setLoading(false), 100)
+        
+        // Redirect immediately - middleware will handle verification
+        window.location.href = '/dashboard'
       }
     } catch (error: any) {
       setError(error.message)

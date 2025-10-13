@@ -17,6 +17,7 @@ export const devTermsData: DevTerm[] = [
     name: "API (Application Programming Interface)",
     category: "Backend",
     description: "Conjunto de reglas y protocolos que permite que diferentes aplicaciones se comuniquen entre sí. Define cómo los componentes de software deben interactuar.",
+    relatedTerms: ["rest", "endpoint", "api-key", "http"],
     example: "Cuando abres Instagram en tu teléfono, la app usa una API para obtener tus fotos desde los servidores de Instagram. Es como un camarero que lleva tu pedido a la cocina y te trae la comida.",
     tags: ["basics"]
   },
@@ -24,8 +25,8 @@ export const devTermsData: DevTerm[] = [
     id: "backend",
     name: "Backend",
     category: "Architecture",
-    description: "La parte del software que maneja la lógica de negocio, *[database](#database)* y procesamiento del servidor. No es visible para el usuario final.",
-    example: "El backend de una red social maneja el almacenamiento de posts, *[authentication](#authentication)* de usuarios y envío de notificaciones.",
+    description: "La parte del software que maneja la lógica de negocio, *[bases de datos](#databases)* y procesamiento del servidor. No es visible para el usuario final.",
+    example: "El backend de una red social maneja el almacenamiento de posts, *[autenticación](#authentication)* de usuarios y envío de notificaciones.",
     tags: ["basics"]
   },
   {
@@ -41,6 +42,7 @@ export const devTermsData: DevTerm[] = [
     name: "Framework",
     category: "Development",
     description: "Conjunto de herramientas y *[library](#library)* predefinidas que proporciona una estructura base para desarrollar aplicaciones más rápidamente.",
+    relatedTerms: ["library", "components"],
     example: "React para interfaces web, Django para Python, o Express.js para Node.js son frameworks populares.",
     tags: ["basics"]
   },
@@ -49,7 +51,8 @@ export const devTermsData: DevTerm[] = [
     name: "Librería (Library)",
     category: "Development",
     description: "Colección de código reutilizable que proporciona funcionalidades específicas para ser utilizadas en otros programas.",
-    example: "Como una caja de herramientas: una librería de matemáticas te da funciones para calcular, una librería de fechas te ayuda a manejar calendarios, o una librería de gráficos te permite crear gráficos sin escribir todo el código desde cero."
+    relatedTerms: ["framework", "dependency", "open-source"],
+    example: "Como una caja de herramientas: una librería de matemáticas te da *[funciones](#functions)* para calcular, una librería de fechas te ayuda a manejar calendarios, o una librería de gráficos te permite crear gráficos sin escribir todo el código desde cero."
   },
   {
     id: "version-control",
@@ -66,33 +69,28 @@ export const devTermsData: DevTerm[] = [
     example: "Un repositorio en *[github](#github)* contiene todo el código de una aplicación web, incluyendo *[documentation](#documentation)* y configuración."
   },
   {
-    id: "deployment",
-    name: "Despliegue (Deployment)",
-    category: "DevOps",
-    description: "Proceso de poner una aplicación en funcionamiento en un servidor o plataforma para que los usuarios puedan acceder a ella.",
-    example: "Subir una aplicación web a Heroku, AWS o Vercel para que esté disponible en internet.",
-    tags: ["basics"]
-  },
-  {
     id: "server",
     name: "Servidor (Server)",
     category: "Infrastructure",
-    description: "Computadora o programa que proporciona servicios, recursos o datos a otros dispositivos (clientes) en una red.",
+    description: "Computadora o programa que proporciona servicios, recursos o datos a otros dispositivos (*[client](#client)*) en una red.",
+    relatedTerms: ["client", "backend", "deployment"],
     example: "Un servidor web como Apache o Nginx que entrega páginas web a los navegadores de los usuarios."
   },
   {
     id: "client",
     name: "Cliente (Client)",
     category: "Architecture",
-    description: "Aplicación o dispositivo que solicita servicios o recursos a un servidor. En web, típicamente es el navegador.",
-    example: "Tu navegador web (Chrome, Firefox) es un cliente que solicita páginas web a servidores."
+    description: "Aplicación o dispositivo que solicita servicios o recursos a un *[server](#server)*. En web, típicamente es el navegador.",
+    relatedTerms: ["server", "frontend", "client-server"],
+    example: "Tu navegador web (Chrome, Firefox) es un cliente que solicita páginas web a *[server](#server)*."
   },
   {
     id: "http",
     name: "HTTP (HyperText Transfer Protocol)",
     category: "Protocols",
-    description: "Protocolo de comunicación que permite la transferencia de información en la web entre clientes y servidores.",
-    example: "Cuando escribes una URL en el navegador, se envía una petición HTTP GET al servidor para obtener la página."
+    description: "Protocolo de comunicación que permite la transferencia de información en la web entre *[client](#client)* y *[server](#server)*.",
+    relatedTerms: ["rest", "api", "ssl-tls"],
+    example: "Cuando escribes una URL en el navegador, se envía una petición HTTP GET al *[server](#server)* para obtener la página."
   },
   {
     id: "rest",
@@ -106,6 +104,7 @@ export const devTermsData: DevTerm[] = [
     name: "JSON (JavaScript Object Notation)",
     category: "Data Formats",
     description: "Formato de intercambio de datos ligero y fácil de leer, basado en la sintaxis de JavaScript.",
+    relatedTerms: ["api", "data-structures"],
     example: "{\"nombre\": \"Juan\", \"edad\": 30, \"ciudad\": \"Buenos Aires\"} es un objeto JSON con información de usuario."
   },
   {
@@ -113,6 +112,7 @@ export const devTermsData: DevTerm[] = [
     name: "Autenticación (Authentication)",
     category: "Security",
     description: "Proceso de verificar la identidad de un usuario, típicamente mediante credenciales como usuario y contraseña.",
+    relatedTerms: ["authorization", "sso", "encryption"],
     example: "El login en una aplicación web donde ingresas email y contraseña para acceder a tu cuenta.",
     tags: ["basics"]
   },
@@ -128,34 +128,39 @@ export const devTermsData: DevTerm[] = [
     name: "Encriptación (Encryption)",
     category: "Security",
     description: "Proceso de convertir información en un formato ilegible para protegerla de accesos no autorizados.",
-    example: "Las contraseñas se almacenan encriptadas en la base de datos, no en texto plano."
+    relatedTerms: ["ssl-tls", "authentication"],
+    example: "Las contraseñas se almacenan encriptadas en la *[base de datos](#databases)*, no en texto plano."
   },
   {
     id: "ssl-tls",
     name: "SSL/TLS",
     category: "Security",
-    description: "Protocolos de seguridad que encriptan la comunicación entre navegadores y servidores web.",
+    description: "Protocolos de seguridad que encriptan la comunicación entre navegadores y *[servidores](#server)* web.",
+    relatedTerms: ["encryption", "http"],
     example: "El candado verde en la barra de direcciones indica que el sitio usa SSL/TLS para proteger tus datos."
   },
   {
     id: "caching",
     name: "Caché (Caching)",
     category: "Performance",
-    description: "Técnica de almacenar datos temporalmente en una ubicación de acceso rápido para mejorar el rendimiento.",
+    description: "Técnica de almacenar datos temporalmente en una ubicación de acceso rápido para mejorar el *[performance](#performance)*.",
+    relatedTerms: ["cdn", "performance"],
     example: "Un navegador guarda imágenes en caché para no descargarlas nuevamente en visitas posteriores."
   },
   {
     id: "cdn",
     name: "CDN (Content Delivery Network)",
     category: "Infrastructure",
-    description: "Red de servidores distribuidos geográficamente que entrega contenido web más rápido a los usuarios.",
-    example: "Cloudflare o AWS CloudFront distribuyen imágenes y videos desde servidores cercanos al usuario."
+    description: "Red de *[servidores](#server)* distribuidos geográficamente que entrega contenido web más rápido a los usuarios.",
+    relatedTerms: ["caching", "performance"],
+    example: "Cloudflare o AWS CloudFront distribuyen imágenes y videos desde *[servidores](#server)* cercanos al usuario."
   },
   {
     id: "responsive-design",
     name: "Diseño Responsive",
     category: "Frontend",
     description: "Enfoque de diseño web que hace que las páginas se adapten automáticamente a diferentes tamaños de pantalla.",
+    relatedTerms: ["mobile-first", "web-app-responsive"],
     example: "Una página web que se ve bien tanto en desktop como en móvil, ajustando el layout automáticamente.",
     tags: ["basics"]
   },
@@ -164,6 +169,7 @@ export const devTermsData: DevTerm[] = [
     name: "Mobile First",
     category: "Frontend",
     description: "Metodología de diseño que prioriza la experiencia móvil, diseñando primero para pantallas pequeñas.",
+    relatedTerms: ["responsive-design", "mobile-app"],
     example: "Comenzar el diseño de una aplicación web optimizada para móvil y luego expandir para desktop."
   },
   {
@@ -171,6 +177,7 @@ export const devTermsData: DevTerm[] = [
     name: "Progressive Web App (PWA)",
     category: "Frontend",
     description: "Aplicación web que utiliza tecnologías modernas para ofrecer una experiencia similar a las apps nativas.",
+    relatedTerms: ["single-page-application", "web-app-responsive"],
     example: "Una PWA puede funcionar offline, enviar notificaciones y ser instalada como una app en el dispositivo."
   },
   {
@@ -178,6 +185,7 @@ export const devTermsData: DevTerm[] = [
     name: "Single Page Application (SPA)",
     category: "Frontend",
     description: "Aplicación web que carga una sola página HTML y actualiza el contenido dinámicamente sin recargar la página.",
+    relatedTerms: ["progressive-web-app", "routes", "framework"],
     example: "Gmail, Facebook o aplicaciones construidas con React, Vue o Angular son SPAs."
   },
   {
@@ -185,27 +193,31 @@ export const devTermsData: DevTerm[] = [
     name: "Microservicios (Microservices)",
     category: "Architecture",
     description: "Arquitectura de software que divide una aplicación en servicios pequeños e independientes que se comunican entre sí.",
+    relatedTerms: ["api", "container", "docker"],
     example: "Una aplicación de e-commerce puede tener microservicios separados para usuarios, productos, pagos y envíos."
   },
   {
     id: "container",
     name: "Contenedor (Container)",
     category: "DevOps",
-    description: "Unidad de software que empaqueta código y dependencias para ejecutarse de manera consistente en cualquier entorno.",
-    example: "Docker permite crear contenedores que incluyen la aplicación y todas sus dependencias."
+    description: "Unidad de software que empaqueta código y *[dependencias](#dependency)* para ejecutarse de manera consistente en cualquier entorno.",
+    relatedTerms: ["docker", "kubernetes", "dependency"],
+    example: "*[Docker](#docker)* permite crear contenedores que incluyen la aplicación y todas sus dependencias."
   },
   {
     id: "docker",
     name: "Docker",
     category: "DevOps",
-    description: "Plataforma que permite crear, desplegar y ejecutar aplicaciones usando contenedores virtualizados.",
+    description: "Plataforma que permite crear, desplegar y ejecutar aplicaciones usando *[contenedores](#container)* virtualizados.",
+    relatedTerms: ["container", "kubernetes", "deployment"],
     example: "Docker permite que una aplicación funcione igual en desarrollo, testing y producción."
   },
   {
     id: "kubernetes",
     name: "Kubernetes",
     category: "DevOps",
-    description: "Sistema de orquestación de contenedores que automatiza el despliegue, escalado y gestión de aplicaciones.",
+    description: "Sistema de orquestación de *[contenedores](#container)* que automatiza el despliegue, escalado y gestión de aplicaciones.",
+    relatedTerms: ["docker", "container", "scalability"],
     example: "Kubernetes puede manejar automáticamente el escalado de una aplicación cuando aumenta la demanda."
   },
   {
@@ -213,34 +225,39 @@ export const devTermsData: DevTerm[] = [
     name: "CI/CD (Continuous Integration/Continuous Deployment)",
     category: "DevOps",
     description: "Prácticas de desarrollo que automatizan la integración de código y el despliegue de aplicaciones.",
-    example: "GitHub Actions ejecuta tests automáticamente cuando se hace push y despliega la aplicación si todo está bien."
+    relatedTerms: ["testing", "deployment", "github"],
+    example: "*[GitHub](#github)* Actions ejecuta *[pruebas](#testing)* automáticamente cuando se hace *[push](#push)* y despliega la aplicación si todo está bien."
   },
   {
     id: "testing",
     name: "Testing (Pruebas)",
     category: "Development",
     description: "Proceso de verificar que el software funciona correctamente mediante la ejecución de pruebas automatizadas o manuales.",
-    example: "*[unit-test](#unit-test)* verifican funciones individuales, *[integration-test](#integration-test)* verifican que los componentes trabajen juntos."
+    relatedTerms: ["unit-test", "integration-test", "debugging"],
+    example: "*[unit-test](#unit-test)* verifican *[funciones](#functions)* individuales, *[integration-test](#integration-test)* verifican que los *[componentes](#components)* trabajen juntos."
   },
   {
     id: "unit-test",
     name: "Prueba Unitaria (Unit Test)",
     category: "Testing",
-    description: "Prueba que verifica el funcionamiento de una unidad específica de código (función, método, clase) de forma aislada.",
-    example: "Una prueba unitaria verifica que una función de cálculo de impuestos devuelva el resultado correcto."
+    description: "Prueba que verifica el funcionamiento de una unidad específica de código (*[función](#functions)*, método, clase) de forma aislada.",
+    relatedTerms: ["testing", "integration-test", "functions"],
+    example: "Una prueba unitaria verifica que una *[función](#functions)* de cálculo de impuestos devuelva el resultado correcto."
   },
   {
     id: "integration-test",
     name: "Prueba de Integración (Integration Test)",
     category: "Testing",
-    description: "Prueba que verifica la interacción entre diferentes componentes o módulos de una aplicación.",
-    example: "Una prueba de integración verifica que el login funcione correctamente con la base de datos y el frontend."
+    description: "Prueba que verifica la interacción entre diferentes *[componentes](#components)* o módulos de una aplicación.",
+    relatedTerms: ["testing", "unit-test"],
+    example: "Una prueba de integración verifica que el login funcione correctamente con la *[base de datos](#databases)* y el *[frontend](#frontend)*."
   },
   {
     id: "agile",
     name: "Metodología Ágil (Agile)",
     category: "Methodology",
     description: "Enfoque de desarrollo de software que enfatiza la colaboración, flexibilidad y entrega iterativa de valor.",
+    relatedTerms: ["scrum", "user-story", "mvp"],
     example: "*[scrum](#scrum)* y Kanban son metodologías ágiles que organizan el trabajo en sprints cortos con entregas frecuentes."
   },
   {
@@ -262,6 +279,7 @@ export const devTermsData: DevTerm[] = [
     name: "MVP (Minimum Viable Product)",
     category: "Methodology",
     description: "Versión de un producto con las funcionalidades mínimas necesarias para ser útil a los primeros usuarios.",
+    relatedTerms: ["agile", "user-story"],
     example: "Un MVP de una red social podría incluir solo registro, login, crear posts y ver posts de otros usuarios."
   },
   {
@@ -269,7 +287,8 @@ export const devTermsData: DevTerm[] = [
     name: "Refactoring (Refactorización)",
     category: "Development",
     description: "Proceso de mejorar el código existente sin cambiar su funcionalidad externa, enfocándose en la calidad y mantenibilidad.",
-    example: "Reorganizar funciones duplicadas, mejorar nombres de variables o simplificar lógica compleja sin cambiar el comportamiento."
+    relatedTerms: ["code-review", "functions", "variables"],
+    example: "Reorganizar *[funciones](#functions)* duplicadas, mejorar nombres de *[variables](#variables)* o simplificar lógica compleja sin cambiar el comportamiento."
   },
   {
     id: "code-review",
@@ -289,8 +308,9 @@ export const devTermsData: DevTerm[] = [
     id: "debugging",
     name: "Debugging (Depuración)",
     category: "Development",
-    description: "Proceso de identificar, analizar y corregir errores o bugs en el código de software. En VibeCoding se suele copiar y pegar los console logs en el chat para que lo arregle la IA.",
-    example: "Usar herramientas como breakpoints, logs o debuggers para encontrar por qué una función no funciona correctamente.",
+    description: "Proceso de identificar, analizar y corregir errores o bugs en el código de software. En VibeCoding se suele copiar y pegar los *[console-log](#console-log)* en el chat para que lo arregle la IA.",
+    relatedTerms: ["console-log", "testing", "logging"],
+    example: "Usar herramientas como breakpoints, logs o debuggers para encontrar por qué una *[función](#functions)* no funciona correctamente.",
     tags: ["basics"]
   },
   {
@@ -298,27 +318,31 @@ export const devTermsData: DevTerm[] = [
     name: "Rendimiento (Performance)",
     category: "Quality",
     description: "Medida de qué tan rápido y eficientemente funciona una aplicación bajo diferentes condiciones.",
-    example: "Optimizar el tiempo de carga de una página web, reducir el uso de memoria o mejorar la velocidad de consultas a base de datos."
+    relatedTerms: ["caching", "scalability", "cdn"],
+    example: "Optimizar el tiempo de carga de una página web, reducir el uso de memoria o mejorar la velocidad de consultas a *[bases de datos](#databases)*."
   },
   {
     id: "scalability",
     name: "Escalabilidad (Scalability)",
     category: "Architecture",
-    description: "Capacidad de un sistema para manejar un aumento en la carga de trabajo manteniendo el rendimiento.",
+    description: "Capacidad de un sistema para manejar un aumento en la carga de trabajo manteniendo el *[performance](#performance)*.",
+    relatedTerms: ["performance", "kubernetes", "microservices"],
     example: "Una aplicación que puede manejar 100 usuarios debe poder escalar para manejar 10,000 usuarios sin problemas."
   },
   {
     id: "monitoring",
     name: "Monitoreo (Monitoring)",
     category: "DevOps",
-    description: "Proceso de observar y medir el rendimiento y salud de una aplicación en tiempo real.",
+    description: "Proceso de observar y medir el *[performance](#performance)* y salud de una aplicación en tiempo real.",
+    relatedTerms: ["logging", "performance"],
     example: "Herramientas como New Relic o DataDog monitorean errores, tiempo de respuesta y uso de recursos de una aplicación."
   },
   {
     id: "logging",
     name: "Logging (Registro de Eventos)",
     category: "DevOps",
-    description: "Práctica de registrar eventos y actividades de una aplicación para facilitar el debugging y monitoreo.",
+    description: "Práctica de registrar eventos y actividades de una aplicación para facilitar el *[debugging](#debugging)* y *[monitoring](#monitoring)*.",
+    relatedTerms: ["debugging", "monitoring", "console-log"],
     example: "Registrar cuando un usuario se loguea, cuando ocurre un error, o cuándo se procesa una transacción."
   },
   {
@@ -326,51 +350,52 @@ export const devTermsData: DevTerm[] = [
     name: "Código Abierto (Open Source)",
     category: "Development",
     description: "Software cuyo código fuente está disponible públicamente y puede ser modificado y distribuido libremente.",
-    example: "Linux, React, Node.js y muchas librerías de JavaScript son proyectos de código abierto."
+    relatedTerms: ["library", "github", "repository"],
+    example: "Linux, React, Node.js y muchas *[librerías](#library)* de JavaScript son proyectos de código abierto."
   },
   {
     id: "git",
     name: "Git",
     category: "Development",
-    description: "Sistema de *[version-control](#version-control)* distribuido que permite rastrear cambios en archivos y coordinar trabajo en equipo.",
-    example: "Git permite crear *[branch](#branch)* para nuevas funcionalidades, *[merge](#merge)* cambios y mantener un historial completo del proyecto.",
+    description: "Sistema de *[control de versiones](#version-control)* distribuido que permite rastrear cambios en archivos y coordinar trabajo en equipo.",
+    example: "Git permite crear *[ramas](#branch)* para nuevas funcionalidades, *[fusionar](#merge)* cambios y mantener un historial completo del proyecto.",
     tags: ["basics"]
   },
   {
     id: "github",
     name: "GitHub",
     category: "Development",
-    description: "Plataforma de hosting para *[repository](#repository)* *[git](#git)* que facilita la colaboración y gestión de proyectos de software.",
-    example: "GitHub permite subir código, crear *[pull-request](#pull-request)*, gestionar issues y colaborar en proyectos de *[open-source](#open-source)*.",
+    description: "Plataforma de hosting para *[repositorios](#repository)* *[Git](#git)* que facilita la colaboración y gestión de proyectos de software.",
+    example: "GitHub permite subir código, crear *[pull request](#pull-request)*, gestionar issues y colaborar en proyectos de *[código abierto](#open-source)*.",
     tags: ["basics"]
   },
   {
     id: "pull-request",
     name: "Pull Request (PR)",
     category: "Development",
-    description: "Propuesta de cambios en un *[repository](#repository)* que solicita *[merge](#merge)* código de una *[branch](#branch)* a otra.",
-    example: "Un desarrollador crea una PR para *[merge](#merge)* su nueva funcionalidad con la *[branch](#branch)* principal del proyecto."
+    description: "Propuesta de cambios en un *[repositorio](#repository)* que solicita *[fusionar](#merge)* código de una *[rama](#branch)* a otra.",
+    example: "Un desarrollador crea una PR para fusionar su nueva funcionalidad con la *[rama](#branch)* principal del proyecto."
   },
   {
     id: "merge",
     name: "Merge (Fusión)",
     category: "Development",
-    description: "Proceso de combinar cambios de diferentes *[branch](#branch)* o *[commit](#commit)* en una sola *[branch](#branch)*.",
-    example: "*[merge](#merge)* una *[branch](#branch)* de nueva funcionalidad con la *[branch](#branch)* principal después de aprobar un *[pull-request](#pull-request)*."
+    description: "Proceso de combinar cambios de diferentes *[ramas](#branch)* o *[commits](#commit)* en una sola rama.",
+    example: "Fusionar una *[rama](#branch)* de nueva funcionalidad con la rama principal después de aprobar un *[pull request](#pull-request)*."
   },
   {
     id: "branch",
     name: "Rama (Branch)",
     category: "Development",
     description: "Línea de desarrollo independiente que permite trabajar en funcionalidades sin afectar el código principal.",
-    example: "Crear una *[branch](#branch)* 'feature/nuevo-login' para desarrollar una nueva funcionalidad de *[authentication](#authentication)*."
+    example: "Crear una rama 'feature/nuevo-login' para desarrollar una nueva funcionalidad de *[autenticación](#authentication)*."
   },
   {
     id: "commit",
     name: "Commit",
     category: "Development",
-    description: "Punto en el historial de *[git](#git)* que representa un conjunto de cambios específicos en el código.",
-    example: "Un *[commit](#commit)* puede representar la adición de una nueva función, corrección de un bug o actualización de *[documentation](#documentation)*.",
+    description: "Punto en el historial de *[Git](#git)* que representa un conjunto de cambios específicos en el código.",
+    example: "Un commit puede representar la adición de una nueva función, corrección de un bug o actualización de *[documentación](#documentation)*.",
     codeExample: `# Comandos básicos de Git para commits
 git add .                    # Agregar todos los cambios
 git commit -m "Mensaje"      # Crear commit con mensaje
@@ -394,7 +419,8 @@ git commit -m "Actualizar documentación"`,
     id: "data-types",
     name: "Tipos de Datos",
     category: "Development",
-    description: "Clasificación que define qué tipo de información puede almacenar una variable y qué operaciones se pueden realizar con ella.",
+    description: "Clasificación que define qué tipo de información puede almacenar una *[variable](#variables)* y qué operaciones se pueden realizar con ella.",
+    relatedTerms: ["variables", "data-structures"],
     example: "Como diferentes tipos de contenedores: un 'String' es como una caja de texto (tu nombre), un 'Integer' es como una caja de números (tu edad), un 'Boolean' es como una caja de sí/no (¿estás casado?), y un 'Array' es como una lista de compras.",
     codeExample: `// Diferentes tipos de datos
 let nombre = "María";           // String (texto)
@@ -408,6 +434,7 @@ let compras = ["pan", "leche"];  // Array (lista)`,
     name: "Estructuras de Datos",
     category: "Development",
     description: "Formas organizadas de almacenar y acceder a datos de manera eficiente, cada una optimizada para diferentes tipos de operaciones.",
+    relatedTerms: ["data-types", "variables", "json"],
     example: "Como diferentes tipos de cajas para organizar cosas: una caja simple para una lista de nombres, una caja con compartimentos para guardar información de una persona (nombre, edad, email), o una caja con sub-cajas para organizar archivos por carpetas.",
     codeExample: `// Array (lista simple)
 let nombres = ["Ana", "Carlos", "María"];
@@ -431,6 +458,7 @@ let personas = [
     name: "Algoritmo",
     category: "Development",
     description: "Secuencia de pasos lógicos y ordenados para resolver un problema específico o realizar una tarea computacional.",
+    relatedTerms: ["functions", "control-structures"],
     example: "Como una receta de cocina: 'Si no hay ingredientes, ve al supermercado. Si hay ingredientes, cocina la comida.' Los algoritmos son pasos lógicos que le dicen a la computadora qué hacer en cada situación.",
     codeExample: `// Algoritmo para encontrar el número más grande
 PASO 1: Tomar la primera lista de números
@@ -445,6 +473,7 @@ PASO 5: Mostrar el número más grande`,
     name: "Estructuras de Control",
     category: "Development",
     description: "Instrucciones que determinan el flujo de ejecución de un programa, permitiendo tomar decisiones y repetir acciones.",
+    relatedTerms: ["algorithms", "functions"],
     example: "If/else para decisiones, loops para repetir acciones, o switch para múltiples opciones.",
     codeExample: `// Estructuras de control básicas
 if (edad >= 18) {
@@ -522,15 +551,17 @@ function BotonPersonalizado({ texto, color }) {
     id: "api-key",
     name: "API Key",
     category: "Backend",
-    description: "Identificador único que autentica y autoriza el acceso a una API, actuando como contraseña para servicios externos.",
-    example: "Clave para acceder a la API de Google Maps, API key de OpenAI para ChatGPT, o token de Twitter para publicar tweets.",
+    description: "Identificador único que autentica y autoriza el acceso a una *[api](#api)*, actuando como contraseña para servicios externos.",
+    relatedTerms: ["api", "authentication", "environment-variables"],
+    example: "Clave para acceder a la *[api](#api)* de Google Maps, API key de OpenAI para ChatGPT, o token de Twitter para publicar tweets.",
     tags: ["basics"]
   },
   {
     id: "endpoint",
     name: "Endpoint",
     category: "Backend",
-    description: "URL específica donde una API recibe peticiones y devuelve respuestas. Es el punto de entrada a un servicio web.",
+    description: "URL específica donde una *[api](#api)* recibe peticiones y devuelve respuestas. Es el punto de entrada a un servicio web.",
+    relatedTerms: ["api", "rest", "routes"],
     example: "https://api.github.com/users para obtener datos de usuario, o /api/products para gestionar productos en una tienda.",
     tags: ["basics"]
   },
@@ -539,7 +570,8 @@ function BotonPersonalizado({ texto, color }) {
     name: "Variables de Entorno",
     category: "Development",
     description: "Valores configurables que se almacenan fuera del código y permiten ajustar el comportamiento de una aplicación según el entorno.",
-    example: "DATABASE_URL para conexión a base de datos, API_KEY para servicios externos, o DEBUG_MODE para activar logs detallados.",
+    relatedTerms: ["api-key", "development-environments", "variables"],
+    example: "DATABASE_URL para conexión a *[base de datos](#databases)*, API_KEY para servicios externos, o DEBUG_MODE para activar logs detallados.",
     codeExample: `// Variables de entorno en un archivo .env
 DATABASE_URL=postgresql://user:pass@localhost:5432/mydb
 API_KEY=sk-1234567890abcdef
@@ -555,6 +587,7 @@ const apiKey = process.env.API_KEY;`,
     name: "Entornos de Programación",
     category: "DevOps",
     description: "Diferentes configuraciones donde se ejecuta una aplicación: desarrollo (dev), staging (stg) y producción (prod).",
+    relatedTerms: ["environment-variables", "deployment"],
     example: "Dev para programar, Staging para pruebas antes del lanzamiento, y Producción para usuarios finales.",
     tags: ["basics"]
   },
@@ -602,7 +635,8 @@ git push --force              # Forzar push (usar con cuidado)`,
     id: "routes",
     name: "Rutas",
     category: "Frontend",
-    description: "URLs que definen las diferentes páginas o secciones de una aplicación web, mapeando direcciones a componentes específicos.",
+    description: "URLs que definen las diferentes páginas o secciones de una aplicación web, mapeando direcciones a *[componentes](#components)* específicos.",
+    relatedTerms: ["components", "single-page-application", "endpoint"],
     example: "/home para la página principal, /profile para perfil de usuario, o /products/:id para páginas de productos específicos.",
     tags: ["basics"]
   },
@@ -611,6 +645,7 @@ git push --force              # Forzar push (usar con cuidado)`,
     name: "Bases de Datos",
     category: "Backend",
     description: "Sistemas organizados para almacenar, gestionar y recuperar información de manera estructurada y eficiente.",
+    relatedTerms: ["backend", "rls", "api"],
     example: "Imagina una biblioteca gigante donde puedes guardar y encontrar información rápidamente. Las bases de datos son como bibliotecas digitales que almacenan todos los datos de una app: usuarios, productos, mensajes, etc.",
     tags: ["basics"]
   },
@@ -618,15 +653,17 @@ git push --force              # Forzar push (usar con cuidado)`,
     id: "client-server",
     name: "Arquitectura Cliente-Servidor",
     category: "Architecture",
-    description: "Modelo donde el cliente (frontend) solicita servicios al servidor (backend), que procesa y devuelve respuestas.",
-    example: "Tu navegador (cliente) solicita una página web al servidor, que la procesa y envía el HTML de vuelta.",
+    description: "Modelo donde el *[client](#client)* (*[frontend](#frontend)*) solicita servicios al *[server](#server)* (*[backend](#backend)*), que procesa y devuelve respuestas.",
+    relatedTerms: ["client", "server", "frontend", "backend"],
+    example: "Tu navegador (*[client](#client)*) solicita una página web al *[server](#server)*, que la procesa y envía el HTML de vuelta.",
     tags: ["basics"]
   },
   {
     id: "sso",
     name: "SSO (Single Sign-On)",
     category: "Security",
-    description: "Sistema de autenticación que permite a los usuarios acceder a múltiples aplicaciones con una sola credencial.",
+    description: "Sistema de *[authentication](#authentication)* que permite a los usuarios acceder a múltiples aplicaciones con una sola credencial.",
+    relatedTerms: ["authentication", "authorization"],
     example: "Iniciar sesión con Google para acceder a Gmail, YouTube y Drive, o login corporativo para todas las herramientas de la empresa.",
     tags: ["basics"]
   },
@@ -634,7 +671,8 @@ git push --force              # Forzar push (usar con cuidado)`,
     id: "rls",
     name: "RLS (Row Level Security)",
     category: "Backend",
-    description: "Mecanismo de seguridad en bases de datos que controla el acceso a filas específicas basado en el usuario autenticado.",
+    description: "Mecanismo de seguridad en *[bases de datos](#databases)* que controla el acceso a filas específicas basado en el usuario autenticado.",
+    relatedTerms: ["databases", "authentication", "authorization"],
     example: "Un usuario solo puede ver sus propios posts, o un empleado solo accede a datos de su departamento en la base de datos.",
     tags: ["basics"]
   },
@@ -665,8 +703,9 @@ npm install --save-dev jest # Instalar Jest para testing
     id: "fullstack",
     name: "Fullstack",
     category: "Architecture",
-    description: "Desarrollador que trabaja tanto en el frontend (interfaz de usuario) como en el backend (lógica del servidor) de una aplicación. Conoce todo el stack tecnológico.",
-    example: "Un desarrollador fullstack puede crear una app web completa: desde el diseño de la interfaz hasta la base de datos y la lógica del servidor.",
+    description: "Desarrollador que trabaja tanto en el *[frontend](#frontend)* (interfaz de usuario) como en el *[backend](#backend)* (lógica del servidor) de una aplicación. Conoce todo el stack tecnológico.",
+    relatedTerms: ["frontend", "backend", "databases"],
+    example: "Un desarrollador fullstack puede crear una app web completa: desde el diseño de la interfaz hasta la *[base de datos](#databases)* y la lógica del *[servidor](#server)*.",
     codeExample: `# Stack tecnológico típico de un fullstack
 Frontend: React, Vue, Angular
 Backend: Node.js, Python, Java
@@ -685,6 +724,7 @@ Servidor: Express, Django, Spring
     name: "Variables",
     category: "Development",
     description: "Contenedores que almacenan información que puede cambiar durante la ejecución de un programa. Son como cajas con etiquetas donde guardas datos.",
+    relatedTerms: ["data-types", "functions", "data-structures"],
     example: "Una variable 'nombre' puede contener 'María' hoy y 'Carlos' mañana. Una variable 'edad' puede cambiar de 25 a 26.",
     codeExample: `// Declarar variables
 let nombre = "María";        // Variable que puede cambiar

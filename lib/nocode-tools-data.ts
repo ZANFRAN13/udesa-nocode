@@ -163,11 +163,11 @@ export const noCodeToolsData: NoCodeTool[] = [
     tags: []
   },
   
-  // Infrastructure
+  // Infraestructura
   {
     id: "supabase",
     name: "Supabase",
-    category: "Infrastructure",
+    category: "Infraestructura",
     description: "La alternativa open source a Firebase. Base de datos, autenticación, storage y más.",
     website: "https://supabase.com",
     tags: ["ATP"]
@@ -175,7 +175,7 @@ export const noCodeToolsData: NoCodeTool[] = [
   {
     id: "netlify",
     name: "Netlify",
-    category: "Infrastructure",
+    category: "Infraestructura",
     description: "Escala y despliega más rápido con una arquitectura web componible.",
     website: "https://netlify.com",
     tags: ["ATP"]
@@ -183,7 +183,7 @@ export const noCodeToolsData: NoCodeTool[] = [
   {
     id: "vercel",
     name: "Vercel",
-    category: "Infrastructure",
+    category: "Infraestructura",
     description: "Construye y despliega las mejores experiencias web con el Framework más rápido.",
     website: "https://vercel.com",
     tags: ["ATP"]
@@ -191,7 +191,7 @@ export const noCodeToolsData: NoCodeTool[] = [
   {
     id: "mintlify",
     name: "Mintlify",
-    category: "Infrastructure",
+    category: "Infraestructura",
     description: "La plataforma de documentación inteligente. Crea docs hermosas y funcionales.",
     website: "https://mintlify.com",
     tags: []
