@@ -63,8 +63,8 @@ export default function WorksheetsPage() {
       description: "Empiecen a pensar ideas para sus proyectos",
       resources: [
         {
-          title: "Guía de ideación de productos",
-          url: "https://chatgpt.com",
+          title: "Ideación de productos",
+          url: "https://chatgpt.com/?q=dame_una_lista_de_ideas_de_producto_digital/",
           description: "Cómo generar ideas innovadoras"
         }
       ]
