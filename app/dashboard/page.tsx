@@ -25,6 +25,7 @@ export default function Dashboard() {
   const router = useRouter()
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
+  const [expandedSlide, setExpandedSlide] = useState<string | null>(null)
   const supabase = createClient()
 
   // Setup auth listener only for sign out events
@@ -79,10 +80,21 @@ export default function Dashboard() {
     if (sectionId === "clases-grabadas") {
       setExpandedClass(expandedClass === item ? null : item)
     }
+    // Handle slide toggles
+    if (sectionId === "material-clase" && item === "Slides de presentaciones") {
+      setExpandedSlide(expandedSlide === item ? null : item)
+    }
+    if (sectionId === "material-clase" && item === "Worksheets y actividades") {
+      router.push('/dashboard/worksheets')
+    }
   }
 
   const classVideos: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  }
+
+  const classSlides: Record<string, string> = {
+    "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
   }
 
   const sections = [
@@ -241,15 +253,19 @@ export default function Dashboard() {
                           <div className="grid gap-3">
                             {section.content.map((item, index) => {
                               const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
-                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos"))
+                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
+                                                (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isNoCode = item === "Herramientas No-Code"
                               const isUI = item === "Vocabulario de diseño: UI"
                               const isCSS = item === "Vocabulario de diseño:CSS"
                               const isDev = item === "Vocabulario de desarrollo"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
                               const isBenefits = item === "Beneficios Exclusivos"
+                              const isSlides = item === "Slides de presentaciones"
+                              const isWorksheets = item === "Worksheets y actividades"
                               const hasVideo = section.id === "clases-grabadas" && classVideos[item]
                               const isExpanded = expandedClass === item
+                              const isSlidesExpanded = expandedSlide === item
                               
                               return (
                                 <div key={index}>
@@ -265,14 +281,21 @@ export default function Dashboard() {
                                     <span className={`text-foreground ${isClickable || hasVideo ? "font-medium" : ""}`}>
                                       {item}
                                     </span>
-                                    {isClickable && (
+                                    {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent">
                                         {isNoCode ? "Herramientas →" :
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 
                                          isDev ? "Glosario Dev →" :
                                          isWhatsApp ? "WhatsApp →" :
-                                         isBenefits ? "Beneficios →" : ""}
+                                         isBenefits ? "Beneficios →" :
+                                         isWorksheets ? "Worksheets →" : ""}
+                                      </span>
+                                    )}
+                                    {isSlides && (
+                                      <span className="ml-auto text-xs text-accent flex items-center gap-1">
+                                        <GraduationCap className="h-3 w-3" />
+                                        {isSlidesExpanded ? "Ocultar slides" : "Ver slides"}
                                       </span>
                                     )}
                                     {hasVideo && (
@@ -293,6 +316,24 @@ export default function Dashboard() {
                                           allow="autoplay"
                                         />
                                       </div>
+                                    </div>
+                                  )}
+
+                                  {isSlides && isSlidesExpanded && (
+                                    <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                                      {Object.entries(classSlides).map(([className, slideUrl]) => (
+                                        <div key={className} className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+                                          <h4 className="text-sm font-medium text-foreground mb-3">{className}</h4>
+                                          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                                            <iframe
+                                              src={slideUrl}
+                                              className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
+                                              allowFullScreen
+                                              allow="autoplay"
+                                            />
+                                          </div>
+                                        </div>
+                                      ))}
                                     </div>
                                   )}
                                 </div>
