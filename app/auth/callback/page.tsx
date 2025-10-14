@@ -27,9 +27,13 @@ export default function AuthCallbackPage() {
           return
         }
 
+        console.log('Processing auth callback with code:', code)
+
         // Exchange code for session
-        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
         
+        console.log('Exchange result:', { data, error: exchangeError })
+
         if (exchangeError) {
           console.error('Error exchanging code for session:', exchangeError)
           setError('No se pudo iniciar sesión. El código puede haber expirado o ser inválido.')
@@ -37,13 +41,24 @@ export default function AuthCallbackPage() {
           return
         }
 
-        // Success - redirect to dashboard
-        setStatus('success')
-        
-        // Small delay to show success state, then redirect
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 1500)
+        // Check if we have a valid session
+        if (data?.session) {
+          console.log('Session created successfully:', data.session.user.email)
+          setStatus('success')
+          
+          // Small delay to show success state, then redirect
+          setTimeout(() => {
+            router.push('/dashboard')
+          }, 2000)
+        } else {
+          console.log('No session found, but no error either')
+          setStatus('success')
+          
+          // Small delay to show success state, then redirect
+          setTimeout(() => {
+            router.push('/dashboard')
+          }, 2000)
+        }
 
       } catch (error: any) {
         console.error('Unexpected error in auth callback:', error)
