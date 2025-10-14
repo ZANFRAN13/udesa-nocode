@@ -91,21 +91,15 @@ export default function AuthCallbackPage() {
             {status === 'success' && (
               <div className="text-center space-y-4">
                 <div className="flex justify-center">
-                  <CheckCircle className="h-12 w-12 text-green-600" />
+                  <CheckCircle className="h-8 w-8 text-green-600" />
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold mb-2 text-green-600">
                     ¡Registro completado exitosamente!
                   </h2>
-                  <p className="text-muted-foreground mb-4">
-                    Tu cuenta ha sido verificada y activada. Ya puedes acceder a todos los recursos del programa.
+                  <p className="text-muted-foreground">
+                    Tu cuenta ha sido verificada. Redirigiendo al dashboard...
                   </p>
-                  <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-4">
-                    <p className="text-sm text-green-800 dark:text-green-200">
-                      <strong>¡Bienvenido al programa NO-CODE & AI!</strong><br />
-                      Redirigiendo al dashboard...
-                    </p>
-                  </div>
                 </div>
               </div>
             )}
