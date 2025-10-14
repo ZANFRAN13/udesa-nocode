@@ -5,6 +5,7 @@ export interface UITerm {
   description: string
   relatedTerms?: string[]
   example?: string
+  configuration?: string
   imageUrl?: string
 }
 

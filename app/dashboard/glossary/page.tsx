@@ -146,6 +146,54 @@ export default function UIGlossaryPage() {
             </p>
           </div>
 
+          {/* Example Section */}
+          <Card className="mb-8 border border-accent/20 bg-accent/5">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold text-accent flex items-center gap-2">
+                💡 Ejemplo Práctico: ¿Por qué es importante conocer los elementos UI?
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Vague Instructions */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-destructive">❌ Instrucciones vagas (resultado impreciso):</h4>
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 space-y-2">
+                    <p className="text-sm text-destructive/80 font-medium">"Créame un cosito para el otro coso de arriba"</p>
+                    <p className="text-sm text-destructive/80 font-medium">"Que cuando paso por arriba me diga ir a carrito"</p>
+                    <p className="text-sm text-destructive/80 font-medium">"Ponle algo que se vea bonito"</p>
+                    <p className="text-xs text-destructive/60 italic">→ La IA no sabe qué elemento crear ni dónde</p>
+                  </div>
+                </div>
+
+                {/* Specific Instructions */}
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-green-600">✅ Instrucciones específicas (resultado preciso):</h4>
+                  <div className="bg-green-600/10 border border-green-600/20 rounded-lg p-4 space-y-2">
+                    <p className="text-sm text-green-600/80 font-medium">
+                      "Agrega un <em className="italic font-semibold text-green-700">tooltip</em> para el <em className="italic font-semibold text-green-700">icono</em> del carrito en el <em className="italic font-semibold text-green-700">menú de navegación</em>"
+                    </p>
+                    <p className="text-sm text-green-600/80 font-medium">
+                      "Que al hacer <em className="italic font-semibold text-green-700">hover</em> me diga 'Ir a carrito'"
+                    </p>
+                    <p className="text-sm text-green-600/80 font-medium">
+                      "Con estilo <em className="italic font-semibold text-green-700">minimalista</em> y <em className="italic font-semibold text-green-700">animación suave</em>"
+                    </p>
+                    <p className="text-xs text-green-600/60 italic">→ La IA sabe exactamente qué crear y cómo</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-muted/50 rounded-lg p-4 border-l-4 border-accent">
+                <p className="text-sm text-muted-foreground">
+                  <strong>💡 Consejo:</strong> Conocer los nombres correctos de los elementos UI (<em className="italic">tooltip</em>, <em className="italic">dropdown</em>, <em className="italic">modal</em>, etc.) 
+                  te permite comunicarte mejor con la IA y obtener interfaces más profesionales. Este glosario te enseñará 
+                  el "vocabulario" que entiende la IA para crear experiencias de usuario excepcionales.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Search and Filters */}
           <Card className="mb-8 border border-border/50 shadow-sm">
             <CardHeader>

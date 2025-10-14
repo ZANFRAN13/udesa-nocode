@@ -11,5 +11,6 @@ export const config = {
      * Skip public routes, static files, and API routes for better performance
      */
     '/dashboard/:path*',
+    '/auth/callback',
   ],
 }

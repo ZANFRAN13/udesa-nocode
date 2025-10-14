@@ -148,6 +148,130 @@ function processTextWithLinks(text: string, onTermClick?: (termId: string) => vo
   })
 }
 
+// Function to process configuration text with better visual formatting
+function processConfigurationText(text: string, onTermClick?: (termId: string) => void) {
+  const lines = text.split('\n')
+  const sections = []
+  let currentSection = null
+  
+  // Group lines into sections
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim()
+    
+    if (line.startsWith('**') && line.endsWith('**')) {
+      // Main section headers
+      if (currentSection) {
+        sections.push(currentSection)
+      }
+      currentSection = {
+        title: line.replace(/\*\*/g, ''),
+        items: []
+      }
+    } else if (line.startsWith('- `') && line.includes('`')) {
+      // Code examples with descriptions
+      const match = line.match(/^- `([^`]+)` \(([^)]+)\)/)
+      if (match && currentSection) {
+        const [, code, description] = match
+        currentSection.items.push({
+          type: 'code-with-desc',
+          code,
+          description
+        })
+      } else if (currentSection) {
+        // Simple code examples
+        const code = line.replace(/^- `|`$/, '').replace(/^`|`$/, '')
+        currentSection.items.push({
+          type: 'code',
+          code
+        })
+      }
+    } else if (line.startsWith('**') && line.includes(':**')) {
+      // Subsection headers
+      if (currentSection) {
+        currentSection.items.push({
+          type: 'subsection',
+          title: line.replace(/\*\*/g, '').replace(/:\*\*$/, '')
+        })
+      }
+    } else if (line.includes('`') && !line.startsWith('-') && currentSection) {
+      // Inline code examples
+      currentSection.items.push({
+        type: 'inline-code',
+        content: line
+      })
+    } else if (line && !line.startsWith('**') && !line.startsWith('-') && currentSection) {
+      // Regular text
+      currentSection.items.push({
+        type: 'text',
+        content: line
+      })
+    }
+  }
+  
+  if (currentSection) {
+    sections.push(currentSection)
+  }
+  
+  // Render sections in columns
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sections.map((section, sectionIndex) => (
+        <div key={sectionIndex} className="space-y-3">
+          {/* Section Header */}
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-2 h-2 bg-accent rounded-full"></div>
+            <h5 className="font-semibold text-accent text-base">{section.title}</h5>
+          </div>
+          
+          {/* Section Items */}
+          <div className="space-y-2">
+            {section.items.map((item, itemIndex) => {
+              if (item.type === 'code-with-desc') {
+                return (
+                  <div key={itemIndex} className="flex items-start gap-2 p-2 bg-background/50 rounded-lg border border-border/30">
+                    <code className="bg-accent/10 text-accent px-2 py-1 rounded text-xs font-mono flex-shrink-0">
+                      {item.code}
+                    </code>
+                    <span className="text-muted-foreground text-xs">{item.description}</span>
+                  </div>
+                )
+              } else if (item.type === 'code') {
+                return (
+                  <div key={itemIndex} className="flex items-center gap-2">
+                    <div className="w-1 h-1 bg-muted-foreground rounded-full"></div>
+                    <code className="bg-accent/10 text-accent px-2 py-1 rounded text-xs font-mono">
+                      {item.code}
+                    </code>
+                  </div>
+                )
+              } else if (item.type === 'subsection') {
+                return (
+                  <div key={itemIndex} className="flex items-center gap-2 mt-3">
+                    <div className="w-1 h-1 bg-muted-foreground rounded-full"></div>
+                    <h6 className="font-medium text-foreground text-sm">{item.title}</h6>
+                  </div>
+                )
+              } else if (item.type === 'inline-code') {
+                const processedLine = item.content.replace(/`([^`]+)`/g, '<code class="bg-accent/10 text-accent px-1 py-0.5 rounded text-xs font-mono">$1</code>')
+                return (
+                  <div key={itemIndex} className="text-xs text-muted-foreground" dangerouslySetInnerHTML={{ __html: processedLine }} />
+                )
+              } else if (item.type === 'text') {
+                return (
+                  <p key={itemIndex} className="text-xs text-muted-foreground leading-relaxed">
+                    {item.content}
+                  </p>
+                )
+              }
+              return null
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function GlossaryTerm({ term, isExpanded = false, onToggle, onTermClick }: GlossaryTermProps) {
   return (
     <Card className="overflow-hidden border border-border/50 shadow-sm hover:shadow-md transition-shadow">
@@ -162,6 +286,11 @@ export function GlossaryTerm({ term, isExpanded = false, onToggle, onTermClick }
               <Badge variant="secondary" className="text-xs">
                 {term.category}
               </Badge>
+              {term.tags && term.tags.includes('basics') && (
+                <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
+                  Basics
+                </Badge>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -192,6 +321,21 @@ export function GlossaryTerm({ term, isExpanded = false, onToggle, onTermClick }
                 <p className="text-sm text-muted-foreground leading-relaxed italic">
                   {processTextWithLinks(term.example, onTermClick)}
                 </p>
+              </div>
+            )}
+
+            {/* Configuration */}
+            {term.configuration && (
+              <div>
+                <h4 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
+                  <span className="text-yellow-500">💡</span>
+                  Cómo configurar
+                </h4>
+                <div className="bg-gradient-to-r from-accent/5 to-accent/10 border border-accent/30 rounded-xl p-4 space-y-4">
+                  <div className="text-sm text-foreground leading-relaxed">
+                    {processConfigurationText(term.configuration, onTermClick)}
+                  </div>
+                </div>
               </div>
             )}
 

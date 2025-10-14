@@ -1,0 +1,4 @@
+---
+alwaysApply: true
+---
+When creating content for the site/app always consider that the target audience is a non-technical one, they don´t know, nor care to learn, how to program. Their mere objective is to vibe-code digital products with AI´s support so they do need to know the basics of the technologies and techniques, like what a terminal or a function or a varible or github are, or the names for the different existing UI components, or what basic commands to use on the terminal to work on a project. All content must be in a plain, understandable (non-technical) language and in the most didactive manner possible. When possible and pertinent add examples.

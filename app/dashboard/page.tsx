@@ -19,6 +19,8 @@ import {
   ChevronRight,
   ArrowLeft,
   LogOut,
+  Clock,
+  X,
 } from "lucide-react"
 
 export default function Dashboard() {
@@ -26,6 +28,7 @@ export default function Dashboard() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
   const [expandedSlide, setExpandedSlide] = useState<string | null>(null)
+  const [showHeuristicsPopup, setShowHeuristicsPopup] = useState(false)
   const supabase = createClient()
 
   // Setup auth listener only for sign out events
@@ -60,6 +63,9 @@ export default function Dashboard() {
   const handleItemClick = (sectionId: string, item: string) => {
     if (sectionId === "material-complementario" && item === "Herramientas No-Code") {
       router.push('/dashboard/nocode-tools')
+    }
+    if (sectionId === "material-complementario" && item === "Heurísticas y buenas prácticas") {
+      setShowHeuristicsPopup(true)
     }
     if (sectionId === "material-complementario" && item === "Vocabulario de diseño: UI") {
       router.push('/dashboard/glossary')
@@ -108,6 +114,7 @@ export default function Dashboard() {
         "Artículos",
         "Bibliografía y Videos",
         "Templates y plantillas",
+        "Heurísticas y buenas prácticas",
         "Vocabulario de diseño: UI",
         "Vocabulario de diseño:CSS",
         "Vocabulario de desarrollo",
@@ -252,10 +259,11 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-6">
                           <div className="grid gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
+                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isNoCode = item === "Herramientas No-Code"
+                              const isHeuristics = item === "Heurísticas y buenas prácticas"
                               const isUI = item === "Vocabulario de diseño: UI"
                               const isCSS = item === "Vocabulario de diseño:CSS"
                               const isDev = item === "Vocabulario de desarrollo"
@@ -284,6 +292,7 @@ export default function Dashboard() {
                                     {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent">
                                         {isNoCode ? "Herramientas →" :
+                                         isHeuristics ? "Heurísticas →" :
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 
                                          isDev ? "Glosario Dev →" :
@@ -357,6 +366,59 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Heuristics Coming Soon Popup */}
+      {showHeuristicsPopup && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-background border border-border rounded-lg shadow-lg max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-yellow-500/10 rounded-lg">
+                  <Clock className="h-5 w-5 text-yellow-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Próximamente
+                </h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowHeuristicsPopup(false)}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              <p className="text-muted-foreground">
+                La sección de <strong>Heurísticas y buenas prácticas</strong> estará disponible próximamente.
+              </p>
+              
+              <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
+                <p className="text-sm text-muted-foreground">
+                  <strong>¿Qué encontrarás aquí?</strong>
+                </p>
+                <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                  <li>• Principios de diseño UX/UI</li>
+                  <li>• Mejores prácticas para interfaces</li>
+                  <li>• Guías de accesibilidad</li>
+                  <li>• Patrones de diseño comunes</li>
+                </ul>
+              </div>
+              
+              <div className="flex justify-end">
+                <Button
+                  onClick={() => setShowHeuristicsPopup(false)}
+                  className="bg-accent hover:bg-accent/90"
+                >
+                  Entendido
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
