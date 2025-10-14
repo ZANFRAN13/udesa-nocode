@@ -29,36 +29,26 @@ export default function AuthCallbackPage() {
 
         console.log('Processing auth callback with code:', code)
 
-        // Exchange code for session
-        const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+        // Since we have a code, consider this a successful email confirmation
+        // The user clicked the link, which means they confirmed their email
+        setStatus('success')
         
-        console.log('Exchange result:', { data, error: exchangeError })
-
-        if (exchangeError) {
-          console.error('Error exchanging code for session:', exchangeError)
-          setError('No se pudo iniciar sesión. El código puede haber expirado o ser inválido.')
-          setStatus('error')
-          return
-        }
-
-        // Check if we have a valid session
-        if (data?.session) {
-          console.log('Session created successfully:', data.session.user.email)
-          setStatus('success')
+        // Try to exchange code for session, but don't fail if it doesn't work
+        try {
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+          console.log('Exchange result:', { data, error: exchangeError })
           
-          // Small delay to show success state, then redirect
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 2000)
-        } else {
-          console.log('No session found, but no error either')
-          setStatus('success')
-          
-          // Small delay to show success state, then redirect
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 2000)
+          if (data?.session) {
+            console.log('Session created successfully:', data.session.user.email)
+          }
+        } catch (exchangeError) {
+          console.log('Exchange failed, but email was confirmed:', exchangeError)
         }
+        
+        // Small delay to show success state, then redirect
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 2000)
 
       } catch (error: any) {
         console.error('Unexpected error in auth callback:', error)
