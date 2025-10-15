@@ -159,3 +159,25 @@
     linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
 }
+
+/* UdeSA Loader animations */
+@keyframes udesaZoomIn {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  80% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+@keyframes udesaZoomOutFlash {
+  0% { transform: scale(1); opacity: 1; }
+  20% { transform: scale(1.02); opacity: 0.95; }
+  100% { transform: scale(0.8); opacity: 0; }
+}
+
+.animate-udesa-in {
+  animation: udesaZoomIn 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-udesa-out {
+  animation: udesaZoomOutFlash 600ms ease-in forwards;
+}

@@ -84,17 +84,18 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
     }
   ]
 
+  // Ensure twitter script is present; layout preloads it
   useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://platform.twitter.com/widgets.js'
-    script.async = true
-    script.charset = 'utf-8'
-    document.body.appendChild(script)
-    
-    return () => {
-      if (document.body.contains(script)) {
-      document.body.removeChild(script)
-      }
+    if (typeof window === 'undefined') return
+    const hasWidgets = document.querySelector('script[src^="https://platform.twitter.com/widgets.js"]')
+    if (!hasWidgets) {
+      const script = document.createElement('script')
+      script.src = 'https://platform.twitter.com/widgets.js'
+      script.async = true
+      script.charset = 'utf-8'
+      document.body.appendChild(script)
+    } else {
+      window.twttr?.widgets.load()
     }
   }, [])
 
@@ -212,7 +213,11 @@ function PresentationLandingContent() {
   const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
 
   const handleLogin = () => {
-    router.push('/dashboard')
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('navigate-with-splash', { detail: { href: '/login' } }))
+    } else {
+      router.push('/login')
+    }
   }
 
   const toggleSection = (section: string) => {
@@ -1062,18 +1067,85 @@ function PresentationLandingContent() {
 }
 
 export default function PresentationLanding() {
+  const [showSplash, setShowSplash] = useState(true)
+  const [fadeOutSplash, setFadeOutSplash] = useState(false)
+  const [contentVisible, setContentVisible] = useState(false)
+
+  useEffect(() => {
+    let mounted = true
+    // Show splash at least 1.8s, then fade out and reveal content
+    const minDelay = setTimeout(() => {
+      if (!mounted) return
+      setFadeOutSplash(true)
+      setContentVisible(true)
+      // wait fade-out transition then unmount splash
+      setTimeout(() => {
+        if (mounted) setShowSplash(false)
+      }, 600)
+    }, 1800)
+
+    // If twitter is ready earlier, we still keep min 800ms
+    if (typeof window !== 'undefined') {
+      const checkTwttr = () => {
+        if (window.twttr && !showSplash) {
+          window.twttr.widgets.load()
+        }
+      }
+      const readyInterval = setInterval(checkTwttr, 300)
+      return () => { mounted = false; clearTimeout(minDelay); clearInterval(readyInterval) }
+    }
+    return () => { mounted = false; clearTimeout(minDelay) }
+  }, [showSplash])
+
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-black flex items-center justify-center">
+    <>
+      {showSplash && (
+        <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500 ${fadeOutSplash ? 'opacity-0' : 'opacity-100'}`}>
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
-            <p className="text-gray-400">Cargando...</p>
+            <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+            <p className="text-gray-300 mt-4">Cargando...</p>
           </div>
         </div>
-      }
-    >
-      <PresentationLandingContent />
-    </Suspense>
+      )}
+      {/* Listen for programmatic navigations that should show splash */}
+      <SplashNavigator />
+      <Suspense>
+        <div className={`transition-opacity duration-700 ${contentVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <PresentationLandingContent />
+        </div>
+      </Suspense>
+    </>
+  )
+}
+
+function SplashNavigator() {
+  const router = useRouter()
+  const [active, setActive] = useState(false)
+  const [fade, setFade] = useState(false)
+  const targetRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { href: string }
+      targetRef.current = detail?.href || '/'
+      setActive(true)
+      setTimeout(() => setFade(true), 50)
+      setTimeout(() => {
+        const to = targetRef.current || '/'
+        router.push(to)
+      }, 600)
+    }
+    window.addEventListener('navigate-with-splash', handler as EventListener)
+    return () => window.removeEventListener('navigate-with-splash', handler as EventListener)
+  }, [router])
+
+  if (!active) return null
+  return (
+    <div className={`fixed inset-0 z-50 flex items-center justify-center bg-black transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="text-center">
+        <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+        <p className="text-gray-300 mt-4">Entrando...</p>
+      </div>
+    </div>
   )
 }
