@@ -273,13 +273,6 @@ function PresentationLandingContent() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
 
-  // Refs para las secciones colapsables
-  const aboutSectionRef = useRef<HTMLDivElement>(null)
-  const introSectionRef = useRef<HTMLDivElement>(null)
-  const programaSectionRef = useRef<HTMLDivElement>(null)
-  const comercialSectionRef = useRef<HTMLDivElement>(null)
-  const preguntasSectionRef = useRef<HTMLDivElement>(null)
-
   const handleLogin = () => {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('navigate-with-splash', { detail: { href: '/login' } }))
@@ -292,30 +285,32 @@ function PresentationLandingContent() {
     const isClosing = activeSection === section
     setActiveSection(isClosing ? null : section)
     
-    // Si estamos abriendo una sección (no cerrándola), hacer scroll hacia ella
+    // Si estamos abriendo una sección, hacer scroll
     if (!isClosing) {
-      // Pequeño delay para permitir que la sección se renderice primero
-      setTimeout(() => {
-        const sectionRefs: Record<string, React.RefObject<HTMLDivElement>> = {
-          about: aboutSectionRef,
-          intro: introSectionRef,
-          programa: programaSectionRef,
-          comercial: comercialSectionRef,
-          preguntas: preguntasSectionRef,
-        }
-        
-        const targetRef = sectionRefs[section]
-        if (targetRef?.current) {
-          // Calcular el offset para que la sección no quede pegada al top
-          const yOffset = -80 // Offset negativo de 80px desde el top
-          const y = targetRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset
+      // Intentar hacer scroll con reintentos
+      let attempts = 0
+      const maxAttempts = 10
+      
+      const tryScroll = () => {
+        const element = document.getElementById(`section-${section}`)
+        if (element) {
+          const yOffset = -100
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
           
           window.scrollTo({
             top: y,
             behavior: 'smooth'
           })
+        } else {
+          attempts++
+          if (attempts < maxAttempts) {
+            setTimeout(tryScroll, 100)
+          }
         }
-      }, 150)
+      }
+      
+      // Iniciar después de un pequeño delay
+      setTimeout(tryScroll, 50)
     }
   }
 
@@ -708,7 +703,7 @@ function PresentationLandingContent() {
 
         <div className="container mx-auto px-3 md:px-4 py-8 md:py-12">
           {activeSection === "about" && (
-            <Card ref={aboutSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card id="section-about" className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <h3 className="text-4xl font-bold text-card-foreground">Coordinadores Académicos	</h3>
@@ -766,7 +761,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "intro" && (
-            <Card ref={introSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card id="section-intro" className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
@@ -836,7 +831,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "programa" && (
-            <Card ref={programaSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card id="section-programa" className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
@@ -1109,7 +1104,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "comercial" && (
-            <Card ref={comercialSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card id="section-comercial" className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
@@ -1132,7 +1127,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "preguntas" && (
-            <Card ref={preguntasSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card id="section-preguntas" className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10 text-center">
                 <div className="max-w-3xl mx-auto">
                   <div className="p-4 bg-accent/10 rounded-full w-fit mx-auto mb-8">
