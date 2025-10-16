@@ -47,7 +47,19 @@ import {
 const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
   const [currentTweet, setCurrentTweet] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const [tweetsLoaded, setTweetsLoaded] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    handleResize() // Initial check
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
   
   const tweets = [
     {
@@ -84,24 +96,38 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
     }
   ]
 
-  // Ensure twitter script is present; layout preloads it
+  // Ensure twitter script is present and load all tweets initially
   useEffect(() => {
     if (typeof window === 'undefined') return
+    
+    const loadTweets = () => {
+      if (window.twttr?.widgets) {
+        window.twttr.widgets.load()
+        // Wait for tweets to fully render
+        setTimeout(() => {
+          setTweetsLoaded(true)
+        }, 1500)
+      }
+    }
+    
     const hasWidgets = document.querySelector('script[src^="https://platform.twitter.com/widgets.js"]')
     if (!hasWidgets) {
       const script = document.createElement('script')
       script.src = 'https://platform.twitter.com/widgets.js'
       script.async = true
       script.charset = 'utf-8'
+      script.onload = () => {
+        setTimeout(loadTweets, 500)
+      }
       document.body.appendChild(script)
     } else {
-      window.twttr?.widgets.load()
+      loadTweets()
     }
   }, [])
 
   useEffect(() => {
-    // Auto-rotate tweets every 6 seconds, but only if not paused
-    if (isPaused) return
+    // Auto-rotate tweets every 6 seconds, but only if not paused and tweets are loaded
+    if (isPaused || !tweetsLoaded) return
     
     const interval = setInterval(() => {
       setCurrentTweet((prev) => (prev + 1) % tweets.length)
@@ -110,7 +136,7 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
     return () => {
       clearInterval(interval)
     }
-  }, [isPaused, tweets.length])
+  }, [isPaused, tweetsLoaded, tweets.length])
 
   const getVisibleTweets = () => {
     const prev = (currentTweet - 1 + tweets.length) % tweets.length
@@ -135,14 +161,30 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
   }
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative mb-8 min-h-[500px] flex items-center justify-center overflow-visible py-4"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="relative w-full max-w-7xl mx-auto px-4">
-        {/* Render all tweets but position them absolutely */}
+    <>
+      {/* Loading placeholder */}
+      {!tweetsLoaded && (
+        <div className="relative mb-8 min-h-[400px] md:min-h-[500px] flex items-center justify-center py-4">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-12 h-12 border-4 border-accent/30 border-t-accent rounded-full animate-spin"></div>
+            <p className="text-sm text-muted-foreground">Cargando tweets...</p>
+          </div>
+        </div>
+      )}
+      
+      <div 
+        ref={containerRef}
+        className="relative mb-8 min-h-[400px] md:min-h-[500px] flex items-center justify-center overflow-visible py-4"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          opacity: tweetsLoaded ? 1 : 0,
+          transition: 'opacity 600ms ease-in',
+          display: tweetsLoaded ? 'flex' : 'none',
+        }}
+      >
+        <div className="relative w-full max-w-7xl mx-auto px-2 md:px-4">
+        {/* Render all tweets - keep them mounted to avoid reloading */}
         {tweets.map((tweet, index) => {
           const position = visibleIndices.indexOf(index)
           const isVisible = position !== -1
@@ -151,36 +193,55 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
           const isRight = position === 2
           
           // Adjusted spacing: closer to center but not overlapping
+          // Mobile: hide side tweets, Desktop: show all three
           let translateX = '0%'
           if (isLeft) translateX = '-85%'  // Closer than -120%
           if (isRight) translateX = '85%'   // Closer than 120%
           
           // Special scaling for tweet id: 1 (vibe coding with video)
           const isLargeTweet = tweet.id === 1
-          const centerScale = isLargeTweet ? 0.85 : 1.1
+          // Mobile: smaller center tweet, Desktop: normal size
+          const centerScaleMobile = isLargeTweet ? 0.7 : 0.85
+          const centerScaleDesktop = isLargeTweet ? 0.85 : 1.1
           const sideScale = isLargeTweet ? 0.58 : 0.75
-          const scale = isCenter ? centerScale : sideScale
           
           // Align all tweets by their top edge when centered
           // Use transform-origin: top to scale from top edge
           // Background tweets are positioned slightly higher for better visual balance
-          const verticalOffset = isCenter ? '-240px' : '-180px'
+          const verticalOffsetMobile = isCenter ? '-180px' : '-120px'
+          const verticalOffsetDesktop = isCenter ? '-240px' : '-180px'
+          
+          // Calculate responsive values based on state
+          const verticalOffset = isMobile ? verticalOffsetMobile : verticalOffsetDesktop
+          const scale = isCenter 
+            ? (isMobile ? centerScaleMobile : centerScaleDesktop) 
+            : sideScale
+          
+          // Mobile-specific smoother transitions
+          const transitionDuration = isMobile ? '1200ms' : '1000ms'
+          const opacityDuration = isMobile ? '1000ms' : '800ms'
           
           return (
             <div
               key={index}
-              className={`absolute left-1/2 top-1/2 transition-all duration-700 ease-in-out ${
-                isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              } ${isCenter ? 'z-20' : 'z-10'}`}
+              className={`absolute left-1/2 top-1/2 ${
+                isCenter ? 'z-20' : 'z-10 md:block'
+              }`}
               style={{
                 transform: `translate(-50%, 0%) translateX(${translateX}) translateY(${verticalOffset}) scale(${scale})`,
                 transformOrigin: 'top center',
-                width: '450px',
+                width: 'min(450px, 90vw)',
+                maxWidth: '450px',
+                opacity: isVisible ? 1 : 0,
+                pointerEvents: isVisible ? 'auto' : 'none',
+                transition: `opacity ${opacityDuration} ease-in-out, transform ${transitionDuration} ease-in-out`,
+                // In mobile, hide non-center tweets by setting display none after transition
+                display: isMobile && !isCenter && !isVisible ? 'none' : 'block',
               }}
               onClick={() => !isCenter && handleTweetClick(index)}
             >
               <div 
-                className={`${!isCenter ? 'opacity-40 cursor-pointer hover:opacity-60 transition-opacity' : ''}`}
+                className={`transition-opacity ${isMobile ? 'duration-700' : 'duration-500'} ${!isCenter ? 'opacity-40 cursor-pointer hover:opacity-60' : 'opacity-100'}`}
                 style={{ pointerEvents: isCenter ? 'auto' : 'none' }}
               >
                 <blockquote 
@@ -199,9 +260,9 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
             </div>
           )
         })}
+        </div>
       </div>
-      
-    </div>
+    </>
   )
 }), { ssr: false })
 
@@ -212,6 +273,13 @@ function PresentationLandingContent() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
 
+  // Refs para las secciones colapsables
+  const aboutSectionRef = useRef<HTMLDivElement>(null)
+  const introSectionRef = useRef<HTMLDivElement>(null)
+  const programaSectionRef = useRef<HTMLDivElement>(null)
+  const comercialSectionRef = useRef<HTMLDivElement>(null)
+  const preguntasSectionRef = useRef<HTMLDivElement>(null)
+
   const handleLogin = () => {
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('navigate-with-splash', { detail: { href: '/login' } }))
@@ -221,7 +289,34 @@ function PresentationLandingContent() {
   }
 
   const toggleSection = (section: string) => {
-    setActiveSection(activeSection === section ? null : section)
+    const isClosing = activeSection === section
+    setActiveSection(isClosing ? null : section)
+    
+    // Si estamos abriendo una sección (no cerrándola), hacer scroll hacia ella
+    if (!isClosing) {
+      // Pequeño delay para permitir que la sección se renderice primero
+      setTimeout(() => {
+        const sectionRefs: Record<string, React.RefObject<HTMLDivElement>> = {
+          about: aboutSectionRef,
+          intro: introSectionRef,
+          programa: programaSectionRef,
+          comercial: comercialSectionRef,
+          preguntas: preguntasSectionRef,
+        }
+        
+        const targetRef = sectionRefs[section]
+        if (targetRef?.current) {
+          // Calcular el offset para que la sección no quede pegada al top
+          const yOffset = -80 // Offset negativo de 80px desde el top
+          const y = targetRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset
+          
+          window.scrollTo({
+            top: y,
+            behavior: 'smooth'
+          })
+        }
+      }, 150)
+    }
   }
 
   const toggleClass = (classNumber: number) => {
@@ -485,31 +580,31 @@ function PresentationLandingContent() {
   return (
     <div className="min-h-screen bg-background">
       <div className="relative bg-background overflow-hidden">
-        <div className="absolute top-6 left-6 z-10 flex items-center gap-8">
+        <div className="absolute top-4 md:top-6 left-3 md:left-6 z-10 flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-8">
           <img
             src="/images/udesa-png.svg"
             alt="Universidad de San Andrés"
-            className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
+            className="h-8 md:h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
           />
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-white font-light">CON EL APOYO DE:  </span>
+          <div className="flex items-center gap-2 md:gap-3">
+            <span className="text-xs md:text-sm text-white font-light">CON EL APOYO DE:</span>
             <img
               src="/images/v0-logo-dark.webp"
               alt="v0 Logo"
-              className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
+              className="h-6 md:h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
             />
           </div>
         </div>
 
-        <div className="absolute top-6 right-6 z-10">
+        <div className="absolute top-4 md:top-6 right-3 md:right-6 z-10">
           <Button
             onClick={handleLogin}
             variant="outline"
             size="lg"
-            className="bg-black/50 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 hover:border-accent hover:text-accent transition-all duration-300"
+            className="bg-black/50 backdrop-blur-sm border-white/20 text-white hover:bg-white/10 hover:border-accent hover:text-accent transition-all duration-300 text-sm md:text-base h-9 md:h-11 px-3 md:px-4"
           >
-            <LogIn className="h-4 w-4 mr-2" />
-            Ingresar
+            <LogIn className="h-3 w-3 md:h-4 md:w-4 md:mr-2" />
+            <span className="hidden sm:inline">Ingresar</span>
           </Button>
         </div>
 
@@ -531,30 +626,30 @@ function PresentationLandingContent() {
 
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />
 
-        <div className="relative container mx-auto px-4 py-12 text-center">
+        <div className="relative container mx-auto px-3 md:px-4 py-8 md:py-12 text-center">
           <div className="max-w-5xl mx-auto">
             {/* <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-background rounded-full text-sm font-medium mb-8 border border-accent/20 animate-glow">
               <Sparkles className="h-4 w-4" />
               Universidad de San Andrés
             </div> */}
 
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-balance text-foreground mt-16">Programa NO-CODE & AI</h1>
-            <p className="text-lg md:text-xl mb-6 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed">
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-3 md:mb-4 text-balance text-foreground mt-24 md:mt-16 px-2">Programa NO-CODE & AI</h1>
+            <p className="text-base md:text-lg lg:text-xl mb-4 md:mb-6 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed px-2">
               Aprendé a desarrollar aplicaciones sin saber programar
             </p>
             <TwitterEmbed />
 
-            <div className="max-w-6xl mx-auto space-y-8">
+            <div className="max-w-6xl mx-auto space-y-4 md:space-y-8">
               {/* Primera fila - 3 botones */}
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 <Button
                   onClick={() => toggleSection("about")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
+                  className="h-20 md:h-24 text-sm md:text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-3 md:px-4 bg-black text-white shadow-lg"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <User className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                    <User className="h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span className="text-center leading-tight">Sobre nosotros</span>
                   </div>
                 </Button>
@@ -562,10 +657,10 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("intro")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
+                  className="h-20 md:h-24 text-sm md:text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-3 md:px-4 bg-black text-white shadow-lg"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <Users className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                    <Users className="h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span className="text-center leading-tight">Introducción al Vibe Coding</span>
                   </div>
                 </Button>
@@ -573,25 +668,25 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("programa")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
+                  className="h-20 md:h-24 text-sm md:text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-3 md:px-4 bg-black text-white shadow-lg"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <Calendar className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                    <Calendar className="h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span className="text-center leading-tight">Qué haremos en el Programa</span>
                   </div>
                 </Button>
               </div>
 
               {/* Segunda fila - 2 botones centrados */}
-              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-2xl mx-auto">
                 <Button
                   onClick={() => toggleSection("comercial")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
+                  className="h-20 md:h-24 text-sm md:text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-3 md:px-4 bg-black text-white shadow-lg"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <TrendingUp className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                    <TrendingUp className="h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span className="text-center leading-tight">Información Comercial</span>
                   </div>
                 </Button>
@@ -599,10 +694,10 @@ function PresentationLandingContent() {
                   onClick={() => toggleSection("preguntas")}
                   variant="outline"
                   size="lg"
-                  className="h-24 text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-4 bg-black text-white shadow-lg"
+                  className="h-20 md:h-24 text-sm md:text-base font-semibold hover:scale-105 transition-all duration-300 border-2 border-white hover:border-accent hover:bg-accent/20 hover:text-accent group px-3 md:px-4 bg-black text-white shadow-lg"
                 >
-                  <div className="flex flex-col items-center gap-2">
-                    <MessageCircle className="h-6 w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
+                  <div className="flex flex-col items-center gap-1.5 md:gap-2">
+                    <MessageCircle className="h-5 w-5 md:h-6 md:w-6 group-hover:scale-110 transition-transform flex-shrink-0" />
                     <span className="text-center leading-tight">Preguntas & Cierre</span>
                   </div>
                 </Button>
@@ -611,9 +706,9 @@ function PresentationLandingContent() {
           </div>
         </div>
 
-        <div className="container mx-auto px-4 py-12">
+        <div className="container mx-auto px-3 md:px-4 py-8 md:py-12">
           {activeSection === "about" && (
-            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card ref={aboutSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <h3 className="text-4xl font-bold text-card-foreground">Coordinadores Académicos	</h3>
@@ -671,7 +766,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "intro" && (
-            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card ref={introSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
@@ -741,7 +836,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "programa" && (
-            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card ref={programaSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
@@ -1014,7 +1109,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "comercial" && (
-            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card ref={comercialSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="p-2 bg-accent/10 rounded-lg border border-accent/20">
@@ -1037,7 +1132,7 @@ function PresentationLandingContent() {
           )}
 
           {activeSection === "preguntas" && (
-            <Card className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
+            <Card ref={preguntasSectionRef} className="mb-8 animate-in slide-in-from-top-4 duration-500 border border-border/50 shadow-2xl bg-card/80 backdrop-blur-sm">
               <CardContent className="p-10 text-center">
                 <div className="max-w-3xl mx-auto">
                   <div className="p-4 bg-accent/10 rounded-full w-fit mx-auto mb-8">

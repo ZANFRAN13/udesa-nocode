@@ -168,27 +168,28 @@ export default function Dashboard() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
               <Button
                 onClick={handleBackToHome}
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground shrink-0"
               >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Volver al inicio
+                <ArrowLeft className="h-4 w-4 md:mr-2" />
+                <span className="hidden sm:inline">Volver al inicio</span>
               </Button>
-              <div className="h-6 w-px bg-border" />
-              <div className="flex items-center gap-3">
+              <div className="hidden sm:block h-6 w-px bg-border" />
+              <div className="flex items-center gap-2 md:gap-3 min-w-0">
                 <img
                   src="/images/udesa-png.svg"
                   alt="Universidad de San Andrés"
-                  className="h-8 w-auto"
+                  className="h-6 md:h-8 w-auto shrink-0"
                 />
-                <h1 className="text-xl font-semibold text-foreground">
-                  Dashboard - Programa NO-CODE & AI
+                <h1 className="text-sm md:text-xl font-semibold text-foreground truncate">
+                  <span className="hidden lg:inline">Dashboard - Programa NO-CODE & AI</span>
+                  <span className="lg:hidden">Dashboard</span>
                 </h1>
               </div>
             </div>
@@ -196,68 +197,68 @@ export default function Dashboard() {
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground shrink-0 ml-2"
             >
-              <LogOut className="h-4 w-4 mr-2" />
-              Cerrar sesión
+              <LogOut className="h-4 w-4 md:mr-2" />
+              <span className="hidden sm:inline">Cerrar sesión</span>
             </Button>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 md:px-4 py-6 md:py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">
+          <div className="mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
               Bienvenido al Dashboard
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm md:text-base text-muted-foreground">
               Accede a todo el contenido del programa, materiales de clase y conecta con la comunidad.
             </p>
           </div>
 
-          <div className="grid gap-6">
+          <div className="grid gap-4 md:gap-6">
             {sections.map((section) => {
               const IconComponent = section.icon
               const isOpen = openSections[section.id]
 
               return (
-                <Card key={section.id} className="overflow-hidden border border-border/50 shadow-sm">
+                <Card key={section.id} className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200">
                   <Collapsible
                     open={isOpen}
                     onOpenChange={() => toggleSection(section.id)}
                   >
                     <CollapsibleTrigger asChild>
-                      <CardHeader className="cursor-pointer hover:bg-accent/5 transition-colors">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
-                              <IconComponent className="h-6 w-6 text-accent" />
+                      <CardHeader className="cursor-pointer p-4 md:p-6">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                            <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                              <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                             </div>
-                            <div>
-                              <CardTitle className="text-xl font-semibold text-foreground">
+                            <div className="min-w-0 flex-1">
+                              <CardTitle className="text-base md:text-xl font-semibold text-foreground">
                                 {section.title}
                               </CardTitle>
-                              <p className="text-sm text-muted-foreground mt-1">
+                              <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
                                 {section.description}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 shrink-0">
                             {isOpen ? (
-                              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                              <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
                             ) : (
-                              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                              <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
                             )}
                           </div>
                         </div>
                       </CardHeader>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                      <CardContent className="pt-0">
-                        <div className="border-t border-border/30 pt-6">
-                          <div className="grid gap-3">
+                      <CardContent className="pt-0 px-4 md:px-6 pb-4 md:pb-6">
+                        <div className="border-t border-border/30 pt-4 md:pt-6">
+                          <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
                               const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
@@ -279,18 +280,18 @@ export default function Dashboard() {
                                 <div key={index}>
                                   <div
                                     onClick={() => handleItemClick(section.id, item)}
-                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors border border-transparent ${
+                                    className={`flex items-center gap-2 md:gap-3 p-2.5 md:p-3 rounded-lg transition-colors border border-transparent ${
                                       isClickable || hasVideo
                                         ? "bg-accent/10 hover:bg-accent/20 cursor-pointer hover:border-accent/30" 
                                         : "bg-accent/5 hover:bg-accent/10 cursor-pointer hover:border-accent/20"
                                     }`}
                                   >
-                                    <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0" />
-                                    <span className={`text-foreground ${isClickable || hasVideo ? "font-medium" : ""}`}>
+                                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-accent rounded-full flex-shrink-0" />
+                                    <span className={`text-sm md:text-base text-foreground min-w-0 flex-1 ${isClickable || hasVideo ? "font-medium" : ""}`}>
                                       {item}
                                     </span>
                                     {isClickable && !isSlides && (
-                                      <span className="ml-auto text-xs text-accent">
+                                      <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isNoCode ? "Herramientas →" :
                                          isHeuristics ? "Heurísticas →" :
                                          isUI ? "Glosario UI →" : 
@@ -302,21 +303,21 @@ export default function Dashboard() {
                                       </span>
                                     )}
                                     {isSlides && (
-                                      <span className="ml-auto text-xs text-accent flex items-center gap-1">
+                                      <span className="ml-auto text-xs text-accent flex items-center gap-1 shrink-0">
                                         <GraduationCap className="h-3 w-3" />
-                                        {isSlidesExpanded ? "Ocultar slides" : "Ver slides"}
+                                        <span className="hidden sm:inline">{isSlidesExpanded ? "Ocultar slides" : "Ver slides"}</span>
                                       </span>
                                     )}
                                     {hasVideo && (
-                                      <span className="ml-auto text-xs text-accent flex items-center gap-1">
+                                      <span className="ml-auto text-xs text-accent flex items-center gap-1 shrink-0">
                                         <Video className="h-3 w-3" />
-                                        {isExpanded ? "Ocultar video" : "Ver video"}
+                                        <span className="hidden sm:inline">{isExpanded ? "Ocultar video" : "Ver video"}</span>
                                       </span>
                                     )}
                                   </div>
                                   
                                   {hasVideo && isExpanded && (
-                                    <div className="mt-3 p-4 bg-accent/5 rounded-lg border border-accent/20 animate-in slide-in-from-top-2 duration-200">
+                                    <div className="mt-2 md:mt-3 p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20 animate-in slide-in-from-top-2 duration-200">
                                       <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                                         <iframe
                                           src={classVideos[item]}
@@ -329,10 +330,10 @@ export default function Dashboard() {
                                   )}
 
                                   {isSlides && isSlidesExpanded && (
-                                    <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-200">
+                                    <div className="mt-2 md:mt-3 space-y-2 md:space-y-3 animate-in slide-in-from-top-2 duration-200">
                                       {Object.entries(classSlides).map(([className, slideUrl]) => (
-                                        <div key={className} className="p-4 bg-accent/5 rounded-lg border border-accent/20">
-                                          <h4 className="text-sm font-medium text-foreground mb-3">{className}</h4>
+                                        <div key={className} className="p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20">
+                                          <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3">{className}</h4>
                                           <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                                             <iframe
                                               src={slideUrl}
@@ -359,8 +360,8 @@ export default function Dashboard() {
           </div>
 
           {/* Footer info */}
-          <div className="mt-12 text-center">
-            <p className="text-muted-foreground text-sm">
+          <div className="mt-8 md:mt-12 text-center">
+            <p className="text-muted-foreground text-xs md:text-sm px-2">
               ¿Necesitas ayuda? Contacta a los coordinadores académicos o utiliza el foro de la comunidad.
             </p>
           </div>
@@ -369,14 +370,14 @@ export default function Dashboard() {
 
       {/* Heuristics Coming Soon Popup */}
       {showHeuristicsPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-background border border-border rounded-lg shadow-lg max-w-md w-full p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-yellow-500/10 rounded-lg">
-                  <Clock className="h-5 w-5 text-yellow-600" />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 md:p-4">
+          <div className="bg-background border border-border rounded-lg shadow-lg max-w-md w-full p-4 md:p-6">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="p-1.5 md:p-2 bg-yellow-500/10 rounded-lg">
+                  <Clock className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-base md:text-lg font-semibold text-foreground">
                   Próximamente
                 </h3>
               </div>
@@ -390,16 +391,16 @@ export default function Dashboard() {
               </Button>
             </div>
             
-            <div className="space-y-4">
-              <p className="text-muted-foreground">
+            <div className="space-y-3 md:space-y-4">
+              <p className="text-sm md:text-base text-muted-foreground">
                 La sección de <strong>Heurísticas y buenas prácticas</strong> estará disponible próximamente.
               </p>
               
-              <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
-                <p className="text-sm text-muted-foreground">
+              <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 md:p-4">
+                <p className="text-xs md:text-sm text-muted-foreground">
                   <strong>¿Qué encontrarás aquí?</strong>
                 </p>
-                <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                <ul className="text-xs md:text-sm text-muted-foreground mt-2 space-y-1">
                   <li>• Principios de diseño UX/UI</li>
                   <li>• Mejores prácticas para interfaces</li>
                   <li>• Guías de accesibilidad</li>
@@ -410,7 +411,7 @@ export default function Dashboard() {
               <div className="flex justify-end">
                 <Button
                   onClick={() => setShowHeuristicsPopup(false)}
-                  className="bg-accent hover:bg-accent/90"
+                  className="bg-accent hover:bg-accent/90 text-sm md:text-base"
                 >
                   Entendido
                 </Button>

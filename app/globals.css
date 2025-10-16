@@ -121,7 +121,18 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans overflow-x-hidden;
+  }
+  html {
+    @apply overflow-x-hidden;
+  }
+  /* Responsive images */
+  img {
+    @apply max-w-full h-auto;
+  }
+  /* Responsive pre and code blocks */
+  pre {
+    @apply max-w-full overflow-x-auto;
   }
 }
 
