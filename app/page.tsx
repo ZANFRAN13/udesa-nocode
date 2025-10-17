@@ -41,6 +41,7 @@ import {
   Wrench,
   Play,
   LogIn,
+  Info,
 } from "lucide-react"
 
 // Client-only Twitter component to avoid hydration issues
@@ -172,17 +173,17 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
         </div>
       )}
       
-      <div 
-        ref={containerRef}
+    <div 
+      ref={containerRef}
         className="relative mb-8 min-h-[400px] md:min-h-[500px] flex items-center justify-center overflow-visible py-4"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
         style={{
           opacity: tweetsLoaded ? 1 : 0,
           transition: 'opacity 600ms ease-in',
           display: tweetsLoaded ? 'flex' : 'none',
         }}
-      >
+    >
         <div className="relative w-full max-w-7xl mx-auto px-2 md:px-4">
         {/* Render all tweets - keep them mounted to avoid reloading */}
         {tweets.map((tweet, index) => {
@@ -260,8 +261,8 @@ const TwitterEmbed = dynamic(() => Promise.resolve(function TwitterEmbed() {
             </div>
           )
         })}
-        </div>
       </div>
+    </div>
     </>
   )
 }), { ssr: false })
@@ -272,6 +273,7 @@ function PresentationLandingContent() {
   const [expandedClass, setExpandedClass] = useState<number | null>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [currentAboutSlide, setCurrentAboutSlide] = useState(0)
+  const [showInfoTooltip, setShowInfoTooltip] = useState(false)
 
   const handleLogin = () => {
     if (typeof window !== 'undefined') {
@@ -629,9 +631,50 @@ function PresentationLandingContent() {
             </div> */}
 
             <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-3 md:mb-4 text-balance text-foreground mt-24 md:mt-16 px-2">Programa NO-CODE & AI</h1>
-            <p className="text-base md:text-lg lg:text-xl mb-4 md:mb-6 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed px-2">
-              Aprendé a desarrollar aplicaciones sin saber programar
-            </p>
+            <div className="text-base md:text-lg lg:text-xl mb-4 md:mb-6 text-muted-foreground text-pretty max-w-3xl mx-auto leading-relaxed px-2 flex items-center justify-center gap-2 flex-wrap">
+              <p className="inline">Aprendé a desarrollar aplicaciones sin saber programar</p>
+              <div 
+                className="relative inline-flex items-center group"
+                onMouseEnter={() => setShowInfoTooltip(true)}
+                onMouseLeave={() => setShowInfoTooltip(false)}
+              >
+                {/* Contorno circular ondulado que rota */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-visible">
+                  {/* Contorno circular rotante */}
+                  <div 
+                    className="absolute w-12 h-12 md:w-14 md:h-14"
+                    style={{ 
+                      background: 'radial-gradient(circle, rgba(0, 212, 255, 0.6) 0%, rgba(0, 212, 255, 0.25) 35%, rgba(0, 212, 255, 0.1) 55%, transparent 70%)',
+                      borderRadius: '50%',
+                      animation: 'wave-rotate 8s linear infinite, glow-pulse-intensity 3s ease-in-out infinite',
+                      filter: 'blur(8px)',
+                      boxShadow: '0 0 20px rgba(0, 212, 255, 0.3)'
+                    }}
+                  />
+                </div>
+                
+                {/* Icono principal */}
+                <Info 
+                  className="h-4 w-4 md:h-5 md:w-5 text-accent cursor-help transition-transform hover:scale-125 relative z-10" 
+                  style={{ 
+                    animation: 'pulse-glow 2s ease-in-out infinite',
+                    filter: 'drop-shadow(0 0 8px rgba(0, 212, 255, 0.8))'
+                  }}
+                />
+                
+                {showInfoTooltip && (
+                  <div 
+                    className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2.5 bg-accent/95 backdrop-blur-sm text-accent-foreground text-xs md:text-sm rounded-xl shadow-2xl whitespace-nowrap animate-in fade-in slide-in-from-bottom-2 duration-300 pointer-events-none z-50 border border-accent/20"
+                    style={{ boxShadow: '0 0 30px rgba(0, 212, 255, 0.6), 0 0 60px rgba(0, 212, 255, 0.3)' }}
+                  >
+                    <span className="font-medium">✨ Este sitio fue 100% creado sin programar</span>
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1">
+                      <div className="border-8 border-transparent border-t-accent/95"></div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
             <TwitterEmbed />
 
             <div className="max-w-6xl mx-auto space-y-4 md:space-y-8">
