@@ -44,6 +44,8 @@ if (code && !type) {  // ← La clave es el && !type
 
 **⚠️ Fix Crucial:** La condición `if (code && !type)` es fundamental porque los enlaces de password recovery también incluyen un `code` en los query params, pero solo deben procesarse si NO hay un `type='recovery'` en el hash.
 
+**🔧 Fallback Adicional:** Si el intercambio de código falla con el error específico "code verifier should be non-empty", el sistema ahora detecta automáticamente que es un enlace de recovery y redirige a `/reset-password`. Esto maneja casos donde el hash no está disponible inmediatamente.
+
 ### **2. `app/reset-password/page.tsx`** (Actualizado)
 
 **Ahora maneja correctamente el hash con el access token:**
