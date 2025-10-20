@@ -26,18 +26,23 @@ const hashParams = new URLSearchParams(window.location.hash.substring(1))
 const accessToken = hashParams.get('access_token')
 const type = hashParams.get('type')
 
-// Si es recovery, redirige a reset-password
-if (type === 'recovery' || accessToken) {
+// Check query params
+const code = searchParams.get('code')
+
+// IMPORTANTE: Recovery tiene prioridad
+if (type === 'recovery' && accessToken) {
   router.push(`/reset-password${window.location.hash}`)
   return
 }
 
-// Si es confirmación, establece sesión y redirige a dashboard
-if (code) {
+// Si es confirmación Y NO es recovery, establece sesión
+if (code && !type) {  // ← La clave es el && !type
   await supabase.auth.exchangeCodeForSession(code)
   setTimeout(() => router.push('/dashboard'), 2000)
 }
 ```
+
+**⚠️ Fix Crucial:** La condición `if (code && !type)` es fundamental porque los enlaces de password recovery también incluyen un `code` en los query params, pero solo deben procesarse si NO hay un `type='recovery'` en el hash.
 
 ### **2. `app/reset-password/page.tsx`** (Actualizado)
 

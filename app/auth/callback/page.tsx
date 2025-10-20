@@ -29,6 +29,13 @@ export default function AuthCallbackPage() {
         const error = searchParams.get('error')
         const errorDescription = searchParams.get('error_description')
         
+        console.log('Callback params:', { 
+          hasAccessToken: !!accessToken, 
+          type, 
+          hasCode: !!code,
+          hasHash: !!window.location.hash 
+        })
+        
         // Handle error from Supabase
         if (error) {
           setError(errorDescription || error)
@@ -36,16 +43,16 @@ export default function AuthCallbackPage() {
           return
         }
         
-        // Handle password recovery flow
-        if (type === 'recovery' || accessToken) {
+        // Handle password recovery flow FIRST (has priority)
+        if (type === 'recovery' && accessToken) {
           console.log('Password recovery detected, redirecting to reset-password')
           // Redirect to reset password page with hash params preserved
           router.push(`/reset-password${window.location.hash}`)
           return
         }
         
-        // Handle email confirmation flow
-        if (code) {
+        // Handle email confirmation flow (only if NOT a recovery)
+        if (code && !type) {
           console.log('Processing email confirmation with code:', code)
           
           setStatus('success')
