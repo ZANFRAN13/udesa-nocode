@@ -103,7 +103,17 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Contraseña</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Contraseña</Label>
+                  {!isSignUp && (
+                    <Link
+                      href="/forgot-password"
+                      className="text-xs text-accent hover:text-accent/80 transition-colors"
+                    >
+                      ¿Olvidaste tu contraseña?
+                    </Link>
+                  )}
+                </div>
                 <div className="relative">
                   <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input

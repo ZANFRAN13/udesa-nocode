@@ -70,11 +70,14 @@ export default function Dashboard() {
     if (sectionId === "material-complementario" && item === "Vocabulario de diseño: UI") {
       router.push('/dashboard/glossary')
     }
-    if (sectionId === "material-complementario" && item === "Vocabulario de diseño:CSS") {
+    if (sectionId === "material-complementario" && item === "Vocabulario de diseño: CSS") {
       router.push('/dashboard/glossary/css')
     }
     if (sectionId === "material-complementario" && item === "Vocabulario de desarrollo") {
       router.push('/dashboard/glossary/development')
+    }
+    if (sectionId === "material-complementario" && item === "Vocabulario de IA") {
+      router.push('/dashboard/glossary/ai')
     }
     if (sectionId === "comunidad" && item === "Comunidad de WhatsApp") {
       window.open('https://chat.whatsapp.com/GKcXD6NINyJL36qbm3U6VX?mode=ems_qr_t', '_blank')
@@ -117,8 +120,9 @@ export default function Dashboard() {
         "Templates y plantillas",
         "Heurísticas y buenas prácticas",
         "Vocabulario de diseño: UI",
-        "Vocabulario de diseño:CSS",
+        "Vocabulario de diseño: CSS",
         "Vocabulario de desarrollo",
+        "Vocabulario de IA",
       ]
     },
     {
@@ -261,14 +265,15 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-4 md:pt-6">
                           <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño:CSS" || item === "Vocabulario de desarrollo")) || 
+                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isNoCode = item === "Herramientas No-Code"
                               const isHeuristics = item === "Heurísticas y buenas prácticas"
                               const isUI = item === "Vocabulario de diseño: UI"
-                              const isCSS = item === "Vocabulario de diseño:CSS"
+                              const isCSS = item === "Vocabulario de diseño: CSS"
                               const isDev = item === "Vocabulario de desarrollo"
+                              const isAI = item === "Vocabulario de IA"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
                               const isBenefits = item === "Beneficios Exclusivos"
                               const isSlides = item === "Slides de presentaciones"
@@ -298,6 +303,7 @@ export default function Dashboard() {
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 
                                          isDev ? "Glosario Dev →" :
+                                         isAI ? "Vocabulario IA →" :
                                          isWhatsApp ? "WhatsApp →" :
                                          isBenefits ? "Beneficios →" :
                                          isWorksheets ? "Worksheets →" : ""}

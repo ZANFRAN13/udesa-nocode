@@ -19,36 +19,69 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        const code = searchParams.get('code')
+        // Check for hash fragment parameters (used by password recovery)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1))
+        const accessToken = hashParams.get('access_token')
+        const type = hashParams.get('type')
         
-        if (!code) {
-          setError('Código de autorización no encontrado')
+        // Check for query parameters (used by email confirmation)
+        const code = searchParams.get('code')
+        const error = searchParams.get('error')
+        const errorDescription = searchParams.get('error_description')
+        
+        // Handle error from Supabase
+        if (error) {
+          setError(errorDescription || error)
           setStatus('error')
           return
         }
-
-        console.log('Processing auth callback with code:', code)
-
-        // Since we have a code, consider this a successful email confirmation
-        // The user clicked the link, which means they confirmed their email
-        setStatus('success')
         
-        // Try to exchange code for session, but don't fail if it doesn't work
-        try {
-          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
-          console.log('Exchange result:', { data, error: exchangeError })
-          
-          if (data?.session) {
-            console.log('Session created successfully:', data.session.user.email)
-          }
-        } catch (exchangeError) {
-          console.log('Exchange failed, but email was confirmed:', exchangeError)
+        // Handle password recovery flow
+        if (type === 'recovery' || accessToken) {
+          console.log('Password recovery detected, redirecting to reset-password')
+          // Redirect to reset password page with hash params preserved
+          router.push(`/reset-password${window.location.hash}`)
+          return
         }
         
-        // Small delay to show success state, then redirect
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 2000)
+        // Handle email confirmation flow
+        if (code) {
+          console.log('Processing email confirmation with code:', code)
+          
+          setStatus('success')
+          
+          // Exchange code for session
+          try {
+            const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+            console.log('Exchange result:', { data, error: exchangeError })
+            
+            if (exchangeError) {
+              console.error('Exchange error:', exchangeError)
+              setError('Error al confirmar el email. Intenta de nuevo.')
+              setStatus('error')
+              return
+            }
+            
+            if (data?.session) {
+              console.log('Session created successfully:', data.session.user.email)
+            }
+          } catch (exchangeError) {
+            console.error('Exchange failed:', exchangeError)
+            setError('Error al confirmar el email. Intenta de nuevo.')
+            setStatus('error')
+            return
+          }
+          
+          // Small delay to show success state, then redirect to dashboard
+          setTimeout(() => {
+            router.push('/dashboard')
+          }, 2000)
+          return
+        }
+        
+        // No code or token found
+        setError('Enlace de confirmación inválido')
+        setStatus('error')
 
       } catch (error: any) {
         console.error('Unexpected error in auth callback:', error)
