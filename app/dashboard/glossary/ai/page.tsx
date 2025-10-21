@@ -19,30 +19,33 @@ export default function AIGlossaryPage() {
           <p>Conocer estos términos te ayudará a comunicarte mejor con IAs y a entender el ecosistema de herramientas.</p>
           <br />
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Este vocabulario está pensado para personas sin base técnica que quieren usar IA 
-            para imaginar, prototipar y lanzar productos digitales. Cada término incluye 
-            una descripción clara, ejemplos prácticos y términos relacionados para que puedas 
-            profundizar tu conocimiento de manera progresiva.
+            La <strong>Inteligencia Artificial generativa</strong> consta de sistemas que aprenden patrones de grandes 
+            cantidades de datos y los aplican para generar texto, código, imágenes y más. Esto marca una evolución en el <strong>No-Code</strong> (plataformas que permiten crear sin programar), democratizando el 
+            desarrollo de software: ahora puedes diseñar, construir y lanzar productos digitales completos 
+            conversando con IA, sin necesidad de saber programar. Este vocabulario te da las claves para 
+            entender cómo funciona esta tecnología y aprovecharla al máximo en tus proyectos.
           </p>
         </>
       }
       helpSections={
         <ExampleSection
           title="¿Por qué es importante conocer estos términos?"
-          subtitle="Habla el lenguaje de la IA para obtener mejores resultados"
+          subtitle="Domina los conceptos clave de IA (Generativa) para saber cuándo, cómo y para qué usarla."
           badgeText="Vibecoding"
-          vagueTitleBad="❌ Sin conocer los términos (resultados limitados):"
-          vagueTitleGood="✅ Conociendo los términos (resultados precisos):"
+          vagueTitleBad="❌ Qué no hace:"
+          vagueTitleGood="✅ Qué sí hace:"
           vagueExamples={[
-            '"Hazme un chatbot que sepa de mis productos"',
-            '"Quiero que la IA recuerde lo que hablamos"',
-            '"Necesito que sea más creativo pero no tan loco"',
+            'Predice el futuro',
+            'Entiende el contenido semántico de un texto',
+            'Te tira la posta',
           ]}
           specificExamples={[
-            '"Crea un <em class="italic font-semibold text-green-700">asistente con RAG</em> que busque en mis docs y responda en contexto"',
-            '"Implementa <em class="italic font-semibold text-green-700">threads</em> para mantener el historial de cada usuario"',
-            '"Usa <em class="italic font-semibold text-green-700">temperatura 0.7</em> para balance entre creatividad y coherencia"',
+            'Identifica patrones en un <em class="italic font-semibold text-green-700">corpus</em> de texto',
+            'Asigna códigos númericos a conjuntos de caracteres (<em class="italic font-semibold text-green-700">tokens</em>) para procesarlos en un espacio <em class="italic font-semibold text-green-700">vectorial</em>',
+            'Te dice que <em class="italic font-semibold text-green-700">token</em> es más probable que siga en un texto según el <em class="italic font-semibold text-green-700">contexto</em>',
           ]}
+          bottomBadText="La IA puede desinformar, generar errores y confusión"
+          bottomGoodText="Usada con criterio es una gran palanca"
           tipText='<strong>💡 Consejo:</strong> Entender términos como <em class="italic">prompt</em>, <em class="italic">contexto</em>, <em class="italic">temperatura</em> y <em class="italic">RAG</em> te permite diseñar mejor tus interacciones con IA y crear productos más sofisticados. Este glosario es tu guía para pasar de "usuario casual" a "constructor informado".'
         />
       }

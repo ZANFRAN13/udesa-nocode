@@ -91,7 +91,7 @@ export const aiTermsData: AITerm[] = [
     category: "Procesamiento",
     description: "Representación numérica (vector) de un texto, imagen o audio que captura su significado para poder compararlo y buscarlo.",
     example: "Guardar embeddings de artículos del blog y, dado un prompt, buscar los más parecidos para alimentar un RAG.",
-    relatedTerms: ["rag", "vlm", "llm", "red-neuronal"]
+    relatedTerms: ["rag", "vector", "vlm", "llm", "red-neuronal"]
   },
   {
     id: "entropia",
@@ -116,7 +116,7 @@ export const aiTermsData: AITerm[] = [
     category: "Arquitectura",
     description: "Arquitectura de red neuronal clave en los modelos modernos. Usa atención para enfocarse en partes relevantes del input en paralelo.",
     example: "Un LLM basado en transformer entiende dependencias largas en un contrato de varias páginas.",
-    relatedTerms: ["llm", "vlm", "parametro", "deep-learning"]
+    relatedTerms: ["atencion", "llm", "vlm", "parametro", "deep-learning"]
   },
   {
     id: "agente-ia",
@@ -181,7 +181,7 @@ export const aiTermsData: AITerm[] = [
     category: "Gestión de Contexto",
     description: "Información que el modelo 'tiene a mano' al responder: tu prompt, historial del hilo, documentos insertados, resultados de búsquedas, etc. Limita qué puede considerar.",
     example: "Añadir el brief del producto y los principios de marca como contexto mejora las respuestas del asistente.",
-    relatedTerms: ["token", "prompt", "rag", "threads", "mcp"],
+    relatedTerms: ["token", "context-window", "prompt", "rag", "threads", "mcp", "context-engineering"],
     tags: ["basics"]
   },
   {
@@ -190,7 +190,7 @@ export const aiTermsData: AITerm[] = [
     category: "Interacción",
     description: "Instrucciones o ejemplo(s) que le das al modelo. Un buen prompt define rol, tarea, formato, restricciones y puede incluir contexto y ejemplos.",
     example: "Actúa como PM. Dame 3 propuestas de onboarding para una app de hábitos, con bullets, tono cercano y CTA claros.",
-    relatedTerms: ["contexto", "llm", "temperatura", "razonamiento", "orquestacion"],
+    relatedTerms: ["prompt-engineering", "contexto", "llm", "temperatura", "razonamiento", "orquestacion"],
     tags: ["basics"]
   },
   {
@@ -215,7 +215,7 @@ export const aiTermsData: AITerm[] = [
     category: "Patrones de Implementación",
     description: "Patrón donde antes de generar, el sistema recupera (retrieve) información relevante de una base (por ejemplo con embeddings) y la pasa al modelo como contexto.",
     example: "Un chatbot que responde preguntas sobre tu documentación interna buscando párrafos relacionados y citándolos.",
-    relatedTerms: ["embedding", "contexto", "llm", "mcp", "orquestacion", "agente-ia"],
+    relatedTerms: ["embedding", "vector", "contexto", "context-window", "llm", "mcp", "orquestacion", "agente-ia", "alucinacion"],
     tags: ["basics"]
   },
   {
@@ -234,6 +234,55 @@ export const aiTermsData: AITerm[] = [
     example: "Un orquestador que: 1) recibe una tarea de usuario, 2) decide si usar un SLM o LLM, 3) llama a RAG, 4) ejecuta un agente con permisos limitados, 5) valida y entrega el output.",
     relatedTerms: ["agente-ia", "asistente-ia", "mcp", "rag", "dag", "contexto", "prompt"],
     tags: ["basics"]
+  },
+  {
+    id: "alucinacion",
+    name: "Alucinación",
+    category: "Capacidades",
+    description: "Cuando un modelo genera información incorrecta o inventada con seguridad, como si fuera verdad.",
+    example: "El asistente asegura que existe una 'API de pagos ZetaPay' de tu banco cuando en realidad no existe.",
+    relatedTerms: ["rag", "contexto", "temperatura", "entropia", "orquestacion"],
+    tags: ["basics"]
+  },
+  {
+    id: "context-engineering",
+    name: "Context Engineering (Ingeniería de contexto)",
+    category: "Patrones de Implementación",
+    description: "Práctica de preparar y seleccionar la información que el modelo verá antes de responder: documentos, datos, ejemplos, estilo, políticas y memoria. Busca reducir alucinaciones y mejorar la utilidad.",
+    example: "Para un bot de soporte, recuperar (con RAG) solo los 5 párrafos más relevantes del manual y añadir el tono de marca y políticas de reembolso.",
+    relatedTerms: ["rag", "prompt-engineering", "contexto", "mcp", "orquestacion", "embedding"]
+  },
+  {
+    id: "prompt-engineering",
+    name: "Prompt Engineering (Ingeniería de prompts)",
+    category: "Interacción",
+    description: "Técnica de diseñar instrucciones claras y efectivas: rol, tarea, formato, restricciones, ejemplos y criterios de evaluación.",
+    example: "Eres un redactor UX. Escribe microcopys para onboarding en 3 variantes A/B, voz cercana, 120–160 caracteres, con CTA. Devuelve en tabla.",
+    relatedTerms: ["prompt", "razonamiento", "contexto", "temperatura", "orquestacion"]
+  },
+  {
+    id: "context-window",
+    name: "Context Window (Ventana de contexto)",
+    category: "Gestión de Contexto",
+    description: "Capacidad máxima de información (medida en tokens) que el modelo puede considerar a la vez. Si el texto supera el límite, hay que resumir, seleccionar o recuperar lo importante.",
+    example: "Un modelo con 8k tokens no puede leer un PDF de 50k tokens completo; se usa RAG para traer solo las secciones relevantes.",
+    relatedTerms: ["token", "contexto", "rag", "embedding"]
+  },
+  {
+    id: "atencion",
+    name: "Atención (Attention)",
+    category: "Arquitectura",
+    description: "Mecanismo de los modelos tipo Transformer que permite 'enfocarse' en las partes más relevantes del input, ponderando qué palabras o elementos se relacionan entre sí.",
+    example: "Para entender 'El botón Guardar no funciona y da error 502', el modelo presta más atención a 'no funciona' y 'error 502' que a conectores.",
+    relatedTerms: ["transformer", "llm", "vlm", "parametro", "razonamiento"]
+  },
+  {
+    id: "vector",
+    name: "Vector",
+    category: "Procesamiento",
+    description: "Lista ordenada de números que representa información de manera que se pueda comparar por distancia o similaridad. Los embeddings son vectores.",
+    example: "Convertir cada artículo de tu help center en un vector y buscar los más cercanos al query del usuario para construir una respuesta con RAG.",
+    relatedTerms: ["embedding", "rag", "llm", "vlm"]
   }
 ]
 

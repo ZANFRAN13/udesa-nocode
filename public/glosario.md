@@ -140,6 +140,37 @@
 **Ejemplo:** Un orquestador que: 1) recibe una tarea de usuario, 2) decide si usar un SLM o LLM, 3) llama a RAG, 4) ejecuta un agente con permisos limitados, 5) valida y entrega el output.
 **Términos relacionados:** Agente de IA, Asistente de IA, MCP, RAG, DAG, Contexto, Prompt.
 
+## Alucinación
+**Descripción:** Cuando un modelo genera información **incorrecta** o inventada con seguridad, como si fuera verdad.
+**Ejemplo:** El asistente asegura que existe una “API de pagos ZetaPay” de tu banco cuando en realidad no existe.
+**Términos relacionados:** RAG, Contexto, Evaluación, Temperatura, Entropía, Orquestación.
+
+## Context Engineering (Ingeniería de contexto)
+**Descripción:** Práctica de **preparar y seleccionar** la información que el modelo verá antes de responder: documentos, datos, ejemplos, estilo, políticas y memoria. Busca **reducir alucinaciones** y mejorar la utilidad.
+**Ejemplo:** Para un bot de soporte, recuperar (con RAG) solo los 5 párrafos más relevantes del manual y añadir el tono de marca y políticas de reembolso.
+**Términos relacionados:** RAG, Prompt Engineering, Contexto, MCP, Orquestación, Embedding.
+
+## Prompt Engineering (Ingeniería de prompts)
+**Descripción:** Técnica de **diseñar instrucciones** claras y efectivas: rol, tarea, formato, restricciones, ejemplos y criterios de evaluación.
+**Ejemplo:** “Eres un redactor UX. Escribe microcopys para onboarding en 3 variantes A/B, voz cercana, 120–160 caracteres, con CTA. Devuelve en tabla.”
+**Términos relacionados:** Prompt, Razonamiento, Contexto, Temperatura, Orquestación, Evaluación.
+
+## Context Window (Ventana de contexto)
+**Descripción:** Capacidad **máxima** de información (medida en **tokens**) que el modelo puede considerar **a la vez**. Si el texto supera el límite, hay que **resumir, seleccionar o recuperar** lo importante.
+**Ejemplo:** Un modelo con 8k tokens no puede leer un PDF de 50k tokens completo; se usa RAG para traer solo las secciones relevantes.
+**Términos relacionados:** Token, Contexto, RAG, Embedding, Límite de tokens.
+
+## Atención (Attention)
+**Descripción:** Mecanismo de los modelos tipo **Transformer** que permite “enfocarse” en las partes más relevantes del input, ponderando qué palabras o elementos se relacionan entre sí.
+**Ejemplo:** Para entender “El botón *Guardar* no funciona y da error 502”, el modelo presta más atención a “no funciona” y “error 502” que a conectores.
+**Términos relacionados:** Transformer, LLM, VLM, Parámetro, Razonamiento.
+
+## Vector
+**Descripción:** Lista ordenada de números que representa información de manera que se pueda **comparar** por distancia o similaridad. Los **embeddings** son vectores.
+**Ejemplo:** Convertir cada artículo de tu help center en un vector y buscar los más cercanos al query del usuario para construir una respuesta con RAG.
+**Términos relacionados:** Embedding, Vector DB, Similaridad, RAG, LLM, VLM.
+
+
 ---
 
 ## Mini‑guía práctica para vibecoding
@@ -149,3 +180,8 @@
 - **Temperatura según objetivo.** Baja para precisión; alta para creatividad.
 - **Empieza simple.** SLM + RAG suele alcanzar; sube a LLM grandes si falta calidad.
 - **Orquesta con seguridad.** Define permisos de agentes y logs de cada paso.
+
+## Consejos rápidos de uso
+- **Primero el contexto, luego el prompt:** selecciona la info útil (context engineering) y recién después redacta el prompt.
+- **Cuida la ventana de contexto:** recorta y prioriza; no pegues documentos enormes sin filtrar.
+- **Evalúa y mitiga alucinaciones:** cita fuentes, pide “si no estás seguro, di ‘no sé’”, y usa RAG.

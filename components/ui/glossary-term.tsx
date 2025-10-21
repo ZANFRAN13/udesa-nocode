@@ -16,6 +16,7 @@ interface GlossaryTermProps {
   onToggle?: () => void
   onTermClick?: (termId: string) => void
   externalLinkGenerator?: (termId: string) => string
+  allTerms?: GenericGlossaryTerm[]
 }
 
 export function GlossaryTerm({
@@ -24,6 +25,7 @@ export function GlossaryTerm({
   onToggle,
   onTermClick,
   externalLinkGenerator,
+  allTerms = [],
 }: GlossaryTermProps) {
   return (
     <Card className="overflow-hidden border border-border/50 shadow-sm hover:shadow-md transition-shadow">
@@ -171,19 +173,25 @@ export function GlossaryTerm({
                   Términos relacionados
                 </h4>
                 <div className="flex flex-wrap gap-1.5 md:gap-2">
-                  {term.relatedTerms.map((relatedTerm, index) => (
-                    <Badge
-                      key={index}
-                      variant="outline"
-                      className="text-xs cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onTermClick?.(relatedTerm)
-                      }}
-                    >
-                      {relatedTerm}
-                    </Badge>
-                  ))}
+                  {term.relatedTerms.map((relatedTermId, index) => {
+                    // Find the full term data to get the name
+                    const relatedTerm = allTerms.find(t => t.id === relatedTermId)
+                    const displayName = relatedTerm?.name || relatedTermId
+                    
+                    return (
+                      <Badge
+                        key={index}
+                        variant="outline"
+                        className="text-xs cursor-pointer hover:bg-accent hover:text-accent-foreground transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          onTermClick?.(relatedTermId)
+                        }}
+                      >
+                        {displayName}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </div>
             )}

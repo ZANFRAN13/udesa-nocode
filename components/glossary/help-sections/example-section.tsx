@@ -15,6 +15,8 @@ interface ExampleSectionProps {
   tipText: string
   badgeText?: string
   subtitle?: string
+  bottomBadText?: string
+  bottomGoodText?: string
 }
 
 export function ExampleSection({
@@ -26,6 +28,8 @@ export function ExampleSection({
   tipText,
   badgeText = "Mejores Prácticas",
   subtitle = "Aprende a comunicarte efectivamente con la IA",
+  bottomBadText = "La IA no sabe exactamente qué hacer",
+  bottomGoodText = "La IA sabe exactamente qué hacer",
 }: ExampleSectionProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -69,7 +73,7 @@ export function ExampleSection({
                   {vagueExamples.map((example, index) => (
                     <p key={index} className="text-xs md:text-sm text-destructive/80 font-medium" dangerouslySetInnerHTML={{ __html: example }} />
                   ))}
-                  <p className="text-xs text-destructive/60 italic">→ La IA no sabe exactamente qué hacer</p>
+                  <p className="text-xs text-destructive/60 italic">→ {bottomBadText}</p>
                 </div>
               </div>
 
@@ -80,7 +84,7 @@ export function ExampleSection({
                   {specificExamples.map((example, index) => (
                     <p key={index} className="text-xs md:text-sm text-green-600/80 font-medium" dangerouslySetInnerHTML={{ __html: example }} />
                   ))}
-                  <p className="text-xs text-green-600/60 italic">→ La IA sabe exactamente qué hacer</p>
+                  <p className="text-xs text-green-600/60 italic">→ {bottomGoodText}</p>
                 </div>
               </div>
             </div>

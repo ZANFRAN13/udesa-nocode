@@ -252,6 +252,7 @@ export function GlossaryPageLayout<T extends BaseGlossaryTerm>({
                           onToggle={() => toggleTerm(term.id)}
                           onTermClick={handleTermClick}
                           externalLinkGenerator={externalLinkGenerator}
+                          allTerms={termsData}
                         />
                       </div>
                     ))}
@@ -268,6 +269,7 @@ export function GlossaryPageLayout<T extends BaseGlossaryTerm>({
                     onToggle={() => toggleTerm(term.id)}
                     onTermClick={handleTermClick}
                     externalLinkGenerator={externalLinkGenerator}
+                    allTerms={termsData}
                   />
                 </div>
               ))
