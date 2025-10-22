@@ -66,7 +66,7 @@ export default function WorksheetsPage() {
     {
       id: "task-1",
       title: "Pensar ideas para proyectos",
-      description: "Empiecen a pensar ideas para sus proyectos",
+      description: "Empiecen a pensar ideas para su proyecto de curso",
       resources: [
         {
           title: "Ideación de productos",
@@ -114,6 +114,65 @@ export default function WorksheetsPage() {
     },
     {
       id: "task-3",
+      title: "Investigar noticias de IA y Vibe-coding",
+      description: "Traer 3 noticias sobre inteligencia artificial y/o Vibe-coding",
+      resources: [
+        {
+          title: "TechCrunch - IA",
+          url: "https://techcrunch.com/category/artificial-intelligence/",
+          description: "Noticias sobre IA en TechCrunch"
+        },
+        {
+          title: "The Verge - IA",
+          url: "https://www.theverge.com/ai-artificial-intelligence",
+          description: "Cobertura de IA en The Verge"
+        },
+        {
+          title: "Hacker News",
+          url: "https://news.ycombinator.com",
+          description: "Comunidad de desarrolladores y noticias tech"
+        }
+      ]
+    },
+    {
+      id: "task-4",
+      title: "Crear una Single-Feature App",
+      description: "Crear una app de una sola funcionalidad como la que hicimos en clase usando una de las herramientas de a continuación",
+      resources: [
+        {
+          title: "v0",
+          url: "https://v0.app/",
+          description: "Herramienta de Vercel para desarrollo con IA"
+        },
+        {
+          title: "Lovable",
+          url: "https://lovable.dev/",
+          description: "Plataforma de desarrollo rápido con IA"
+        },
+        {
+          title: "Replit",
+          url: "https://replit.com/",
+          description: "Entorno de desarrollo online colaborativo"
+        }
+      ]
+    }
+  ]
+
+  const class2Tasks = [
+    {
+      id: "task-1",
+      title: "Definir idea para proyecto de curso",
+      description: "Definir y documentar la idea que desarrollarán como proyecto final del curso",
+      resources: [
+        {
+          title: "Ideación de productos",
+          url: "https://chatgpt.com/?q=ayudame_a_elegir_entre_esta_lista_de_ideas_de_producto_digital/",
+          description: "Herramienta para generar ideas innovadoras"
+        }
+      ]
+    },
+    {
+      id: "task-2",
       title: "Investigar noticias de IA y Vibe-coding",
       description: "Traer 3 noticias sobre inteligencia artificial y/o Vibe-coding",
       resources: [
@@ -260,9 +319,100 @@ export default function WorksheetsPage() {
                                       >
                                         {resource.title}
                                       </a>
-                                      <p className="text-xs text-muted-foreground line-clamp-2">
-                                        {resource.description}
-                                      </p>
+                                      {resource.description && (
+                                        <p className="text-xs text-muted-foreground line-clamp-2">
+                                          {resource.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </CollapsibleContent>
+            </Collapsible>
+          </Card>
+
+          {/* Clase 2 Tasks */}
+          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+            <Collapsible
+              open={expandedTasks["clase-2"]}
+              onOpenChange={() => toggleTask("clase-2")}
+            >
+              <CollapsibleTrigger className="w-full">
+                <CardHeader className="cursor-pointer p-4 md:p-6">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                      </div>
+                      <div className="text-left min-w-0">
+                        <CardTitle className="text-base md:text-xl">📚 Clase 2: De la idea al prototipo</CardTitle>
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                          Tareas para preparar la Clase 3
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                        Para la próxima clase
+                      </Badge>
+                      {expandedTasks["clase-2"] ? (
+                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                      )}
+                    </div>
+                  </div>
+                </CardHeader>
+              </CollapsibleTrigger>
+              
+              <CollapsibleContent>
+                <CardContent className="p-4 md:p-6">
+                  <div className="space-y-3 md:space-y-4">
+                    {class2Tasks.map((task, index) => (
+                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <span className="text-xs font-medium text-accent">
+                            {index + 1}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                            {task.title}
+                          </h3>
+                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                            {task.description}
+                          </p>
+
+                          {task.resources && task.resources.length > 0 && (
+                            <div className="mt-2 md:mt-3">
+                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                              <div className="space-y-1.5 md:space-y-2">
+                                {task.resources.map((resource, idx) => (
+                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                    <div className="flex-1 min-w-0">
+                                      <a
+                                        href={resource.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
+                                      >
+                                        {resource.title}
+                                      </a>
+                                      {resource.description && (
+                                        <p className="text-xs text-muted-foreground line-clamp-2">
+                                          {resource.description}
+                                        </p>
+                                      )}
                                     </div>
                                     <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                                   </div>
