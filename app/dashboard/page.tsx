@@ -19,8 +19,7 @@ import {
   ChevronRight,
   ArrowLeft,
   LogOut,
-  Clock,
-  X,
+  HelpCircle,
 } from "lucide-react"
 
 export default function Dashboard() {
@@ -28,7 +27,6 @@ export default function Dashboard() {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
   const [expandedSlide, setExpandedSlide] = useState<string | null>(null)
-  const [showHeuristicsPopup, setShowHeuristicsPopup] = useState(false)
   const supabase = createClient()
 
   // Setup auth listener only for sign out events
@@ -64,8 +62,11 @@ export default function Dashboard() {
     if (sectionId === "material-complementario" && item === "Herramientas No-Code") {
       router.push('/dashboard/nocode-tools')
     }
+    if (sectionId === "material-complementario" && item === "Herramientas de Apoyo") {
+      router.push('/dashboard/support-tools')
+    }
     if (sectionId === "material-complementario" && item === "Heurísticas y buenas prácticas") {
-      setShowHeuristicsPopup(true)
+      router.push('/dashboard/heuristics')
     }
     if (sectionId === "material-complementario" && item === "Vocabulario de diseño: UI") {
       router.push('/dashboard/glossary')
@@ -115,6 +116,7 @@ export default function Dashboard() {
       description: "Recursos adicionales y lecturas recomendadas",
       content: [
         "Herramientas No-Code",
+        "Herramientas de Apoyo",
         "Artículos",
         "Bibliografía y Videos",
         "Templates y plantillas",
@@ -265,10 +267,11 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-4 md:pt-6">
                           <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
+                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isNoCode = item === "Herramientas No-Code"
+                              const isSupportTools = item === "Herramientas de Apoyo"
                               const isHeuristics = item === "Heurísticas y buenas prácticas"
                               const isUI = item === "Vocabulario de diseño: UI"
                               const isCSS = item === "Vocabulario de diseño: CSS"
@@ -299,6 +302,7 @@ export default function Dashboard() {
                                     {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isNoCode ? "Herramientas →" :
+                                         isSupportTools ? "Apoyo →" :
                                          isHeuristics ? "Heurísticas →" :
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 
@@ -366,6 +370,35 @@ export default function Dashboard() {
             })}
           </div>
 
+          {/* FAQ Card */}
+          <div className="mt-8 md:mt-12">
+            <Card 
+              className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200 cursor-pointer"
+              onClick={() => router.push('/dashboard/faq')}
+            >
+              <CardHeader className="p-4 md:p-6">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                    <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                      <HelpCircle className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <CardTitle className="text-base md:text-xl font-semibold text-foreground">
+                        Preguntas Frecuentes (FAQ)
+                      </CardTitle>
+                      <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                        Respuestas a las dudas más comunes sobre el programa NO-CODE & AI
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                  </div>
+                </div>
+              </CardHeader>
+            </Card>
+          </div>
+
           {/* Footer info */}
           <div className="mt-8 md:mt-12 text-center">
             <p className="text-muted-foreground text-xs md:text-sm px-2">
@@ -374,59 +407,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* Heuristics Coming Soon Popup */}
-      {showHeuristicsPopup && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 md:p-4">
-          <div className="bg-background border border-border rounded-lg shadow-lg max-w-md w-full p-4 md:p-6">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <div className="flex items-center gap-2 md:gap-3">
-                <div className="p-1.5 md:p-2 bg-yellow-500/10 rounded-lg">
-                  <Clock className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
-                </div>
-                <h3 className="text-base md:text-lg font-semibold text-foreground">
-                  Próximamente
-                </h3>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowHeuristicsPopup(false)}
-                className="h-8 w-8 p-0"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            
-            <div className="space-y-3 md:space-y-4">
-              <p className="text-sm md:text-base text-muted-foreground">
-                La sección de <strong>Heurísticas y buenas prácticas</strong> estará disponible próximamente.
-              </p>
-              
-              <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 md:p-4">
-                <p className="text-xs md:text-sm text-muted-foreground">
-                  <strong>¿Qué encontrarás aquí?</strong>
-                </p>
-                <ul className="text-xs md:text-sm text-muted-foreground mt-2 space-y-1">
-                  <li>• Principios de diseño UX/UI</li>
-                  <li>• Mejores prácticas para interfaces</li>
-                  <li>• Guías de accesibilidad</li>
-                  <li>• Patrones de diseño comunes</li>
-                </ul>
-              </div>
-              
-              <div className="flex justify-end">
-                <Button
-                  onClick={() => setShowHeuristicsPopup(false)}
-                  className="bg-accent hover:bg-accent/90 text-sm md:text-base"
-                >
-                  Entendido
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

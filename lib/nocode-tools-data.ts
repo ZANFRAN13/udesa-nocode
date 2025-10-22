@@ -162,6 +162,14 @@ export const noCodeToolsData: NoCodeTool[] = [
     website: "https://codeium.com/windsurf",
     tags: []
   },
+  {
+    id: "coderabbit",
+    name: "CodeRabbit",
+    category: "Editores de Código",
+    description: "Revisión de código automática con IA. Analiza pull requests y sugiere mejoras en segundos.",
+    website: "https://coderabbit.ai",
+    tags: ["ATP"]
+  },
   
   // Infraestructura
   {

@@ -283,6 +283,14 @@ export const aiTermsData: AITerm[] = [
     description: "Lista ordenada de números que representa información de manera que se pueda comparar por distancia o similaridad. Los embeddings son vectores.",
     example: "Convertir cada artículo de tu help center en un vector y buscar los más cercanos al query del usuario para construir una respuesta con RAG.",
     relatedTerms: ["embedding", "rag", "llm", "vlm"]
+  },
+  {
+    id: "llm-wrapper",
+    name: "LLM Wrapper",
+    category: "Patrones de Implementación",
+    description: "Capa de software que envuelve (wraps) un LLM agregando funcionalidad adicional: validación de inputs, formateo de respuestas, manejo de errores, caché, límites de uso, lógica de negocio o una interfaz simplificada. No modifica el modelo en sí, sino cómo se usa.",
+    example: "Un wrapper que recibe consultas de usuarios, valida que no contengan información sensible, llama a un LLM, formatea la respuesta en JSON estructurado y registra métricas de uso.",
+    relatedTerms: ["llm", "orquestacion", "prompt", "contexto", "asistente-ia"]
   }
 ]
 
