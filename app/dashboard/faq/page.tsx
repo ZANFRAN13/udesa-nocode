@@ -64,7 +64,7 @@ export default function FAQPage() {
     {
       id: "faq-2",
       question: "¿Qué productos NO voy a aprender a crear en este programa?",
-      answer: "Este programa NO enseña programación tradicional. NO aprenderás a crear herramientas low-code como n8n, workflows complejos, automatizaciones desde cero, agentes de IA autónomos, videojuegos complejos con motores 3D, o software de escritorio tradicional (desktop apps). El enfoque está en vibecoding: crear aplicaciones funcionales sin programar.",
+      answer: "Este programa NO enseña programación tradicional. Tampoco a usar herramientas low-code como n8n para crearworkflows complejos, automatizaciones desde cero, agentes de IA autónomos, videojuegos complejos con motores 3D, o software de escritorio tradicional (desktop apps). El enfoque está en crear aplicaciones funcionales completas que puedan integrar servicios existentes para lograr funcionalidades complejas.",
       category: "alcance"
     },
     {
