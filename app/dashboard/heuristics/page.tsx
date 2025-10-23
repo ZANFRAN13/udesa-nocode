@@ -35,7 +35,10 @@ import {
   ListChecks,
   Blocks,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Copy,
+  Check,
+  ExternalLink
 } from "lucide-react"
 
 export default function HeuristicsPage() {
@@ -43,6 +46,7 @@ export default function HeuristicsPage() {
   const supabase = createClient()
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
+  const [copiedCommands, setCopiedCommands] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -55,6 +59,68 @@ export default function HeuristicsPage() {
 
     return () => subscription.unsubscribe()
   }, [router, supabase])
+
+  // Función para detectar si es un comando
+  const isCommand = (text: string) => {
+    const commandPrefixes = ['git ', 'npm ', 'cd ', 'npx ', 'yarn ', 'pnpm ']
+    return commandPrefixes.some(prefix => text.trim().startsWith(prefix))
+  }
+
+  // Función para copiar al clipboard
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedCommands(prev => ({ ...prev, [id]: true }))
+      setTimeout(() => {
+        setCopiedCommands(prev => ({ ...prev, [id]: false }))
+      }, 2000)
+    } catch (err) {
+      console.error('Error al copiar:', err)
+    }
+  }
+
+  // Función para formatear texto con código estilo terminal
+  const formatTextWithCode = (text: string) => {
+    const parts = text.split(/(`[^`]+`)/)
+    return parts.map((part, index) => {
+      if (part.startsWith('`') && part.endsWith('`')) {
+        const code = part.slice(1, -1)
+        const isCmd = isCommand(code)
+        const commandId = `cmd-${index}-${code.substring(0, 10)}`
+        const isCopied = copiedCommands[commandId]
+
+        return (
+          <span key={index} className="inline-flex items-center group relative">
+            <code 
+              className="px-2 py-1 mx-0.5 bg-black text-white rounded text-xs font-mono border border-gray-800 inline-block"
+            >
+              {code}
+            </code>
+            {isCmd && (
+              <button
+                onClick={() => copyToClipboard(code, commandId)}
+                className="ml-1 p-1 hover:bg-gray-800 rounded transition-colors opacity-0 group-hover:opacity-100"
+                title="Copiar comando"
+              >
+                {isCopied ? (
+                  <Check className="h-3 w-3 text-green-400" />
+                ) : (
+                  <Copy className="h-3 w-3 text-gray-400" />
+                )}
+              </button>
+            )}
+          </span>
+        )
+      }
+      // Preservar saltos de línea en el texto normal
+      return part.split('\n').map((line, i, arr) => (
+        <span key={`${index}-${i}`}>
+          {line}
+          {i < arr.length - 1 && <br />}
+        </span>
+      ))
+    })
+  }
 
   const handleBackToDashboard = () => {
     router.push('/dashboard')
@@ -87,7 +153,7 @@ export default function HeuristicsPage() {
       items: [
         {
           title: "Cerrar chat cuando empieza a alucinar",
-          description: "Si la IA comienza a dar respuestas incorrectas, contradecirse o perder precisión, es momento de cerrar ese chat (thread) y abrir uno nuevo. Las alucinaciones son señal de que el contexto está saturado.",
+          description: "Si la IA comienza a dar respuestas incorrectas, contradecirse o perder precisión, es momento de cerrar ese chat (`thread`) y abrir uno nuevo. Las alucinaciones son señal de que el contexto está saturado.",
           example: "🚨 Señales de alerta:\n- Respuestas contradictorias\n- Inventa información que no le diste\n- Genera código que rompe lo que funcionaba\n- Ignora instrucciones recientes\n\n✅ Solución: Cierra el chat actual y abre uno nuevo con contexto fresco.",
           icon: AlertTriangle,
           type: "heuristic",
@@ -100,6 +166,7 @@ export default function HeuristicsPage() {
           example: "❌ Fragmentado:\n'Crea un botón'\n'Hazlo azul'\n'Agrégale un ícono'\n'Que sea responsive'\n\n✅ Completo:\n'Crea un botón azul con un ícono a la izquierda, que sea responsive y use los colores del proyecto. El botón debe tener efecto hover y ser accesible.'",
           icon: MessageSquare,
           type: "heuristic",
+          image: "/images/lost-in-conv.png",
           link: {
             text: "Más información sobre esto",
             url: "https://drive.google.com/file/d/1jmYrrJmyNx256tvCAm5qJ8fdtbtV0L58/view"
@@ -143,7 +210,7 @@ export default function HeuristicsPage() {
         {
           title: "Configurar contexto y reglas de proyecto",
           description: "Al inicio de cada proyecto, configura un archivo con las reglas y contexto que la IA debe seguir. Esto asegura consistencia en todo el desarrollo.",
-          example: "Crea un archivo .cursorrules o contexto.md:\n\nPROYECTO: [Nombre y descripción]\nTECNOLOGÍAS: [Stack que usas]\nOBJETIVO: [Qué quieres lograr]\n\nREGLAS:\n- Reutilizar componentes existentes\n- Evitar duplicación de código\n- Documentar componentes y cambios importantes. Usa un documento maestro y uno por componente\n- Incluir comentarios explicativos en el código\n- Incluye un resumen no técnico al final de cada respuesta.",
+          example: "Crea un archivo `.cursorrules` o `contexto.md`:\n\nPROYECTO: [Nombre y descripción]\nTECNOLOGÍAS: [Stack que usas]\nOBJETIVO: [Qué quieres lograr]\n\nREGLAS:\n- Reutilizar componentes existentes\n- Evitar duplicación de código\n- Documentar componentes y cambios importantes. Usa un documento maestro y uno por componente\n- Incluir comentarios explicativos en el código\n- Incluye un resumen no técnico al final de cada respuesta.",
           icon: Settings,
           type: "practice"
         },
@@ -157,7 +224,7 @@ export default function HeuristicsPage() {
         {
           title: "Trabajar con ramas (branches)",
           description: "Usa ramas de Git para desarrollar nuevas funcionalidades sin afectar el código principal. Esto te permite experimentar con seguridad.",
-          example: "🌳 Estructura de branches:\n\nmain → Código estable en producción\ndevelopment → Desarrollo activo\nfeature/login → Nueva funcionalidad\nfix/bug-dashboard → Corrección de error\n\n📝 Comandos básicos (en la Terminal):\n\n• Ver en qué rama estás:\ngit branch\n(La rama actual aparece con un * y en color verde)\n\n• Crear una nueva rama:\ngit branch nombre-de-tu-rama\nEjemplo: git branch feature/nueva-funcion\n\n• Cambiar a otra rama:\ngit checkout nombre-de-la-rama\nEjemplo: git checkout development\n\n• Crear y cambiar a una rama nueva (atajo):\ngit checkout -b nombre-de-tu-rama\nEjemplo: git checkout -b feature/login\n\n• Ver todas las ramas que existen:\ngit branch -a\n\n• Fusionar (merge) una rama a la actual:\n1. Primero, cambiate a la rama donde quieres traer los cambios\n   git checkout main\n2. Luego, fusiona la otra rama\n   git merge nombre-de-la-otra-rama\n\n• Subir tu rama al repositorio online:\ngit push origin nombre-de-tu-rama\n\n✅ Workflow completo:\n1. Crea branch para nueva función:\n   git checkout -b feature/mi-funcion\n2. Desarrolla y prueba (trabaja con tu IA)\n3. Guarda cambios:\n   git add .\n   git commit -m \"Agregué mi nueva función\"\n4. Sube tu rama:\n   git push origin feature/mi-funcion\n5. Cuando esté lista, fusiona a development:\n   git checkout development\n   git merge feature/mi-funcion\n6. Prueba completa en development\n7. Fusiona a main cuando todo funcione:\n   git checkout main\n   git merge development",
+          example: "🌳 Estructura de branches:\n\n`main` → Código estable en producción\n`development` → Desarrollo activo\n`feature/login` → Nueva funcionalidad\n`fix/bug-dashboard` → Corrección de error\n\n📝 Comandos básicos (en la Terminal):\n\n• Ver en qué rama estás:\n`git branch`\n(La rama actual aparece con un * y en color verde)\n\n• Crear una nueva rama:\n`git branch nombre-de-tu-rama`\nEjemplo: `git branch feature/nueva-funcion`\n\n• Cambiar a otra rama:\n`git checkout nombre-de-la-rama`\nEjemplo: `git checkout development`\n\n• Crear y cambiar a una rama nueva (atajo):\n`git checkout -b nombre-de-tu-rama`\nEjemplo: `git checkout -b feature/login`\n\n• Ver todas las ramas que existen:\n`git branch -a`\n\n• Fusionar (merge) una rama a la actual:\n1. Primero, cambiate a la rama donde quieres traer los cambios\n   `git checkout main`\n2. Luego, fusiona la otra rama\n   `git merge nombre-de-la-otra-rama`\n\n• Subir tu rama al repositorio online:\n`git push origin nombre-de-tu-rama`\n\n✅ Workflow completo:\n1. Crea branch para nueva función:\n   `git checkout -b feature/mi-funcion`\n2. Desarrolla y prueba (trabaja con tu IA)\n3. Guarda cambios:\n   `git add .`\n   `git commit -m \"Agregué mi nueva función\"`\n4. Sube tu rama:\n   `git push origin feature/mi-funcion`\n5. Cuando esté lista, fusiona a `development`:\n   `git checkout development`\n   `git merge feature/mi-funcion`\n6. Prueba completa en `development`\n7. Fusiona a `main` cuando todo funcione:\n   `git checkout main`\n   `git merge development`",
           icon: GitBranch,
           type: "practice"
         },
@@ -173,16 +240,26 @@ export default function HeuristicsPage() {
         {
           title: "Refactoring periódico",
           description: "Cuando los archivos se vuelven muy complejos o largos, realiza refactoring. Primero pide identificar oportunidades, luego ejecuta un plan sistemático.",
-          example: "📝 Proceso de refactoring:\n\n1️⃣ Identificación:\n'Analiza todo el código (codebase) e identifica oportunidades de refactoring: código duplicado, funciones muy largas, componentes complejos, etc.'\n\n2️⃣ Planificación:\n'Crea un plan de refactoring priorizado para atacar todas las oportunidades identificadas.'\n\n3️⃣ Ejecución:\n'Ejecuta el refactoring punto por punto, probando después de cada cambio.'",
+          example: "📝 Instrucciones de refactoring:\n\n1️⃣ Identificación:\n'Analiza todo el código (`codebase`) e identifica oportunidades de refactoring: código duplicado, funciones muy largas, componentes complejos, etc.'\n\n2️⃣ Planificación:\n'Crea un plan de refactoring priorizado para atacar todas las oportunidades identificadas.'\n\n3️⃣ Ejecución:\n'Ejecuta el `refactoring` punto por punto, probando después de cada cambio.'",
           icon: RefreshCw,
           type: "practice"
         },
         {
           title: "Auditorías de seguridad periódicas",
-          description: "Realiza auditorías de seguridad regularmente para identificar vulnerabilidades, exposición de datos sensibles y malas prácticas.",
-          example: "🔒 Checklist de auditoría:\n\n'Realiza una auditoría de seguridad del proyecto:\n- ¿Hay datos sensibles expuestos?\n- ¿Las variables de entorno están protegidas?\n- ¿Se validan correctamente los inputs?\n- ¿Hay vulnerabilidades conocidas?\n- ¿Los endpoints están protegidos?\n- ¿Se sanitizan los datos del usuario?'\n\n✅ Hazlo cada 2-4 semanas",
+          description: "Realiza auditorías de seguridad regularmente para identificar vulnerabilidades, exposición de datos sensibles y malas prácticas.\n\n🔒 Checklist de auditoría de seguridad:\n- ¿Hay datos sensibles expuestos?\n- ¿Las variables de entorno están protegidas?\n- ¿Se validan correctamente los inputs?\n- ¿Hay vulnerabilidades conocidas?\n- ¿Los endpoints están protegidos?\n- ¿Se sanitizan los datos del usuario?\n\n✅ Hazlo cada 2-4 semanas y antes de cada release.",
+          example: "`npm audit fix` - chequea si hay vulnerabilidades en los paquetes y las corrige.\n\n`.env` en `.gitignore` (archivos) - en `.env` se guardan las variables de entorno, como las claves API, tokens y contraseñas. Este archivo debe estar mencionado en `.gitignore` para no ser expuestas en el repositorio.\n\nPolíticas de Row Level Security (RLS) - son medidas de seguridad que permiten controlar el acceso a los datos de la base de datos según el rol del usuario. Pidele a la IA que cree las necesarias según tu base de datos.",
           icon: Shield,
-          type: "practice"
+          type: "practice",
+          exampleLinks: [
+            {
+              label: "Enlace 1",
+              url: "https://www.reddit.com/r/vibecoding/comments/1k9kaeb/we_built_a_cursor_security_audit_flow_as_part_of/"
+            },
+            {
+              label: "Enlace 2",
+              url: "https://x.com/PrajwalTomar_/status/1929530584059015309"
+            }
+          ]
         }
       ]
     },
@@ -207,15 +284,15 @@ export default function HeuristicsPage() {
         },
         {
           title: "Nunca exponer datos sensibles",
-          description: "Variables de entorno, claves API, tokens y contraseñas NUNCA deben estar en el código. Siempre usa archivos de entorno (.env) que estén en .gitignore.",
-          example: "✅ Regla para la IA:\n'NUNCA expongas claves API, tokens, contraseñas o datos sensibles directamente en el código. Siempre usa variables de entorno (process.env.VARIABLE_NAME). Si detectas datos sensibles expuestos, avísame inmediatamente.'\n\n❌ NUNCA:\nconst apiKey = 'sk-abc123'\n\n✅ SIEMPRE:\nconst apiKey = process.env.OPENAI_API_KEY",
+          description: "Variables de entorno, claves API, tokens y contraseñas NUNCA deben estar en el código. Siempre usa archivos de entorno (`.env`) que estén en `.gitignore`.",
+          example: "✅ Regla para la IA:\n'NUNCA expongas claves API, tokens, contraseñas o datos sensibles directamente en el código. Siempre usa variables de entorno (`process.env.VARIABLE_NAME`). Si detectas datos sensibles expuestos, avísame inmediatamente.'\n\n❌ NUNCA:\n`const apiKey = 'sk-abc123'`\n\n✅ SIEMPRE:\n`const apiKey = process.env.OPENAI_API_KEY`",
           icon: Shield,
           type: "rule"
         },
         {
           title: "Documentar componentes y cambios",
           description: "Mantén un documento maestro del proyecto y documentación por componente. Registra qué hace cada parte y qué cambios se han realizado.",
-          example: "✅ Regla para la IA:\n'Mantén documentación actualizada:\n- Documento maestro: Arquitectura general, decisiones importantes, estructura del proyecto\n- Por componente: Qué hace, props que recibe, cuándo usarlo\n- Registro de cambios: Qué se modificó y por qué'\n\nEjemplo:\n// Button.tsx\n// Componente de botón reutilizable\n// Props: variant, size, onClick, children\n// Usado en: LoginForm, Dashboard, Settings",
+          example: "✅ Regla para la IA:\n'Mantén documentación actualizada:\n- Documento maestro: Arquitectura general, decisiones importantes, estructura del proyecto\n- Por componente: Qué hace, `props` que recibe, cuándo usarlo\n- Registro de cambios: Qué se modificó y por qué'\n\nEjemplo:\n`// Button.tsx`\n`// Componente de botón reutilizable`\n`// Props: variant, size, onClick, children`\n`// Usado en: LoginForm, Dashboard, Settings`",
           icon: FileText,
           type: "rule"
         },
@@ -229,7 +306,7 @@ export default function HeuristicsPage() {
         {
           title: "Dejar comments explicativos en el código",
           description: "El código debe incluir comentarios que expliquen qué hace cada parte, por qué se usa cierta técnica, y cómo funciona la lógica compleja.",
-          example: "✅ Regla para la IA:\n'Incluye comentarios en español explicando:\n- Qué hace cada función\n- Por qué se eligió determinado enfoque\n- Cómo funciona la lógica compleja\n- Qué parámetros recibe y qué retorna'\n\nEjemplo:\n// Valida que el email tenga formato correcto\n// Parámetros: email (string)\n// Retorna: true si es válido, false si no\nfunction validateEmail(email) {\n  // Verifica que contenga @ y al menos un punto\n  const hasAt = email.includes('@')\n  const hasDot = email.includes('.')\n  return hasAt && hasDot\n}",
+          example: "✅ Regla para la IA:\n'Incluye comentarios en español explicando:\n- Qué hace cada función\n- Por qué se eligió determinado enfoque\n- Cómo funciona la lógica compleja\n- Qué parámetros recibe y qué retorna'\n\nEjemplo:\n`// Valida que el email tenga formato correcto`\n`// Parámetros: email (string)`\n`// Retorna: true si es válido, false si no`\n`function validateEmail(email) {`\n`  // Verifica que contenga @ y al menos un punto`\n`  const hasAt = email.includes('@')`\n`  const hasDot = email.includes('.')`\n`  return hasAt && hasDot`\n`}`",
           icon: Code,
           type: "rule"
         }
@@ -312,10 +389,10 @@ export default function HeuristicsPage() {
           {/* Introduction */}
           <div className="mb-6 md:mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 md:mb-3">
-              Guía de Vibecoding con IA
+              Guía de Programación Asistida con IA
             </h2>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-              Aprende a trabajar eficientemente con IA para crear tus proyectos. Estas son las mejores prácticas y consejos esenciales para vibecoding exitoso.
+              Aprende a trabajar eficientemente con IA para crear tus proyectos. Estas son las mejores prácticas y consejos esenciales para vibecoding exitoso y escalable.
             </p>
           </div>
 
@@ -401,16 +478,29 @@ export default function HeuristicsPage() {
                                   <div className="px-3 md:px-4 pb-3 md:pb-4 animate-in slide-in-from-top-2 duration-200">
                                     <div className="pl-8 md:pl-10 pr-2 md:pr-4 space-y-3">
                                       <div className="pt-2 md:pt-3 border-t border-border/20">
-                                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                                          {item.description}
-                                        </p>
+                                        <div className="text-xs md:text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                          {formatTextWithCode(item.description)}
+                                        </div>
                                       </div>
                                       {(item as any).image && (
                                         <div className="bg-accent/5 p-3 md:p-4 rounded-lg border border-accent/20">
-                                          <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-                                            <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent" />
-                                            Referencia visual:
-                                          </h4>
+                                          <div className="flex items-center justify-between mb-2">
+                                            <h4 className="text-xs md:text-sm font-medium text-foreground flex items-center gap-2">
+                                              <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                                              Referencia visual:
+                                            </h4>
+                                            {(item as any).link && (
+                                              <a
+                                                href={(item as any).link.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-primary hover:text-primary/80 transition-colors"
+                                                title="Ver más información"
+                                              >
+                                                <ExternalLink className="h-3 w-3 md:h-4 md:w-4" />
+                                              </a>
+                                            )}
+                                          </div>
                                           <div className="mt-2">
                                             <img 
                                               src={(item as any).image} 
@@ -427,13 +517,46 @@ export default function HeuristicsPage() {
                                       )}
                                       {item.example && (
                                         <div className="bg-accent/5 p-3 md:p-4 rounded-lg border border-accent/20">
-                                          <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-                                            <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent" />
-                                            Ejemplo:
-                                          </h4>
-                                          <pre className="text-xs md:text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
-                                            {item.example}
-                                          </pre>
+                                          <div className="flex items-center justify-between mb-2">
+                                            <h4 className="text-xs md:text-sm font-medium text-foreground flex items-center gap-2">
+                                              <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent" />
+                                              Ejemplo:
+                                            </h4>
+                                            {(item as any).exampleLink && (
+                                              <a
+                                                href={(item as any).exampleLink.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="text-primary hover:text-primary/80 transition-colors"
+                                                title="Ver más información"
+                                              >
+                                                <ExternalLink className="h-3 w-3 md:h-4 md:w-4" />
+                                              </a>
+                                            )}
+                                            {(item as any).exampleLinks && (
+                                              <div className="relative group">
+                                                <div className="text-primary hover:text-primary/80 transition-colors cursor-pointer">
+                                                  <ExternalLink className="h-3 w-3 md:h-4 md:w-4" />
+                                                </div>
+                                                <div className="absolute right-0 top-full mt-1 w-32 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                                  {(item as any).exampleLinks.map((link: any, linkIndex: number) => (
+                                                    <a
+                                                      key={linkIndex}
+                                                      href={link.url}
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                      className="block px-3 py-2 text-xs text-foreground hover:bg-accent/10 transition-colors first:rounded-t-lg last:rounded-b-lg"
+                                                    >
+                                                      {link.label}
+                                                    </a>
+                                                  ))}
+                                                </div>
+                                              </div>
+                                            )}
+                                          </div>
+                                          <div className="text-xs md:text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                                            {formatTextWithCode(item.example)}
+                                          </div>
                                         </div>
                                       )}
                                       {(item as any).link && (

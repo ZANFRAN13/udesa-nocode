@@ -4,10 +4,24 @@ import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronDown, ChevronRight, Terminal, Info } from "lucide-react"
+import { ChevronDown, ChevronRight, Terminal, Info, Copy, Check } from "lucide-react"
 
 export function TerminalCommandsSection() {
   const [isOpen, setIsOpen] = useState(false)
+  const [copiedCommands, setCopiedCommands] = useState<Record<string, boolean>>({})
+
+  // Función para copiar al clipboard
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedCommands(prev => ({ ...prev, [id]: true }))
+      setTimeout(() => {
+        setCopiedCommands(prev => ({ ...prev, [id]: false }))
+      }, 2000)
+    } catch (err) {
+      console.error('Error al copiar:', err)
+    }
+  }
 
   return (
     <Card className="mb-6 md:mb-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background overflow-hidden group hover:bg-primary/10 transition-all duration-200">
@@ -78,6 +92,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">ls</code>
+                    <button
+                      onClick={() => copyToClipboard('ls', 'ls')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['ls'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Ver qué archivos tienes en la carpeta actual</p>
                   </div>
                 </div>
@@ -85,6 +110,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">cd carpeta</code>
+                    <button
+                      onClick={() => copyToClipboard('cd carpeta', 'cd-carpeta')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['cd-carpeta'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Entrar a una carpeta. Usa <code className="text-xs bg-muted px-1 rounded">cd ..</code> para volver atrás</p>
                   </div>
                 </div>
@@ -99,6 +135,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">npm i</code>
+                    <button
+                      onClick={() => copyToClipboard('npm i', 'npm-i')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['npm-i'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Instalar todo lo que el proyecto necesita (puede tardar unos minutos)</p>
                   </div>
                 </div>
@@ -106,6 +153,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">npm run dev</code>
+                    <button
+                      onClick={() => copyToClipboard('npm run dev', 'npm-run-dev')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['npm-run-dev'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Iniciar tu app para verla en el navegador (localhost:3000)</p>
                   </div>
                 </div>
@@ -120,6 +178,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">git status</code>
+                    <button
+                      onClick={() => copyToClipboard('git status', 'git-status')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['git-status'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Ver qué archivos modificaste</p>
                   </div>
                 </div>
@@ -127,6 +196,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">git add .</code>
+                    <button
+                      onClick={() => copyToClipboard('git add .', 'git-add')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['git-add'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Preparar TODOS tus cambios para guardarlos</p>
                   </div>
                 </div>
@@ -140,7 +220,20 @@ export function TerminalCommandsSection() {
                 
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex flex-col gap-1">
-                    <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono w-fit overflow-x-auto max-w-full">git commit -m "mensaje"</code>
+                    <div className="flex items-start gap-2">
+                      <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono overflow-x-auto max-w-full">git commit -m "mensaje"</code>
+                      <button
+                        onClick={() => copyToClipboard('git commit -m "mensaje"', 'git-commit')}
+                        className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                        title="Copiar comando"
+                      >
+                        {copiedCommands['git-commit'] ? (
+                          <Check className="h-3 w-3 text-green-500" />
+                        ) : (
+                          <Copy className="h-3 w-3 text-muted-foreground" />
+                        )}
+                      </button>
+                    </div>
                     <p className="text-xs md:text-sm text-muted-foreground">Guardar cambios con una descripción</p>
                     <p className="text-xs text-muted-foreground/70">Ej: "Agregué login" o "Corregí error del formulario"</p>
                   </div>
@@ -149,6 +242,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">git push</code>
+                    <button
+                      onClick={() => copyToClipboard('git push', 'git-push')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['git-push'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Subir tus cambios a GitHub (la nube)</p>
                   </div>
                 </div>
@@ -156,6 +260,17 @@ export function TerminalCommandsSection() {
                 <div className="bg-card border border-border rounded-lg p-2 md:p-3 space-y-2">
                   <div className="flex items-start gap-2">
                     <code className="text-xs md:text-sm bg-primary/10 px-1.5 md:px-2 py-0.5 md:py-1 rounded text-primary font-mono flex-shrink-0">git pull</code>
+                    <button
+                      onClick={() => copyToClipboard('git pull', 'git-pull')}
+                      className="p-1 hover:bg-primary/10 rounded transition-colors flex-shrink-0"
+                      title="Copiar comando"
+                    >
+                      {copiedCommands['git-pull'] ? (
+                        <Check className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <Copy className="h-3 w-3 text-muted-foreground" />
+                      )}
+                    </button>
                     <p className="text-xs md:text-sm text-muted-foreground">Descargar los últimos cambios del equipo</p>
                   </div>
                 </div>

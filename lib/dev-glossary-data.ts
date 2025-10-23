@@ -421,12 +421,168 @@ git commit -m "Actualizar documentación"`,
     category: "Development",
     description: "Clasificación que define qué tipo de información puede almacenar una *[variable](#variables)* y qué operaciones se pueden realizar con ella.",
     relatedTerms: ["variables", "data-structures"],
-    example: "Como diferentes tipos de contenedores: un 'String' es como una caja de texto (tu nombre), un 'Integer' es como una caja de números (tu edad), un 'Boolean' es como una caja de sí/no (¿estás casado?), y un 'Array' es como una lista de compras.",
-    codeExample: `// Diferentes tipos de datos
-let nombre = "María";           // String (texto)
-let edad = 25;                  // Integer (número entero)
-let esCasada = false;           // Boolean (verdadero/falso)
-let compras = ["pan", "leche"];  // Array (lista)`,
+    example: `🔢 Integer (int)
+
+Qué es:
+Un número entero sin decimales, que puede ser positivo, negativo o cero. Es el tipo de dato más básico para contar y hacer matemáticas simples.
+
+Para qué se usa:
+Contar elementos (cantidad de productos en carrito), identificadores (ID de usuario), edades, años, posiciones en listas, o cualquier valor que no necesite decimales.
+
+Cómo se ve:
+\`\`\`javascript
+let edad = 25;
+let cantidadProductos = 10;
+let temperatura = -5;
+let año = 2024;
+\`\`\`
+
+---
+
+🎯 Float (decimal)
+
+Qué es:
+Un número con decimales (punto flotante). Permite representar valores fraccionarios y medidas precisas.
+
+Para qué se usa:
+Precios ($19.99), medidas (1.75 metros), porcentajes (0.15 = 15%), coordenadas GPS, cálculos científicos, o cualquier valor que necesite precisión decimal.
+
+Cómo se ve:
+\`\`\`javascript
+let precio = 19.99;
+let altura = 1.75;
+let descuento = 0.15;  // 15%
+let pi = 3.14159;
+\`\`\`
+
+---
+
+📝 String (texto)
+
+Qué es:
+Una cadena de caracteres (letras, números, símbolos) que representa texto. Se escribe entre comillas.
+
+Para qué se usa:
+Nombres, direcciones, mensajes, emails, URLs, descripciones, cualquier información textual que necesites mostrar o procesar.
+
+Cómo se ve:
+\`\`\`javascript
+let nombre = "María García";
+let email = "maria@ejemplo.com";
+let mensaje = 'Hola, ¿cómo estás?';
+let html = \`<h1>Título</h1>\`;  // Template literal
+\`\`\`
+
+---
+
+🔤 Char (carácter)
+
+Qué es:
+Un único carácter (una letra, número o símbolo). JavaScript no tiene un tipo específico para esto, se usa un string de longitud 1.
+
+Para qué se usa:
+Iniciales de nombres, calificaciones (A, B, C), símbolos individuales, teclas presionadas, o cuando necesitas trabajar con un solo carácter.
+
+Cómo se ve:
+\`\`\`javascript
+// En JavaScript se usan strings de 1 carácter
+let inicial = "M";
+let calificacion = "A";
+let simbolo = "@";
+let respuesta = "S";  // Sí
+\`\`\`
+
+---
+
+✅ Boolean (bool)
+
+Qué es:
+Un valor lógico que solo puede ser verdadero (true) o falso (false). Es la base de todas las decisiones en programación.
+
+Para qué se usa:
+Condiciones (¿está logueado?, ¿es mayor de edad?), estados (activo/inactivo), permisos, switches on/off, validaciones de formularios.
+
+Cómo se ve:
+\`\`\`javascript
+let estaLogueado = true;
+let esMayorDeEdad = false;
+let tieneDescuento = true;
+let formularioValido = false;
+\`\`\`
+
+---
+
+⚫ NULL
+
+Qué es:
+Representa la ausencia intencional de valor. Es diferente a "vacío", significa "intencionalmente sin valor".
+
+Para qué se usa:
+Indicar que una variable existe pero no tiene valor asignado todavía, resetear valores, o representar la ausencia de un objeto.
+
+Cómo se ve:
+\`\`\`javascript
+let usuarioSeleccionado = null;  // Ninguno seleccionado aún
+let foto = null;  // No hay foto cargada
+let respuesta = null;  // Esperando respuesta del servidor
+
+// Verificar null
+if (usuarioSeleccionado === null) {
+  console.log("No hay usuario seleccionado");
+}
+\`\`\`
+
+---
+
+❌ NaN (Not a Number)
+
+Qué es:
+Un valor especial que significa "No es un Número". Se produce cuando intentas hacer operaciones matemáticas inválidas.
+
+Para qué se usa:
+Detectar errores en cálculos matemáticos, validar que el input del usuario sea numérico, o manejar operaciones imposibles.
+
+Cómo se ve:
+\`\`\`javascript
+let resultado = 0 / 0;  // NaN
+let conversion = parseInt("abc");  // NaN
+let operacion = "texto" * 5;  // NaN
+
+// Verificar NaN (¡importante!)
+if (isNaN(resultado)) {
+  console.log("El resultado no es un número válido");
+}
+
+// NaN es especial: NaN !== NaN (¡es true!)
+\`\`\`
+
+---
+
+❓ Undefined
+
+Qué es:
+Significa que una variable ha sido declarada pero no se le ha asignado ningún valor. Es el valor por defecto de variables no inicializadas.
+
+Para qué se usa:
+Detectar variables sin inicializar, verificar parámetros opcionales de funciones, o identificar propiedades que no existen en objetos.
+
+Cómo se ve:
+\`\`\`javascript
+let sinValor;  // undefined (declarada pero no asignada)
+console.log(sinValor);  // undefined
+
+// Propiedad que no existe
+let persona = {nombre: "Ana"};
+console.log(persona.edad);  // undefined
+
+// Parámetro opcional
+function saludar(nombre) {
+  if (nombre === undefined) {
+    return "Hola, extraño";
+  }
+  return \`Hola, \${nombre}\`;
+}
+\`\`\``,
     tags: ["basics"]
   },
   {
@@ -435,22 +591,154 @@ let compras = ["pan", "leche"];  // Array (lista)`,
     category: "Development",
     description: "Formas organizadas de almacenar y acceder a datos de manera eficiente, cada una optimizada para diferentes tipos de operaciones.",
     relatedTerms: ["data-types", "variables", "json"],
-    example: "Como diferentes tipos de cajas para organizar cosas: una caja simple para una lista de nombres, una caja con compartimentos para guardar información de una persona (nombre, edad, email), o una caja con sub-cajas para organizar archivos por carpetas.",
-    codeExample: `// Array (lista simple)
-let nombres = ["Ana", "Carlos", "María"];
+    example: `📋 Array (Arreglo o Lista)
 
-// Object (caja con compartimentos)
-let persona = {
+Qué es:
+Una colección ordenada de elementos que se identifican por su posición (índice). Es como una fila de cajones numerados donde cada cajón puede guardar un valor.
+
+Para qué se usa:
+Guardar listas de elementos del mismo tipo (lista de productos, usuarios, nombres). Ideal cuando necesitas acceder a elementos por su posición o recorrer todos los elementos en orden.
+
+Cómo se ve:
+\`\`\`javascript
+let frutas = ["manzana", "banana", "naranja"];
+// Acceder: frutas[0] → "manzana"
+// Agregar: frutas.push("uva")
+// Longitud: frutas.length → 4
+\`\`\`
+
+---
+
+📦 Object (Objeto)
+
+Qué es:
+Una colección de pares clave-valor, como un diccionario. Cada propiedad tiene un nombre (clave) y un valor asociado.
+
+Para qué se usa:
+Representar entidades con múltiples características (un usuario con nombre, email, edad). Perfecto cuando necesitas organizar información relacionada bajo un mismo concepto.
+
+Cómo se ve:
+\`\`\`javascript
+let usuario = {
   nombre: "Ana",
   edad: 25,
-  email: "ana@email.com"
+  email: "ana@email.com",
+  activo: true
 };
+// Acceder: usuario.nombre → "Ana"
+// Modificar: usuario.edad = 26
+\`\`\`
 
-// Array de objetos (lista de personas)
-let personas = [
-  {nombre: "Ana", edad: 25},
-  {nombre: "Carlos", edad: 30}
-];`,
+---
+
+🎯 Set (Conjunto)
+
+Qué es:
+Una colección de valores únicos, sin duplicados y sin orden específico. Como una bolsa donde no puedes meter dos cosas idénticas.
+
+Para qué se usa:
+Eliminar duplicados de una lista, verificar si un elemento existe, o guardar valores únicos (tags únicos, IDs de usuarios visitantes).
+
+Cómo se ve:
+\`\`\`javascript
+let tags = new Set(["javascript", "react", "javascript"]);
+// Resultado: Set {"javascript", "react"}
+// Agregar: tags.add("nodejs")
+// Verificar: tags.has("react") → true
+// Tamaño: tags.size → 3
+\`\`\`
+
+---
+
+🗺️ Map (Mapa o Diccionario)
+
+Qué es:
+Una colección de pares clave-valor donde las claves pueden ser de cualquier tipo (no solo strings como en objetos). Como un directorio telefónico mejorado.
+
+Para qué se usa:
+Asociar valores con claves específicas, crear cachés, o guardar configuraciones. Mejor que objetos cuando las claves son dinámicas o no son strings.
+
+Cómo se ve:
+\`\`\`javascript
+let precios = new Map();
+precios.set("manzana", 2.50);
+precios.set("banana", 1.80);
+// Obtener: precios.get("manzana") → 2.50
+// Verificar: precios.has("banana") → true
+// Eliminar: precios.delete("manzana")
+\`\`\`
+
+---
+
+📚 Stack (Pila)
+
+Qué es:
+Una estructura LIFO (Last In, First Out - último en entrar, primero en salir). Como una pila de platos: solo puedes agregar o quitar del tope.
+
+Para qué se usa:
+Historial de navegación (botón "Volver"), deshacer/rehacer acciones, evaluar expresiones matemáticas, o gestionar llamadas de funciones.
+
+Cómo se ve:
+\`\`\`javascript
+// Usando array como stack
+let historial = [];
+historial.push("/home");    // Agregar al tope
+historial.push("/productos");
+historial.push("/carrito");
+// Quitar del tope: historial.pop() → "/carrito"
+// Ver el tope: historial[historial.length - 1]
+\`\`\`
+
+---
+
+🎫 Queue (Cola)
+
+Qué es:
+Una estructura FIFO (First In, First Out - primero en entrar, primero en salir). Como una fila de personas: el primero que llega es el primero en ser atendido.
+
+Para qué se usa:
+Procesar tareas en orden de llegada (cola de impresión, procesamiento de mensajes, sistema de turnos), o implementar sistemas de mensajería.
+
+Cómo se ve:
+\`\`\`javascript
+// Usando array como queue
+let colaTareas = [];
+colaTareas.push("tarea1");   // Agregar al final
+colaTareas.push("tarea2");
+colaTareas.push("tarea3");
+// Procesar: colaTareas.shift() → "tarea1" (quita del inicio)
+// Ver siguiente: colaTareas[0]
+\`\`\`
+
+---
+
+🔒 Tuple (Tupla)
+
+Qué es:
+Una colección ordenada e inmutable de elementos de longitud fija. Una vez creada, no puedes cambiar sus valores ni su tamaño. Como una caja sellada con compartimentos numerados.
+
+Para qué se usa:
+Representar datos que no deben cambiar (coordenadas geográficas, códigos RGB de colores, pares clave-valor fijos). Ideal cuando necesitas garantizar que los datos permanezcan constantes.
+
+Cómo se ve:
+\`\`\`javascript
+// JavaScript no tiene tuplas nativas, pero podemos simularlas
+// Usando array como tupla (por convención no se modifica)
+const coordenadas = [40.7128, -74.0060]; // [latitud, longitud]
+const colorRGB = [255, 128, 0]; // [red, green, blue]
+
+// En TypeScript puedes definirlas explícitamente
+// let punto: [number, number] = [10, 20];
+// punto = [30, 40]; // OK: reasignar
+// punto[0] = 50;    // OK en runtime, pero TypeScript lo permite
+// punto.push(60);   // Evitar: rompe la estructura de tupla
+
+// Uso común: retornar múltiples valores
+function obtenerCoordenadas() {
+  return [40.7128, -74.0060]; // Devuelve una tupla
+}
+const [lat, lng] = obtenerCoordenadas(); // Desestructuración
+\`\`\``,
     tags: ["basics"]
   },
   {
@@ -474,18 +762,43 @@ PASO 5: Mostrar el número más grande`,
     category: "Development",
     description: "Instrucciones que determinan el flujo de ejecución de un programa, permitiendo tomar decisiones y repetir acciones.",
     relatedTerms: ["algorithms", "functions"],
-    example: "If/else para decisiones, loops para repetir acciones, o switch para múltiples opciones.",
-    codeExample: `// Estructuras de control básicas
-if (edad >= 18) {
-  console.log("Eres mayor de edad");
-} else {
-  console.log("Eres menor de edad");
-}
+    example: `🔀 Condicionales (if/else)
 
-// Loop para repetir
-for (let i = 0; i < 5; i++) {
-  console.log("Número: " + i);
-}`,
+Cómo funciona:
+Permiten que el programa tome decisiones y ejecute diferentes acciones según si una condición es verdadera o falsa. Es como un camino que se bifurca.
+
+Caso de uso:
+Si un usuario ingresa la contraseña correcta, mostrar el dashboard; si no, mostrar un mensaje de error. O si el carrito de compras supera $1000, aplicar un descuento del 10%.
+
+---
+
+🔄 Bucles o Loops (for, while)
+
+Cómo funciona:
+Repiten una acción múltiples veces hasta que se cumpla una condición de salida. Como hacer la misma tarea una y otra vez automáticamente.
+
+Caso de uso:
+Mostrar todos los productos de una tienda online (recorrer la lista uno por uno). O enviar un email de bienvenida a 1000 usuarios nuevos sin tener que hacerlo manualmente.
+
+---
+
+🎯 Switch
+
+Cómo funciona:
+Evalúa una variable y ejecuta diferentes bloques de código según su valor. Es útil cuando tienes múltiples opciones posibles.
+
+Caso de uso:
+En un menú de navegación, si el usuario hace clic en "Inicio" mostrar la página principal, si hace clic en "Productos" mostrar el catálogo, si hace clic en "Contacto" mostrar el formulario. Es más claro que tener muchos if/else encadenados.
+
+---
+
+⏹️ Break y Continue
+
+Cómo funciona:
+Controlan el comportamiento de los bucles. Break detiene el bucle completamente, y Continue salta a la siguiente iteración sin terminar la actual.
+
+Caso de uso:
+En una búsqueda de productos, usar break para detener el bucle cuando encuentres el producto que buscas (no tiene sentido seguir buscando). O usar continue para saltar productos sin stock y seguir mostrando solo los disponibles.`,
     tags: ["basics"]
   },
   {
@@ -501,6 +814,32 @@ function calcularTotal(precio, cantidad) {
 
 // Uso de la función
 let total = calcularTotal(10, 3);  // total = 30`,
+    tags: ["basics"]
+  },
+  {
+    id: "input-output",
+    name: "Input / Output (Entrada / Salida)",
+    category: "Development",
+    description: "Input (entrada) es la información que un programa recibe del usuario o de otra fuente. Output (salida) es la información que el programa muestra o devuelve como resultado. Es la forma en que los programas se comunican con el mundo exterior.",
+    relatedTerms: ["functions", "console-log", "variables"],
+    example: "Cuando llenas un formulario en una web (escribes tu nombre, email, contraseña), esos son inputs. Cuando la web te muestra un mensaje de 'Registro exitoso', ese es el output. En una calculadora: los números que ingresas son inputs, el resultado que ves es el output.",
+    codeExample: `// Input: Recibir información
+let nombre = prompt("¿Cuál es tu nombre?");  // Input del usuario
+
+// Procesamiento
+let saludo = "¡Hola, " + nombre + "!";
+
+// Output: Mostrar resultado
+alert(saludo);                               // Output en ventana
+console.log(saludo);                         // Output en consola
+
+// Función con input y output
+function sumar(a, b) {          // a y b son inputs
+  return a + b;                 // El resultado es el output
+}
+
+let resultado = sumar(5, 3);    // Input: 5 y 3
+console.log(resultado);         // Output: 8`,
     tags: ["basics"]
   },
   {
@@ -625,10 +964,21 @@ git push --force              # Forzar push (usar con cuidado)`,
   },
   {
     id: "deploy",
-    name: "Deploy (Despliegue)",
+    name: "Deploy (Despliegue / Release)",
     category: "DevOps",
-    description: "Proceso de poner una aplicación en funcionamiento en un servidor para que los usuarios puedan acceder a ella.",
-    example: "Es como subir una foto a Instagram: tu app está en tu computadora, pero para que otros la vean, necesitas 'subirla' a un servidor en internet. Deploy es ese proceso de 'subir' tu app para que funcione en la web.",
+    description: "Proceso de poner una aplicación en funcionamiento en un servidor para que los usuarios puedan acceder a ella. Un Release es una versión oficial numerada que se publica, mientras que Deploy es el acto técnico de subirla.",
+    relatedTerms: ["ci-cd", "development-environments", "testing"],
+    example: `Es como subir una foto a Instagram: tu app está en tu computadora, pero para que otros la vean, necesitas 'subirla' a un servidor en internet. Deploy es ese proceso de 'subir' tu app para que funcione en la web.
+
+Release vs Deploy: Un 'Release v2.5.0' es la versión oficial (como un álbum de música), mientras que 'Deploy' es el acto de subirlo al servidor (como publicarlo en Spotify). Puedes hacer muchos deploys del mismo release (por ejemplo, desplegar a staging, luego a producción).
+
+Ejemplo de releases:
+- v1.0.0 → Primera versión oficial
+- v1.1.0 → Nueva funcionalidad
+- v1.1.1 → Corrección de bug
+- v2.0.0 → Cambios grandes
+
+Cuando ves 'Release v1.5.0' en GitHub, incluye notas como: '✨ Nuevas funcionalidades: Dark mode, notificaciones. 🐛 Correcciones: Login mejorado'.`,
     tags: ["basics"]
   },
   {

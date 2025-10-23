@@ -9,6 +9,7 @@ import {
   processTextWithLinks,
   processConfigurationText,
 } from "@/lib/glossary-utils"
+import { StructuredExample } from "@/components/glossary/structured-example"
 
 interface GlossaryTermProps {
   term: GenericGlossaryTerm
@@ -81,9 +82,13 @@ export function GlossaryTerm({
                 <h4 className="text-xs md:text-sm font-medium text-foreground mb-1.5 md:mb-2">
                   Ejemplo
                 </h4>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic">
-                  {processTextWithLinks(term.example, onTermClick)}
-                </p>
+                {term.example.includes('---') && (term.example.includes('Cómo funciona:') || term.example.includes('Qué es:')) ? (
+                  <StructuredExample content={term.example} />
+                ) : (
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed italic whitespace-pre-wrap">
+                    {processTextWithLinks(term.example, onTermClick)}
+                  </p>
+                )}
               </div>
             )}
 
