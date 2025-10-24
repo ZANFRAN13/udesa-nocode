@@ -6,7 +6,13 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, LogOut, Code2, Info, Monitor } from "lucide-react"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { ArrowLeft, LogOut, Code2, Info, Monitor, HelpCircle } from "lucide-react"
 
 export default function DevToolsPage() {
   const router = useRouter()
@@ -216,7 +222,7 @@ export default function DevToolsPage() {
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-sm md:text-base mb-1 md:mb-2">Console (Consola)</h4>
                       <p className="text-xs md:text-sm text-muted-foreground mb-2">
-                        <strong>La más importante para vibecoding.</strong> Aquí aparecen los errores de tu aplicación. 
+                        <strong>La más importante para vibecoding.</strong> Aquí aparecen los errores de tu aplicació así como advertencias y otros logs que te pueden ayudar a debuggear.
                         Los errores en rojo son problemas que debes solucionar. Las advertencias en amarillo son menos urgentes.
                       </p>
                       <div className="bg-muted/30 rounded p-2 text-xs md:text-sm border border-border/30">
@@ -226,7 +232,26 @@ export default function DevToolsPage() {
                         <ul className="text-muted-foreground space-y-0.5 pl-4 list-disc">
                           <li>Ver mensajes de error que te diga tu código o la IA</li>
                           <li>Copiar el error completo para dárselo a la IA y que lo arregle</li>
-                          <li>Ver mensajes que pusiste con <code className="px-1 py-0.5 bg-background rounded text-xs">console.log()</code></li>
+                          <li>
+                            <div className="flex items-center gap-1.5">
+                              Ver mensajes que pusiste con{' '}
+                              <code className="px-1 py-0.5 bg-background rounded text-xs">console.log()</code>
+                              <TooltipProvider>
+                                <Tooltip delayDuration={200}>
+                                  <TooltipTrigger asChild>
+                                    <button className="inline-flex items-center">
+                                      <HelpCircle className="h-4 w-4 text-primary hover:text-primary/80 transition-colors" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" className="max-w-xs">
+                                    <p className="text-xs">
+                                      <strong>¿Para qué?</strong> Los console.log() te permiten ver qué está pasando en tu código mientras se ejecuta. Es como dejar "notitas" en tu código para verificar si las cosas funcionan como esperás. Super útil para debuggear cuando algo no anda, o simplemente para ver qué valores tienen tus variables en cada momento.
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                          </li>
                         </ul>
                       </div>
                     </div>

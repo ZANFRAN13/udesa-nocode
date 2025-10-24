@@ -26,6 +26,7 @@ export const devTermsData: DevTerm[] = [
     name: "Backend",
     category: "Architecture",
     description: "La parte del software que maneja la lógica de negocio, *[bases de datos](#databases)* y procesamiento del servidor. No es visible para el usuario final.",
+    relatedTerms: ["frontend", "server", "databases", "api", "fullstack"],
     example: "El backend de una red social maneja el almacenamiento de posts, *[autenticación](#authentication)* de usuarios y envío de notificaciones.",
     tags: ["basics"]
   },
@@ -34,6 +35,7 @@ export const devTermsData: DevTerm[] = [
     name: "Frontend",
     category: "Architecture",
     description: "La parte del software que interactúa directamente con el usuario. Incluye la interfaz de usuario y la experiencia visual.",
+    relatedTerms: ["backend", "components", "responsive-design", "client", "fullstack"],
     example: "La página web que ves en el navegador, con botones, formularios y animaciones, es el frontend de una aplicación.",
     tags: ["basics"]
   },
@@ -59,6 +61,7 @@ export const devTermsData: DevTerm[] = [
     name: "Control de Versiones (Version Control)",
     category: "Development",
     description: "Sistema que registra cambios en archivos a lo largo del tiempo, permitiendo volver a versiones anteriores y colaborar en equipo.",
+    relatedTerms: ["git", "github", "commit", "branch", "merge"],
     example: "*[git](#git)* permite rastrear cambios en código, crear *[branch](#branch)* para nuevas funcionalidades y *[merge](#merge)* trabajo de diferentes desarrolladores."
   },
   {
@@ -66,6 +69,7 @@ export const devTermsData: DevTerm[] = [
     name: "Repositorio (Repository)",
     category: "Development",
     description: "Almacén central donde se guarda el código fuente de un proyecto, junto con su historial de cambios y metadatos.",
+    relatedTerms: ["git", "github", "version-control", "commit", "branch"],
     example: "Un repositorio en *[github](#github)* contiene todo el código de una aplicación web, incluyendo *[documentation](#documentation)* y configuración."
   },
   {
@@ -97,6 +101,7 @@ export const devTermsData: DevTerm[] = [
     name: "REST (Representational State Transfer)",
     category: "Backend",
     description: "Arquitectura de software para diseñar *[api](#api)* web que utiliza métodos *[http](#http)* estándar (GET, POST, PUT, DELETE).",
+    relatedTerms: ["api", "http", "endpoint", "json", "backend"],
     example: "Una *[api](#api)* REST permite obtener usuarios con GET /api/users, crear uno nuevo con POST /api/users."
   },
   {
@@ -121,6 +126,7 @@ export const devTermsData: DevTerm[] = [
     name: "Autorización (Authorization)",
     category: "Security",
     description: "Proceso de determinar qué acciones o recursos puede acceder un usuario *[authentication](#authentication)*.",
+    relatedTerms: ["authentication", "rls", "sso", "api-key"],
     example: "Un usuario administrador puede eliminar posts, mientras que un usuario normal solo puede crear y editar los suyos."
   },
   {
@@ -176,7 +182,7 @@ export const devTermsData: DevTerm[] = [
     id: "progressive-web-app",
     name: "Progressive Web App (PWA)",
     category: "Frontend",
-    description: "Aplicación web que utiliza tecnologías modernas para ofrecer una experiencia similar a las apps nativas.",
+    description: "Aplicación web que utiliza tecnologías modernas para ofrecer una experiencia similar a las apps nativas. La diferencia con una Web App convencional es que una PWA puede funcionar offline y ser instalada como una app en el dispositivo mientras que una Web App se ejecuta en el navegador.",
     relatedTerms: ["single-page-application", "web-app-responsive"],
     example: "Una PWA puede funcionar offline, enviar notificaciones y ser instalada como una app en el dispositivo."
   },
@@ -265,6 +271,7 @@ export const devTermsData: DevTerm[] = [
     name: "Scrum",
     category: "Methodology",
     description: "Framework *[agile](#agile)* que organiza el trabajo en sprints de 1-4 semanas con roles definidos y ceremonias regulares.",
+    relatedTerms: ["agile", "user-story", "mvp", "testing"],
     example: "Un equipo Scrum tiene un Product Owner, Scrum Master y desarrolladores que trabajan en sprints de 2 semanas."
   },
   {
@@ -272,6 +279,7 @@ export const devTermsData: DevTerm[] = [
     name: "Historia de Usuario (User Story)",
     category: "Methodology",
     description: "Descripción simple de una funcionalidad desde la perspectiva del usuario final.",
+    relatedTerms: ["agile", "scrum", "mvp", "documentation"],
     example: "Como usuario, quiero poder restablecer mi contraseña para poder acceder a mi cuenta si la olvido."
   },
   {
@@ -295,6 +303,7 @@ export const devTermsData: DevTerm[] = [
     name: "Revisión de Código (Code Review)",
     category: "Development",
     description: "Proceso donde otros desarrolladores revisan el código antes de integrarlo al proyecto principal.",
+    relatedTerms: ["pull-request", "git", "github", "refactoring", "testing"],
     example: "Un desarrollador crea un *[pull-request](#pull-request)* y otros miembros del equipo revisan el código y sugieren mejoras."
   },
   {
@@ -302,6 +311,7 @@ export const devTermsData: DevTerm[] = [
     name: "Documentación (Documentation)",
     category: "Development",
     description: "Conjunto de documentos que explican cómo usar, mantener y entender un sistema de software.",
+    relatedTerms: ["code-review", "repository", "user-story", "api"],
     example: "README files, comentarios en código, guías de API y manuales de usuario son tipos de documentación."
   },
   {
@@ -358,6 +368,7 @@ export const devTermsData: DevTerm[] = [
     name: "Git",
     category: "Development",
     description: "Sistema de *[control de versiones](#version-control)* distribuido que permite rastrear cambios en archivos y coordinar trabajo en equipo.",
+    relatedTerms: ["github", "version-control", "commit", "branch", "merge", "pull", "push"],
     example: "Git permite crear *[ramas](#branch)* para nuevas funcionalidades, *[fusionar](#merge)* cambios y mantener un historial completo del proyecto.",
     tags: ["basics"]
   },
@@ -366,6 +377,7 @@ export const devTermsData: DevTerm[] = [
     name: "GitHub",
     category: "Development",
     description: "Plataforma de hosting para *[repositorios](#repository)* *[Git](#git)* que facilita la colaboración y gestión de proyectos de software.",
+    relatedTerms: ["git", "repository", "pull-request", "open-source", "ci-cd"],
     example: "GitHub permite subir código, crear *[pull request](#pull-request)*, gestionar issues y colaborar en proyectos de *[código abierto](#open-source)*.",
     tags: ["basics"]
   },
@@ -374,6 +386,7 @@ export const devTermsData: DevTerm[] = [
     name: "Pull Request (PR)",
     category: "Development",
     description: "Propuesta de cambios en un *[repositorio](#repository)* que solicita *[fusionar](#merge)* código de una *[rama](#branch)* a otra.",
+    relatedTerms: ["merge", "branch", "github", "code-review", "git"],
     example: "Un desarrollador crea una PR para fusionar su nueva funcionalidad con la *[rama](#branch)* principal del proyecto."
   },
   {
@@ -381,6 +394,7 @@ export const devTermsData: DevTerm[] = [
     name: "Merge (Fusión)",
     category: "Development",
     description: "Proceso de combinar cambios de diferentes *[ramas](#branch)* o *[commits](#commit)* en una sola rama.",
+    relatedTerms: ["branch", "pull-request", "git", "commit", "version-control"],
     example: "Fusionar una *[rama](#branch)* de nueva funcionalidad con la rama principal después de aprobar un *[pull request](#pull-request)*."
   },
   {
@@ -388,6 +402,7 @@ export const devTermsData: DevTerm[] = [
     name: "Rama (Branch)",
     category: "Development",
     description: "Línea de desarrollo independiente que permite trabajar en funcionalidades sin afectar el código principal.",
+    relatedTerms: ["git", "merge", "commit", "pull-request", "version-control"],
     example: "Crear una rama 'feature/nuevo-login' para desarrollar una nueva funcionalidad de *[autenticación](#authentication)*."
   },
   {
@@ -395,6 +410,7 @@ export const devTermsData: DevTerm[] = [
     name: "Commit",
     category: "Development",
     description: "Punto en el historial de *[Git](#git)* que representa un conjunto de cambios específicos en el código.",
+    relatedTerms: ["git", "branch", "merge", "push", "version-control"],
     example: "Un commit puede representar la adición de una nueva función, corrección de un bug o actualización de *[documentación](#documentation)*.",
     codeExample: `# Comandos básicos de Git para commits
 git add .                    # Agregar todos los cambios
@@ -412,6 +428,7 @@ git commit -m "Actualizar documentación"`,
     name: "Lenguajes de Programación",
     category: "Development",
     description: "Conjunto de instrucciones y reglas que permiten a los programadores crear software. Cada lenguaje tiene su sintaxis y propósito específico.",
+    relatedTerms: ["framework", "library", "functions", "variables", "data-types"],
     example: "JavaScript para web, Python para data science, Java para aplicaciones empresariales, o Swift para iOS.",
     tags: ["basics"]
   },
@@ -806,6 +823,7 @@ En una búsqueda de productos, usar break para detener el bucle cuando encuentre
     name: "Funciones",
     category: "Development",
     description: "Bloques de código reutilizables que realizan una tarea específica y pueden recibir parámetros y devolver resultados.",
+    relatedTerms: ["variables", "input-output", "algorithms", "components"],
     example: "Como una máquina expendedora: le das dinero (parámetros), presionas un botón, y te devuelve lo que pediste (resultado). Las funciones son 'máquinas' que toman información, la procesan, y te devuelven el resultado.",
     codeExample: `// Ejemplo de función simple
 function calcularTotal(precio, cantidad) {
@@ -844,10 +862,11 @@ console.log(resultado);         // Output: 8`,
   },
   {
     id: "web-app-responsive",
-    name: "App Web (Responsive)",
+    name: "Web App",
     category: "Frontend",
-    description: "Aplicación web que se adapta automáticamente a diferentes tamaños de pantalla y dispositivos.",
-    example: "Una tienda online que se ve perfecta tanto en desktop como en móvil, ajustando el layout automáticamente.",
+    description: "Aplicación que funciona en el navegador web y se puede acceder desde cualquier dispositivo con internet. No necesita instalarse, se ejecuta directamente en navegadores como Chrome, Firefox o Safari.",
+    relatedTerms: ["frontend", "progressive-web-app", "single-page-application", "responsive-design"],
+    example: "Gmail, Google Docs, Netflix, Spotify Web, o tiendas online como Mercado Libre. Abres el navegador, entras a la dirección web y ya puedes usar la aplicación sin descargar nada.",
     tags: ["basics"]
   },
   {
@@ -855,6 +874,7 @@ console.log(resultado);         // Output: 8`,
     name: "App Desktop",
     category: "Frontend",
     description: "Aplicación que se ejecuta en sistemas operativos de escritorio, optimizada para mouse, teclado y pantallas grandes.",
+    relatedTerms: ["web-app-responsive", "mobile-app", "frontend"],
     example: "Microsoft Word, Photoshop, o aplicaciones de escritorio que se instalan en Windows, Mac o Linux.",
     tags: ["basics"]
   },
@@ -863,6 +883,7 @@ console.log(resultado);         // Output: 8`,
     name: "App Mobile",
     category: "Frontend",
     description: "Aplicación diseñada específicamente para dispositivos móviles, optimizada para pantallas táctiles y uso en movimiento.",
+    relatedTerms: ["web-app-responsive", "desktop-app", "mobile-first", "progressive-web-app"],
     example: "WhatsApp, Instagram, o apps bancarias que se descargan desde App Store o Google Play.",
     tags: ["basics"]
   },
@@ -871,6 +892,7 @@ console.log(resultado);         // Output: 8`,
     name: "Componentes",
     category: "Frontend",
     description: "Piezas reutilizables de interfaz de usuario que encapsulan una funcionalidad y pueden combinarse para crear aplicaciones complejas. Se crea una vez y se puede usar en múltiples lugares de la app.",
+    relatedTerms: ["frontend", "framework", "functions", "routes"],
     example: "Botón, formulario de login, tarjeta de producto, o header de navegación que se puede usar en múltiples páginas.",
     codeExample: `// Ejemplo de componente React
 function BotonPersonalizado({ texto, color }) {
@@ -935,6 +957,7 @@ const apiKey = process.env.API_KEY;`,
     name: "Pull",
     category: "Development",
     description: "Comando de Git que descarga y fusiona cambios desde un repositorio remoto al repositorio local.",
+    relatedTerms: ["git", "push", "merge", "repository", "github"],
     example: "git pull para obtener los últimos cambios del equipo, o pull request para revisar cambios antes de fusionarlos.",
     codeExample: `# Comandos de Git para obtener cambios
 git pull                      # Obtener cambios del repositorio remoto
@@ -951,6 +974,7 @@ git log --oneline origin/main # Ver commits remotos`,
     name: "Push",
     category: "Development",
     description: "Comando de Git que sube los cambios locales a un repositorio remoto, sincronizando el trabajo con el equipo.",
+    relatedTerms: ["git", "pull", "commit", "repository", "github"],
     example: "git push para subir commits al repositorio en GitHub, o push de una nueva funcionalidad al servidor.",
     codeExample: `# Comandos de Git para subir cambios
 git push                      # Subir commits a la rama actual
@@ -1031,6 +1055,7 @@ Cuando ves 'Release v1.5.0' en GitHub, incluye notas como: '✨ Nuevas funcional
     name: "Dependencia",
     category: "Development",
     description: "Paquete o librería externa que tu proyecto necesita para funcionar correctamente. Son herramientas que otros desarrolladores crearon y que tú puedes usar.",
+    relatedTerms: ["library", "framework", "container", "open-source"],
     example: "React es una dependencia para crear interfaces web, o Express.js es una dependencia para crear servidores en Node.js.",
     codeExample: `# Ver dependencias instaladas
 npm list                    # Ver todas las dependencias
@@ -1095,6 +1120,7 @@ nombre = "Carlos";           // Ahora nombre es "Carlos"
     name: "Console Log",
     category: "Development",
     description: "Comando que muestra información en la consola del navegador o terminal. Es como escribir en un cuaderno para ver qué está pasando en tu código. **IMPORTANTE:** En la consola también aparecen los errores de tu aplicación, por lo que es fundamental saber cómo abrirla.\n\n**Cómo abrir la consola del navegador:**\n- **Windows:** Presiona `F12` o `Ctrl + Shift + I`, luego haz clic en la pestaña 'Console'\n- **Mac:** Presiona `Cmd + Option + I`, luego haz clic en la pestaña 'Console'\n- **Alternativa:** Click derecho en la página → 'Inspeccionar' → pestaña 'Console'",
+    relatedTerms: ["debugging", "variables", "input-output", "logging"],
     example: "Usar console.log() para ver el valor de una variable, mostrar mensajes de error, o verificar que tu código funciona correctamente. También revisa la consola para encontrar errores que puedan estar rompiendo tu aplicación. Ver imágenes de ayuda abajo para saber cómo abrir la consola.",
     codeExample: `// Ejemplos básicos de console.log
 console.log("Hola mundo");           // Mostrar texto

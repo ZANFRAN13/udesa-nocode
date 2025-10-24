@@ -102,6 +102,7 @@ export default function Dashboard() {
   const classVideos: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 2: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=1cd04b30-ff2a-4413-9ff5-b379010bfde7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   const classSlides: Record<string, string> = {
