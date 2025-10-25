@@ -17,7 +17,7 @@ export const devTermsData: DevTerm[] = [
     name: "API (Application Programming Interface)",
     category: "Backend",
     description: "Conjunto de reglas y protocolos que permite que diferentes aplicaciones se comuniquen entre sí. Define cómo los componentes de software deben interactuar.",
-    relatedTerms: ["rest", "endpoint", "api-key", "http"],
+    relatedTerms: ["rest", "endpoint", "api-key", "http", "http-errors"],
     example: "Cuando abres Instagram en tu teléfono, la app usa una API para obtener tus fotos desde los servidores de Instagram. Es como un camarero que lleva tu pedido a la cocina y te trae la comida.",
     tags: ["basics"]
   },
@@ -77,7 +77,7 @@ export const devTermsData: DevTerm[] = [
     name: "Servidor (Server)",
     category: "Infrastructure",
     description: "Computadora o programa que proporciona servicios, recursos o datos a otros dispositivos (*[client](#client)*) en una red.",
-    relatedTerms: ["client", "backend", "deployment"],
+    relatedTerms: ["client", "backend", "deployment", "localhost", "port", "api"],
     example: "Un servidor web como Apache o Nginx que entrega páginas web a los navegadores de los usuarios."
   },
   {
@@ -117,7 +117,7 @@ export const devTermsData: DevTerm[] = [
     name: "Autenticación (Authentication)",
     category: "Security",
     description: "Proceso de verificar la identidad de un usuario, típicamente mediante credenciales como usuario y contraseña.",
-    relatedTerms: ["authorization", "sso", "encryption"],
+    relatedTerms: ["authorization", "sso", "encryption", "cookies", "session-storage"],
     example: "El login en una aplicación web donde ingresas email y contraseña para acceder a tu cuenta.",
     tags: ["basics"]
   },
@@ -319,7 +319,7 @@ export const devTermsData: DevTerm[] = [
     name: "Debugging (Depuración)",
     category: "Development",
     description: "Proceso de identificar, analizar y corregir errores o bugs en el código de software. En VibeCoding se suele copiar y pegar los *[console-log](#console-log)* en el chat para que lo arregle la IA.",
-    relatedTerms: ["console-log", "testing", "logging"],
+    relatedTerms: ["console-log", "testing", "logging", "bug", "ide"],
     example: "Usar herramientas como breakpoints, logs o debuggers para encontrar por qué una *[función](#functions)* no funciona correctamente.",
     tags: ["basics"]
   },
@@ -368,7 +368,7 @@ export const devTermsData: DevTerm[] = [
     name: "Git",
     category: "Development",
     description: "Sistema de *[control de versiones](#version-control)* distribuido que permite rastrear cambios en archivos y coordinar trabajo en equipo.",
-    relatedTerms: ["github", "version-control", "commit", "branch", "merge", "pull", "push"],
+    relatedTerms: ["github", "version-control", "commit", "branch", "merge", "pull", "push", "ide"],
     example: "Git permite crear *[ramas](#branch)* para nuevas funcionalidades, *[fusionar](#merge)* cambios y mantener un historial completo del proyecto.",
     tags: ["basics"]
   },
@@ -1145,6 +1145,193 @@ console.info("Información");         // Mensaje informativo (azul)`,
       "/images/glossary-help/helplog1.png",
       "/images/glossary-help/helplog2.png"
     ],
+    tags: ["basics"]
+  },
+  {
+    id: "localhost",
+    name: "localhost",
+    category: "Development",
+    description: "Dirección web que apunta a tu propia máquina. Útil para probar aplicaciones y servicios en local, desde el navegador pero sin exponerlos a Internet. Es lo mismo que usar la dirección IP 127.0.0.1.",
+    relatedTerms: ["server", "api", "port"],
+    example: "Ejecutar una app en desarrollo en http://localhost:3000 para pruebas. En este caso, 3000 es el número de puerto que está usando.",
+    codeExample: `// Iniciar un servidor local en Node.js
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+app.get('/', (req, res) => {
+  res.send('¡Hola desde localhost!');
+});
+
+app.listen(PORT, () => {
+  console.log(\`Servidor corriendo en http://localhost:\${PORT}\`);
+});`,
+    tags: ["basics"]
+  },
+  {
+    id: "local-storage",
+    name: "localStorage (Web)",
+    category: "Frontend",
+    description: "Almacenamiento clave-valor del navegador, persistente por sitio (hasta borrar datos). Ideal para guardar configuraciones simples o estado de UI; no para información sensible. Los datos se guardan como texto y persisten incluso cuando cierras el navegador.",
+    relatedTerms: ["cookies", "session-storage", "frontend"],
+    example: "Guardar el 'modo oscuro', borradores de prompts o el último hilo abierto en tu app web. Los datos quedan guardados incluso si cierras y vuelves a abrir el navegador.",
+    tags: ["basics"]
+  },
+  {
+    id: "session-storage",
+    name: "sessionStorage (Web)",
+    category: "Frontend",
+    description: "Similar a localStorage pero los datos solo duran mientras la pestaña del navegador está abierta. Cuando cierras la pestaña, los datos se borran automáticamente.",
+    relatedTerms: ["local-storage", "cookies", "frontend"],
+    example: "Guardar el estado temporal de un formulario multipaso o el progreso en un proceso de compra. Si el usuario cierra la pestaña por accidente, los datos se pierden.",
+    codeExample: `// Funciona exactamente igual que localStorage
+// pero los datos solo duran mientras la pestaña está abierta
+
+// Guardar datos
+sessionStorage.setItem('pasoActual', '2');
+sessionStorage.setItem('carrito', JSON.stringify(['item1', 'item2']));
+
+// Leer datos
+const paso = sessionStorage.getItem('pasoActual');
+
+// Al cerrar la pestaña, todo se borra automáticamente`,
+    tags: ["basics"]
+  },
+  {
+    id: "cookies",
+    name: "Cookies",
+    category: "Frontend",
+    description: "Pequeños archivos de texto que los sitios web guardan en tu navegador para recordar información. A diferencia de localStorage, las cookies se envían automáticamente al servidor en cada petición.",
+    relatedTerms: ["local-storage", "session-storage", "authentication", "frontend", "backend"],
+    example: "Guardar tu sesión de login, preferencias de idioma, o el carrito de compras. Las cookies pueden tener fecha de expiración y el servidor puede leerlas.",
+    tags: ["basics"]
+  },
+  {
+    id: "port",
+    name: "Puerto (Port)",
+    category: "Infrastructure",
+    description: "Número que identifica un punto de entrada específico en una computadora para comunicaciones de red. Es como el número de departamento en un edificio: la IP es la dirección del edificio, el puerto es el departamento.",
+    relatedTerms: ["localhost", "server", "api"],
+    example: "Un servidor web corre típicamente en el puerto 80 (HTTP) o 443 (HTTPS). En desarrollo local usás puertos como 3000, 3001, 8080. Por ejemplo: http://localhost:3000 usa el puerto 3000.",
+    codeExample: `// Puertos comunes:
+// 80   - HTTP (web)
+// 443  - HTTPS (web segura)
+// 3000 - Apps de desarrollo (React, Next.js)
+// 3001 - Otro servidor local
+// 5432 - PostgreSQL (base de datos)
+// 27017 - MongoDB (base de datos)
+
+// Iniciar servidor en un puerto específico
+const PORT = 3000;
+app.listen(PORT);
+// Ahora puedes acceder en http://localhost:3000`,
+    tags: ["basics"]
+  },
+  {
+    id: "ide",
+    name: "IDE (Integrated Development Environment)",
+    category: "Development",
+    description: "Entorno de Desarrollo Integrado. Es un programa que te ayuda a escribir, probar y corregir código, todo en un mismo lugar. Incluye un editor de texto avanzado, herramientas para ejecutar tu código, debugger y otras funcionalidades que hacen más fácil programar.",
+    relatedTerms: ["debugging", "console-log", "git", "bug"],
+    example: `💻 VSCode (Visual Studio Code)
+
+Qué es:
+El IDE más popular del mundo, creado por Microsoft. Es gratuito, liviano, Open Source y tiene miles de extensiones para personalizarlo.
+
+---
+
+🤖 Cursor
+
+Qué es:
+Un IDE con IA integrada que te ayuda a escribir código y corregir errores. Está basado en VSCode pero integrado con modelos de inteligencia artificial generativa.
+
+---
+
+🌊 Windsurf
+
+Qué es:
+Similar a Cursor, también es un "fork" o clon de VSCode pero con capacidades de IA avanzadas.`,
+    tags: ["basics"]
+  },
+  {
+    id: "bug",
+    name: "Bug (Error)",
+    category: "Development",
+    description: "Error o defecto en el código que hace que un programa no funcione como se espera. Puede ser un error de lógica, sintaxis, o un comportamiento inesperado. El nombre viene de un insecto (bug en inglés) que literalmente se metió en una computadora en 1947. Estos, junto con los *[errores de HTTP](#http-errors)*, aparecen en rojo en la consola del navegador o en la terminal de tu *[IDE](#ide)*, por ejemplo, Cursor.",
+    relatedTerms: ["debugging", "testing", "console-log", "ide"],
+    example: `🐛 Error de tipeo (Typo)
+
+Qué es:
+Escribir mal el nombre de una variable o función. Es como escribir "usario" en vez de "usuario".
+
+Para qué sirve identificarlo:
+Cuando intentas usar la variable correcta, el programa dice que no existe y te muestra un error. Es de los bugs más fáciles de arreglar una vez que lo encuentras.
+
+Cómo se ve:
+Un mensaje de error que dice "variable is not defined" o "undefined". El programa se detiene y no funciona hasta que corrijas el nombre.
+
+---
+
+🔀 Bug de lógica
+
+Qué es:
+El código funciona sin dar errores, pero hace lo contrario de lo que debería. La instrucción está al revés o usa la condición incorrecta.
+
+Para qué sirve identificarlo:
+Estos bugs son más difíciles de encontrar porque el programa "funciona" pero da resultados incorrectos. Por ejemplo, una función que debería permitir votar a mayores de 18, pero permite solo a menores de 18.
+
+Cómo se ve:
+La app no da errores pero se comporta raro: botones que hacen lo opuesto a lo esperado, cálculos que dan resultados incorrectos, permisos que están al revés.
+
+---
+
+🔁 Bucle infinito
+
+Qué es:
+Un bucle que se repite sin parar porque olvidaste cambiar la condición que lo detiene.
+
+Para qué sirve identificarlo:
+La app se congela, el navegador se pone lento o se cuelga. Un contador que nunca aumenta, entonces siempre es 0 y nunca llega a 10 para detenerse.
+
+Cómo se ve:
+La página deja de responder, el navegador te pregunta si querés cerrar la pestaña porque "no responde", o la app consume cada vez más memoria hasta que se cuelga.
+
+---
+
+Casos de uso:
+Un botón de "Enviar" que no hace nada cuando lo clickeas. Una calculadora que suma mal. Una app que se pone cada vez más lenta después de un rato de usarla. Un formulario que dice que tu email es inválido aunque esté bien escrito.`,
+    tags: ["basics"]
+  },
+  {
+    id: "http-errors",
+    name: "Errores de HTTP (Códigos de Estado)",
+    category: "Protocols",
+    description: "Códigos numéricos que el servidor web devuelve para indicar si una petición fue exitosa o qué tipo de problema ocurrió. Los códigos empiezan con diferentes números según el tipo: 2xx = éxito, 3xx = redirección, 4xx = error del cliente, 5xx = error del servidor.",
+    relatedTerms: ["api", "server", "backend", "frontend"],
+    example: "Cuando intentas entrar a una página que no existe, ves un error 404. Si intentas acceder a algo sin permiso, recibes un 403. Si el servidor tiene problemas, muestra un 500.",
+    codeExample: `// Códigos más comunes:
+
+// ✅ 2xx - ÉXITO
+// 200 OK - Todo salió bien
+// 201 Created - Se creó algo nuevo (ej: nuevo usuario registrado)
+
+// 🔄 3xx - REDIRECCIÓN
+// 301 Moved Permanently - La página se movió a otra dirección
+// 302 Found - Redirección temporal
+
+// ❌ 4xx - ERROR DEL CLIENTE (algo mal en tu petición)
+// 400 Bad Request - La petición está mal formada
+// 401 Unauthorized - Necesitas estar logueado
+// 403 Forbidden - No tienes permiso (aunque estés logueado)
+// 404 Not Found - La página/recurso no existe
+// 405 Method Not Allowed - Método HTTP incorrecto (ej: POST en vez de GET)
+// 429 Too Many Requests - Hiciste demasiadas peticiones muy rápido
+
+// 💥 5xx - ERROR DEL SERVIDOR (problema en el servidor)
+// 500 Internal Server Error - Error genérico del servidor
+// 502 Bad Gateway - El servidor recibió respuesta inválida
+// 503 Service Unavailable - El servidor está temporalmente fuera de servicio
+// 504 Gateway Timeout - El servidor tardó demasiado en responder`,
     tags: ["basics"]
   }
 ]

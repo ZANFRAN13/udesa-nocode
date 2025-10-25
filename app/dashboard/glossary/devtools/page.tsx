@@ -12,11 +12,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { ArrowLeft, LogOut, Code2, Info, Monitor, HelpCircle } from "lucide-react"
+import { ArrowLeft, LogOut, Code2, Info, Monitor, HelpCircle, ChevronRight, ChevronLeft } from "lucide-react"
 
 export default function DevToolsPage() {
   const router = useRouter()
   const supabase = createClient()
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -37,6 +38,13 @@ export default function DevToolsPage() {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     router.push('/')
+  }
+
+  const toggleSection = (sectionId: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId]
+    }))
   }
 
   return (
@@ -214,13 +222,26 @@ export default function DevToolsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Console */}
-                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50">
+                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50 overflow-hidden">
                   <div className="flex items-start gap-2 md:gap-3">
                     <div className="bg-red-100 dark:bg-red-950/30 rounded-lg p-2 shrink-0">
                       <span className="text-red-600 dark:text-red-400 font-mono text-xs md:text-sm font-bold">❯_</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-sm md:text-base mb-1 md:mb-2">Console (Consola)</h4>
+                      <div className="flex items-center justify-between mb-1 md:mb-2">
+                        <h4 className="font-semibold text-sm md:text-base">Console (Consola)</h4>
+                        <button
+                          onClick={() => toggleSection('console')}
+                          className="text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors p-2 md:p-3 rounded-lg"
+                          aria-label="Ver ejemplo"
+                        >
+                          {expandedSections['console'] ? (
+                            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                          )}
+                        </button>
+                      </div>
                       <p className="text-xs md:text-sm text-muted-foreground mb-2">
                         <strong>La más importante para vibecoding.</strong> Aquí aparecen los errores de tu aplicació así como advertencias y otros logs que te pueden ayudar a debuggear.
                         Los errores en rojo son problemas que debes solucionar. Las advertencias en amarillo son menos urgentes.
@@ -256,16 +277,38 @@ export default function DevToolsPage() {
                       </div>
                     </div>
                   </div>
+                  {expandedSections['console'] && (
+                    <div className="mt-4 animate-in slide-in-from-right duration-300">
+                      <img 
+                        src="/images/img-consola.png" 
+                        alt="Ejemplo de Console en DevTools"
+                        className="w-full rounded-lg border border-border/30"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Elements */}
-                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50">
+                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50 overflow-hidden">
                   <div className="flex items-start gap-2 md:gap-3">
                     <div className="bg-blue-100 dark:bg-blue-950/30 rounded-lg p-2 shrink-0">
                       <span className="text-blue-600 dark:text-blue-400 font-mono text-xs md:text-sm font-bold">&lt;/&gt;</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-sm md:text-base mb-1 md:mb-2">Elements (Elementos) o Inspector</h4>
+                      <div className="flex items-center justify-between mb-1 md:mb-2">
+                        <h4 className="font-semibold text-sm md:text-base">Elements (Elementos) o Inspector</h4>
+                        <button
+                          onClick={() => toggleSection('elements')}
+                          className="text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors p-2 md:p-3 rounded-lg"
+                          aria-label="Ver ejemplo"
+                        >
+                          {expandedSections['elements'] ? (
+                            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                          )}
+                        </button>
+                      </div>
                       <p className="text-xs md:text-sm text-muted-foreground mb-2">
                         Te muestra el HTML y CSS de la página. Puedes ver cómo está estructurada tu app y qué estilos tiene cada elemento.
                       </p>
@@ -281,16 +324,38 @@ export default function DevToolsPage() {
                       </div>
                     </div>
                   </div>
+                  {expandedSections['elements'] && (
+                    <div className="mt-4 animate-in slide-in-from-right duration-300">
+                      <img 
+                        src="/images/img-elements.png" 
+                        alt="Ejemplo de Elements en DevTools"
+                        className="w-full rounded-lg border border-border/30"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Network */}
-                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50">
+                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50 overflow-hidden">
                   <div className="flex items-start gap-2 md:gap-3">
                     <div className="bg-green-100 dark:bg-green-950/30 rounded-lg p-2 shrink-0">
                       <span className="text-green-600 dark:text-green-400 font-mono text-xs md:text-sm font-bold">⚡</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-sm md:text-base mb-1 md:mb-2">Network (Red)</h4>
+                      <div className="flex items-center justify-between mb-1 md:mb-2">
+                        <h4 className="font-semibold text-sm md:text-base">Network (Red)</h4>
+                        <button
+                          onClick={() => toggleSection('network')}
+                          className="text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors p-2 md:p-3 rounded-lg"
+                          aria-label="Ver ejemplo"
+                        >
+                          {expandedSections['network'] ? (
+                            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                          )}
+                        </button>
+                      </div>
                       <p className="text-xs md:text-sm text-muted-foreground mb-2">
                         Muestra todas las peticiones que hace tu app (a APIs, bases de datos, etc.). 
                         Si algo no carga, aquí verás qué falló.
@@ -307,16 +372,38 @@ export default function DevToolsPage() {
                       </div>
                     </div>
                   </div>
+                  {expandedSections['network'] && (
+                    <div className="mt-4 animate-in slide-in-from-right duration-300">
+                      <img 
+                        src="/images/img-network.png" 
+                        alt="Ejemplo de Network en DevTools"
+                        className="w-full rounded-lg border border-border/30"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Application/Storage */}
-                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50">
+                <div className="bg-background rounded-lg p-3 md:p-4 border border-border/50 overflow-hidden">
                   <div className="flex items-start gap-2 md:gap-3">
                     <div className="bg-purple-100 dark:bg-purple-950/30 rounded-lg p-2 shrink-0">
                       <span className="text-purple-600 dark:text-purple-400 font-mono text-xs md:text-sm font-bold">💾</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-sm md:text-base mb-1 md:mb-2">Application (Chrome) o Storage (Firefox)</h4>
+                      <div className="flex items-center justify-between mb-1 md:mb-2">
+                        <h4 className="font-semibold text-sm md:text-base">Application (Chrome) o Storage (Firefox)</h4>
+                        <button
+                          onClick={() => toggleSection('application')}
+                          className="text-primary hover:text-primary/80 hover:bg-primary/10 transition-colors p-2 md:p-3 rounded-lg"
+                          aria-label="Ver ejemplo"
+                        >
+                          {expandedSections['application'] ? (
+                            <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+                          )}
+                        </button>
+                      </div>
                       <p className="text-xs md:text-sm text-muted-foreground mb-2">
                         Te permite ver y gestionar datos que tu app guarda en el navegador: cookies, localStorage, sesiones, etc.
                       </p>
@@ -332,6 +419,15 @@ export default function DevToolsPage() {
                       </div>
                     </div>
                   </div>
+                  {expandedSections['application'] && (
+                    <div className="mt-4 animate-in slide-in-from-right duration-300">
+                      <img 
+                        src="/images/img-app.png" 
+                        alt="Ejemplo de Application/Storage en DevTools"
+                        className="w-full rounded-lg border border-border/30"
+                      />
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <rect width="1200" height="600" fill="#1a1a1a"/>
+  <rect x="10" y="10" width="1180" height="40" fill="#2a2a2a" rx="5"/>
+  <text x="30" y="35" font-family="Arial, sans-serif" font-size="16" fill="#666">Console | Elements | Network | Application</text>
+  <rect x="10" y="60" width="1180" height="530" fill="#0a0a0a" rx="5"/>
+  
+  <!-- Console content -->
+  <text x="30" y="100" font-family="monospace" font-size="14" fill="#e74c3c">✕ Error: Cannot read property 'map' of undefined</text>
+  <text x="50" y="125" font-family="monospace" font-size="12" fill="#888">at Component.render (App.tsx:45:12)</text>
+  
+  <text x="30" y="165" font-family="monospace" font-size="14" fill="#f39c12">⚠ Warning: Each child in a list should have a unique "key" prop.</text>
+  
+  <text x="30" y="205" font-family="monospace" font-size="14" fill="#3498db">ℹ console.log: Usuario autenticado correctamente</text>
+  <text x="30" y="230" font-family="monospace" font-size="14" fill="#3498db">ℹ console.log: Datos cargados: {name: "Juan", email: "juan@example.com"}</text>
+  
+  <text x="30" y="270" font-family="monospace" font-size="14" fill="#2ecc71">✓ API call successful: /api/users</text>
+  
+  <text x="600" y="300" font-family="Arial, sans-serif" font-size="24" fill="#666" text-anchor="middle">[ Reemplaza esta imagen con una captura de pantalla ]</text>
+  <text x="600" y="330" font-family="Arial, sans-serif" font-size="24" fill="#666" text-anchor="middle">[ de la pestaña Console de las DevTools ]</text>
+  
+  <text x="30" y="500" font-family="monospace" font-size="12" fill="#666">&gt; _</text>
+</svg>
+
