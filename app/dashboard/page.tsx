@@ -65,6 +65,9 @@ export default function Dashboard() {
     if (sectionId === "material-complementario" && item === "Herramientas de Apoyo") {
       router.push('/dashboard/support-tools')
     }
+    if (sectionId === "material-complementario" && item === "Recursos Adicionales") {
+      router.push('/dashboard/additional-resources')
+    }
     if (sectionId === "material-complementario" && item === "Heurísticas y buenas prácticas") {
       router.push('/dashboard/heuristics')
     }
@@ -118,8 +121,7 @@ export default function Dashboard() {
       content: [
         "Herramientas No-Code",
         "Herramientas de Apoyo",
-        "Artículos",
-        "Bibliografía y Videos",
+        "Recursos Adicionales",
         "Templates y plantillas",
         "Heurísticas y buenas prácticas",
         "Vocabulario de diseño: UI",

@@ -6,6 +6,7 @@ export interface AITerm {
   relatedTerms?: string[]
   example?: string
   tags?: string[]
+  imageUrl?: string
 }
 
 export const aiTermsData: AITerm[] = [
@@ -171,9 +172,10 @@ export const aiTermsData: AITerm[] = [
     id: "threads",
     name: "Threads (Hilos)",
     category: "Gestión de Contexto",
-    description: "1) En chats, una conversación con memoria. 2) En agentes, líneas de trabajo paralelas que coordinan subtareas.",
+    description: "1) En chats, una conversación con memoria. 2) En agentes, líneas de trabajo paralelas que coordinan subtareas. En cualquier caso, tienen un contexto y este tiene un límite de tokens (context-window).",
     example: "Un hilo por cliente donde el asistente recuerda su tono; o varios hilos en un agente que ejecutan scraping, análisis y redacción en paralelo.",
-    relatedTerms: ["contexto", "orquestacion", "agente-ia", "dag"]
+    imageUrl: "https://cursor.com/docs-static/_next/image?url=%2Fdocs-static%2Fimages%2Fturns-dark.png&w=1024&q=75",
+    relatedTerms: ["contexto", "orquestacion", "agente-ia", "dag", "context-window"]
   },
   {
     id: "contexto",
@@ -266,7 +268,8 @@ export const aiTermsData: AITerm[] = [
     category: "Gestión de Contexto",
     description: "Capacidad máxima de información (medida en tokens) que el modelo puede considerar a la vez. Si el texto supera el límite, hay que resumir, seleccionar o recuperar lo importante.",
     example: "Un modelo con 8k tokens no puede leer un PDF de 50k tokens completo; se usa RAG para traer solo las secciones relevantes.",
-    relatedTerms: ["token", "contexto", "rag", "embedding"]
+    relatedTerms: ["token", "contexto", "rag", "embedding", "threads"],
+    imageUrl: "https://cursor.com/docs-static/_next/image?url=%2Fdocs-static%2Fimages%2Fturns-dark.png&w=1024&q=75"
   },
   {
     id: "atencion",
@@ -274,7 +277,7 @@ export const aiTermsData: AITerm[] = [
     category: "Arquitectura",
     description: "Mecanismo de los modelos tipo Transformer que permite 'enfocarse' en las partes más relevantes del input, ponderando qué palabras o elementos se relacionan entre sí.",
     example: "Para entender 'El botón Guardar no funciona y da error 502', el modelo presta más atención a 'no funciona' y 'error 502' que a conectores.",
-    relatedTerms: ["transformer", "llm", "vlm", "parametro", "razonamiento"]
+    relatedTerms: ["transformer", "llm", "vlm", "parametro", "razonamiento"],
   },
   {
     id: "vector",

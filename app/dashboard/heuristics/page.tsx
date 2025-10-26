@@ -162,7 +162,7 @@ export default function HeuristicsPage() {
         },
         {
           title: "Prompt completo > Prompts fragmentados",
-          description: "En general, es más efectivo dar todas las instrucciones en un único prompt completo que fragmentarlas en varios prompts separados. Esto da contexto integral a la IA desde el inicio.",
+          description: "En general, es más efectivo dar todas las instrucciones en un único prompt completo que fragmentarlas en varios prompts separados. Esto da contexto integral a la IA desde el inicio. Con excepciones para tareas complejas (siguiente heurística).",
           example: "❌ Fragmentado:\n'Crea un botón'\n'Hazlo azul'\n'Agrégale un ícono'\n'Que sea responsive'\n\n✅ Completo:\n'Crea un botón azul con un ícono a la izquierda, que sea responsive y use los colores del proyecto. El botón debe tener efecto hover y ser accesible.'",
           icon: MessageSquare,
           type: "heuristic",
@@ -170,6 +170,17 @@ export default function HeuristicsPage() {
           link: {
             text: "Más información sobre esto",
             url: "https://drive.google.com/file/d/1jmYrrJmyNx256tvCAm5qJ8fdtbtV0L58/view"
+          }
+        },
+        {
+          title: "Tareas complejas requieren planificación y fragmentación",
+          description: "Esta es la excepción a la regla anterior. Cuando la tarea es compleja, es mejor fragmentar el prompt en varias partes para que la IA pueda trabajar en pequeños pasos ordenadosy no se pierda el contexto. De lo contrario, la IA puede alucinar o no seguir las instrucciones.",
+          example: "En caso de vibecoding:\n\n❌ 'Crea un eccomerce completo con login, productos, carrito de compras, checkout, un chatbot y un panel de administración.' \n\n✅ 'Crea la estructura base de una página de productos'\n'Agrega funcionalidad de búsqueda y filtros'\n'Implementa el carrito de compras'\n'Crea el proceso de checkout'\n'Crea un chatbot para el eccomerce'\n'Crea un panel de administración para el eccomerce'",
+          icon: MessageSquare,
+          type: "heuristic",
+          link: {
+            text: "Más información sobre esto",
+            url: "https://v0.app/docs/text-prompting"
           }
         },
         {
@@ -188,7 +199,7 @@ export default function HeuristicsPage() {
         },
         {
           title: "IA como acelerador, no como oráculo",
-          description: "Usa la IA como un catalizador que acelera tu trabajo, no como una fuente absoluta de verdad. Mantén siempre tu criterio crítico y valida las respuestas.",
+          description: "Usa la IA como un catalizador que acelera tu trabajo, no como una fuente absoluta de verdad. Mantén siempre tu criterio y pensamiento crítico y valida las respuestas.",
           example: "✅ Usar como acelerador:\n- 'Ayúdame a explorar opciones'\n- 'Redacta un texto sobre el tema X'\n- 'Realiza una investigación sobre el tema Y'\n\n❌ Usar como oráculo:\n- 'Dime qué debo hacer'\n- '¿Es esta la única solución?'\n- '¿Esto es verdad?'",
           icon: Zap,
           type: "heuristic"
@@ -439,6 +450,13 @@ export default function HeuristicsPage() {
                     
                     <CollapsibleContent>
                       <CardContent className="p-3 md:p-6">
+                        {section.id === "ai-heuristics" && (
+                          <div className="mb-4 md:mb-6 p-3 md:p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                              Estas son reglas generales y fáciles de recordar para interactuar adecuadamente con la IA Generativa más allá del vibecoding.
+                            </p>
+                          </div>
+                        )}
                         <div className="space-y-2 md:space-y-3">
                           {section.items.map((item, index) => {
                             const itemId = `${section.id}-${index}`
