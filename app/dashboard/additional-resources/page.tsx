@@ -1,21 +1,12 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
-import { useRouter } from "next/navigation"
-import { createClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
+import { useState, useMemo } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
-  ArrowLeft,
-  LogOut,
   Search,
-  BookOpen,
-  Video,
-  FileText,
-  Code,
-  GraduationCap,
   ExternalLink,
   Filter,
   X,
@@ -23,61 +14,19 @@ import {
   User,
   Sparkles,
   Brain,
-  Mic,
 } from "lucide-react"
 import { resources, Resource, ResourceType, ResourceTopic, DifficultyLevel } from "@/lib/additional-resources-data"
+import { typeIcons, typeLabels, topicLabels, topicColors } from "@/lib/ui-mappings"
+import { useAuth } from "@/lib/hooks/use-auth"
+import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 
-const typeIcons: Record<ResourceType, any> = {
-  articulo: FileText,
-  guia: GraduationCap,
-  bibliografia: BookOpen,
-  video: Video,
-  paper: Brain,
-  documentacion: FileText,
-  curso: GraduationCap,
-  referentes: User,
-  podcast: Mic,
-}
-
-const typeLabels: Record<ResourceType, string> = {
-  articulo: "Artículo",
-  guia: "Guía",
-  bibliografia: "Libro",
-  video: "Video",
-  paper: "Paper",
-  documentacion: "Documentación",
-  curso: "Curso",
-  referentes: "Referente",
-  podcast: "Podcast",
-}
-
-const topicLabels: Record<ResourceTopic, string> = {
-  vibecoding: "VibeCoding",
-  llm: "LLM",
-  agentes: "Agentes",
-  prompting: "Prompting",
-  arquitectura: "Arquitectura",
-  "ux-ui": "UX/UI",
-  desarrollo: "Desarrollo",
-  producto: "Producto",
-  general: "General",
-}
-
-const topicColors: Record<ResourceTopic, string> = {
-  vibecoding: "bg-purple-100 text-purple-800 dark:bg-purple-950/30 dark:text-purple-400 border-purple-200 dark:border-purple-800",
-  llm: "bg-blue-100 text-blue-800 dark:bg-blue-950/30 dark:text-blue-400 border-blue-200 dark:border-blue-800",
-  agentes: "bg-green-100 text-green-800 dark:bg-green-950/30 dark:text-green-400 border-green-200 dark:border-green-800",
-  prompting: "bg-yellow-100 text-yellow-800 dark:bg-yellow-950/30 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800",
-  arquitectura: "bg-red-100 text-red-800 dark:bg-red-950/30 dark:text-red-400 border-red-200 dark:border-red-800",
-  "ux-ui": "bg-pink-100 text-pink-800 dark:bg-pink-950/30 dark:text-pink-400 border-pink-200 dark:border-pink-800",
-  desarrollo: "bg-indigo-100 text-indigo-800 dark:bg-indigo-950/30 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800",
-  producto: "bg-orange-100 text-orange-800 dark:bg-orange-950/30 dark:text-orange-400 border-orange-200 dark:border-orange-800",
-  general: "bg-gray-100 text-gray-800 dark:bg-gray-950/30 dark:text-gray-400 border-gray-200 dark:border-gray-800",
+// Helper function for difficulty display
+function getDifficultyBrains(difficulty: DifficultyLevel) {
+  return "🧠".repeat(difficulty)
 }
 
 export default function AdditionalResourcesPage() {
-  const router = useRouter()
-  const supabase = createClient()
+  const { handleLogout, handleBackToDashboard } = useAuth()
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState("")
@@ -85,27 +34,6 @@ export default function AdditionalResourcesPage() {
   const [selectedTopics, setSelectedTopics] = useState<ResourceTopic[]>([])
   const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultyLevel | null>(null)
   const [showFilters, setShowFilters] = useState(false)
-
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_OUT') {
-          router.push('/login')
-        }
-      }
-    )
-
-    return () => subscription.unsubscribe()
-  }, [router, supabase])
-
-  const handleBackToDashboard = () => {
-    router.push('/dashboard')
-  }
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
 
   const toggleType = (type: ResourceType) => {
     setSelectedTypes(prev => 
@@ -170,51 +98,14 @@ export default function AdditionalResourcesPage() {
     return filtered
   }, [searchQuery, selectedTypes, selectedTopics, selectedDifficulty])
 
-  const getDifficultyBrains = (difficulty: DifficultyLevel) => {
-    return "🧠".repeat(difficulty)
-  }
-
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
-              <Button
-                onClick={handleBackToDashboard}
-                variant="ghost"
-                size="sm"
-                className="text-muted-foreground hover:text-foreground shrink-0"
-              >
-                <ArrowLeft className="h-4 w-4 md:mr-2" />
-                <span className="hidden sm:inline">Volver al Dashboard</span>
-              </Button>
-              <div className="hidden sm:block h-6 w-px bg-border" />
-              <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                <img
-                  src="/images/udesa-png.svg"
-                  alt="Universidad de San Andrés"
-                  className="h-6 md:h-8 w-auto shrink-0"
-                />
-                <h1 className="text-sm md:text-xl font-semibold text-foreground truncate">
-                  <span className="hidden md:inline">Recursos Adicionales</span>
-                  <span className="md:hidden">Recursos</span>
-                </h1>
-              </div>
-            </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground shrink-0 ml-2"
-            >
-              <LogOut className="h-4 w-4 md:mr-2" />
-              <span className="hidden sm:inline">Cerrar sesión</span>
-            </Button>
-          </div>
-        </div>
-      </div>
+      <DashboardHeader
+        title="Recursos Adicionales"
+        mobileTitle="Recursos"
+        onBack={handleBackToDashboard}
+        onLogout={handleLogout}
+      />
 
       {/* Main Content */}
       <div className="container mx-auto px-3 md:px-4 py-6 md:py-8">
@@ -515,8 +406,3 @@ function ResourceCard({ resource }: { resource: Resource }) {
     </Card>
   )
 }
-
-function getDifficultyBrains(difficulty: DifficultyLevel) {
-  return "🧠".repeat(difficulty)
-}
-

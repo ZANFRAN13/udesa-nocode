@@ -415,7 +415,7 @@ export const resources: Resource[] = [
     author: "Felix Hass (Lovable)",
     language: "en",
     tags: ["producto", "desarrollo", "ia", "protección"]
-  }
+  },
 
   // Reportes de Industria
   {
