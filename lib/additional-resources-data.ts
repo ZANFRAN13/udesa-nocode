@@ -163,7 +163,7 @@ export const resources: Resource[] = [
   {
     id: "paper-3",
     title: "Dynamic Chunking for End-to-End Hierarchical Sequence Modeling (2025)",
-    description: "Paper que explora técnicas avanzadas para procesar secuencias largas de información de manera más eficiente, crucial para aplicaciones que manejan documentos extensos.",
+    description: "Dividir un texto en fragmentos (“chunks”) relevantes y manejables, adaptando el tamaño y los límites de cada fragmento según el contexto y la estructura de la información, en vez de usar divisiones fijas (tokens) podría ser una técnica más eficiente de utilizar y entrenar LLMs.",
     type: "paper",
     topic: ["arquitectura", "llm"],
     difficulty: 3,
@@ -198,7 +198,7 @@ export const resources: Resource[] = [
   },
   {
     id: "paper-6",
-    title: "A Survey of Self-Evolving Agents: On Path to Artificial Super Intelligence",
+    title: "A Survey of Self-Evolving Agents: On Path to Artificial Super Intelligence (2025)",
     description: "Un estudio sobre agentes autónomos auto-evolutivos y un destello de lo que podría ser la superinteligencia artificial.",
     type: "paper",
     topic: ["agentes"],
