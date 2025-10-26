@@ -270,11 +270,12 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-4 md:pt-6">
                           <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
+                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isNoCode = item === "Herramientas No-Code"
                               const isSupportTools = item === "Herramientas de Apoyo"
+                              const isAdditionalResources = item === "Recursos Adicionales"
                               const isHeuristics = item === "Heurísticas y buenas prácticas"
                               const isUI = item === "Vocabulario de diseño: UI"
                               const isCSS = item === "Vocabulario de diseño: CSS"
@@ -306,6 +307,7 @@ export default function Dashboard() {
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isNoCode ? "Herramientas →" :
                                          isSupportTools ? "Apoyo →" :
+                                         isAdditionalResources ? "Recursos →" :
                                          isHeuristics ? "Heurísticas →" :
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 

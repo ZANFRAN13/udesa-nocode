@@ -23,6 +23,7 @@ import {
   User,
   Sparkles,
   Brain,
+  Mic,
 } from "lucide-react"
 import { resources, Resource, ResourceType, ResourceTopic, DifficultyLevel } from "@/lib/additional-resources-data"
 
@@ -34,6 +35,8 @@ const typeIcons: Record<ResourceType, any> = {
   paper: Brain,
   documentacion: FileText,
   curso: GraduationCap,
+  referentes: User,
+  podcast: Mic,
 }
 
 const typeLabels: Record<ResourceType, string> = {
@@ -44,6 +47,8 @@ const typeLabels: Record<ResourceType, string> = {
   paper: "Paper",
   documentacion: "Documentación",
   curso: "Curso",
+  referentes: "Referente",
+  podcast: "Podcast",
 }
 
 const topicLabels: Record<ResourceTopic, string> = {
@@ -158,6 +163,9 @@ export default function AdditionalResourcesPage() {
     if (selectedDifficulty !== null) {
       filtered = filtered.filter(r => r.difficulty === selectedDifficulty)
     }
+
+    // Sort alphabetically by title
+    filtered.sort((a, b) => a.title.localeCompare(b.title, 'es'))
 
     return filtered
   }, [searchQuery, selectedTypes, selectedTopics, selectedDifficulty])
@@ -416,6 +424,10 @@ export default function AdditionalResourcesPage() {
 
 function ResourceCard({ resource }: { resource: Resource }) {
   const Icon = typeIcons[resource.type]
+  const [isExpanded, setIsExpanded] = useState(false)
+  
+  // Check if description is long enough to need expansion (roughly 3 lines worth of text)
+  const needsExpansion = resource.description.length > 150
   
   return (
     <Card 
@@ -440,9 +452,19 @@ function ResourceCard({ resource }: { resource: Resource }) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-sm text-muted-foreground line-clamp-3">
-          {resource.description}
-        </p>
+        <div>
+          <p className={`text-sm text-muted-foreground ${isExpanded ? '' : 'line-clamp-3'}`}>
+            {resource.description}
+          </p>
+          {needsExpansion && (
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-xs text-primary hover:text-primary/80 mt-1 font-medium transition-colors"
+            >
+              {isExpanded ? 'Ver menos' : 'Ver más...'}
+            </button>
+          )}
+        </div>
         
         {/* Topics */}
         <div className="flex flex-wrap gap-1.5">

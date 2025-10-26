@@ -6,6 +6,8 @@ export type ResourceType =
   | "paper"
   | "documentacion"
   | "curso"
+  | "referentes"
+  | "podcast"
 
 export type ResourceTopic = 
   | "vibecoding"
@@ -35,6 +37,104 @@ export interface Resource {
 }
 
 export const resources: Resource[] = [
+  // Videos
+  {
+    id: "video-1",
+    title: "Don´t learn to code...NVIDIA´s CEO says",
+    description: "La youtuber Goda Go reflexiona sobre los dichos deJensen Huang, CEO de NVIDIA, dice que la programacióm ya no es la carrera del futuro y que la ventaja estará en ser experto en un dominio específico. Hasta qué punto es esto cierto?",
+    type: "video",
+    topic: ["desarrollo", "producto"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=vEd-LqBCONg",
+    author: "Goda Go",
+    language: "en",
+    tags: ["nvidia", "programación", "desarrollo", "producto"]
+  },
+  {
+    id: "video-2",
+    title: "What is an MVP?",
+    description: "Y Combinator, la aceleradora de startups más famosa del mundo, explica que es un MVP (Minimum Viable Product) y como definirlo.",
+    type: "video",
+    topic: ["producto", "desarrollo"],
+    difficulty: 1,
+    url: "http://youtube.com/watch?v=1hHMwLxN6EM",
+    author: "Y Combinator",
+    language: "en",
+    tags: ["Y Combinator", "MVP", "desarrollo", "producto"]
+  },
+  {
+    id: "video-3",
+    title: "Transformers Explained",
+    description: "Video sobre como funcionan los transformers, la arquitectura que permite a los modelos de lenguaje entender secuencias largas de texto.",
+    type: "video",
+    topic: ["llm", "arquitectura"],
+    difficulty: 2,
+    url: "https://www.youtube.com/watch?v=JZLZQVmfGn8",
+    author: "Y Combinator",
+    language: "en",
+    tags: ["transformer", "arquitectura", "llm"]
+  },
+  {
+    id: "video-4",
+    title: "Software is Changing (Again) - Karphaty´s keynote at YC",
+    description: "El nuevo lenguaje de programación es es el lenguaje natural. Qué significa esto para el futuro del desarrollo de software?",
+    type: "video",
+    topic: ["desarrollo", "producto"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=LCEmiRjPEtQ&t=99s",
+    author: "Andrej Karpathy",
+    language: "en",
+    tags: ["software", "commodity", "ia", "desarrollo", "producto"]
+  },
+  {
+    id: "video-5",
+    title: "Won´t reach AGI by scaling LLMs - Yann LeCun",
+    description: "Yann LeCun, uno de los padres de la IA, explica que no se llegará a la IA general artificial por el simple hecho de escalar los modelos de lenguaje. Qué es lo que se necesita para llegar a la IA general artificial?",
+    type: "video",
+    topic: ["llm", "agentes"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=4__gg83s_Do",
+    author: "Yann LeCun",
+    language: "en",
+    tags: ["ia", "general", "artificial", "llm", "agentes"]
+  },
+  {
+    id: "video-6",
+    title: "Can LLMs reason?",
+    description: "Pueden los LLM razonar realmente? Qué significa realmente razonar? Yann LeCun y Lex Fridman conversan en este podcast sobre IA.",
+    type: "video",
+    topic: ["llm", "agentes"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=4__gg83s_Do",
+    author: "Yann LeCun & Lex Fridman",
+    language: "en",
+    tags: ["ia", "general", "artificial", "llm", "agentes"]
+  },
+  {
+    id: "video-7",
+    title: "Vibes won´t cut it",
+    description: "Chris Kelly, CEO de Augment, expone su postura sobre el vibecoding. Qué se necesita para poner código en producción?",
+    type: "video",
+    topic: ["desarrollo", "producto"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=Dc3qOA9WOnE",
+    author: "Chris Kelly",
+    language: "en",
+    tags: ["ia", "general", "artificial", "llm", "vibecoding"]
+  },
+  {
+    id: "video-8",
+    title: "Vibecoding is the Future, YC",
+    description: "'95% del código de startups de Y Combinator (YC25) fue escrito por IA'. La aceleradora más famosa del mundo afirma que el vibecoding es el futuro del desarrollo de software y explora cómo esto cambia la forma de emprender en tecnología.",
+    type: "video",
+    topic: ["desarrollo", "producto"],
+    difficulty: 1,
+    url: "https://www.youtube.com/watch?v=IACHfKmZMr8&t=6s",
+    author: "Y Combinator",
+    language: "en",
+    tags: ["ia", "general", "producto", "llm", "vibecoding"]
+  },
+
   // Papers de Investigación
   {
     id: "paper-1",
@@ -280,6 +380,42 @@ export const resources: Resource[] = [
     language: "en",
     tags: ["producto", "desarrollo", "ia", "protección"]
   },
+  {
+    id: "guia-9",
+    title: "Vibe-Design Stack",
+    description: "Felix Hass (Lovable) comparte su repertorio de tools para diseñar productos digitales con IA.",
+    type: "guia",
+    topic: ["producto", "desarrollo"],
+    difficulty: 1,
+    url: "https://designplusai.com/p/ultimate-ai-design-stack?r=4b4ys",
+    author: "Felix Hass (Lovable)",
+    language: "en",
+    tags: ["producto", "desarrollo", "ia", "protección"]
+  },
+  {
+    id: "guia-10",
+    title: "La Prompt Library para Lovable",
+    description: "Felix Hass (Lovable) comparte su biblioteca de prompts para diseñar productos digitales con IA.",
+    type: "guia",
+    topic: ["producto", "desarrollo"],
+    difficulty: 1,
+    url: "https://prompt-directory-fh.lovable.app/",
+    author: "Felix Hass (Lovable)",
+    language: "en",
+    tags: ["producto", "desarrollo", "ia", "protección"]
+  },
+  {
+    id: "guia-11",
+    title: "Newsletter de Diseño y Vibecoding",
+    description: "Newsletter de Felix Hass (Lovable) sobre diseño y vibecoding. Comparte tips, trucos y noticias sobre el mundo del diseño y la IA.",
+    type: "guia",
+    topic: ["producto", "desarrollo"],
+    difficulty: 1,
+    url: "https://designplusai.com/",
+    author: "Felix Hass (Lovable)",
+    language: "en",
+    tags: ["producto", "desarrollo", "ia", "protección"]
+  }
 
   // Reportes de Industria
   {
@@ -294,6 +430,318 @@ export const resources: Resource[] = [
     language: "en",
     tags: ["negocios", "tendencias", "estadísticas", "industria", "2025"]
   },
+
+  // Referentes en IA y VibeCoding
+  {
+    id: "referente-1",
+    title: "Andrej Karpathy",
+    description: "Ex Director de IA en Tesla y co-fundador de OpenAI. Comparte conocimientos profundos sobre redes neuronales, deep learning y el futuro de la IA. Conocido por sus tutoriales educativos sobre machine learning.",
+    type: "referentes",
+    topic: ["llm", "desarrollo"],
+    difficulty: 2,
+    url: "https://twitter.com/karpathy",
+    author: "Andrej Karpathy",
+    language: "en",
+    tags: ["ia", "deep learning", "neural networks", "tesla", "openai", "educación"]
+  },
+  {
+    id: "referente-2",
+    title: "Amjad Masad (Replit)",
+    description: "CEO y co-fundador de Replit. Pionero en el concepto de VibeCoding y desarrollo asistido por IA. Comparte insights sobre el futuro de la programación y cómo la IA está democratizando el desarrollo de software.",
+    type: "referentes",
+    topic: ["vibecoding", "desarrollo", "producto"],
+    difficulty: 1,
+    url: "https://twitter.com/amasad",
+    author: "Amjad Masad",
+    language: "en",
+    tags: ["vibecoding", "replit", "desarrollo", "ia", "no-code", "emprendimiento"]
+  },
+  {
+    id: "referente-3",
+    title: "Guillermo Rauch (Vercel)",
+    description: "CEO de Vercel y creador de Next.js. Líder en desarrollo web moderno y deployment. Comparte sobre arquitectura frontend, desarrollo full-stack y el impacto de la IA en el desarrollo web.",
+    type: "referentes",
+    topic: ["desarrollo", "arquitectura", "producto"],
+    difficulty: 2,
+    url: "https://twitter.com/rauchg",
+    author: "Guillermo Rauch",
+    language: "en",
+    tags: ["vercel", "nextjs", "frontend", "desarrollo", "arquitectura"]
+  },
+  {
+    id: "referente-4",
+    title: "Simon Willison",
+    description: "Co-creador de Django y experto en IA práctica. Comparte experimentos, tutoriales y análisis profundos sobre LLMs, prompting y aplicaciones prácticas de IA. Mantiene un blog técnico muy respetado.",
+    type: "referentes",
+    topic: ["llm", "prompting", "desarrollo"],
+    difficulty: 2,
+    url: "https://twitter.com/simonw",
+    author: "Simon Willison",
+    language: "en",
+    tags: ["llm", "prompting", "django", "ia", "desarrollo", "blog"]
+  },
+  {
+    id: "referente-5",
+    title: "Lex Fridman",
+    description: "Investigador de IA en MIT y host de uno de los podcasts más influyentes sobre tecnología e IA. Entrevista a líderes del sector y comparte perspectivas profundas sobre el futuro de la inteligencia artificial.",
+    type: "referentes",
+    topic: ["llm", "agentes", "general"],
+    difficulty: 1,
+    url: "https://twitter.com/lexfridman",
+    author: "Lex Fridman",
+    language: "en",
+    tags: ["podcast", "ia", "entrevistas", "mit", "investigación"]
+  },
+  {
+    id: "referente-6",
+    title: "Swyx (Shawn Wang)",
+    description: "Developer advocate y escritor especializado en IA para desarrolladores. Acuñó el término 'AI Engineer' y comparte insights sobre cómo construir productos con IA. Organiza conferencias sobre AI Engineering.",
+    type: "referentes",
+    topic: ["desarrollo", "llm", "producto"],
+    difficulty: 1,
+    url: "https://twitter.com/swyx",
+    author: "Swyx",
+    language: "en",
+    tags: ["ai engineering", "desarrollo", "producto", "comunidad"]
+  },
+  {
+    id: "referente-7",
+    title: "Ethan Mollick",
+    description: "Profesor en Wharton y uno de los mayores expertos en el uso práctico de IA en negocios y educación. Comparte investigación sobre productividad con IA, prompting efectivo y transformación de industrias.",
+    type: "referentes",
+    topic: ["producto", "prompting", "general"],
+    difficulty: 1,
+    url: "https://twitter.com/emollick",
+    author: "Ethan Mollick",
+    language: "en",
+    tags: ["educación", "negocios", "productividad", "investigación", "prompting"]
+  },
+  {
+    id: "referente-8",
+    title: "Jeremy Howard (fast.ai)",
+    description: "Co-fundador de fast.ai, democratizando el deep learning. Ex presidente de Kaggle. Comparte recursos educativos de alta calidad sobre machine learning y IA práctica, accesibles para todos los niveles.",
+    type: "referentes",
+    topic: ["llm", "desarrollo"],
+    difficulty: 2,
+    url: "https://twitter.com/jeremyphoward",
+    author: "Jeremy Howard",
+    language: "en",
+    tags: ["fastai", "deep learning", "educación", "kaggle", "ml"]
+  },
+  {
+    id: "referente-9",
+    title: "Pieter Levels",
+    description: "Indie maker y emprendedor digital. Creador de múltiples productos exitosos construidos principalmente como solista. Comparte su proceso de construcción de startups, monetización y cómo usar herramientas no-code y low-code para lanzar productos rápidamente.",
+    type: "referentes",
+    topic: ["producto", "vibecoding", "desarrollo"],
+    difficulty: 1,
+    url: "https://twitter.com/levelsio",
+    author: "Pieter Levels",
+    language: "en",
+    tags: ["indie maker", "emprendimiento", "no-code", "startup", "producto", "maker"]
+  },
+  {
+    id: "referente-10",
+    title: "Felix Hass",
+    description: "Product Designer (Lovable) y experto en IA aplicada a productos digitales. Comparte insights y tips sobre vibecoding y product design. Enfoque práctico con casos concretos y resultados visibles.",
+    type: "referentes",
+    topic: ["producto", "desarrollo"],
+    difficulty: 1,
+    url: "https://www.linkedin.com/in/felixhhaas/",
+    author: "Felix Hass",
+    language: "en",
+    tags: ["product management", "producto", "estrategia", "ia", "aplicaciones"]
+  },
+  {
+    id: "referente-11",
+    title: "Prajwal Tomar",
+    description: "Founder y desarrollador enfocado en IA y automatización. Comparte recursos sobre construcción de agentes de IA, automatizaciones y herramientas prácticas. Conocido por hacer tutoriales accesibles sobre tecnologías complejas.",
+    type: "referentes",
+    topic: ["producto", "desarrollo", "vibecoding"],
+    difficulty: 1,
+    url: "https://x.com/PrajwalTomar_/",
+    author: "Prajwal Tomar",
+    language: "en",
+    tags: ["agentes", "automatización", "tutoriales", "ia", "desarrollo"]
+  },
+  {
+    id: "referente-12",
+    title: "Peter Thiel",
+    description: "Co-fundador de PayPal y Palantir, inversor pionero en Facebook. Filósofo de tecnología y emprendimiento. Comparte visiones contrarias sobre innovación, startups y el futuro de la tecnología. Autor de 'Zero to One'.",
+    type: "referentes",
+    topic: ["producto", "general"],
+    difficulty: 1,
+    url: "https://twitter.com/peterthiel",
+    author: "Peter Thiel",
+    language: "en",
+    tags: ["emprendimiento", "inversión", "startups", "innovación", "estrategia", "filosofía"]
+  },
+  {
+    id: "referente-13",
+    title: "Ariel Mathov",
+    description: "Especialista en Productos Digitales, fundador de 021. Comparte su experiencia y aprendizajes construyendo 021 día a día vía X (Twitter) como parte del movimiento 'build in public'.",
+    type: "referentes",
+    topic: ["desarrollo", "general"],
+    difficulty: 1,
+    url: "https://twitter.com/arielmathov",
+    author: "Ariel Mathov",
+    language: "es",
+    tags: ["desarrollo", "tutoriales", "programación", "contenido", "educación"]
+  },
+  {
+    id: "referente-14",
+    title: "Anton Osika",
+    description: "Founder (Lovable) y desarrollador de herramientas de IA para desarrolladores. Creador de GPT Engineer y otros proyectos open source. Comparte sobre automatización de desarrollo, code generation con IA y el futuro de la programación asistida.",
+    type: "referentes",
+    topic: ["vibecoding", "desarrollo", "llm"],
+    difficulty: 1,
+    url: "https://twitter.com/antonosika",
+    author: "Anton Osika",
+    language: "en",
+    tags: ["gpt engineer", "code generation", "open source", "automatización", "ia"]
+  },
+  {
+    id: "referente-15",
+    title: "Adam Bourgh",
+    description: "Emprendedor y experto en growth. Comparte estrategias sobre crecimiento de productos, adquisición de usuarios, marketing digital y construcción de audiencias. Enfoque práctico en métricas y experimentación.",
+    type: "referentes",
+    topic: ["producto", "general"],
+    difficulty: 1,
+    url: "https://www.linkedin.com/in/adamburgh/",
+    author: "Adam Bourgh",
+    language: "en",
+    tags: ["growth", "marketing", "producto", "estrategia", "métricas", "usuarios"]
+  },
+
+  // Podcasts
+  {
+    id: "podcast-1",
+    title: "Lex Fridman Podcast",
+    description: "Conversaciones profundas con expertos en IA, tecnología, ciencia y filosofía. Incluye entrevistas con líderes como Sam Altman (OpenAI), Demis Hassabis (DeepMind), Elon Musk y muchos más. Ideal para entender el panorama completo de la IA.",
+    type: "podcast",
+    topic: ["llm", "agentes", "general"],
+    difficulty: 1,
+    url: "https://lexfridman.com/podcast/",
+    author: "Lex Fridman",
+    duration: "2-4 horas por episodio",
+    language: "en",
+    tags: ["entrevistas", "ia", "tecnología", "ciencia", "líderes"]
+  },
+  {
+    id: "podcast-2",
+    title: "Latent Space: The AI Engineer Podcast",
+    description: "Podcast técnico sobre AI Engineering. Explora cómo construir productos con IA, mejores prácticas, herramientas y técnicas. Ideal para desarrolladores que trabajan con LLMs y agentes.",
+    type: "podcast",
+    topic: ["desarrollo", "llm", "agentes"],
+    difficulty: 2,
+    url: "https://www.latent.space/podcast",
+    author: "Swyx & Alessio",
+    duration: "45-60 min por episodio",
+    language: "en",
+    tags: ["ai engineering", "desarrollo", "llm", "técnico", "práctico"]
+  },
+  {
+    id: "podcast-3",
+    title: "No Priors: Artificial Intelligence | Technology | Startups",
+    description: "Podcast sobre IA y startups tech. Entrevistas con fundadores, inversores y expertos sobre el impacto de la IA en los negocios. Perspectiva desde el ecosistema de startups y venture capital.",
+    type: "podcast",
+    topic: ["producto", "general"],
+    difficulty: 1,
+    url: "https://www.youtube.com/@NoPriorsPod",
+    author: "Sarah Guo & Elad Gil",
+    duration: "45-60 min por episodio",
+    language: "en",
+    tags: ["startups", "inversión", "negocios", "ia", "entrevistas"]
+  },
+  {
+    id: "podcast-4",
+    title: "The TWIML AI Podcast",
+    description: "This Week in Machine Learning & AI. Podcast semanal sobre los últimos avances en machine learning e inteligencia artificial. Entrevistas con investigadores y profesionales. Cubre desde investigación hasta aplicaciones prácticas.",
+    type: "podcast",
+    topic: ["llm", "desarrollo"],
+    difficulty: 2,
+    url: "https://twimlai.com/podcast/twimlai/",
+    author: "Sam Charrington",
+    duration: "30-45 min por episodio",
+    language: "en",
+    tags: ["machine learning", "ia", "investigación", "noticias", "semanal"]
+  },
+  {
+    id: "podcast-5",
+    title: "Practical AI",
+    description: "Podcast sobre IA práctica y accesible. Explica conceptos complejos de manera simple, casos de uso reales y cómo implementar IA en tu trabajo. Perfecto para principiantes y profesionales que buscan aplicar IA.",
+    type: "podcast",
+    topic: ["general", "desarrollo"],
+    difficulty: 1,
+    url: "https://changelog.com/practicalai",
+    author: "Daniel Whitenack & Chris Benson",
+    duration: "40-50 min por episodio",
+    language: "en",
+    tags: ["práctico", "accesible", "casos de uso", "implementación", "principiantes"]
+  },
+  {
+    id: "podcast-6",
+    title: "The Stack Overflow Podcast",
+    description: "Podcast sobre desarrollo de software, tecnología y cultura tech. Incluye episodios sobre IA, herramientas de desarrollo, mejores prácticas y el futuro de la programación. Conversaciones honestas sobre el mundo del desarrollo.",
+    type: "podcast",
+    topic: ["desarrollo", "general"],
+    difficulty: 1,
+    url: "https://stackoverflow.blog/podcast/",
+    author: "Stack Overflow Team",
+    duration: "30-40 min por episodio",
+    language: "en",
+    tags: ["desarrollo", "programación", "herramientas", "cultura tech", "comunidad"]
+  },
+  {
+    id: "podcast-7",
+    title: "Y Combinator´s YouTube Channel",
+    description: "Y Combinator, la aceleradora de startups más famosa del mundo, comparte videos sobre IA, startups, emprendimiento y tecnología. Ideal para entender el panorama completo de la IA y el emprendimiento.",
+    type: "podcast",
+    topic: ["producto", "general"],
+    difficulty: 1,
+    url: "https://www.youtube.com/@ycombinator",
+    author: "Y Combinator",
+    duration: "30-90 min por video",
+    language: "en",
+    tags: ["ia", "emprendimiento", "tecnología", "startup"]
+  },
+  {
+    id: "podcast-8",
+    title: "Andrej Karpathy´s YouTube Channel",
+    description: "Andrej Karpathy, uno de nombres más importantes de la IA moderna, comparte videos educativos y tutoriales sobre IA. Ideal para los curiosos que quieren entender los detalles sin grandes barreras técnicas.",
+    type: "podcast",
+    topic: ["llm", "desarrollo"],
+    difficulty: 1,
+    url: "https://www.youtube.com/@andrejkarpathy",
+    author: "Andrej Karpathy",
+    duration: "90-180 min por video",
+    language: "en",
+    tags: ["ia", "desarrollo", "tutoriales", "cursos"]
+  },
+  {
+    id: "podcast-9",
+    title: "Greg Isenberg´s YouTube Channel",
+    description: "Greg Isenberg, uno de los principales referentes del vibecoding, comparte videos de opinión, benchmarking y tutoriales sobre las últimas tendencias del vibecoding.",
+    type: "podcast",
+    topic: ["llm", "desarrollo"],
+    difficulty: 1,
+    url: "https://www.youtube.com/@GregIsenberg",
+    author: "Greg Isenberg",
+    duration: "25-45 min por video",
+    language: "en",
+  },
+  {
+    id: "podcast-10",
+    title: "Lenny´s Podcast: Product | Career | Growth",
+    description: "Entrevistas con líderes del sector de productos digitales y expertos en growth que comparten consejos concretos, accionables y tácticos para construir, lanzar y escalar tu producto.",
+    type: "podcast",
+    topic: ["producto", "general"],
+    difficulty: 1,
+    url: "https://www.lennysnewsletter.com/podcast",
+    author: "Lenny Rachitsky",
+    duration: "60-90 min por episodio",
+    language: "en",
+  }
 ]
 
 // Helper functions
