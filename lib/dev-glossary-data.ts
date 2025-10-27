@@ -1333,6 +1333,15 @@ Un botón de "Enviar" que no hace nada cuando lo clickeas. Una calculadora que s
 // 503 Service Unavailable - El servidor está temporalmente fuera de servicio
 // 504 Gateway Timeout - El servidor tardó demasiado en responder`,
     tags: ["basics"]
+  },
+  {
+    id: "landing-page",
+    name: "Landing Page (Página de Aterrizaje)",
+    category: "Frontend",
+    description: "Página web diseñada con un objetivo específico de conversión (registros, ventas, descargas). En el contexto de desarrollo, es importante entender que una landing page tiene características técnicas particulares: debe cargar rápido, ser responsive (adaptarse a móviles), tener buena optimización SEO para aparecer en buscadores, y formularios que envíen datos correctamente. Generalmente es una Single Page (una sola página sin navegación compleja) con secciones como hero, beneficios, testimonios y llamada a la acción.",
+    relatedTerms: ["frontend", "web-app-responsive", "responsive-design", "single-page-application", "routes", "components"],
+    example: "Desarrollar una landing page implica: crear un diseño responsive que se vea bien en móvil y desktop, implementar formularios con validación, optimizar imágenes para carga rápida, integrar analytics para medir conversiones, y conectar con una API para procesar registros. Es común usar frameworks como React o Next.js, y herramientas como V0, Lovable o Replit para crearlas rápidamente.",
+    tags: ["basics"]
   }
 ]
 

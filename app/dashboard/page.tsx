@@ -20,6 +20,7 @@ import {
   ArrowLeft,
   LogOut,
   HelpCircle,
+  Sparkles,
 } from "lucide-react"
 
 export default function Dashboard() {
@@ -59,6 +60,9 @@ export default function Dashboard() {
   }
 
   const handleItemClick = (sectionId: string, item: string) => {
+    if (sectionId === "guia-rapida" && item === "Ver Guía Completa") {
+      router.push('/dashboard/vibecoding-guide')
+    }
     if (sectionId === "material-complementario" && item === "Herramientas No-Code") {
       router.push('/dashboard/nocode-tools')
     }
@@ -82,6 +86,9 @@ export default function Dashboard() {
     }
     if (sectionId === "material-complementario" && item === "Vocabulario de IA") {
       router.push('/dashboard/glossary/ai')
+    }
+    if (sectionId === "material-complementario" && item === "Vocabulario de producto") {
+      router.push('/dashboard/glossary/product')
     }
     if (sectionId === "comunidad" && item === "Comunidad de WhatsApp") {
       window.open('https://chat.whatsapp.com/GKcXD6NINyJL36qbm3U6VX?mode=ems_qr_t', '_blank')
@@ -115,6 +122,15 @@ export default function Dashboard() {
 
   const sections = [
     {
+      id: "guia-rapida",
+      title: "🚀 Guía Rápida de Vibecoding",
+      icon: Sparkles,
+      description: "Paso a paso: de la idea al MVP funcional usando IA",
+      content: [
+        "Ver Guía Completa"
+      ]
+    },
+    {
       id: "material-complementario",
       title: "Material Complementario",
       icon: BookOpen,
@@ -129,6 +145,7 @@ export default function Dashboard() {
         "Vocabulario de diseño: CSS",
         "Vocabulario de desarrollo",
         "Vocabulario de IA",
+        "Vocabulario de producto",
       ]
     },
     {
@@ -271,9 +288,11 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-4 md:pt-6">
                           <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA")) || 
+                              const isClickable = (section.id === "guia-rapida") ||
+                                                (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA" || item === "Vocabulario de producto")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
+                              const isGuideQuick = section.id === "guia-rapida"
                               const isNoCode = item === "Herramientas No-Code"
                               const isSupportTools = item === "Herramientas de Apoyo"
                               const isAdditionalResources = item === "Recursos Adicionales"
@@ -282,6 +301,7 @@ export default function Dashboard() {
                               const isCSS = item === "Vocabulario de diseño: CSS"
                               const isDev = item === "Vocabulario de desarrollo"
                               const isAI = item === "Vocabulario de IA"
+                              const isProduct = item === "Vocabulario de producto"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
                               const isBenefits = item === "Beneficios Exclusivos"
                               const isSlides = item === "Slides de presentaciones"
@@ -306,14 +326,16 @@ export default function Dashboard() {
                                     </span>
                                     {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
-                                        {isNoCode ? "Herramientas →" :
+                                        {isGuideQuick ? "Ver Guía →" :
+                                         isNoCode ? "Herramientas →" :
                                          isSupportTools ? "Apoyo →" :
                                          isAdditionalResources ? "Recursos →" :
                                          isHeuristics ? "Heurísticas →" :
                                          isUI ? "Glosario UI →" : 
                                          isCSS ? "Glosario CSS →" : 
                                          isDev ? "Glosario Dev →" :
-                                         isAI ? "Vocabulario IA →" :
+                                         isAI ? "Glosario IA →" :
+                                         isProduct ? "Glosario Producto →" :
                                          isWhatsApp ? "WhatsApp →" :
                                          isBenefits ? "Beneficios →" :
                                          isWorksheets ? "Worksheets →" : ""}

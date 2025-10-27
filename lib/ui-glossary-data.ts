@@ -623,6 +623,22 @@ export const uiTermsData: UITerm[] = [
     description: "Estado de interacción cuando el puntero se posiciona sobre un elemento (no disponible en pantallas táctiles puras).",
     relatedTerms: ["button", "tooltip", "popup"],
     example: "Un *[button](#button)* que al hacer \"hover\" eleva la sombra y cambia el color del fondo para indicar interactividad."
+  },
+  {
+    id: "hero-section",
+    name: "Hero Section",
+    category: "Layout",
+    description: "La primera sección grande y destacada de una página web, generalmente ubicada en la parte superior (\"*[above-the-fold](#above-the-fold)*\"). Es lo primero que ven los visitantes y suele contener un título principal, un subtítulo descriptivo, una imagen o video de fondo impactante, y un *[button](#button)* de llamada a la acción (CTA). Su objetivo es captar la atención inmediata del visitante y comunicar la propuesta de valor del sitio en pocos segundos.",
+    relatedTerms: ["above-the-fold", "button", "landing-page"],
+    example: "En la página de inicio de Spotify: un gran banner con el mensaje 'Música para todos', una imagen de fondo atractiva, y un botón 'Obtener Spotify gratis'. En Airbnb: una sección con el texto 'Encuentra espacios únicos' con una barra de búsqueda destacada sobre una foto de una casa increíble."
+  },
+  {
+    id: "landing-page",
+    name: "Landing Page (Página de Aterrizaje)",
+    category: "Layout",
+    description: "Página web diseñada específicamente para recibir visitantes desde una campaña de marketing, anuncio o enlace directo. A diferencia de una página web normal, una *landing page* tiene un único objetivo claro (como conseguir registros, ventas, o descargas) y elimina distracciones innecesarias. Generalmente incluye un *[hero-section](#hero-section)*, beneficios del producto/servicio, testimonios, y un *[button](#button)* de llamada a la acción muy visible.",
+    relatedTerms: ["hero-section", "button", "above-the-fold", "card"],
+    example: "Una página simple para descargar un ebook gratis a cambio de tu email. Una página de producto con descripción, precios y botón 'Comprar ahora'. Una página de registro para un webinar con fecha, hora y formulario de inscripción. Todas estas páginas tienen un objetivo específico y no tienen menús de navegación complejos que distraigan al visitante."
   }
 ]
 
