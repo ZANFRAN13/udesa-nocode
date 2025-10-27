@@ -15,18 +15,29 @@ import {
 
 export default function BenefitsPage() {
   const router = useRouter()
-  const [copied, setCopied] = useState(false)
+  const [copiedV0, setCopiedV0] = useState(false)
+  const [copied021, setCopied021] = useState(false)
   const code = "VIBEUDESA"
 
   const handleBackToDashboard = () => {
     router.push('/dashboard')
   }
 
-  const handleCopyCode = async () => {
+  const handleCopyCodeV0 = async () => {
     try {
       await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setCopiedV0(true)
+      setTimeout(() => setCopiedV0(false), 2000)
+    } catch (err) {
+      console.error('Error copying to clipboard:', err)
+    }
+  }
+
+  const handleCopyCode021 = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied021(true)
+      setTimeout(() => setCopied021(false), 2000)
     } catch (err) {
       console.error('Error copying to clipboard:', err)
     }
@@ -64,90 +75,164 @@ export default function BenefitsPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
+        <div className="max-w-5xl mx-auto">
+          {/* Header Section */}
+          <div className="mb-8 text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
               <div className="p-2 bg-primary/10 rounded-lg">
                 <Gift className="h-6 w-6 text-primary" />
               </div>
-              <div className="bg-black dark:bg-white rounded-lg p-1">
-                <img
-                  src="/images/v0-logo-dark.webp"
-                  alt="v0 Logo"
-                  className="h-8 w-auto"
-                />
-              </div>
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-foreground">
-                    Créditos Gratuitos | Programa <span className="text-primary">No-Code & AI</span> UdeSA
-                  </h2>
-                  <p className="text-muted-foreground italic">
-                    "Everyone can cook"
+              <h2 className="text-3xl font-bold text-foreground">
+                Créditos Gratuitos | Programa <span className="text-primary">No-Code & AI</span> UdeSA
+              </h2>
+            </div>
+            <p className="text-muted-foreground">
+              Llevá tu idea a la realidad con No-Code & AI
+            </p>
+          </div>
+
+          {/* Two Column Layout */}
+          <div className="grid md:grid-cols-2 gap-6">
+            
+
+            {/* 021 Section */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <div className="bg-white dark:bg-white rounded-lg p-2">
+                    <img
+                      src="/images/021logo.svg"
+                      alt="021 Logo"
+                      className="h-8 w-auto"
+                    />
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Code Section */}
+                <div className="bg-slate-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-slate-300 text-sm font-medium">
+                      Código de Descuento
+                    </span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
+                      FREE
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 p-3 bg-slate-800 rounded-lg border border-slate-700">
+                    <code className="flex-1 text-lg font-mono font-semibold text-white">
+                      {code}
+                    </code>
+                    <Button
+                      onClick={handleCopyCode021}
+                      variant={copied021 ? "default" : "outline"}
+                      size="sm"
+                      className="flex items-center gap-1 bg-black text-white hover:bg-slate-800 border-slate-600"
+                    >
+                      {copied021 ? (
+                        <>
+                          <Check className="h-3 w-3" />
+                          ¡Copiado!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          Copiar
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  
+                  <p className="text-xs text-slate-400 mt-2 text-center">
+                    Usa este código en from021.io para obtener créditos gratuitos
                   </p>
                 </div>
-            </div>
-          </div>
 
-         
-          {/* Description */}
-          {/* <div className="text-center mb-8">
-            <p className="text-muted-foreground text-lg">
-              v0 es una herramienta de Vercel que genera interfaces de usuario usando IA. 
-              Describe lo que quieres y obtén código React listo para usar.
-            </p>
-          </div> */}
+                {/* Instructions */}
+                <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4">
+                  <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-2">
+                    Cómo usar:
+                  </h4>
+                  <ol className="text-sm text-purple-800 dark:text-purple-200 space-y-1">
+                    <li>1. Ve a <a href="https://from021.io" target="_blank" rel="noopener noreferrer" className="underline font-semibold">from021.io</a></li>
+                    <li>2. Crea tu cuenta o inicia sesión</li>
+                    <li>3. Usa el código <strong>{code}</strong> al seleccionar el plan Pro</li>
+                    <li>4. ¡Bajá tu idea a producción con 021!</li>
+                  </ol>
+                </div>
+              </CardContent>
+            </Card>
 
-          {/* Code Section */}
-          <div className="bg-slate-900 rounded-lg p-4 mb-6 max-w-md mx-auto">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-slate-300 text-sm font-medium">
-                Código de Descuento
-              </span>
-              <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
-                FREE
-              </span>
-            </div>
-            
-            <div className="flex items-center gap-2 p-3 bg-slate-800 rounded-lg border border-slate-700">
-              <code className="flex-1 text-lg font-mono font-semibold text-white">
-                {code}
-              </code>
-              <Button
-                onClick={handleCopyCode}
-                variant={copied ? "default" : "outline"}
-                size="sm"
-                className="flex items-center gap-1 bg-black text-white hover:bg-slate-800 border-slate-600"
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-3 w-3" />
-                    ¡Copiado!
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3 w-3" />
-                    Copiar
-                  </>
-                )}
-              </Button>
-            </div>
-            
-            <p className="text-xs text-slate-400 mt-2 text-center">
-              Usa este código en v0.app para obtener créditos gratuitos
-            </p>
-          </div>
+            {/* v0 Section */}
+            <Card className="border-2 border-primary/20">
+              <CardHeader>
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <div className="bg-black dark:bg-white rounded-lg p-2">
+                    <img
+                      src="/images/v0-logo-dark.webp"
+                      alt="v0 Logo"
+                      className="h-8 w-auto"
+                    />
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Code Section */}
+                <div className="bg-slate-900 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-slate-300 text-sm font-medium">
+                      Código de Descuento
+                    </span>
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">
+                      FREE
+                    </span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 p-3 bg-slate-800 rounded-lg border border-slate-700">
+                    <code className="flex-1 text-lg font-mono font-semibold text-white">
+                      {code}
+                    </code>
+                    <Button
+                      onClick={handleCopyCodeV0}
+                      variant={copiedV0 ? "default" : "outline"}
+                      size="sm"
+                      className="flex items-center gap-1 bg-black text-white hover:bg-slate-800 border-slate-600"
+                    >
+                      {copiedV0 ? (
+                        <>
+                          <Check className="h-3 w-3" />
+                          ¡Copiado!
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3 w-3" />
+                          Copiar
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  
+                  <p className="text-xs text-slate-400 mt-2 text-center">
+                    Usa este código en v0.app para obtener créditos gratuitos
+                  </p>
+                </div>
 
-          {/* Instructions */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
-            <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              Cómo usar:
-            </h4>
-            <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-              <li>1. Ve a <a href="https://v0.app/chat/settings/billing" target="_blank" rel="noopener noreferrer" className="underline">v0.app</a></li>
-              <li>2. Haz clic en "Get Started" o "Sign Up"</li>
-              <li>3. Usa el código <strong>{code}</strong> en "Redeem a Usage Code"</li>
-              <li>4. ¡Comienza a generar con IA!</li>
-            </ol>
+                {/* Instructions */}
+                <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                    Cómo usar:
+                  </h4>
+                  <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                    <li>1. Ve a <a href="https://v0.app/chat/settings/billing" target="_blank" rel="noopener noreferrer" className="underline font-semibold">v0.app</a></li>
+                    <li>2. Haz clic en "Get Started" o "Sign Up"</li>
+                    <li>3. Usa el código <strong>{code}</strong> en "Redeem a Usage Code"</li>
+                    <li>4. ¡Comienza a generar con IA!</li>
+                  </ol>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
       </div>
