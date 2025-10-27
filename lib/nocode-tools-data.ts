@@ -42,7 +42,7 @@ export const noCodeToolsData: NoCodeTool[] = [
     category: "WebApps y Sitios",
     description: "Plataforma de desarrollo colaborativa con IA para construir aplicaciones y sitios web.",
     website: "https://replit.com",
-    tags: []
+    tags: ["ATP"]
   },
   {
     id: "tempo",
@@ -244,7 +244,7 @@ export const noCodeToolsData: NoCodeTool[] = [
     category: "Agentes IA",
     description: "Plataforma de Google para crear y experimentar con agentes de IA.",
     website: "https://aistudio.google.com",
-    tags: []
+    tags: ["ATP"]
   },
   {
     id: "databutton",
@@ -294,7 +294,7 @@ export const noCodeToolsData: NoCodeTool[] = [
     category: "Automatización",
     description: "Herramienta poderosa de automatización de workflows. Conecta apps y servicios.",
     website: "https://n8n.io",
-    tags: ["ATP"]
+    tags: []
   },
   {
     id: "langgraph",
@@ -310,7 +310,7 @@ export const noCodeToolsData: NoCodeTool[] = [
     category: "Automatización",
     description: "Software de automatización. Conecta apps y diseña workflows visualmente.",
     website: "https://make.com",
-    tags: []
+    tags: ["ATP"]
   },
   {
     id: "zapier",
@@ -318,7 +318,7 @@ export const noCodeToolsData: NoCodeTool[] = [
     category: "Automatización",
     description: "Automatiza sin límites. Conecta tus apps favoritas y crea workflows poderosos.",
     website: "https://zapier.com",
-    tags: []
+    tags: ["ATP"]
   },
   {
     id: "buildship",

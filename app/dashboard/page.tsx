@@ -110,6 +110,7 @@ export default function Dashboard() {
 
   const classSlides: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
+    "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
   }
 
   const sections = [
