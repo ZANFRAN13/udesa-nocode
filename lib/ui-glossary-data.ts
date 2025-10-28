@@ -92,6 +92,14 @@ export const uiTermsData: UITerm[] = [
     imageUrl: "https://media.nngroup.com/media/editor/2025/02/19/calendar-picker.jpg"
   },
   {
+    id: "call-to-action",
+    name: "Call To Action (CTA)",
+    category: "Controls",
+    description: "Un elemento (generalmente un *[button](#button)* o *[link](#link)*) diseñado específicamente para motivar al usuario a realizar una acción importante como registrarse, comprar, descargar, o contactar. Los CTAs suelen destacarse visualmente con colores contrastantes y texto claro que indica la acción.",
+    relatedTerms: ["button", "link", "hero-section", "landing-page"],
+    example: "Botón 'Empezar gratis' en una página de inicio, 'Agregar al carrito' en e-commerce, 'Descargar ahora' en una landing page, o 'Registrate' en formularios. Los mejores CTAs usan verbos de acción y comunican claramente qué pasará al hacer clic."
+  },
+  {
     id: "card",
     name: "Card",
     category: "Layout",
@@ -607,6 +615,14 @@ export const uiTermsData: UITerm[] = [
     description: "Aplicación diseñada para teléfonos, centrada en gestos táctiles, uso en movimiento y pantallas pequeñas.",
     relatedTerms: ["desktop-app", "web-app", "responsive"],
     example: "WhatsApp, Instagram, Spotify son apps originalmente diseñadas para smartphone."
+  },
+  {
+    id: "mobile-first",
+    name: "Mobile First",
+    category: "Layout",
+    description: "Enfoque de diseño que consiste en crear primero la versión para dispositivos móviles y luego expandir hacia pantallas más grandes. En lugar de adaptar un diseño de escritorio a móvil (lo que suele resultar en problemas), se diseña pensando primero en las limitaciones y ventajas de la pantalla pequeña.",
+    relatedTerms: ["responsive", "mobile-app", "desktop-app"],
+    example: "Al diseñar un sitio web, primero defines cómo se verá en un teléfono (navegación simple, contenido prioritario, botones grandes para tocar), y luego adaptas ese diseño para tablets y computadoras agregando más columnas, espacios, o información secundaria. Este enfoque asegura que la experiencia móvil sea excelente, no una versión limitada."
   },
   {
     id: "web-app",

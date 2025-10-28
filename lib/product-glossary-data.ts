@@ -128,6 +128,15 @@ export const productTermsData: ProductTerm[] = [
     example: "Task flow para 'Resetear contraseña': Pantalla login → Click 'Olvidé contraseña' → Ingresa email → Recibe código → Ingresa código → Crea nueva contraseña → Confirma → Listo. No incluye caminos alternativos ni el contexto emocional, solo los pasos necesarios para esa tarea específica. Útil para optimizar tareas repetitivas.",
   },
   {
+    id: "call-to-action",
+    name: "Call To Action (CTA)",
+    category: "Strategy",
+    description: "Un elemento o mensaje diseñado para motivar al usuario a realizar una acción específica y valiosa para el negocio: registrarse, comprar, descargar, suscribirse, o contactar. Los CTAs efectivos son claros, visibles, y crean urgencia o valor percibido.",
+    relatedTerms: ["conversion", "landing-page", "user-flow", "ab-test"],
+    example: "Ejemplos efectivos: 'Empieza gratis por 30 días' (valor + sin riesgo), 'Únete a 10,000+ usuarios' (prueba social), 'Descarga tu guía ahora' (acción clara). Malos CTAs: 'Enviar' (¿enviar qué?), 'Clic aquí' (no dice beneficio). Los CTAs se optimizan con *[ab-test](#ab-test)* probando texto, color, ubicación, y tamaño. Un buen CTA puede aumentar conversión 20-50%.",
+    tags: ["basics"]
+  },
+  {
     id: "card-sorting",
     name: "Card Sorting",
     category: "Research",
@@ -413,6 +422,15 @@ Para una app de delivery, en vez de preguntar "¿te gustaría poder filtrar por 
     description: "Diseño visual estático de alta fidelidad que muestra cómo se verá el producto final: colores, tipografías, imágenes, íconos. Es más detallado que un *[wireframe](#wireframe)* pero no es interactivo como un *[prototype](#prototype)*.",
     relatedTerms: ["wireframe", "prototype", "design-system"],
     example: "Un mockup de Instagram muestra: la pantalla exacta con colores reales (fondo blanco, corazón rojo), fotos de ejemplo, texto con la tipografía final, íconos en su estilo. Es una imagen estática que parece la app real. Se usa para: presentar a stakeholders, validar diseño visual, guiar a desarrolladores. Herramientas: Figma, Sketch, Adobe XD.",
+    tags: ["basics"]
+  },
+  {
+    id: "mobile-first",
+    name: "Mobile First",
+    category: "Design",
+    description: "Filosofía de diseño y desarrollo que consiste en crear primero la experiencia para dispositivos móviles y luego expandir hacia pantallas más grandes. En lugar de 'adaptar' un diseño de escritorio quitando cosas, empiezas con lo esencial en móvil y agregas elementos en pantallas más grandes.",
+    relatedTerms: ["responsive", "mvp", "user-experience", "wireframe"],
+    example: "Proceso Mobile First: 1) Diseñas para móvil priorizando contenido crítico, navegación simple, botones grandes para tocar. 2) Expandes a tablet agregando más espacios, secundarias opciones. 3) Expandes a desktop agregando columnas, barras laterales, contenido extra. Beneficios: aseguras que la experiencia móvil sea excelente (no limitada), reduces tiempo de carga en móvil, obligas a priorizar lo importante. La mayoría del tráfico web hoy es móvil, por eso este enfoque es estándar.",
     tags: ["basics"]
   },
   {
