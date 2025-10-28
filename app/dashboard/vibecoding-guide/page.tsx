@@ -135,7 +135,7 @@ export default function VibecodingGuidePage() {
       tools: ["021", "ChatGPT", "Claude", "Gemini"],
       color: "from-green-500/10 to-green-600/5",
       iconColor: "text-green-600",
-      detail: "El PRD es la 'biblia' de tu producto. Define qué vas a construir y por qué."
+      detail: "El PRD es la 'biblia' de tu producto. Define qué vas a construir, cómo y por qué."
     },
     {
       id: "step-1.5",
