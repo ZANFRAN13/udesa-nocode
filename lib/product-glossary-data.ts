@@ -63,6 +63,7 @@ export const productTermsData: ProductTerm[] = [
     description: "Herramienta visual que ayuda a diseñar productos que realmente necesita la gente. Tiene dos lados: el perfil del cliente (sus trabajos, dolores y ganancias) y tu propuesta de valor (qué ofreces, cómo alivias dolores, cómo creas ganancias). El objetivo es encontrar el 'fit' perfecto entre ambos.",
     relatedTerms: ["product-vision-board", "problem-solution-fit", "product-market-fit", "jobs-to-be-done"],
     example: "Para Uber: CLIENTE (Trabajos: llegar del punto A al B, Dolores: taxis caros e impredecibles, esperar mucho, Ganancias deseadas: llegar rápido, saber precio exacto). PROPUESTA DE VALOR (Productos: app de transporte, Alivio de dolores: precio claro antes de subir, ver tiempo de llegada, Creación de ganancias: más barato, más rápido, cashless). Se usa en las primeras etapas para validar si tu idea resuelve un problema real.",
+    imageUrl: "/images/vpc.avif"
   },
   {
     id: "product-vision-board",
@@ -71,6 +72,7 @@ export const productTermsData: ProductTerm[] = [
     description: "Tablero de una página que define la visión estratégica del producto: quién es el target, qué necesidades tiene, qué hace tu producto, y qué lo hace único. Es como el 'acta de nacimiento' del producto.",
     relatedTerms: ["value-proposition-canvas", "prd", "roadmap", "mvp"],
     example: "Para Airbnb sería: VISIÓN ('Un mundo donde puedas pertenecer a cualquier lugar'), TARGET (viajeros que buscan experiencias auténticas, anfitriones con espacio extra), NECESIDADES (hospedaje único y asequible / ganar dinero con espacio sin usar), PRODUCTO (plataforma que conecta anfitriones y viajeros), VALOR ÚNICO (estadías únicas en casas reales, no hoteles). Se usa al inicio del proyecto para alinear al equipo.",
+    imageUrl: "/images/pvb.jpg"
   },
   {
     id: "moscow",
@@ -79,6 +81,7 @@ export const productTermsData: ProductTerm[] = [
     description: "Técnica de priorización que clasifica *[features](#feature)* en: Must have (debe tener), Should have (debería tener), Could have (podría tener), Won't have (no tendrá ahora). Ayuda a decidir qué va en el *[MVP](#mvp)* y qué espera.",
     relatedTerms: ["mvp", "feature", "roadmap", "user-story"],
     example: "App de delivery: MUST (buscar restaurantes, ordenar comida, pagar, ver estado del pedido), SHOULD (filtrar por tipo de cocina, calificar restaurante), COULD (chat con repartidor, programa de puntos), WON'T (reservar mesas, recetas de cocina, juegos). Los 'Must' son tu MVP, los demás se agregan después basándote en *[feedback](#feedback)*.",
+    imageUrl: "/images/moscow.webp",
     tags: ["basics"]
   },
   {
@@ -164,6 +167,7 @@ export const productTermsData: ProductTerm[] = [
     description: "Métrica que mide lealtad preguntando: '¿Qué tan probable es que recomiendes este producto del 0 al 10?'. Se calcula: % promotores (9-10) menos % detractores (0-6). Un NPS alto indica *[product-market-fit](#product-market-fit)*.",
     relatedTerms: ["product-market-fit", "feedback", "kpi", "retention", "usability"],
     example: "100 usuarios responden: 60 dan 9-10 (promotores), 20 dan 7-8 (pasivos), 20 dan 0-6 (detractores). NPS = 60% - 20% = 40. Interpretación: >50 excelente, 0-50 bueno, <0 preocupante. La pregunta de seguimiento '¿Por qué?' es oro: descubres qué aman los promotores (para duplicar) y qué odian los detractores (para arreglar urgente).",
+    imageUrl: "/images/nps.webp",
     tags: ["basics"]
   },
   {
@@ -173,6 +177,7 @@ export const productTermsData: ProductTerm[] = [
     description: "Herramienta para identificar y priorizar riesgos del proyecto en dos ejes: probabilidad de que ocurra (alta/baja) e impacto si ocurre (alto/bajo). Ayuda a decidir qué riesgos atacar primero.",
     relatedTerms: ["roadmap", "prd", "testing", "stakeholder"],
     example: "Cuadrantes: ALTA PROBABILIDAD + ALTO IMPACTO (atender YA: 'la API de pagos puede caerse') → ALTA PROB + BAJO IMPACTO (monitorear: 'usuarios pueden no usar una feature secundaria') → BAJA PROB + ALTO IMPACTO (tener plan B: 'proveedor principal quiebra') → BAJA PROB + BAJO IMPACTO (ignorar: 'un usuario reporta bug en un caso ultra raro'). Se revisa cada sprint.",
+    imageUrl: "/images/risk-matrix.jpg"
   },
   {
     id: "alfa",
@@ -355,6 +360,7 @@ Para una app de delivery, en vez de preguntar "¿te gustaría poder filtrar por 
     description: "Los primeros usuarios entusiastas que adoptan tu producto cuando todavía es imperfecto. Son tolerantes con bugs, dan *[feedback](#feedback)* valioso, y si les gusta, lo recomiendan activamente. Son críticos para encontrar *[product-market-fit](#product-market-fit)*.",
     relatedTerms: ["beta", "mvp", "product-market-fit", "feedback"],
     example: "Los primeros 100 usuarios de Twitter, los beta testers de Spotify, la gente que compró el primer iPhone aunque le faltaban features. Son tus 'fans' iniciales. Los identificas porque: buscan activamente soluciones nuevas, toleran imperfección a cambio de innovación, dan feedback sin que se lo pidas. No los confundas con el 'mercado mainstream': lo que funciona con early adopters puede necesitar cambios para la mayoría.",
+    imageUrl: "/images/tech-adop.webp",
     tags: ["basics"]
   },
   {
@@ -594,6 +600,7 @@ Para una app de delivery, en vez de preguntar "¿te gustaría poder filtrar por 
     description: "El momento cuando un usuario nuevo experimenta el valor core del producto por primera vez. Es el 'momento Aha!'. Un usuario 'activado' tiene mucha mayor probabilidad de quedarse.",
     relatedTerms: ["onboarding", "retention", "kpi", "engagement"],
     example: "Facebook: agregar 7 amigos en 10 días (descubrieron que usuarios que hacían esto se quedaban). Twitter: seguir 30 cuentas. Dropbox: subir un archivo a la carpeta. Uber: completar tu primer viaje. Airbnb: reservar tu primera estancia. Define TU 'activation event' analizando qué hacen usuarios que se quedan vs los que se van. Luego optimiza el onboarding para llevar a más usuarios a ese momento.",
+    imageUrl: "/images/aarrr.webp"
   },
   {
     id: "metrics",
