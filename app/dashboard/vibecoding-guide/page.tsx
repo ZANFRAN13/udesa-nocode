@@ -113,7 +113,6 @@ export default function VibecodingGuidePage() {
       tools: ["ChatGPT", "Claude", "Gemini"],
       color: "from-purple-500/10 to-purple-600/5",
       iconColor: "text-purple-600",
-      optional: true,
       detail: "Si no sabes por dónde empezar, empieza aquí. Si ya tenés una idea clara, podés saltar al Paso 1.0."
     },
     {
@@ -125,7 +124,6 @@ export default function VibecodingGuidePage() {
       tools: ["ChatGPT", "Claude", "Gemini"],
       color: "from-blue-500/10 to-blue-600/5",
       iconColor: "text-blue-600",
-      optional: true,
       detail: "Criterios sugeridos: riesgos por impacto y probabilidad, FODA, oportunidad de diferenciación (moats), tamaño de mercado, etc."
     },
     {
@@ -276,9 +274,6 @@ export default function VibecodingGuidePage() {
                     </span>
                     <span className="truncate">{step.title}</span>
                   </div>
-                  {step.optional && (
-                    <span className="text-xs opacity-60 ml-8">Opcional</span>
-                  )}
                 </button>
               ))}
               
@@ -333,15 +328,13 @@ export default function VibecodingGuidePage() {
           <div className="space-y-6">
             {steps.map((step, index) => {
               const Icon = step.icon
-              const isOptional = step.optional
+              
 
               return (
                 <Card 
                   key={step.id}
                   id={step.id}
-                  className={`scroll-mt-24 overflow-hidden border-2 transition-all duration-200 hover:shadow-lg ${
-                    isOptional ? 'border-border/50' : 'border-primary/20'
-                  }`}
+                
                 >
                   <CardHeader className={`bg-gradient-to-br ${step.color} p-4 md:p-6`}>
                     <div className="flex items-start gap-3 md:gap-4">
@@ -353,11 +346,7 @@ export default function VibecodingGuidePage() {
                           <Badge variant="outline" className="font-mono">
                             Paso {step.number}
                           </Badge>
-                          {isOptional && (
-                            <Badge variant="secondary" className="text-xs">
-                              Opcional
-                            </Badge>
-                          )}
+                          
                         </div>
                         <CardTitle className="text-lg md:text-xl mb-2">
                           {step.title}
@@ -465,9 +454,9 @@ export default function VibecodingGuidePage() {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => router.push('/dashboard/glossary/ai')}
+                onClick={() => router.push('/dashboard/heuristics')}
               >
-                Vocabulario de IA →
+                Heurísticas y Buenas Prácticas →
               </Button>
             </CardContent>
           </Card>
