@@ -209,6 +209,9 @@ export const devTermsData: DevTerm[] = [
     description: "Conjunto de prácticas, herramientas y filosofía cultural que integran el desarrollo de software (*[Development](#development)*) y las operaciones de TI (*[Operations](#operations)*) para acortar el ciclo de vida del desarrollo y entregar software de alta calidad de forma continua. Combina automatización, colaboración y comunicación entre equipos de desarrollo y operaciones.",
     relatedTerms: ["ci-cd", "deployment", "docker", "kubernetes", "testing"],
     example: "Un equipo DevOps implementa *[CI/CD](#ci-cd)* para automatizar pruebas y despliegues, usa *[Docker](#docker)* para contenedores, y monitorea aplicaciones en producción continuamente.",
+    imageUrls: [
+      "/images/devops2.png"
+    ],
     tags: ["basics"]
   },
   {
@@ -1504,6 +1507,64 @@ La página deja de responder, el navegador te pregunta si querés cerrar la pest
 
 Casos de uso:
 Un botón de "Enviar" que no hace nada cuando lo clickeas. Una calculadora que suma mal. Una app que se pone cada vez más lenta después de un rato de usarla. Un formulario que dice que tu email es inválido aunque esté bien escrito.`,
+    tags: ["basics"]
+  },
+  {
+    id: "lint-error",
+    name: "Lint Error (Error de Linter)",
+    category: "Development",
+    description: "Advertencia o error que muestra una herramienta automática (linter) cuando tu código no sigue las reglas de estilo o buenas prácticas establecidas. No significa que tu código esté 'roto', pero indica que hay algo que debería mejorarse para que sea más legible, consistente o evite problemas futuros. Los linters analizan tu código automáticamente mientras escribes y te marcan cosas como variables sin usar, falta de punto y coma, código inconsistente, o patrones que podrían causar bugs.",
+    relatedTerms: ["bug", "debugging", "ide", "code-review", "refactoring"],
+    example: "El linter te marca en rojo una variable que declaraste pero nunca usaste, o te avisa que falta cerrar una llave. También puede advertirte si usaste 'var' en vez de 'let', o si dejaste un console.log() olvidado en código de producción. Es como un corrector ortográfico pero para código: te ayuda a mantenerlo limpio y consistente antes de que se convierta en un bug real.",
+    codeExample: `// ❌ Ejemplos de Lint Errors comunes:
+
+// 1. Variable declarada pero nunca usada
+let nombre = "María";  // ⚠️ Lint error: 'nombre' is assigned but never used
+let edad = 25;
+console.log(edad);  // Solo usamos edad, no nombre
+
+// 2. Falta punto y coma
+const usuario = "Carlos"  // ⚠️ Lint error: Missing semicolon
+console.log(usuario)      // ⚠️ Lint error: Missing semicolon
+
+// 3. Usar 'var' en lugar de 'let' o 'const'
+var contador = 0;  // ⚠️ Lint warning: Unexpected var, use let or const instead
+
+// 4. Código inalcanzable
+function ejemplo() {
+  return true;
+  console.log("Hola");  // ⚠️ Lint error: Unreachable code (nunca se ejecuta)
+}
+
+// 5. Console.log olvidado
+function procesarDatos(datos) {
+  console.log(datos);  // ⚠️ Lint warning: Unexpected console statement
+  return datos.map(x => x * 2);
+}
+
+// ✅ Código corregido:
+
+// 1. Eliminar variable sin usar o usarla
+let edad = 25;
+console.log(edad);
+
+// 2. Agregar punto y coma
+const usuario = "Carlos";
+console.log(usuario);
+
+// 3. Usar let o const
+let contador = 0;
+
+// 4. Eliminar código inalcanzable
+function ejemplo() {
+  console.log("Hola");
+  return true;
+}
+
+// 5. Eliminar console.log o usar un logger apropiado
+function procesarDatos(datos) {
+  return datos.map(x => x * 2);
+}`,
     tags: ["basics"]
   },
   {
