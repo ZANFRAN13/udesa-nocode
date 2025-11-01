@@ -25,6 +25,14 @@ export default function FAQPage() {
   const router = useRouter()
   const supabase = createClient()
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -124,6 +132,17 @@ export default function FAQPage() {
       category: "certificacion"
     }
   ]
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">

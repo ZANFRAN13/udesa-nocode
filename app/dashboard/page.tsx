@@ -113,11 +113,13 @@ export default function Dashboard() {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 2: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=1cd04b30-ff2a-4413-9ff5-b379010bfde7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 4: Haciendo que funcione": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7a0d7d2c-5cca-4244-824a-b3870111edb7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   const classSlides: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
     "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
+    "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
   }
 
   const sections = [

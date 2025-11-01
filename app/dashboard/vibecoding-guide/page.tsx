@@ -22,11 +22,20 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react"
+import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function VibecodingGuidePage() {
   const router = useRouter()
   const supabase = createClient()
   const [activeStep, setActiveStep] = useState<string>("step-0.0")
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Setup auth listener only for sign out events
   useEffect(() => {
@@ -204,6 +213,17 @@ export default function VibecodingGuidePage() {
       detail: "Por defecto, la mayoría de las plataformas usan Supabase y casi siempre lo integra automáticamente."
     }
   ]
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -463,6 +483,7 @@ export default function VibecodingGuidePage() {
         </div>
         </div>
       </div>
+      <GeminiHelper />
     </div>
   )
 }

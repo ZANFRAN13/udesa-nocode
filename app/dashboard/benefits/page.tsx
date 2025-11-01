@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,9 +15,17 @@ import {
 
 export default function BenefitsPage() {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
   const [copiedV0, setCopiedV0] = useState(false)
   const [copied021, setCopied021] = useState(false)
   const code = "VIBEUDESA"
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleBackToDashboard = () => {
     router.push('/dashboard')
@@ -41,6 +49,17 @@ export default function BenefitsPage() {
     } catch (err) {
       console.error('Error copying to clipboard:', err)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

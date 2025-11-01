@@ -402,8 +402,29 @@ export const devTermsData: DevTerm[] = [
     name: "Rama (Branch)",
     category: "Development",
     description: "Línea de desarrollo independiente que permite trabajar en funcionalidades sin afectar el código principal.",
-    relatedTerms: ["git", "merge", "commit", "pull-request", "version-control"],
+    relatedTerms: ["git", "merge", "commit", "pull-request", "version-control", "fork"],
     example: "Crear una rama 'feature/nuevo-login' para desarrollar una nueva funcionalidad de *[autenticación](#authentication)*."
+  },
+  {
+    id: "fork",
+    name: "Fork",
+    category: "Development",
+    description: "Copia de un *[repositorio](#repository)* completo a tu propia cuenta de *[GitHub](#github)* para poder modificarlo sin afectar el original. Es útil para experimentar con proyectos de otras personas o proponer cambios mediante *[pull requests](#pull-request)*.",
+    relatedTerms: ["git", "github", "branch", "pull-request", "merge", "version-control", "repository"],
+    example: "Hacer fork de un starter de 'asistente de IA' en GitHub, probar nuevas features en tu copia, y luego abrir un *[pull request](#pull-request)* al repositorio original para compartir tus mejoras.",
+    codeExample: `# Flujo típico de fork:
+# 1. Hacer fork en GitHub (botón "Fork" en la web)
+# 2. Clonar tu fork a tu computadora
+git clone https://github.com/tu-usuario/proyecto-forkeado.git
+
+# 3. Hacer cambios en tu fork
+git add .
+git commit -m "Agregar nueva funcionalidad"
+git push
+
+# 4. Abrir Pull Request desde GitHub
+# (botón "New Pull Request" en la web del fork)`,
+    tags: ["basics"]
   },
   {
     id: "commit",
@@ -892,7 +913,7 @@ console.log(resultado);         // Output: 8`,
     name: "Componentes",
     category: "Frontend",
     description: "Piezas reutilizables de interfaz de usuario que encapsulan una funcionalidad y pueden combinarse para crear aplicaciones complejas. Se crea una vez y se puede usar en múltiples lugares de la app.",
-    relatedTerms: ["frontend", "framework", "functions", "routes"],
+    relatedTerms: ["frontend", "framework", "functions", "routes", "props", "react"],
     example: "Botón, formulario de login, tarjeta de producto, o header de navegación que se puede usar en múltiples páginas.",
     codeExample: `// Ejemplo de componente React
 function BotonPersonalizado({ texto, color }) {
@@ -906,6 +927,106 @@ function BotonPersonalizado({ texto, color }) {
 // Uso del componente
 <BotonPersonalizado texto="Guardar" color="blue" />
 <BotonPersonalizado texto="Cancelar" color="red" />`,
+    tags: ["basics"]
+  },
+  {
+    id: "props",
+    name: "Props",
+    category: "Frontend",
+    description: "Datos que un *[componente](#components)* recibe desde su componente 'padre'. Son de solo lectura: el componente hijo las usa para renderizarse, pero no debe modificarlas directamente. Es como pasarle información a una función, pero para componentes visuales.",
+    relatedTerms: ["components", "react", "vue", "next", "framework"],
+    example: "En React, `<Card title='Bienvenida' />` pasa la prop `title` al componente Card, que la muestra en pantalla. El componente Card recibe 'Bienvenida' y la usa para mostrar el título de la tarjeta.",
+    codeExample: `// Definir componente que recibe props
+function Card({ title, description }) {
+  return (
+    <div>
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </div>
+  );
+}
+
+// Usar el componente pasando props
+<Card 
+  title="Bienvenida" 
+  description="Este es un ejemplo de props"
+/>`,
+    tags: ["basics"]
+  },
+  {
+    id: "react",
+    name: "React",
+    category: "Frontend",
+    description: "Librería de JavaScript para construir interfaces de usuario con *[componentes](#components)* y estado. Muy popular para apps web modernas. Fue creada por Facebook/Meta y es de código abierto.",
+    relatedTerms: ["components", "props", "framework", "next", "vite", "tailwind", "frontend"],
+    example: "Un dashboard de métricas donde cada tarjeta es un componente que recibe *[props](#props)* y actualiza su estado al filtrar datos. Instagram, Facebook y WhatsApp Web usan React.",
+    tags: ["basics"]
+  },
+  {
+    id: "vue",
+    name: "Vue",
+    category: "Frontend",
+    description: "Framework progresivo para construir interfaces con *[componentes](#components)* y reactividad. Alternativa a *[React](#react)*, con sintaxis clara que separa plantillas HTML, script JavaScript y estilos CSS en un mismo archivo.",
+    relatedTerms: ["components", "props", "framework", "react", "vite", "tailwind", "frontend"],
+    example: "Un formulario dinámico con validaciones reactivas que muestra errores a medida que el usuario escribe. Vue es más fácil de aprender que React para principiantes.",
+    tags: ["basics"]
+  },
+  {
+    id: "next",
+    name: "Next.js",
+    category: "Frontend",
+    description: "Framework construido sobre *[React](#react)* para crear aplicaciones web completas: sistema de *[rutas](#routes)* automático, renderizado en servidor y cliente, API routes integradas, optimización de imágenes y mucho más. Simplifica crear apps web profesionales.",
+    relatedTerms: ["react", "routes", "framework", "tailwind", "api", "components", "frontend"],
+    example: "Un sitio con página marketing + blog + dashboard protegido, todo en un solo proyecto, con páginas que cargan súper rápido gracias al renderizado en servidor. Vercel (la empresa que lo creó) lo usa para su propia web.",
+    tags: ["basics"]
+  },
+  {
+    id: "tailwind",
+    name: "Tailwind CSS",
+    category: "Frontend",
+    description: "Framework de CSS que usa clases de utilidad cortas (como `p-4`, `bg-blue-500`, `rounded-xl`) para diseñar interfaces rápidamente sin salir del HTML o JSX. Perfecto para prototipar UI con IA y crear diseños consistentes.",
+    relatedTerms: ["frontend", "react", "next", "vue", "components", "responsive-design"],
+    example: "`<button class='px-4 py-2 rounded-xl shadow bg-blue-500 text-white'>Continuar</button>` crea un botón con padding, bordes redondeados, sombra, fondo azul y texto blanco, todo sin escribir CSS personalizado.",
+    codeExample: `<!-- Ejemplo de Tailwind CSS -->
+<button class="px-4 py-2 bg-blue-500 text-white rounded-xl shadow hover:bg-blue-600">
+  Continuar
+</button>
+
+<!-- Equivale a este CSS tradicional -->
+<style>
+  button {
+    padding: 1rem 1rem;
+    background-color: #3b82f6;
+    color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  button:hover {
+    background-color: #2563eb;
+  }
+</style>`,
+    tags: ["basics"]
+  },
+  {
+    id: "vite",
+    name: "Vite",
+    category: "Development",
+    description: "Herramienta de desarrollo y construcción (bundler) extremadamente rápida. Crea proyectos con plantillas predefinidas (*[React](#react)*, *[Vue](#vue)*, etc.) y recarga los cambios al instante mientras programas (hot reload).",
+    relatedTerms: ["react", "vue", "framework", "development-environments", "localhost"],
+    example: "`npm create vite@latest` para iniciar un proyecto React y empezar a probar *[componentes](#components)* al instante. Es mucho más rápido que herramientas anteriores como Webpack.",
+    codeExample: `# Crear nuevo proyecto con Vite
+npm create vite@latest mi-proyecto
+
+# Seleccionar framework (React, Vue, etc.)
+# Seleccionar variante (JavaScript o TypeScript)
+
+# Entrar al proyecto e instalar dependencias
+cd mi-proyecto
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
+# Abre http://localhost:5173`,
     tags: ["basics"]
   },
   {
@@ -1098,9 +1219,9 @@ Servidor: Express, Django, Spring
     id: "variables",
     name: "Variables",
     category: "Development",
-    description: "Contenedores que almacenan información que puede cambiar durante la ejecución de un programa. Son como cajas con etiquetas donde guardas datos.",
+    description: "Espacios de memoria en codificadas en un programa y almacenan información que puede cambiar durante la ejecución de este. Son como cajas con etiquetas donde guardas datos para utilizar en el programa.",
     relatedTerms: ["data-types", "functions", "data-structures"],
-    example: "Una variable 'nombre' puede contener 'María' hoy y 'Carlos' mañana. Una variable 'edad' puede cambiar de 25 a 26.",
+    example: "Una variable 'nombre' puede contener 'María' hoy y 'Carlos' mañana. Una variable 'edad' puede cambiar de 25 a 26. Una variable también puede contener una función que se ejecute al ser nombrada.",
     codeExample: `// Declarar variables
 let nombre = "María";        // Variable que puede cambiar
 const edad = 25;             // Variable constante (no cambia)
@@ -1116,11 +1237,76 @@ nombre = "Carlos";           // Ahora nombre es "Carlos"
     tags: ["basics"]
   },
   {
+    id: "terminal",
+    name: "Terminal",
+    category: "Development",
+    description: "Aplicación de línea de comandos donde escribes instrucciones de texto para interactuar con tu sistema operativo o herramientas de desarrollo. En lugar de hacer clic en botones, escribes *[comandos](#comando)* que le dicen a la computadora qué hacer. También se llama 'consola', 'línea de comandos' o 'shell'.",
+    relatedTerms: ["comando", "git", "localhost", "ide", "debugging"],
+    example: "Abrir la Terminal y ejecutar `npm install` para instalar dependencias de un proyecto, o `npm run dev` para levantar el servidor de desarrollo y ver tu app en http://localhost:3000.",
+    codeExample: `# Comandos básicos de terminal:
+
+# Navegación
+cd mi-proyecto          # Cambiar de directorio (carpeta)
+cd ..                   # Subir un nivel
+ls                      # Listar archivos (Mac/Linux)
+dir                     # Listar archivos (Windows)
+pwd                     # Ver ruta actual
+
+# Gestión de archivos
+mkdir nueva-carpeta     # Crear carpeta
+touch archivo.txt       # Crear archivo (Mac/Linux)
+rm archivo.txt          # Eliminar archivo
+
+# NPM (Node Package Manager)
+npm install             # Instalar dependencias
+npm run dev             # Iniciar desarrollo
+npm run build           # Compilar para producción
+
+# Git
+git status              # Ver estado del repositorio
+git add .               # Agregar cambios
+git commit -m "mensaje" # Guardar cambios
+git push                # Subir cambios`,
+    tags: ["basics"]
+  },
+  {
+    id: "comando",
+    name: "Comando",
+    category: "Development",
+    description: "Instrucción que escribes en la *[Terminal](#terminal)* para que la computadora ejecute una acción específica. Los comandos son como órdenes en texto: le dices a la computadora exactamente qué quieres que haga.",
+    relatedTerms: ["terminal", "git", "ide", "localhost", "vite"],
+    example: "`git clone <url>` (copiar un repositorio), `npm run build` (compilar la app), `npx create-next-app` (crear proyecto Next.js), o `cd carpeta` (entrar a una carpeta).",
+    codeExample: `# Ejemplos de comandos comunes:
+
+# Git - Control de versiones
+git clone https://github.com/usuario/repo.git  # Clonar repositorio
+git status                                      # Ver estado
+git pull                                        # Obtener cambios
+git push                                        # Subir cambios
+
+# NPM - Gestión de paquetes
+npm install                    # Instalar dependencias
+npm install nombre-paquete     # Instalar paquete específico
+npm run dev                    # Ejecutar script de desarrollo
+npm run build                  # Compilar proyecto
+
+# NPX - Ejecutar sin instalar
+npx create-next-app mi-app     # Crear app Next.js
+npx create-vite mi-app         # Crear app con Vite
+
+# Navegación
+cd mi-proyecto                 # Entrar a carpeta
+cd ..                          # Salir de carpeta
+ls                             # Ver archivos (Mac/Linux)
+dir                            # Ver archivos (Windows)`,
+    tags: ["basics"]
+  },
+  {
     id: "console-log",
     name: "Console Log",
     category: "Development",
     description: "Comando que muestra información en la consola del navegador o terminal. Es como escribir en un cuaderno para ver qué está pasando en tu código. **IMPORTANTE:** En la consola también aparecen los errores de tu aplicación, por lo que es fundamental saber cómo abrirla.\n\n**Cómo abrir la consola del navegador:**\n- **Windows:** Presiona `F12` o `Ctrl + Shift + I`, luego haz clic en la pestaña 'Console'\n- **Mac:** Presiona `Cmd + Option + I`, luego haz clic en la pestaña 'Console'\n- **Alternativa:** Click derecho en la página → 'Inspeccionar' → pestaña 'Console'",
-    relatedTerms: ["debugging", "variables", "input-output", "logging"],
+    relatedTerms: ["debugging", "variables", "input-output", "logging", "terminal"],
     example: "Usar console.log() para ver el valor de una variable, mostrar mensajes de error, o verificar que tu código funciona correctamente. También revisa la consola para encontrar errores que puedan estar rompiendo tu aplicación. Ver imágenes de ayuda abajo para saber cómo abrir la consola.",
     codeExample: `// Ejemplos básicos de console.log
 console.log("Hola mundo");           // Mostrar texto

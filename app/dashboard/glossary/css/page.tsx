@@ -1,14 +1,37 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { BookOpen } from "lucide-react"
 import { cssTermsData, cssCategories } from "@/lib/css-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { UnitsReferenceSection } from "@/components/glossary/help-sections/units-reference-section"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
+import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function CSSGlossaryPage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <GlossaryPageLayout
+    <>
+      <GlossaryPageLayout
       title="Glosario CSS"
       subtitle="Glosario de Conceptos CSS"
       icon={BookOpen}
@@ -48,6 +71,8 @@ export default function CSSGlossaryPage() {
           <UnitsReferenceSection />
         </>
       }
-    />
+      />
+      <GeminiHelper />
+    </>
   )
 }

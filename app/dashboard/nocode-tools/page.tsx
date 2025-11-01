@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,10 +20,18 @@ type SortOrder = "asc" | "desc"
 
 export default function NoCodeToolsPage() {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("Todos")
   const [showATPOnly, setShowATPOnly] = useState(false)
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc")
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   const handleBackToDashboard = () => {
     router.push('/dashboard')
@@ -51,6 +59,17 @@ export default function NoCodeToolsPage() {
 
   const toggleSortOrder = () => {
     setSortOrder(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

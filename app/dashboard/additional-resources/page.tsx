@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -27,6 +27,14 @@ function getDifficultyBrains(difficulty: DifficultyLevel) {
 
 export default function AdditionalResourcesPage() {
   const { handleLogout, handleBackToDashboard } = useAuth()
+  const [isLoading, setIsLoading] = useState(true)
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
   
   // Filter states
   const [searchQuery, setSearchQuery] = useState("")
@@ -97,6 +105,17 @@ export default function AdditionalResourcesPage() {
 
     return filtered
   }, [searchQuery, selectedTypes, selectedTopics, selectedDifficulty])
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-background">

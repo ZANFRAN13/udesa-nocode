@@ -1,0 +1,178 @@
+/* Estilos personalizados para el markdown del popup de Gemini */
+
+.gemini-markdown {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Estilos minimalistas para scrollbar del popup */
+.gemini-popup-scrollbar ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.gemini-popup-scrollbar ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gemini-popup-scrollbar ::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.2);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.gemini-popup-scrollbar ::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.35);
+}
+
+/* Firefox */
+.gemini-popup-scrollbar * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.2) transparent;
+}
+
+/* Ocultar scrollbar cuando no está en hover (solo en webkit) */
+.gemini-popup-scrollbar ::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.gemini-popup-scrollbar:hover ::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.25);
+}
+
+.gemini-popup-scrollbar:hover ::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.4);
+}
+
+.gemini-markdown h1,
+.gemini-markdown h2,
+.gemini-markdown h3,
+.gemini-markdown h4,
+.gemini-markdown h5,
+.gemini-markdown h6 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.gemini-markdown h3 {
+  font-size: 1rem;
+}
+
+.gemini-markdown p {
+  margin-bottom: 0.75rem;
+}
+
+.gemini-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+.gemini-markdown strong {
+  font-weight: 700;
+  color: inherit;
+}
+
+.gemini-markdown em {
+  font-style: italic;
+}
+
+.gemini-markdown ul,
+.gemini-markdown ol {
+  margin-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.gemini-markdown li {
+  margin-bottom: 0.25rem;
+}
+
+.gemini-markdown code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.dark .gemini-markdown code {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.gemini-markdown pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.dark .gemini-markdown pre {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.gemini-markdown pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.8rem;
+}
+
+.gemini-markdown a {
+  text-decoration: underline;
+  transition: opacity 0.2s;
+}
+
+.gemini-markdown a:hover {
+  opacity: 0.8;
+}
+
+.gemini-markdown blockquote {
+  border-left: 3px solid currentColor;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.gemini-markdown hr {
+  margin: 1rem 0;
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .gemini-markdown hr {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Animación de brillo pulsante para el botón del asistente */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4),
+                0 0 30px rgba(168, 85, 247, 0.2),
+                0 0 45px rgba(168, 85, 247, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.6),
+                0 0 40px rgba(168, 85, 247, 0.4),
+                0 0 60px rgba(168, 85, 247, 0.2);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.gemini-helper-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.gemini-helper-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+

@@ -1,13 +1,36 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Brain } from "lucide-react"
 import { aiTermsData, aiCategories } from "@/lib/ai-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
+import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function AIGlossaryPage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <GlossaryPageLayout
+    <>
+      <GlossaryPageLayout
       title="Vocabulario de IA"
       subtitle="Glosario de Términos de Inteligencia Artificial"
       icon={Brain}
@@ -49,7 +72,9 @@ export default function AIGlossaryPage() {
           tipText='<strong>💡 Consejo:</strong> Entender términos como <em class="italic">prompt</em>, <em class="italic">contexto</em>, <em class="italic">temperatura</em> y <em class="italic">RAG</em> te permite diseñar mejor tus interacciones con IA y crear productos más sofisticados. Este glosario es tu guía para pasar de "usuario casual" a "constructor informado".'
         />
       }
-    />
+      />
+      <GeminiHelper />
+    </>
   )
 }
 

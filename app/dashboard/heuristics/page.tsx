@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -22,12 +22,21 @@ import { heuristicsNewData, getTypeColorNew, getTypeLabelNew } from "@/lib/heuri
 import { useAuth } from "@/lib/hooks/use-auth"
 import { useExpandable } from "@/lib/hooks/use-expandable"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
+import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function HeuristicsPage() {
   const { handleLogout, handleBackToDashboard } = useAuth()
   const { toggle: toggleSection, isExpanded: isSectionExpanded } = useExpandable()
   const { toggle: toggleItem, isExpanded: isItemExpanded } = useExpandable()
   const [copiedCommands, setCopiedCommands] = useState<Record<string, boolean>>({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Función para detectar si es un comando
   const isCommand = (text: string) => {
@@ -89,6 +98,17 @@ export default function HeuristicsPage() {
         </span>
       ))
     })
+  }
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -344,6 +364,7 @@ export default function HeuristicsPage() {
           </div>
         </div>
       </div>
+      <GeminiHelper />
     </div>
   )
 }

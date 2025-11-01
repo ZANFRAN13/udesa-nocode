@@ -1,13 +1,36 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Target } from "lucide-react"
 import { productTermsData, productCategories } from "@/lib/product-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
+import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function ProductGlossaryPage() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+        <div className="text-center">
+          <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
+          <p className="text-gray-300 mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <GlossaryPageLayout
+    <>
+      <GlossaryPageLayout
       title="Vocabulario de Producto"
       subtitle="Glosario de Términos de Gestión de Productos Digitales"
       icon={Target}
@@ -49,7 +72,9 @@ export default function ProductGlossaryPage() {
           tipText='<strong>💡 Consejo:</strong> No necesitas ser un Product Manager profesional para aplicar estos conceptos. Incluso en proyectos personales, usar frameworks como <em class="italic">Value Proposition Canvas</em>, priorizar con <em class="italic">MoSCoW</em>, y hacer <em class="italic">user testing</em> básico marca una diferencia enorme entre crear algo que funciona y algo que la gente realmente quiere usar.'
         />
       }
-    />
+      />
+      <GeminiHelper />
+    </>
   )
 }
 
