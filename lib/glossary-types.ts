@@ -9,6 +9,10 @@ export interface BaseGlossaryTerm {
   imageUrl?: string
   imageUrls?: string[]
   tags?: string[]
+  link?: {
+    text: string
+    url: string
+  }
 }
 
 // CSS-specific term (extends base with configuration)
@@ -19,6 +23,10 @@ export interface CSSTerm extends BaseGlossaryTerm {
 // Development-specific term (extends base with code examples)
 export interface DevTerm extends BaseGlossaryTerm {
   codeExample?: string
+  link?: {
+    text: string
+    url: string
+  }
 }
 
 // UI-specific term (extends base with configuration)

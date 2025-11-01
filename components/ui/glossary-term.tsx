@@ -171,6 +171,21 @@ export function GlossaryTerm({
               </div>
             )}
 
+            {/* Link to external resource */}
+            {term.link && (
+              <div className="pt-2">
+                <a
+                  href={term.link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs md:text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                >
+                  <ExternalLink className="h-3 w-3 md:h-4 md:w-4" />
+                  {term.link.text}
+                </a>
+              </div>
+            )}
+
             {/* Related Terms */}
             {term.relatedTerms && term.relatedTerms.length > 0 && (
               <div>

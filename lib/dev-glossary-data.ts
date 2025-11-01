@@ -203,6 +203,15 @@ export const devTermsData: DevTerm[] = [
     example: "Una aplicación de e-commerce puede tener microservicios separados para usuarios, productos, pagos y envíos."
   },
   {
+    id: "devops",
+    name: "DevOps",
+    category: "DevOps",
+    description: "Conjunto de prácticas, herramientas y filosofía cultural que integran el desarrollo de software (*[Development](#development)*) y las operaciones de TI (*[Operations](#operations)*) para acortar el ciclo de vida del desarrollo y entregar software de alta calidad de forma continua. Combina automatización, colaboración y comunicación entre equipos de desarrollo y operaciones.",
+    relatedTerms: ["ci-cd", "deployment", "docker", "kubernetes", "testing"],
+    example: "Un equipo DevOps implementa *[CI/CD](#ci-cd)* para automatizar pruebas y despliegues, usa *[Docker](#docker)* para contenedores, y monitorea aplicaciones en producción continuamente.",
+    tags: ["basics"]
+  },
+  {
     id: "container",
     name: "Contenedor (Container)",
     category: "DevOps",
@@ -231,8 +240,17 @@ export const devTermsData: DevTerm[] = [
     name: "CI/CD (Continuous Integration/Continuous Deployment)",
     category: "DevOps",
     description: "Prácticas de desarrollo que automatizan la integración de código y el despliegue de aplicaciones.",
-    relatedTerms: ["testing", "deployment", "github"],
-    example: "*[GitHub](#github)* Actions ejecuta *[pruebas](#testing)* automáticamente cuando se hace *[push](#push)* y despliega la aplicación si todo está bien."
+    relatedTerms: ["testing", "devops", "deployment", "github"],
+    example: "*[GitHub](#github)* Actions ejecuta *[pruebas](#testing)* automáticamente cuando se hace *[push](#push)* y despliega la aplicación si todo está bien.",
+    imageUrls: [
+      "/images/cicd-pipe.png",
+      "/images/cicd-fast-freq.png",
+      "/images/cicd-then-now.png"
+    ],
+    link: {
+      text: "Ver video explicativo sobre CI/CD",
+      url: "https://www.youtube.com/watch?v=AknbizcLq4w&list=WL&index=2"
+    }
   },
   {
     id: "testing",
