@@ -26,6 +26,7 @@ export default function AuthCallbackPage() {
         
         // Check for query parameters (used by email confirmation)
         const code = searchParams.get('code')
+        const tokenHash = searchParams.get('token_hash')
         const error = searchParams.get('error')
         const errorDescription = searchParams.get('error_description')
         
@@ -33,6 +34,7 @@ export default function AuthCallbackPage() {
           hasAccessToken: !!accessToken, 
           type, 
           hasCode: !!code,
+          hasTokenHash: !!tokenHash,
           hasHash: !!window.location.hash 
         })
         
@@ -51,6 +53,32 @@ export default function AuthCallbackPage() {
           return
         }
         
+        // NEW: Handle token_hash based confirmation (for magiclink-style emails)
+        if (tokenHash && type === 'signup') {
+          console.log('Processing token-based email confirmation')
+          
+          const { data, error: verifyError } = await supabase.auth.verifyOtp({
+            token_hash: tokenHash,
+            type: 'signup'
+          })
+          
+          if (verifyError) {
+            console.error('Token verification error:', verifyError)
+            setError('Error al confirmar el email. El enlace puede haber expirado.')
+            setStatus('error')
+            return
+          }
+          
+          if (data?.session) {
+            console.log('Session created via token:', data.session.user.email)
+            setStatus('success')
+            setTimeout(() => {
+              router.push('/dashboard')
+            }, 2000)
+            return
+          }
+        }
+        
         // Handle email confirmation flow (only if NOT a recovery)
         if (code && !type) {
           console.log('Processing email confirmation with code:', code)
@@ -65,12 +93,41 @@ export default function AuthCallbackPage() {
             // Handle specific error cases
             const errorMsg = exchangeError.message || ''
             
-            if (errorMsg.includes('Email link is invalid') || errorMsg.includes('expired')) {
+            // PKCE flow error - code verifier missing
+            if (errorMsg.includes('code verifier') || errorMsg.includes('code_verifier')) {
+              console.log('PKCE error detected - attempting alternative verification flow')
+              
+              // Try to verify email using the token hint if available
+              const tokenHash = searchParams.get('token_hash')
+              
+              if (tokenHash) {
+                try {
+                  // Verify OTP token
+                  const { error: verifyError } = await supabase.auth.verifyOtp({
+                    token_hash: tokenHash,
+                    type: 'email'
+                  })
+                  
+                  if (!verifyError) {
+                    setStatus('success')
+                    setTimeout(() => {
+                      router.push('/dashboard')
+                    }, 2000)
+                    return
+                  }
+                } catch (e) {
+                  console.error('OTP verification failed:', e)
+                }
+              }
+              
+              // If OTP didn't work, show helpful message
+              setError('El enlace de confirmación debe abrirse en el mismo navegador donde te registraste. Por favor, intenta iniciar sesión directamente o regístrate de nuevo.')
+            } else if (errorMsg.includes('Email link is invalid') || errorMsg.includes('expired')) {
               setError('El enlace de confirmación ha expirado o ya fue usado. Por favor, intenta registrarte de nuevo.')
             } else if (errorMsg.includes('User already registered')) {
               setError('Esta cuenta ya fue confirmada. Por favor, inicia sesión.')
             } else if (errorMsg.includes('redirect')) {
-              setError('Error de configuración: La URL de callback no está autorizada en Supabase. Verifica que http://localhost:3000/auth/callback esté en las Redirect URLs.')
+              setError('Error de configuración: La URL de callback no está autorizada en Supabase. Verifica que las URLs estén configuradas correctamente.')
             } else {
               setError(`Error al confirmar el email: ${errorMsg}`)
             }

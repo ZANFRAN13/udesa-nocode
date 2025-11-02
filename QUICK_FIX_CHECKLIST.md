@@ -1,6 +1,26 @@
 # ✅ Checklist Rápido: Fix Email Confirmation
 
-## 🚨 SI VES ERROR AL CONFIRMAR EMAIL
+## 🚨 ERROR ESPECÍFICO: "code verifier should be non-empty"
+
+**Este es un error de PKCE.** La solución MÁS SIMPLE:
+
+### ⭐ SOLUCIÓN RÁPIDA (2 minutos) - RECOMENDADA
+
+**Deshabilitar confirmación de email en Supabase:**
+
+1. Ir a: https://app.supabase.com → Tu proyecto
+2. **Authentication** → **Settings**
+3. Buscar: **"Enable email confirmations"**
+4. **Desactivar** esa opción ❌
+5. **Guardar**
+6. **Registrar un nuevo usuario** (los anteriores no funcionarán)
+7. ✅ Ahora podrás iniciar sesión sin confirmar email
+
+**Ver guía completa:** `PKCE_ERROR_FIX.md`
+
+---
+
+## 🚨 SI VES OTRO ERROR AL CONFIRMAR EMAIL
 
 ### Paso 1: Configurar URLs en Supabase (5 minutos)
 
