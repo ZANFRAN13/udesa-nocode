@@ -143,29 +143,34 @@ Abre DevTools (F12) → Consola para ver estos logs durante el testing.
 | **Destino éxito** | `/dashboard` | `/reset-password` |
 | **Cuándo ocurre** | Al registrarse | Al olvidar contraseña |
 
-## ⚠️ Errores Comunes
+## ⚠️ Si Ves un Error
 
-### "Error al confirmar el email"
+El código ahora muestra errores específicos para ayudar a diagnosticar el problema:
 
-**Posibles causas:**
-- El enlace expiró (por defecto 24 horas)
-- El enlace ya fue usado
-- La URL de callback no está configurada en Supabase
-- Problema con la configuración de SMTP
+### **Errores Posibles y Soluciones:**
 
-**Solución:**
-1. Verifica las Redirect URLs en Supabase
-2. Intenta registrarte nuevamente
-3. Revisa los logs en Supabase Dashboard → Logs
+#### 1. "El enlace de confirmación ha expirado o ya fue usado"
+- 🔧 **Solución:** Registra un nuevo usuario con un email diferente
+- Los enlaces expiran después de 24 horas
+- No se pueden reusar enlaces ya utilizados
 
-### "Enlace de confirmación inválido"
+#### 2. "Esta cuenta ya fue confirmada"
+- 🔧 **Solución:** Simplemente inicia sesión en `/login`
+- Tu cuenta ya está activa y lista para usar
 
-**Causa:** No se encontró ni `code` ni `access_token` en la URL
+#### 3. "La URL de callback no está autorizada en Supabase"
+- 🔧 **Solución:** Verifica que `http://localhost:3000/auth/callback` esté en Redirect URLs en Supabase
+- Ve a: Supabase Dashboard → Authentication → URL Configuration
+- Agrega la URL y espera 1-2 minutos
 
-**Solución:**
-- El enlace puede estar malformado
-- Verifica que el email se envió correctamente
-- Revisa la configuración de Email Templates en Supabase
+#### 4. Otros errores específicos
+- 🔧 **Solución:** Lee el mensaje completo y busca en la documentación de Supabase
+- Revisa los logs en la consola del navegador (F12)
+
+### 📖 Guía Completa de Troubleshooting
+
+Para problemas más complejos, consulta:
+- **`TROUBLESHOOTING_EMAIL_CONFIRMATION.md`** - Guía detallada de resolución de problemas
 
 ## 🎯 Archivos Modificados
 

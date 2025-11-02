@@ -61,7 +61,20 @@ export default function AuthCallbackPage() {
           
           if (exchangeError) {
             console.error('Exchange error:', exchangeError)
-            setError('Error al confirmar el email. Por favor, intenta registrarte de nuevo o contacta a soporte.')
+            
+            // Handle specific error cases
+            const errorMsg = exchangeError.message || ''
+            
+            if (errorMsg.includes('Email link is invalid') || errorMsg.includes('expired')) {
+              setError('El enlace de confirmación ha expirado o ya fue usado. Por favor, intenta registrarte de nuevo.')
+            } else if (errorMsg.includes('User already registered')) {
+              setError('Esta cuenta ya fue confirmada. Por favor, inicia sesión.')
+            } else if (errorMsg.includes('redirect')) {
+              setError('Error de configuración: La URL de callback no está autorizada en Supabase. Verifica que http://localhost:3000/auth/callback esté en las Redirect URLs.')
+            } else {
+              setError(`Error al confirmar el email: ${errorMsg}`)
+            }
+            
             setStatus('error')
             return
           }
@@ -75,7 +88,7 @@ export default function AuthCallbackPage() {
               router.push('/dashboard')
             }, 2000)
           } else {
-            setError('No se pudo crear la sesión. Por favor, intenta iniciar sesión.')
+            setError('No se pudo crear la sesión. Por favor, intenta iniciar sesión directamente.')
             setStatus('error')
           }
           
