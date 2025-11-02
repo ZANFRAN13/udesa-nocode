@@ -37,7 +37,7 @@ export default function LoginPage() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`
+            emailRedirectTo: `${window.location.origin}/`
           }
         })
         if (error) throw error
@@ -51,7 +51,7 @@ export default function LoginPage() {
         if (error) throw error
         
         // Redirect immediately - middleware will handle verification
-        window.location.href = '/dashboard'
+        window.location.href = '/'
       }
     } catch (error: any) {
       setError(error.message)

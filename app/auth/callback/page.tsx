@@ -54,17 +54,25 @@ export default function AuthCallbackPage() {
         }
         
         // NEW: Handle token_hash based confirmation (for magiclink-style emails)
-        if (tokenHash && type === 'signup') {
-          console.log('Processing token-based email confirmation')
+        if (tokenHash) {
+          console.log('Processing token-based email confirmation, type:', type)
           
           const { data, error: verifyError } = await supabase.auth.verifyOtp({
             token_hash: tokenHash,
-            type: 'signup'
+            type: 'email'  // Changed from 'signup' to 'email'
           })
           
           if (verifyError) {
             console.error('Token verification error:', verifyError)
-            setError('Error al confirmar el email. El enlace puede haber expirado.')
+            
+            // Try alternative verification methods
+            const errorMsg = verifyError.message || ''
+            
+            if (errorMsg.includes('expired') || errorMsg.includes('invalid')) {
+              setError('El enlace de confirmación ha expirado. Por favor, regístrate de nuevo.')
+            } else {
+              setError(`Error al confirmar el email: ${errorMsg}`)
+            }
             setStatus('error')
             return
           }
@@ -74,6 +82,16 @@ export default function AuthCallbackPage() {
             setStatus('success')
             setTimeout(() => {
               router.push('/dashboard')
+            }, 2000)
+            return
+          }
+          
+          // If we got data but no session, still mark as success
+          if (data) {
+            console.log('Email verified, redirecting to login')
+            setError('Email confirmado. Por favor, inicia sesión.')
+            setTimeout(() => {
+              router.push('/login')
             }, 2000)
             return
           }
