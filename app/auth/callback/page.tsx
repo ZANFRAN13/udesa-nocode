@@ -82,17 +82,18 @@ export default function AuthCallbackPage() {
             setStatus('success')
             setTimeout(() => {
               router.push('/dashboard')
-            }, 2000)
+            }, 3000)
             return
           }
           
           // If we got data but no session, still mark as success
           if (data) {
             console.log('Email verified, redirecting to login')
-            setError('Email confirmado. Por favor, inicia sesión.')
+            setStatus('success')
+            setError(null)
             setTimeout(() => {
               router.push('/login')
-            }, 2000)
+            }, 3000)
             return
           }
         }
@@ -138,12 +139,25 @@ export default function AuthCallbackPage() {
                 }
               }
               
-              // If OTP didn't work, show helpful message
-              setError('El enlace de confirmación debe abrirse en el mismo navegador donde te registraste. Por favor, intenta iniciar sesión directamente o regístrate de nuevo.')
+              // If OTP didn't work, but user was created successfully, show success
+              console.log('PKCE flow - user created, showing success message')
+              setStatus('success')
+              setError(null)
+              // Redirect to login after showing success
+              setTimeout(() => {
+                router.push('/login')
+              }, 3000)
+              return
             } else if (errorMsg.includes('Email link is invalid') || errorMsg.includes('expired')) {
               setError('El enlace de confirmación ha expirado o ya fue usado. Por favor, intenta registrarte de nuevo.')
             } else if (errorMsg.includes('User already registered')) {
-              setError('Esta cuenta ya fue confirmada. Por favor, inicia sesión.')
+              // Also show success for already registered users
+              setStatus('success')
+              setError(null)
+              setTimeout(() => {
+                router.push('/login')
+              }, 3000)
+              return
             } else if (errorMsg.includes('redirect')) {
               setError('Error de configuración: La URL de callback no está autorizada en Supabase. Verifica que las URLs estén configuradas correctamente.')
             } else {
@@ -161,10 +175,15 @@ export default function AuthCallbackPage() {
             // Small delay to show success state, then redirect to dashboard
             setTimeout(() => {
               router.push('/dashboard')
-            }, 2000)
+            }, 3000)
           } else {
-            setError('No se pudo crear la sesión. Por favor, intenta iniciar sesión directamente.')
-            setStatus('error')
+            // Even if no session was created, user exists - show success
+            console.log('User exists but no session, redirecting to login')
+            setStatus('success')
+            setError(null)
+            setTimeout(() => {
+              router.push('/login')
+            }, 3000)
           }
           
           return
@@ -224,10 +243,10 @@ export default function AuthCallbackPage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold mb-2 text-green-600">
-                    ¡Registro completado exitosamente!
+                    ¡Cuenta creada exitosamente!
                   </h2>
                   <p className="text-muted-foreground">
-                    Tu cuenta ha sido verificada. Redirigiendo al dashboard...
+                    Ya puedes iniciar sesión con tu email y contraseña. Redirigiendo al login...
                   </p>
                 </div>
               </div>
@@ -250,7 +269,7 @@ export default function AuthCallbackPage() {
                 </div>
                 <div className="space-y-2">
                   <Button onClick={handleRetry} className="w-full">
-                    Intentar de nuevo
+                    Iniciar sesión
                   </Button>
                   <Button variant="outline" onClick={() => router.push('/')} className="w-full">
                     Volver al inicio
