@@ -1607,6 +1607,69 @@ function procesarDatos(datos) {
     relatedTerms: ["frontend", "web-app-responsive", "responsive-design", "single-page-application", "routes", "components"],
     example: "Desarrollar una landing page implica: crear un diseño responsive que se vea bien en móvil y desktop, implementar formularios con validación, optimizar imágenes para carga rápida, integrar analytics para medir conversiones, y conectar con una API para procesar registros. Es común usar frameworks como React o Next.js, y herramientas como V0, Lovable o Replit para crearlas rápidamente.",
     tags: ["basics"]
+  },
+  {
+    id: "rich-text",
+    name: "Rich Text (Texto Enriquecido)",
+    category: "Frontend",
+    description: "Texto que incluye formato visual como negritas, cursivas, colores, tamaños de fuente, listas, enlaces y otros estilos, a diferencia del texto plano que solo tiene caracteres sin formato. En desarrollo web, se refiere a contenido editable con formato que los usuarios pueden crear y modificar usando editores especiales. Es lo que usas cuando escribes en Google Docs, Medium, o cualquier editor que te permite dar formato al texto.",
+    relatedTerms: ["frontend", "components", "input-output", "html"],
+    example: "Un blog donde los usuarios pueden escribir artículos con negritas, cursivas, títulos, imágenes insertadas y listas. O un sistema de comentarios donde puedes formatear el texto antes de publicarlo. WhatsApp Web permite enviar mensajes con *negritas*, _cursivas_ o ~tachado~ - eso también es rich text.",
+    codeExample: `// Ejemplo de Rich Text en HTML
+<div class="rich-text-content">
+  <h1>Título Principal</h1>
+  <p>Este es un párrafo con <strong>texto en negrita</strong> y <em>cursiva</em>.</p>
+  <ul>
+    <li>Item de lista</li>
+    <li>Otro item</li>
+  </ul>
+  <p style="color: blue;">Texto con color azul</p>
+</div>
+
+// ❌ Texto plano (sin formato)
+"Título Principal\\nEste es texto normal\\n- Item 1\\n- Item 2"
+
+// ✅ Rich Text (con formato)
+{
+  "type": "doc",
+  "content": [
+    { "type": "heading", "level": 1, "text": "Título Principal" },
+    { "type": "paragraph", "text": "Este es un párrafo con ", 
+      "marks": [{ "type": "bold" }] },
+    { "type": "bulletList", "items": ["Item 1", "Item 2"] }
+  ]
+}
+
+// Librerías populares para Rich Text Editors:
+// - Quill.js: Editor simple y potente
+// - TipTap: Basado en ProseMirror, muy flexible
+// - Draft.js: De Facebook, usado en comentarios
+// - Slate.js: Muy personalizable
+// - TinyMCE: Editor completo tipo Word
+
+// Ejemplo básico con TipTap en React
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
+function EditorRichText() {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: '<p>¡Escribe algo con formato!</p>',
+  })
+
+  return (
+    <div>
+      <button onClick={() => editor.chain().focus().toggleBold().run()}>
+        Negrita
+      </button>
+      <button onClick={() => editor.chain().focus().toggleItalic().run()}>
+        Cursiva
+      </button>
+      <EditorContent editor={editor} />
+    </div>
+  )
+}`,
+    tags: ["basics"]
   }
 ]
 

@@ -56,61 +56,27 @@ export default function AuthCallbackPage() {
           console.log('Processing email confirmation with code:', code)
           
           // Exchange code for session
-          try {
-            const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
-            console.log('Exchange result:', { data, error: exchangeError })
-            
-            if (exchangeError) {
-              console.error('Exchange error:', exchangeError)
-              
-              // Si el error es "both auth code and code verifier should be non-empty",
-              // probablemente es un password recovery que llegó sin hash
-              if (exchangeError.message?.includes('code verifier')) {
-                console.log('Detected recovery link without hash, waiting and retrying...')
-                // Esperar un momento para que el hash esté disponible
-                setTimeout(() => {
-                  const retryHash = window.location.hash
-                  if (retryHash) {
-                    console.log('Hash now available, redirecting to reset-password')
-                    router.push(`/reset-password${retryHash}`)
-                  } else {
-                    console.log('Still no hash, trying direct reset-password')
-                    router.push('/reset-password')
-                  }
-                }, 100)
-                return
-              }
-              
-              setError('Error al confirmar el email. Intenta de nuevo.')
-              setStatus('error')
-              return
-            }
-            
-            if (data?.session) {
-              console.log('Session created successfully:', data.session.user.email)
-              setStatus('success')
-              
-              // Small delay to show success state, then redirect to dashboard
-              setTimeout(() => {
-                router.push('/dashboard')
-              }, 2000)
-            }
-          } catch (exchangeError: any) {
-            console.error('Exchange failed:', exchangeError)
-            
-            // Mismo manejo para el catch
-            if (exchangeError.message?.includes('code verifier')) {
-              console.log('Caught recovery link, redirecting...')
-              setTimeout(() => {
-                const retryHash = window.location.hash
-                router.push(`/reset-password${retryHash || ''}`)
-              }, 100)
-              return
-            }
-            
-            setError('Error al confirmar el email. Intenta de nuevo.')
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+          console.log('Exchange result:', { data, error: exchangeError })
+          
+          if (exchangeError) {
+            console.error('Exchange error:', exchangeError)
+            setError('Error al confirmar el email. Por favor, intenta registrarte de nuevo o contacta a soporte.')
             setStatus('error')
             return
+          }
+          
+          if (data?.session) {
+            console.log('Session created successfully:', data.session.user.email)
+            setStatus('success')
+            
+            // Small delay to show success state, then redirect to dashboard
+            setTimeout(() => {
+              router.push('/dashboard')
+            }, 2000)
+          } else {
+            setError('No se pudo crear la sesión. Por favor, intenta iniciar sesión.')
+            setStatus('error')
           }
           
           return
