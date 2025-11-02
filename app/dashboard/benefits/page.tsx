@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useUserRole } from "@/lib/hooks/use-user-role"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,7 +11,8 @@ import {
   Copy, 
   Check,
   Gift,
-  Sparkles
+  Sparkles,
+  Lock
 } from "lucide-react"
 
 export default function BenefitsPage() {
@@ -18,6 +20,7 @@ export default function BenefitsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [copiedV0, setCopiedV0] = useState(false)
   const [copied021, setCopied021] = useState(false)
+  const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
   const code = "VIBEUDESA"
 
   useEffect(() => {
@@ -26,6 +29,13 @@ export default function BenefitsPage() {
     }, 1500)
     return () => clearTimeout(timer)
   }, [])
+
+  // Redirect free users to dashboard
+  useEffect(() => {
+    if (!isLoadingRole && isFreeUser) {
+      router.push('/dashboard')
+    }
+  }, [isFreeUser, isLoadingRole, router])
 
   const handleBackToDashboard = () => {
     router.push('/dashboard')
@@ -51,13 +61,38 @@ export default function BenefitsPage() {
     }
   }
 
-  if (isLoading) {
+  // Show loading screen while checking role or loading page
+  if (isLoading || isLoadingRole) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
         <div className="text-center">
           <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
           <p className="text-gray-300 mt-4">Cargando...</p>
         </div>
+      </div>
+    )
+  }
+
+  // Show access denied message for free users (just in case the redirect doesn't happen immediately)
+  if (isFreeUser) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
+              <Lock className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Acceso Restringido</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              Esta sección es exclusiva para miembros premium. Actualiza tu plan para acceder a beneficios exclusivos.
+            </p>
+            <Button onClick={() => router.push('/dashboard')} className="w-full">
+              Volver al Dashboard
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }

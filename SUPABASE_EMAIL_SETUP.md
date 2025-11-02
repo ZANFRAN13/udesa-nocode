@@ -68,7 +68,8 @@ Para producción, debes usar tu propio servicio SMTP. Opciones populares:
 Una vez configurado el SMTP:
 
 1. Ve a **Authentication** → **Email Templates** → **Reset Password**
-2. Personaliza el contenido del email:
+2. **⚠️ IMPORTANTE**: Asegúrate que la URL de redirección sea correcta
+3. Personaliza el contenido del email:
    ```html
    <h2>Restablecer contraseña</h2>
    <p>Hola,</p>
@@ -78,7 +79,21 @@ Una vez configurado el SMTP:
    <p>Si no solicitaste este cambio, ignora este correo.</p>
    <p>Este enlace expirará en 60 minutos.</p>
    ```
-3. Guarda los cambios
+4. Guarda los cambios
+
+### ✅ Verificar la URL de Redirección
+
+En **Authentication** → **URL Configuration**:
+
+1. **Site URL** debe ser tu dominio principal:
+   - Producción: `https://udesanocode.vercel.app`
+   - Desarrollo: `http://localhost:3000`
+
+2. **Redirect URLs** debe incluir:
+   - `https://udesanocode.vercel.app/reset-password` (producción)
+   - `http://localhost:3000/reset-password` (desarrollo)
+
+**Nota**: El código ya está configurado para redirigir a `/reset-password`, no necesitas cambiar el template si usas `{{ .ConfirmationURL }}`.
 
 ## 🔧 Variables de Template Disponibles
 

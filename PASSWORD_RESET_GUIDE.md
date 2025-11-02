@@ -31,16 +31,20 @@ Se agregó un flujo completo de recuperación de contraseña a tu aplicación. A
    ↓
 3. Ingresa su email en /forgot-password
    ↓
-4. Recibe correo con enlace
+4. Recibe correo con enlace que apunta directamente a /reset-password
    ↓
-5. Click en el enlace (va a /reset-password)
+5. Click en el enlace (va a /reset-password con token de seguridad)
    ↓
-6. Ingresa nueva contraseña
+6. Sistema valida el token automáticamente
    ↓
-7. Redirigido a /login con contraseña actualizada
+7. Ingresa nueva contraseña
    ↓
-8. ¡Puede ingresar con su nueva contraseña!
+8. Redirigido a /login con contraseña actualizada
+   ↓
+9. ¡Puede ingresar con su nueva contraseña!
 ```
+
+**Nota importante**: El enlace del email va directamente a `/reset-password` (no a `/auth/callback`). Esto evita problemas de redirección y no afecta el flujo de confirmación de email para nuevos registros.
 
 ## ⚙️ PASO CRÍTICO: Configurar Email en Supabase
 
@@ -73,9 +77,21 @@ Se agregó un flujo completo de recuperación de contraseña a tu aplicación. A
    - User: `resend`
    - Password: Tu API Key de Resend
 
-4. **Personalizar el template del email**
+4. **Configurar URLs de redirección** (CRÍTICO)
+   - Authentication → URL Configuration
+   - Verifica que **Site URL** sea correcta:
+     - Producción: `https://udesanocode.vercel.app`
+     - Desarrollo: `http://localhost:3000`
+   - En **Redirect URLs** agrega:
+     - `https://udesanocode.vercel.app/reset-password`
+     - `http://localhost:3000/reset-password`
+     - `https://udesanocode.vercel.app/auth/callback` (para confirmación de email)
+     - `http://localhost:3000/auth/callback` (para confirmación de email)
+
+5. **Personalizar el template del email**
    - Authentication → Email Templates → Reset Password
-   - Edita el contenido para que coincida con tu marca
+   - El template por defecto debe funcionar (usa `{{ .ConfirmationURL }}`)
+   - Edita el contenido para que coincida con tu marca si lo deseas
 
 ## 🔒 Seguridad Implementada
 

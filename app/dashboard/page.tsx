@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { useUserRole } from "@/lib/hooks/use-user-role"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -21,6 +22,7 @@ import {
   LogOut,
   HelpCircle,
   Sparkles,
+  Lock,
 } from "lucide-react"
 
 export default function Dashboard() {
@@ -29,6 +31,7 @@ export default function Dashboard() {
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
   const [expandedSlide, setExpandedSlide] = useState<string | null>(null)
   const supabase = createClient()
+  const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
 
   // Setup auth listener only for sign out events
   useEffect(() => {
@@ -44,6 +47,11 @@ export default function Dashboard() {
   }, [router, supabase])
 
   const toggleSection = (sectionId: string) => {
+    // Block access to "comunidad" section for free users
+    if (sectionId === "comunidad" && isFreeUser) {
+      return // Do nothing, prevent toggle
+    }
+    
     setOpenSections(prev => ({
       ...prev,
       [sectionId]: !prev[sectionId]
@@ -60,6 +68,11 @@ export default function Dashboard() {
   }
 
   const handleItemClick = (sectionId: string, item: string) => {
+    // Block access to restricted items for free users
+    if (isFreeUser && sectionId === "comunidad") {
+      return // Do nothing for free users
+    }
+    
     if (sectionId === "guia-rapida" && item === "Ver Guía Completa") {
       router.push('/dashboard/vibecoding-guide')
     }
@@ -122,6 +135,18 @@ export default function Dashboard() {
     "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
   }
 
+  // Filter comunidad content based on user role
+  const getComunidadContent = () => {
+    if (isFreeUser) {
+      // For free users, show message instead of actual content
+      return []
+    }
+    return [
+      "Comunidad de WhatsApp",
+      "Beneficios Exclusivos"
+    ]
+  }
+
   const sections = [
     {
       id: "guia-rapida",
@@ -181,16 +206,15 @@ export default function Dashboard() {
       id: "comunidad",
       title: "Comunidad",
       icon: Users,
-      description: "Espacio de interacción con otros estudiantes",
-      content: [
-        "Comunidad de WhatsApp",
-        "Beneficios Exclusivos"
-        // "Foro de discusión",
-        // "Grupos de trabajo",
-        // "Proyectos colaborativos",
-        // "Networking",
-        // "Eventos y meetups"
-      ]
+      description: isFreeUser 
+        ? "Acceso exclusivo para miembros premium" 
+        : "Espacio de interacción con otros estudiantes",
+      content: getComunidadContent()
+      // "Foro de discusión",
+      // "Grupos de trabajo",
+      // "Proyectos colaborativos",
+      // "Networking",
+      // "Eventos y meetups"
     }
   ]
 
@@ -252,23 +276,27 @@ export default function Dashboard() {
             {sections.map((section) => {
               const IconComponent = section.icon
               const isOpen = openSections[section.id]
+              const isComunidadLocked = section.id === "comunidad" && isFreeUser
 
               return (
-                <Card key={section.id} className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200">
+                <Card key={section.id} className={`overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200 ${isComunidadLocked ? 'opacity-60' : ''}`}>
                   <Collapsible
                     open={isOpen}
                     onOpenChange={() => toggleSection(section.id)}
                   >
                     <CollapsibleTrigger asChild>
-                      <CardHeader className="cursor-pointer p-4 md:p-6">
+                      <CardHeader className={`p-4 md:p-6 ${isComunidadLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                             <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
                               <IconComponent className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <CardTitle className="text-base md:text-xl font-semibold text-foreground">
+                              <CardTitle className="text-base md:text-xl font-semibold text-foreground flex items-center gap-2">
                                 {section.title}
+                                {isComunidadLocked && (
+                                  <Lock className="h-4 w-4 text-muted-foreground" />
+                                )}
                               </CardTitle>
                               <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
                                 {section.description}
@@ -276,7 +304,9 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            {isOpen ? (
+                            {isComunidadLocked ? (
+                              <Lock className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                            ) : isOpen ? (
                               <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
                             ) : (
                               <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
