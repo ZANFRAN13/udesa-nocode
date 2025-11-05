@@ -53,8 +53,17 @@ export const devTermsData: DevTerm[] = [
     name: "Librería (Library)",
     category: "Development",
     description: "Colección de código reutilizable que proporciona funcionalidades específicas para ser utilizadas en otros programas.",
-    relatedTerms: ["framework", "dependency", "open-source"],
+    relatedTerms: ["framework", "dependency", "open-source", "nodejs"],
     example: "Como una caja de herramientas: una librería de matemáticas te da *[funciones](#functions)* para calcular, una librería de fechas te ayuda a manejar calendarios, o una librería de gráficos te permite crear gráficos sin escribir todo el código desde cero."
+  },
+  {
+    id: "nodejs",
+    name: "NodeJS",
+    category: "Development",
+    description: "Entorno de ejecución que permite correr código JavaScript fuera del navegador, en tu computadora o servidor. Es lo que hace posible usar JavaScript para crear aplicaciones del lado del servidor y herramientas de desarrollo.",
+    relatedTerms: ["backend", "server", "library", "framework", "localhost"],
+    example: "Con NodeJS puedes instalar librerías usando comandos como 'npm install', correr tu proyecto localmente con 'npm run dev', y crear servidores web que manejen peticiones de usuarios. Es como el motor que hace funcionar muchas herramientas de desarrollo modernas.",
+    tags: ["basics"]
   },
   {
     id: "version-control",
@@ -117,8 +126,17 @@ export const devTermsData: DevTerm[] = [
     name: "Autenticación (Authentication)",
     category: "Security",
     description: "Proceso de verificar la identidad de un usuario, típicamente mediante credenciales como usuario y contraseña.",
-    relatedTerms: ["authorization", "sso", "encryption", "cookies", "session-storage"],
+    relatedTerms: ["authorization", "sso", "encryption", "cookies", "session-storage", "jwt"],
     example: "El login en una aplicación web donde ingresas email y contraseña para acceder a tu cuenta.",
+    tags: ["basics"]
+  },
+  {
+    id: "jwt",
+    name: "JWT (JSON Web Token)",
+    category: "Security",
+    description: "Método de autenticación que usa un token (código único) para verificar la identidad de un usuario sin necesidad de enviar usuario y contraseña en cada petición. Es como un pase de acceso temporal que demuestra quién eres.",
+    relatedTerms: ["authentication", "authorization", "api", "cookies", "session-storage"],
+    example: "Cuando inicias sesión en una app, el servidor te da un JWT que guardas en tu navegador. Luego, cada vez que haces algo en la app (ver tu perfil, publicar algo), envías ese token para demostrar que eres tú sin volver a poner tu contraseña.",
     tags: ["basics"]
   },
   {

@@ -73,8 +73,11 @@ export default function Dashboard() {
       return // Do nothing for free users
     }
     
-    if (sectionId === "guia-rapida" && item === "Ver Guía Completa") {
+    if (sectionId === "guia-rapida" && item === "Guía Rápida de Vibecoding: de idea a MVP") {
       router.push('/dashboard/vibecoding-guide')
+    }
+    if (sectionId === "guia-rapida" && item === "Introducción Básica a Cursor") {
+      router.push('/dashboard/cursor-intro')
     }
     if (sectionId === "material-complementario" && item === "Herramientas No-Code") {
       router.push('/dashboard/nocode-tools')
@@ -150,11 +153,12 @@ export default function Dashboard() {
   const sections = [
     {
       id: "guia-rapida",
-      title: "🚀 Guía Rápida de Vibecoding",
+      title: "🚀 Guías Rápidas",
       icon: Sparkles,
-      description: "Paso a paso: de la idea al MVP funcional usando IA",
+      description: "Guías, tutoriales, flujos de trabajo y otros paso a paso",
       content: [
-        "Ver Guía Completa"
+        "Guía Rápida de Vibecoding: de idea a MVP",
+        "Introducción Básica a Cursor"
       ]
     },
     {
@@ -320,11 +324,12 @@ export default function Dashboard() {
                         <div className="border-t border-border/30 pt-4 md:pt-6">
                           <div className="grid gap-2 md:gap-3">
                             {section.content.map((item, index) => {
-                              const isClickable = (section.id === "guia-rapida") ||
+                              const isClickable = (section.id === "guia-rapida") || 
                                                 (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA" || item === "Vocabulario de producto")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
-                              const isGuideQuick = section.id === "guia-rapida"
+                              const isGuideQuick = item === "Guía Rápida de Vibecoding: de idea a MVP"
+                              const isCursorIntro = item === "Introducción Básica a Cursor"
                               const isNoCode = item === "Herramientas No-Code"
                               const isSupportTools = item === "Herramientas de Apoyo"
                               const isAdditionalResources = item === "Recursos Adicionales"
@@ -359,6 +364,7 @@ export default function Dashboard() {
                                     {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isGuideQuick ? "Ver Guía →" :
+                                         isCursorIntro ? "Intro a Cursor →" :
                                          isNoCode ? "Herramientas →" :
                                          isSupportTools ? "Apoyo →" :
                                          isAdditionalResources ? "Recursos →" :

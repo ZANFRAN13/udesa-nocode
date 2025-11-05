@@ -250,7 +250,7 @@ export default function VibecodingGuidePage() {
                   className="h-6 md:h-8 w-auto shrink-0"
                 />
                 <h1 className="text-sm md:text-xl font-semibold text-foreground truncate">
-                  <span className="hidden md:inline">Guía Rápida de Vibecoding</span>
+                  <span className="hidden md:inline">Guía Rápida de Vibecoding: de idea a MVP</span>
                   <span className="md:hidden">Guía Vibecoding</span>
                 </h1>
               </div>
