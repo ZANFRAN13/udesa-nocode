@@ -6,7 +6,6 @@ import { uiTermsData, categories } from "@/lib/ui-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
 import { getNielsenNormanGroupUrl } from "@/lib/glossary-utils"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function UIGlossaryPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -77,7 +76,6 @@ export default function UIGlossaryPage() {
         />
       }
       />
-      <GeminiHelper />
     </>
   )
 }

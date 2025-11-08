@@ -6,7 +6,6 @@ import { devTermsData, devCategories } from "@/lib/dev-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { TerminalCommandsSection } from "@/components/glossary/help-sections/terminal-commands-section"
 import { DevToolsSection } from "@/components/glossary/help-sections/devtools-section"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function DevelopmentGlossaryPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -46,7 +45,6 @@ export default function DevelopmentGlossaryPage() {
           </>
         }
       />
-      <GeminiHelper />
     </>
   )
 }

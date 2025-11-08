@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -63,7 +64,53 @@ export function GlossaryPageLayout<T extends BaseGlossaryTerm>({
     termsByCategory,
     toggleTerm,
     handleTermClick,
+    setExpandedTerm,
   } = useGlossaryFilter({ termsData, showBasicsFilter })
+
+  // Handle hash navigation on mount and hash changes
+  useEffect(() => {
+    const handleHashNavigation = () => {
+      const hash = window.location.hash.substring(1) // Remove the #
+      
+      if (hash) {
+        // Find the term with matching ID
+        const term = termsData.find(t => t.id === hash)
+        
+        if (term) {
+          // Expand the term
+          setExpandedTerm(hash)
+          
+          // Scroll to the term with multiple attempts to ensure it works
+          const scrollToTerm = () => {
+            const element = document.getElementById(`term-${hash}`)
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth", block: "start" })
+              return true
+            }
+            return false
+          }
+          
+          // Try immediately
+          if (!scrollToTerm()) {
+            // Try after short delay if element not found
+            setTimeout(scrollToTerm, 100)
+            // Try again after longer delay as fallback
+            setTimeout(scrollToTerm, 300)
+          }
+        }
+      }
+    }
+    
+    // Handle on mount with a small delay to ensure page is loaded
+    setTimeout(handleHashNavigation, 50)
+    
+    // Handle hash changes
+    window.addEventListener('hashchange', handleHashNavigation)
+    
+    return () => {
+      window.removeEventListener('hashchange', handleHashNavigation)
+    }
+  }, [termsData, setExpandedTerm])
 
   const handleBackToDashboard = () => {
     router.push("/dashboard")

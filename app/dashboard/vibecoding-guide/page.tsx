@@ -22,7 +22,6 @@ import {
   Sparkles,
   ExternalLink,
 } from "lucide-react"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function VibecodingGuidePage() {
   const router = useRouter()
@@ -483,7 +482,6 @@ export default function VibecodingGuidePage() {
         </div>
         </div>
       </div>
-      <GeminiHelper />
     </div>
   )
 }

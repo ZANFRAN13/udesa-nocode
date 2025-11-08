@@ -101,7 +101,7 @@ export function useGlossaryFilter<T extends BaseGlossaryTerm>({
     setTimeout(() => {
       const element = document.getElementById(`term-${termId}`)
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" })
+        element.scrollIntoView({ behavior: "smooth", block: "start" })
       }
     }, 100)
   }

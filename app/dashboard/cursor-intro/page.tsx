@@ -27,7 +27,6 @@ import {
   Copy,
   Check,
 } from "lucide-react"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function CursorIntroPage() {
   const router = useRouter()
@@ -511,7 +510,6 @@ export default function CursorIntroPage() {
           </Card>
         </div>
       </div>
-      <GeminiHelper />
     </div>
   )
 }

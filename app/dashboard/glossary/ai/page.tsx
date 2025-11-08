@@ -5,7 +5,6 @@ import { Brain } from "lucide-react"
 import { aiTermsData, aiCategories } from "@/lib/ai-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function AIGlossaryPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -73,7 +72,6 @@ export default function AIGlossaryPage() {
         />
       }
       />
-      <GeminiHelper />
     </>
   )
 }

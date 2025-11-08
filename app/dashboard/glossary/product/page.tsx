@@ -5,7 +5,6 @@ import { Target } from "lucide-react"
 import { productTermsData, productCategories } from "@/lib/product-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function ProductGlossaryPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -73,7 +72,6 @@ export default function ProductGlossaryPage() {
         />
       }
       />
-      <GeminiHelper />
     </>
   )
 }

@@ -13,7 +13,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { ArrowLeft, LogOut, Code2, Info, Monitor, HelpCircle, ChevronRight, ChevronLeft } from "lucide-react"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function DevToolsPage() {
   const router = useRouter()
@@ -541,7 +540,6 @@ export default function DevToolsPage() {
           </div>
         </div>
       </div>
-      <GeminiHelper />
     </div>
   )
 }

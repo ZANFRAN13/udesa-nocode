@@ -6,7 +6,6 @@ import { cssTermsData, cssCategories } from "@/lib/css-glossary-data"
 import { GlossaryPageLayout } from "@/components/glossary/glossary-page-layout"
 import { UnitsReferenceSection } from "@/components/glossary/help-sections/units-reference-section"
 import { ExampleSection } from "@/components/glossary/help-sections/example-section"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function CSSGlossaryPage() {
   const [isLoading, setIsLoading] = useState(true)
@@ -72,7 +71,6 @@ export default function CSSGlossaryPage() {
         </>
       }
       />
-      <GeminiHelper />
     </>
   )
 }

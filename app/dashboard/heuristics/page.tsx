@@ -22,7 +22,6 @@ import { heuristicsNewData, getTypeColorNew, getTypeLabelNew } from "@/lib/heuri
 import { useAuth } from "@/lib/hooks/use-auth"
 import { useExpandable } from "@/lib/hooks/use-expandable"
 import { DashboardHeader } from "@/components/dashboard/dashboard-header"
-import { GeminiHelper } from "@/components/glossary/gemini-helper"
 
 export default function HeuristicsPage() {
   const { handleLogout, handleBackToDashboard } = useAuth()
@@ -364,7 +363,6 @@ export default function HeuristicsPage() {
           </div>
         </div>
       </div>
-      <GeminiHelper />
     </div>
   )
 }

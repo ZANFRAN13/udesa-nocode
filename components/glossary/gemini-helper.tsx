@@ -1,19 +1,37 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Sparkles, X } from "lucide-react"
 import { GeminiPopup } from "./gemini-popup"
+import { BrujulaPopup } from "./brujula-popup"
+import { ModeSelectionModal } from "./mode-selection-modal"
 import { cn } from "@/lib/utils"
 import "./gemini-markdown-styles.css"
 
+type GeminiMode = 'tutor' | 'brujula' | null
+
 export function GeminiHelper() {
+  const pathname = usePathname()
+  const [showModeSelection, setShowModeSelection] = useState(false)
+  const [currentMode, setCurrentMode] = useState<GeminiMode>(null)
   const [isActive, setIsActive] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 })
   const [selectedText, setSelectedText] = useState("")
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(null)
   const [selectedElement, setSelectedElement] = useState<HTMLElement | null>(null)
+  
+  // Detectar si estamos en una página donde Tutor debe estar disponible
+  const isTutorAvailablePage = pathname ? (
+    pathname.startsWith('/dashboard/glossary') ||
+    pathname.startsWith('/dashboard/heuristics') ||
+    pathname.startsWith('/dashboard/heur2') ||
+    pathname.startsWith('/dashboard/additional-resources') ||
+    pathname.startsWith('/dashboard/vibecoding-guide') ||
+    pathname.startsWith('/dashboard/cursor-intro')
+  ) : false
 
   // Función para verificar si un elemento contiene texto significativo
   const hasSignificantText = (element: HTMLElement): boolean => {
@@ -278,6 +296,56 @@ export function GeminiHelper() {
     }
   }, [isActive, handleElementClick, handleElementHover, handleMouseOut, hoveredElement, selectedElement])
 
+  const handleButtonClick = () => {
+    // Si no estamos en una página con Tutor disponible, ir directo a Brújula
+    if (!isTutorAvailablePage) {
+      setCurrentMode('brujula')
+      setShowPopup(true)
+    } else {
+      // En páginas con Tutor disponible, mostrar modal de selección
+      setShowModeSelection(true)
+    }
+  }
+
+  const handleModeSelect = (mode: 'tutor' | 'brujula') => {
+    setCurrentMode(mode)
+    setShowModeSelection(false)
+    
+    if (mode === 'tutor') {
+      // Activate tutor mode (element selection)
+      setIsActive(true)
+    } else if (mode === 'brujula') {
+      // Show brújula popup directly
+      setShowPopup(true)
+    }
+  }
+
+  const handleCloseModeSelection = () => {
+    setShowModeSelection(false)
+  }
+
+  const handleClosePopup = () => {
+    setShowPopup(false)
+    clearElementStyle(selectedElement)
+    setSelectedElement(null)
+    
+    // If in tutor mode, deactivate it
+    if (currentMode === 'tutor') {
+      setIsActive(false)
+    }
+    
+    // Reset mode
+    setCurrentMode(null)
+    
+    // If there's a hash in the URL, trigger hash navigation after modal closes
+    if (currentMode === 'brujula' && window.location.hash) {
+      // Small delay to let the modal close first
+      setTimeout(() => {
+        window.dispatchEvent(new HashChangeEvent('hashchange'))
+      }, 100)
+    }
+  }
+
   const toggleActive = () => {
     const newActiveState = !isActive
     
@@ -288,6 +356,7 @@ export function GeminiHelper() {
       setHoveredElement(null)
       setSelectedElement(null)
       setShowPopup(false)
+      setCurrentMode(null)
     }
     
     setIsActive(newActiveState)
@@ -298,14 +367,14 @@ export function GeminiHelper() {
       {/* Floating Button */}
       <Button
         data-gemini-button
-        onClick={toggleActive}
+        onClick={isActive ? toggleActive : handleButtonClick}
         className={cn(
           "fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full shadow-lg transition-all duration-300",
           isActive
             ? "bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 scale-110"
             : "bg-accent hover:bg-accent/90 gemini-helper-glow"
         )}
-        title={isActive ? "Desactivar asistente IA" : "Activar asistente IA"}
+        title={isActive ? "Desactivar modo Tutor" : "Abrir asistente IA"}
       >
         {isActive ? (
           <X className="h-6 w-6 text-white" />
@@ -313,6 +382,15 @@ export function GeminiHelper() {
           <Sparkles className="h-6 w-6 gemini-helper-sparkle" />
         )}
       </Button>
+      
+      {/* Mode Selection Modal */}
+      {showModeSelection && (
+        <ModeSelectionModal
+          onSelectMode={handleModeSelect}
+          onClose={handleCloseModeSelection}
+          showTutorMode={isTutorAvailablePage}
+        />
+      )}
 
       {/* Active Indicator */}
       {isActive && (
@@ -326,20 +404,19 @@ export function GeminiHelper() {
         </div>
       )}
 
-      {/* Popup */}
-      {showPopup && (
+      {/* Popup - Show different popup based on mode */}
+      {showPopup && currentMode === 'tutor' && (
         <div data-gemini-popup>
           <GeminiPopup
             position={popupPosition}
             selectedText={selectedText}
-            onClose={() => {
-              setShowPopup(false)
-              // Limpiar la selección al cerrar el popup
-              clearElementStyle(selectedElement)
-              setSelectedElement(null)
-            }}
+            onClose={handleClosePopup}
           />
         </div>
+      )}
+      
+      {showPopup && currentMode === 'brujula' && (
+        <BrujulaPopup onClose={handleClosePopup} />
       )}
     </>
   )
