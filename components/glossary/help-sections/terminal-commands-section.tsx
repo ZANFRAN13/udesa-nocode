@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -9,6 +9,17 @@ import { ChevronDown, ChevronRight, Terminal, Info, Copy, Check } from "lucide-r
 export function TerminalCommandsSection() {
   const [isOpen, setIsOpen] = useState(false)
   const [copiedCommands, setCopiedCommands] = useState<Record<string, boolean>>({})
+
+  // Auto-abrir cuando se navega desde un enlace
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#guia-comandos-terminal') {
+      setIsOpen(true)
+      // Pequeño delay para que el scroll funcione después de que el contenido se expanda
+      setTimeout(() => {
+        document.getElementById('guia-comandos-terminal')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    }
+  }, [])
 
   // Función para copiar al clipboard
   const copyToClipboard = async (text: string, id: string) => {
@@ -24,7 +35,7 @@ export function TerminalCommandsSection() {
   }
 
   return (
-    <Card className="mb-6 md:mb-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background overflow-hidden group hover:bg-primary/10 transition-all duration-200">
+    <Card id="guia-comandos-terminal" className="mb-6 md:mb-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background overflow-hidden group hover:bg-primary/10 transition-all duration-200 scroll-mt-24">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
         <CollapsibleTrigger className="w-full">
           <CardHeader className="cursor-pointer p-4 md:p-6">

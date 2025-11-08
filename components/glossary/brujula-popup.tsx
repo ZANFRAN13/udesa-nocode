@@ -28,28 +28,38 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
   const router = useRouter()
   const [query, setQuery] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isNavigating, setIsNavigating] = useState(false)
   const [response, setResponse] = useState<BrujulaResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [usedFallback, setUsedFallback] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   
   const handleLinkClick = (url: string) => {
-    onClose()
+    // Mostrar feedback inmediato
+    setIsNavigating(true)
     
     // Check if the link is to the same page with a different hash
     const currentPath = window.location.pathname
     const [targetPath, targetHash] = url.split('#')
     
-    if (currentPath === targetPath && targetHash) {
-      // Same page, just update hash and trigger navigation
-      window.location.hash = targetHash
-      setTimeout(() => {
-        window.dispatchEvent(new Event('hashchange'))
-      }, 50)
-    } else {
-      // Different page, use router
-      router.push(url)
-    }
+    // Pequeño delay para que el usuario vea el spinner
+    setTimeout(() => {
+      if (currentPath === targetPath && targetHash) {
+        // Same page, just update hash and trigger navigation
+        window.location.hash = targetHash
+        setTimeout(() => {
+          window.dispatchEvent(new Event('hashchange'))
+          onClose()
+        }, 50)
+      } else {
+        // Different page, use router
+        router.push(url)
+        // Cerrar después de iniciar la navegación
+        setTimeout(() => {
+          onClose()
+        }, 100)
+      }
+    }, 50)
   }
 
   // Auto-focus input on mount
@@ -114,15 +124,26 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
         onClick={onClose}
       />
       
+      {/* Navigating Overlay */}
+      {isNavigating && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/30 backdrop-blur-sm">
+          <div className="bg-background rounded-lg shadow-2xl p-6 flex flex-col items-center gap-4 border-2 border-blue-500/20">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <p className="text-sm font-medium">Navegando...</p>
+          </div>
+        </div>
+      )}
+      
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <Card className="w-full max-w-3xl max-h-[85vh] bg-background shadow-2xl border-2 border-accent/20 relative flex flex-col">
+        <Card className="w-full max-w-3xl max-h-[85vh] bg-background shadow-2xl border-2 border-accent/20 relative flex flex-col gemini-popup-scrollbar">
           {/* Close Button */}
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 rounded-full hover:bg-accent/10"
+            disabled={isNavigating}
+            className="absolute top-4 right-4 z-10 h-8 w-8 p-0 rounded-full hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <X className="h-4 w-4" />
           </Button>
@@ -157,13 +178,13 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                 placeholder="Ej: ¿Dónde veo los errores de mi app?"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                disabled={isLoading}
+                disabled={isLoading || isNavigating}
                 className="text-sm"
               />
               <Button
                 type="submit"
                 size="sm"
-                disabled={isLoading || !query.trim()}
+                disabled={isLoading || isNavigating || !query.trim()}
                 className="shrink-0 bg-gradient-to-br from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
               >
                 {isLoading ? (
@@ -190,7 +211,8 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                       variant="outline"
                       size="sm"
                       onClick={() => setQuery(quickSearch)}
-                      className="text-left justify-start h-auto py-3 px-4 hover:bg-accent/10"
+                      disabled={isNavigating}
+                      className="text-left justify-start h-auto py-3 px-4 hover:bg-accent/10 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Compass className="h-4 w-4 mr-2 shrink-0 text-blue-500" />
                       <span className="text-sm">{quickSearch}</span>
@@ -275,7 +297,8 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                         <button
                           key={index}
                           onClick={() => handleLinkClick(link.url)}
-                          className="block w-full text-left p-4 bg-accent/5 hover:bg-accent/10 border border-accent/20 hover:border-accent/40 rounded-lg transition-all group cursor-pointer"
+                          disabled={isNavigating}
+                          className="block w-full text-left p-4 bg-accent/5 hover:bg-accent/10 border border-accent/20 hover:border-accent/40 rounded-lg transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           <div className="flex items-start gap-3">
                             <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors shrink-0">

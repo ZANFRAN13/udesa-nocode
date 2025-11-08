@@ -155,6 +155,124 @@ async function buildCompleteKnowledgeBase(): Promise<ContentItem[]> {
       category: 'Guía',
       keywords: ['cursor', 'introducción', 'introduccion', 'básico', 'basico', 'tutorial', 'empezar', 'comenzar', 'ide', 'editor', 'ai', 'perdido', 'aprender', 'usar'],
       description: 'Tutorial básico de cómo usar Cursor IDE para programar con asistencia de IA'
+    },
+    {
+      id: 'guide-devtools',
+      title: 'Guía Básica: Dev Tools del Navegador',
+      type: 'guide',
+      url: '/dashboard/glossary/devtools',
+      category: 'Guía Esencial',
+      keywords: [
+        // Nombres principales
+        'devtools', 'dev tools', 'herramientas de desarrollo', 'herramientas del navegador', 'herramientas desarrollador',
+        
+        // Errores y bugs
+        'errores', 'error', 'bugs', 'bug', 'falla', 'fallo', 'fallos',
+        'console', 'consola', 'console log', 'consola del navegador', 'consola chrome', 'consola firefox',
+        
+        // Copiar y ver errores (caso de uso principal)
+        'copiar errores', 'copiar error', 'pegar errores', 'pegar error',
+        'ver errores', 'ver error', 'encontrar errores', 'encontrar error', 
+        'donde estan los errores', 'donde veo errores', 'donde estan errores', 'donde veo los errores',
+        'como copiar errores', 'cómo copiar errores', 'como ver errores', 'cómo ver errores',
+        'necesito copiar errores', 'necesito ver errores', 'quiero copiar errores',
+        
+        // V0 y Lovable (herramientas específicas)
+        'v0', 'lovable', 'bolt', 'replit',
+        'copiar para v0', 'pegar en v0', 'errores para v0', 'error para v0',
+        'copiar para lovable', 'errores para lovable', 
+        'compartir errores', 'enviar errores', 'mandar errores',
+        
+        // Debugging
+        'debugging', 'depuración', 'depurar', 'debug', 'debuguear',
+        'inspeccionar', 'inspect', 'inspector', 'inspeccionar elemento',
+        
+        // Atajos y acciones
+        'f12', 'ctrl shift i', 'cmd option i', 'abrir consola', 'abrir devtools',
+        'click derecho inspeccionar', 'boton derecho inspeccionar',
+        
+        // Síntomas visuales
+        'rojo', 'mensajes rojos', 'texto rojo', 'aparecen errores', 'sale error', 'muestra error',
+        'no funciona', 'no anda', 'no sirve', 'roto', 'problema', 'problemas',
+        'qué pasa', 'que pasa', 'qué pasó', 'que paso', 'qué está pasando', 'que esta pasando',
+        
+        // Ubicación
+        'cómo ver', 'como ver', 'donde encuentro', 'donde esta', 'donde están', 'donde se ven',
+        'como abrir', 'cómo abrir', 'como llego', 'cómo llego',
+        
+        // Paneles de DevTools
+        'network', 'elements', 'sources', 'application', 'console tab',
+        'chrome devtools', 'firefox devtools', 'edge devtools', 'safari devtools',
+        
+        // Contexto de vibecoding
+        'arreglar bug', 'solucionar error', 'resolver error', 'fix', 'corregir',
+        'la ia necesita', 'darle a la ia', 'compartir con ia', 'mostrar a la ia'
+      ],
+      description: 'FUNDAMENTAL: Herramientas esenciales para ver y copiar errores de tu app web. Aprende a abrir la consola del navegador (F12), ver mensajes de error en rojo, copiar errores completos para pegarlos en v0, Lovable o en el chat de la IA, y usar el inspector de elementos. Esta guía es esencial para debugging y vibecoding efectivo - si tu app no funciona, aquí está la solución.'
+    },
+    {
+      id: 'guide-terminal-commands',
+      title: 'Guía Rápida: Comandos de Terminal',
+      type: 'guide',
+      url: '/dashboard/glossary/development#guia-comandos-terminal',
+      category: 'Guía Esencial',
+      keywords: [
+        // Nombres principales
+        'terminal', 'consola', 'línea de comandos', 'linea de comandos', 'shell', 'bash', 'cmd', 'powershell',
+        'comandos', 'comando', 'command', 'commands', 'comandos de terminal', 'guia de comandos', 'guía de comandos',
+        
+        // NPM (gestión de paquetes)
+        'npm', 'npm install', 'npm i', 'npm run dev', 'npm run build', 'npm start', 'npm run', 'instalar',
+        'instalar dependencias', 'instalar paquetes', 'node modules',
+        'levantar servidor', 'iniciar servidor', 'correr servidor', 'servidor local',
+        'localhost', 'puerto', 'port', 'localhost 3000', 'puerto 3000',
+        
+        // Git (control de versiones) - PRIORIDAD ALTA
+        'git', 'git status', 'git add', 'git commit', 'git push', 'git pull', 'github',
+        'guardar cambios', 'subir cambios', 'enviar cambios', 'envio cambios',
+        'guardar en github', 'subir a github', 'enviar a github', 'envio a github',
+        'push', 'commit', 'pull', 'clone',
+        'como envio', 'cómo envio', 'como enviar', 'cómo enviar', 'como subir', 'cómo subir',
+        'como guardo', 'cómo guardo', 'como guardar', 'cómo guardar',
+        'enviar desde cursor', 'subir desde cursor', 'guardar desde cursor', 'github desde cursor',
+        'push desde cursor', 'commit desde cursor', 'usar git en cursor', 'git en cursor',
+        'sincronizar', 'actualizar', 'versiones', 'repositorio',
+        
+        // Navegación
+        'cd', 'ls', 'pwd', 'mkdir', 'rm', 'navegación', 'navegacion',
+        'cambiar carpeta', 'ver archivos', 'listar archivos', 'entrar carpeta',
+        'carpeta actual', 'directorio', 'path', 'ruta',
+        
+        // Acciones comunes
+        'instalar', 'ejecutar', 'correr', 'run', 'install', 'iniciar', 'arrancar',
+        'detener', 'parar', 'ctrl c', 'matar proceso', 'cancelar',
+        
+        // Errores y troubleshooting
+        'errores de terminal', 'error en terminal', 'terminal no funciona', 'error npm',
+        'error git', 'comando no encontrado', 'command not found',
+        'permission denied', 'acceso denegado',
+        
+        // Aprendizaje y uso
+        'cómo usar terminal', 'como usar terminal', 'aprender terminal', 'usar la terminal',
+        'que es terminal', 'qué es terminal', 'para que sirve terminal',
+        'comandos básicos', 'comandos basicos', 'comandos esenciales',
+        'necesito terminal', 'usar terminal', 'trabajar con terminal',
+        
+        // Herramientas e IDEs
+        'cursor terminal', 'vscode terminal', 'terminal integrada', 'terminal cursor', 'terminal vscode',
+        'abrir terminal', 'como abrir terminal', 'cómo abrir terminal',
+        
+        // Contexto de desarrollo
+        'dependencias', 'node_modules', 'package.json', 'package-lock',
+        'copiar comandos', 'pegar comandos', 'ejecutar comandos', 'correr comandos',
+        'flujo de trabajo', 'workflow', 'paso a paso terminal', 'tutorial terminal',
+        
+        // Casos de uso específicos
+        'como instalar', 'cómo instalar', 'como ejecutar', 'cómo ejecutar',
+        'como guardar', 'cómo guardar', 'como subir', 'cómo subir',
+        'sincronizar github', 'actualizar proyecto', 'descargar cambios'
+      ],
+      description: 'ESENCIAL para Cursor: Aprende cómo enviar cambios a GitHub desde Cursor usando comandos de terminal. Guía completa con git push, git commit, git add paso a paso. Incluye comandos npm (instalar dependencias con npm i, correr servidor con npm run dev) y flujo de trabajo completo. Con ejemplos copiables y explicaciones simples para enviar tu código a GitHub.'
     }
   )
   
@@ -224,17 +342,56 @@ export async function searchContentByKeywords(query: string): Promise<ContentIte
     .map(item => {
       let score = 0
       
-      // Check title match
-      if (item.title.toLowerCase().includes(queryLower)) score += 10
+      // Boost for essential guides
+      if (item.category === 'Guía Esencial') score += 5
       
-      // Check description match
-      if (item.description.toLowerCase().includes(queryLower)) score += 5
+      // Check title match (highest priority)
+      if (item.title.toLowerCase().includes(queryLower)) score += 15
+      
+      // Check description match (high priority, especially for exact phrases)
+      const descLower = item.description.toLowerCase()
+      if (descLower.includes(queryLower)) score += 12
+      
+      // Boost for specific high-value phrases in description
+      if (queryLower.includes('error') || queryLower.includes('copiar')) {
+        if (descLower.includes('copiar errores') || descLower.includes('ver errores')) {
+          score += 10
+        }
+      }
+      if (queryLower.includes('v0') || queryLower.includes('lovable')) {
+        if (descLower.includes('v0') || descLower.includes('lovable')) {
+          score += 10
+        }
+      }
+      
+      // Boost ALTO para queries sobre git/github + cursor/terminal
+      if ((queryLower.includes('github') || queryLower.includes('git')) && 
+          (queryLower.includes('cursor') || queryLower.includes('enviar') || queryLower.includes('envio') || queryLower.includes('subir'))) {
+        if (item.id === 'guide-terminal-commands') {
+          score += 25 // Boost masivo para la guía de terminal
+        }
+      }
+      
+      // Boost para queries sobre comandos/terminal
+      if ((queryLower.includes('comando') || queryLower.includes('terminal')) && 
+          (queryLower.includes('como') || queryLower.includes('cómo') || queryLower.includes('usar'))) {
+        if (item.id === 'guide-terminal-commands') {
+          score += 15
+        }
+      }
       
       // Check keyword matches
       item.keywords.forEach(keyword => {
-        if (keyword.includes(queryLower)) score += 8
+        // Exact match of entire query in a keyword (very high priority)
+        if (keyword === queryLower) score += 20
+        
+        // Query contained in keyword
+        if (keyword.includes(queryLower)) score += 10
+        
+        // Individual word matches
         queryWords.forEach(word => {
-          if (keyword.includes(word)) score += 3
+          if (keyword.includes(word)) score += 2
+          if (keyword === word) score += 5
         })
       })
       
