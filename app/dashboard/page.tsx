@@ -130,6 +130,7 @@ export default function Dashboard() {
     "Clase 2: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=1cd04b30-ff2a-4413-9ff5-b379010bfde7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 4: Haciendo que funcione": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7a0d7d2c-5cca-4244-824a-b3870111edb7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 5: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=117b3fc2-eea5-4b78-87aa-b38e010d7119&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   const classSlides: Record<string, string> = {
