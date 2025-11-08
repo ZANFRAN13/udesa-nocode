@@ -12,6 +12,7 @@ import "./gemini-markdown-styles.css"
 interface Message {
   role: "user" | "assistant"
   content: string
+  usedFallback?: boolean
 }
 
 interface GeminiPopupProps {
@@ -26,6 +27,7 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
   const [prompt, setPrompt] = useState("")
   const [conversationHistory, setConversationHistory] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [showFallbackInfo, setShowFallbackInfo] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // Scroll automático al final cuando hay nuevos mensajes
@@ -79,8 +81,17 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
       const data = await res.json()
 
       if (data.success) {
-        const assistantMessage: Message = { role: "assistant", content: data.response }
+        const assistantMessage: Message = { 
+          role: "assistant", 
+          content: data.response,
+          usedFallback: data.fallbackUsed || false
+        }
         setConversationHistory(prev => [...prev, assistantMessage])
+        
+        // Mostrar info de fallback si se usó
+        if (data.fallbackUsed) {
+          setShowFallbackInfo(true)
+        }
       } else {
         const errorMessage: Message = { 
           role: "assistant", 
@@ -167,11 +178,16 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
       {/* Scrollable Content Area */}
       <div className="p-4 space-y-3 overflow-y-auto flex-1 pr-3 pb-0">
         {/* Header */}
-        <div className="flex items-center gap-2 pr-6">
+        <div className="flex items-center gap-2 pr-6 flex-wrap">
           <div className="p-1.5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
             <Sparkles className="h-4 w-4 text-white" />
           </div>
           <h3 className="font-semibold text-sm">Asistente IA</h3>
+          {showFallbackInfo && (
+            <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full">
+              Gemini 2
+            </span>
+          )}
         </div>
 
         {/* Selected Context Preview */}

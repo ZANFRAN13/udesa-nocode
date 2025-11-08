@@ -30,6 +30,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [response, setResponse] = useState<BrujulaResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [usedFallback, setUsedFallback] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   
   const handleLinkClick = (url: string) => {
@@ -81,6 +82,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
 
       if (data.success && data.brujulaResponse) {
         setResponse(data.brujulaResponse)
+        setUsedFallback(data.fallbackUsed || false)
       } else {
         // Show specific error messages
         if (data.errorType === 'rate_limit') {
@@ -131,10 +133,17 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
               <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg">
                 <Compass className="h-6 w-6 text-white" />
               </div>
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold">
-                  Brújula de Contenido
-                </h2>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h2 className="text-xl md:text-2xl font-bold">
+                    Brújula de Contenido
+                  </h2>
+                  {usedFallback && (
+                    <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full">
+                      Gemini 2
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-muted-foreground">
                   Dime qué estás buscando y te ayudo a encontrarlo
                 </p>

@@ -8,24 +8,52 @@ interface Message {
   content: string
 }
 
+// Get Gemini client (primary or fallback)
+function getGeminiClient(useFallback: boolean = false) {
+  const apiKey = useFallback ? process.env.GEMINI_API_KEY_2 : process.env.GEMINI_API_KEY
+  if (!apiKey) return null
+  
+  const genAI = new GoogleGenerativeAI(apiKey)
+  return genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+}
+
 export async function POST(request: Request) {
   try {
     const { prompt, context, conversationHistory = [], mode = "tutor", query } = await request.json()
 
     // Handle Brújula mode early (uses 'query' instead of 'prompt')
     if (mode === "brujula") {
-      const apiKey = process.env.GEMINI_API_KEY
-      if (!apiKey) {
+      const primaryModel = getGeminiClient(false)
+      const fallbackModel = getGeminiClient(true)
+      
+      // If primary Gemini is not configured, try fallback
+      if (!primaryModel) {
+        console.log("⚠️ Primary Gemini API key not found, using secondary key...")
+        if (fallbackModel) {
+          return await handleBrujulaMode(query, fallbackModel, "gemini-secondary")
+        }
+        // No AI provider available
         return NextResponse.json(
-          { error: "API key no configurada" },
+          { error: "No hay ningún proveedor de IA configurado. Por favor, configurá GEMINI_API_KEY o GEMINI_API_KEY_2 en el archivo .env.local" },
           { status: 500 }
         )
       }
-
-      const genAI = new GoogleGenerativeAI(apiKey)
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
       
-      return handleBrujulaMode(query, model)
+      // Try primary Gemini first, fallback to secondary if rate limited
+      try {
+        return await handleBrujulaMode(query, primaryModel, "gemini")
+      } catch (error: any) {
+        // Check if it's a rate limit error
+        if (error?.status === 429 || error?.message?.includes('429') || error?.message?.includes('Too Many Requests')) {
+          console.log("🔄 Primary Gemini rate limited, falling back to secondary key...")
+          if (fallbackModel) {
+            return await handleBrujulaMode(query, fallbackModel, "gemini-secondary")
+          }
+          // If no fallback available, return the rate limit error
+          throw error
+        }
+        throw error
+      }
     }
 
     // For Tutor mode, prompt is required
@@ -36,18 +64,71 @@ export async function POST(request: Request) {
       )
     }
 
-    const apiKey = process.env.GEMINI_API_KEY
-    if (!apiKey) {
+    const primaryModel = getGeminiClient(false)
+    const fallbackModel = getGeminiClient(true)
+    
+    // If primary Gemini is not configured, try fallback
+    if (!primaryModel) {
+      console.log("⚠️ Primary Gemini API key not found, using secondary key...")
+      if (fallbackModel) {
+        return await handleTutorMode(fallbackModel, prompt, context, conversationHistory, "gemini-secondary")
+      }
+      // No AI provider available
       return NextResponse.json(
-        { error: "API key no configurada" },
+        { error: "No hay ningún proveedor de IA configurado. Por favor, configurá GEMINI_API_KEY o GEMINI_API_KEY_2 en el archivo .env.local" },
         { status: 500 }
       )
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey)
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
+    // Try primary Gemini first for Tutor mode, fallback to secondary if rate limited
+    try {
+      return await handleTutorMode(primaryModel, prompt, context, conversationHistory, "gemini")
+    } catch (error: any) {
+      // Check if it's a rate limit error
+      if (error?.status === 429 || error?.message?.includes('429') || error?.message?.includes('Too Many Requests')) {
+        console.log("🔄 Primary Gemini rate limited, falling back to secondary key...")
+        if (fallbackModel) {
+          return await handleTutorMode(fallbackModel, prompt, context, conversationHistory, "gemini-secondary")
+        }
+        // If no fallback available, return the rate limit error
+        throw error
+      }
+      throw error
+    }
 
-    // Usar el contexto del sistema desde CONTEXT_LLM.md (for Tutor mode)
+  } catch (error) {
+    console.error("Error en API de Gemini:", error)
+    
+    // Proporcionar más detalles del error
+    let errorMessage = "Error al procesar la solicitud"
+    if (error instanceof Error) {
+      errorMessage = error.message
+      console.error("Detalles del error:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      })
+    }
+    
+    return NextResponse.json(
+      { 
+        error: errorMessage,
+        success: false 
+      },
+      { status: 500 }
+    )
+  }
+}
+
+// Handle Tutor mode with Gemini
+async function handleTutorMode(
+  model: any,
+  prompt: string,
+  context: string,
+  conversationHistory: Message[],
+  provider: string
+) {
+  // Usar el contexto del sistema desde CONTEXT_LLM.md (for Tutor mode)
     const systemContext = `CONTEXTO DEL SISTEMA:
 
 ${SYSTEM_CONTEXT}
@@ -115,44 +196,21 @@ Responde de manera clara y didáctica para personas aprendiendo a programar con 
 
     return NextResponse.json({ 
       response: text,
-      success: true 
-    })
-
-  } catch (error) {
-    console.error("Error en API de Gemini:", error)
-    
-    // Proporcionar más detalles del error
-    let errorMessage = "Error al procesar la solicitud"
-    if (error instanceof Error) {
-      errorMessage = error.message
-      console.error("Detalles del error:", {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
-      })
-    }
-    
-    return NextResponse.json(
-      { 
-        error: errorMessage,
-        success: false 
-      },
-      { status: 500 }
-    )
-  }
+    success: true,
+    provider
+  })
 }
 
 // Handle Brújula mode - AI-powered navigation
-async function handleBrujulaMode(query: string, model: any) {
-  try {
-    if (!query || query.trim().length === 0) {
-      return NextResponse.json(
-        { error: "La consulta es requerida", success: false },
-        { status: 400 }
-      )
-    }
+async function handleBrujulaMode(query: string, model: any, provider: string) {
+  if (!query || query.trim().length === 0) {
+    return NextResponse.json(
+      { error: "La consulta es requerida", success: false },
+      { status: 400 }
+    )
+  }
 
-    const contentKnowledge = await formatContentKnowledgeForGemini()
+  const contentKnowledge = await formatContentKnowledgeForGemini()
 
     const brujulaPrompt = `${contentKnowledge}
 
@@ -319,37 +377,14 @@ AHORA RESPONDE A LA CONSULTA DEL USUARIO en formato JSON puro (sin markdown, sin
       console.error("Failed to parse Gemini JSON response:", text)
       return NextResponse.json({
         error: "Error al procesar la respuesta de búsqueda",
-        success: false
+        success: false 
       }, { status: 500 })
     }
 
-    return NextResponse.json({
-      brujulaResponse,
-      success: true
-    })
-
-  } catch (error: any) {
-    console.error("Error en modo Brújula:", error)
-    
-    // Handle specific error types
-    if (error?.status === 429 || error?.message?.includes('429') || error?.message?.includes('Too Many Requests')) {
-      return NextResponse.json(
-        { 
-          error: "Has hecho muchas consultas muy rápido. Esperá unos segundos y volvé a intentar.",
-          errorType: "rate_limit",
-          success: false 
-        },
-        { status: 429 }
-      )
-    }
-    
-    return NextResponse.json(
-      { 
-        error: "Error al procesar la búsqueda. Intentá de nuevo en unos segundos.",
-        success: false 
-      },
-      { status: 500 }
-    )
-  }
+  return NextResponse.json({
+    brujulaResponse,
+    success: true,
+    provider
+  })
 }
 
