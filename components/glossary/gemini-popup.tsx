@@ -28,7 +28,10 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
   const [conversationHistory, setConversationHistory] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [showFallbackInfo, setShowFallbackInfo] = useState(false)
+  const [showUserKeyInput, setShowUserKeyInput] = useState(false)
+  const [userApiKey, setUserApiKey] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const apiKeyInputRef = useRef<HTMLInputElement>(null)
 
   // Scroll automático al final cuando hay nuevos mensajes
   useEffect(() => {
@@ -66,16 +69,23 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
         promptToSend = `Sobre el término "${termName}": ${userMessage.content}`
       }
 
+      const requestBody: any = {
+        prompt: promptToSend,
+        context: contextToSend,
+        conversationHistory: conversationHistory, // Enviar historial previo
+      }
+      
+      // If user provided their own API key, include it
+      if (userApiKey.trim()) {
+        requestBody.userApiKey = userApiKey.trim()
+      }
+      
       const res = await fetch("/api/gemini", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          prompt: promptToSend,
-          context: contextToSend,
-          conversationHistory: conversationHistory, // Enviar historial previo
-        }),
+        body: JSON.stringify(requestBody),
       })
 
       const data = await res.json()
@@ -87,12 +97,22 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
           usedFallback: data.fallbackUsed || false
         }
         setConversationHistory(prev => [...prev, assistantMessage])
+        setShowUserKeyInput(false) // Hide key input on success
+        setUserApiKey("") // Clear user key
         
         // Mostrar info de fallback si se usó
         if (data.fallbackUsed) {
           setShowFallbackInfo(true)
         }
       } else {
+        // Check if it's a rate limit error
+        if (data.errorType === 'rate_limit') {
+          setShowUserKeyInput(true)
+          setTimeout(() => {
+            apiKeyInputRef.current?.focus()
+          }, 100)
+        }
+        
         const errorMessage: Message = { 
           role: "assistant", 
           content: "❌ Error: " + (data.error || "No se pudo obtener respuesta") 
@@ -330,6 +350,41 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
                   Límite alcanzado. Cierra y selecciona otro contenido.
                 </p>
               )}
+            </div>
+          )}
+          
+          {/* User API Key Input - Third-level fallback */}
+          {showUserKeyInput && (
+            <div className="p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-300 dark:border-blue-800 rounded-lg space-y-2">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+                <h4 className="text-xs font-semibold text-blue-900 dark:text-blue-100">
+                  🔑 Usá tu propia API Key
+                </h4>
+              </div>
+              <Input
+                ref={apiKeyInputRef}
+                type="password"
+                placeholder="API key de Gemini (AIza...)"
+                value={userApiKey}
+                onChange={(e) => setUserApiKey(e.target.value)}
+                disabled={isLoading}
+                className="text-xs font-mono h-8"
+              />
+              <div className="flex items-center justify-between">
+                <a
+                  href="https://aistudio.google.com/api-keys"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-blue-700 dark:text-blue-300 hover:underline flex items-center gap-1"
+                >
+                  <Send className="h-2.5 w-2.5" />
+                  Conseguir gratis
+                </a>
+                <p className="text-[10px] text-blue-700 dark:text-blue-300">
+                  🔒 No se guarda
+                </p>
+              </div>
             </div>
           )}
         </form>

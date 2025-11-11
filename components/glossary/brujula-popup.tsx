@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { X, Compass, Send, Loader2, ExternalLink } from "lucide-react"
+import { X, Compass, Send, Loader2, ExternalLink, Sparkles } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import "./gemini-markdown-styles.css"
@@ -32,7 +32,10 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
   const [response, setResponse] = useState<BrujulaResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [usedFallback, setUsedFallback] = useState(false)
+  const [showUserKeyInput, setShowUserKeyInput] = useState(false)
+  const [userApiKey, setUserApiKey] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
+  const apiKeyInputRef = useRef<HTMLInputElement>(null)
   
   const handleLinkClick = (url: string) => {
     // Mostrar feedback inmediato
@@ -72,38 +75,64 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
     
     if (!query.trim()) return
 
+    console.log("🧭 [FRONTEND] Submitting Brújula query:", query.trim())
     setIsLoading(true)
     setError(null)
     setResponse(null)
 
     try {
+      console.log("🧭 [FRONTEND] Fetching /api/gemini...")
+      const requestBody: any = {
+        mode: "brujula",
+        query: query.trim(),
+      }
+      
+      // If user provided their own API key, include it
+      if (userApiKey.trim()) {
+        console.log("🔑 [FRONTEND] Using user-provided API key")
+        requestBody.userApiKey = userApiKey.trim()
+      }
+      
       const res = await fetch("/api/gemini", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          mode: "brujula",
-          query: query.trim(),
-        }),
+        body: JSON.stringify(requestBody),
       })
 
+      console.log("🧭 [FRONTEND] Response status:", res.status)
       const data = await res.json()
+      console.log("🧭 [FRONTEND] Response data:", { 
+        success: data.success, 
+        fallbackUsed: data.fallbackUsed,
+        linksCount: data.brujulaResponse?.links?.length 
+      })
 
       if (data.success && data.brujulaResponse) {
+        console.log("✅ [FRONTEND] Success! Fallback used:", data.fallbackUsed)
         setResponse(data.brujulaResponse)
         setUsedFallback(data.fallbackUsed || false)
+        setShowUserKeyInput(false) // Hide key input on success
+        setUserApiKey("") // Clear user key
       } else {
+        console.error("❌ [FRONTEND] API returned error:", data.error)
         // Show specific error messages
         if (data.errorType === 'rate_limit') {
           setError("⏱️ " + data.error + " (Límite de consultas alcanzado)")
+          setShowUserKeyInput(true) // Show input for user's own API key
+          // Focus the API key input after a short delay
+          setTimeout(() => {
+            apiKeyInputRef.current?.focus()
+          }, 100)
         } else {
           setError(data.error || "No se pudo procesar tu búsqueda")
+          setShowUserKeyInput(false)
         }
       }
     } catch (err) {
+      console.error("❌ [FRONTEND] Fetch error:", err)
       setError("Error al conectar con el servicio de búsqueda. Verificá tu conexión a internet.")
-      console.error("Brújula error:", err)
     } finally {
       setIsLoading(false)
     }
@@ -242,22 +271,89 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
 
             {/* Error state */}
             {error && (
-              <div className={`p-4 rounded-lg ${
-                error.includes('Límite de consultas') 
-                  ? 'bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900'
-                  : 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900'
-              }`}>
-                <p className={`text-sm ${
-                  error.includes('Límite de consultas')
-                    ? 'text-orange-800 dark:text-orange-400'
-                    : 'text-red-600 dark:text-red-400'
+              <div className="space-y-4">
+                <div className={`p-4 rounded-lg ${
+                  error.includes('Límite de consultas') 
+                    ? 'bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900'
+                    : 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900'
                 }`}>
-                  {error}
-                </p>
-                {error.includes('Límite de consultas') && (
-                  <p className="text-xs text-orange-700 dark:text-orange-500 mt-2">
-                    💡 <strong>Tip:</strong> La API gratuita tiene límites. Esperá 30-60 segundos antes de hacer otra búsqueda.
+                  <p className={`text-sm ${
+                    error.includes('Límite de consultas')
+                      ? 'text-orange-800 dark:text-orange-400'
+                      : 'text-red-600 dark:text-red-400'
+                  }`}>
+                    {error}
                   </p>
+                  {error.includes('Límite de consultas') && !showUserKeyInput && (
+                    <p className="text-xs text-orange-700 dark:text-orange-500 mt-2">
+                      💡 <strong>Tip:</strong> La API gratuita tiene límites. Esperá 30-60 segundos antes de hacer otra búsqueda.
+                    </p>
+                  )}
+                </div>
+
+                {/* User API Key Input - Second Fallback */}
+                {showUserKeyInput && (
+                  <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border-2 border-blue-300 dark:border-blue-800 rounded-lg space-y-3">
+                    <div className="flex items-start gap-2">
+                      <div className="p-1.5 bg-blue-500 rounded">
+                        <Sparkles className="h-4 w-4 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                          🔑 Solución Rápida: Usá tu propia API Key
+                        </h4>
+                        <p className="text-xs text-blue-800 dark:text-blue-200 mb-3">
+                          Pegá tu API key de Google Gemini para continuar con tu búsqueda inmediatamente
+                        </p>
+                        
+                        <div className="space-y-2">
+                          <Input
+                            ref={apiKeyInputRef}
+                            type="password"
+                            placeholder="Pegá tu API key de Gemini aquí (AIza...)"
+                            value={userApiKey}
+                            onChange={(e) => setUserApiKey(e.target.value)}
+                            disabled={isLoading}
+                            className="text-sm font-mono"
+                          />
+                          
+                          <div className="flex items-center justify-between gap-2">
+                            <a
+                              href="https://aistudio.google.com/api-keys"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-100 underline flex items-center gap-1"
+                            >
+                              <ExternalLink className="h-3 w-3" />
+                              Conseguir API key gratuita (2 clicks)
+                            </a>
+                            
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                if (userApiKey.trim()) {
+                                  handleSubmit(new Event('submit') as any)
+                                }
+                              }}
+                              disabled={!userApiKey.trim() || isLoading}
+                              className="bg-blue-600 hover:bg-blue-700 text-white"
+                            >
+                              {isLoading ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <Send className="h-3 w-3 mr-1" />
+                              )}
+                              Buscar
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">
+                          🔒 <strong>Privacidad:</strong> Tu API key solo se usa para esta búsqueda y no se guarda
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             )}
