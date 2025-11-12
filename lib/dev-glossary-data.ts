@@ -117,7 +117,7 @@ export const devTermsData: DevTerm[] = [
     id: "json",
     name: "JSON (JavaScript Object Notation)",
     category: "Data Formats",
-    description: "Formato de intercambio de datos ligero y fácil de leer, basado en la sintaxis de JavaScript.",
+    description: "Formato de intercambio de datos ligero y fácil de leer, basado en la sintaxis de JavaScript. Su estructura se compone de pares clave-valor entre comillas dobles.",
     relatedTerms: ["api", "data-structures"],
     example: "{\"nombre\": \"Juan\", \"edad\": 30, \"ciudad\": \"Buenos Aires\"} es un objeto JSON con información de usuario."
   },

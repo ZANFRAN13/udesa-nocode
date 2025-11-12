@@ -23,6 +23,18 @@ interface GeminiPopupProps {
 
 const MAX_MESSAGES = 3 // Límite: pregunta inicial + 2 repreguntas
 
+// Generate or retrieve session ID for rate limiting
+function getSessionId(): string {
+  if (typeof window === 'undefined') return 'default'
+  
+  let sessionId = sessionStorage.getItem('ai_session_id')
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`
+    sessionStorage.setItem('ai_session_id', sessionId)
+  }
+  return sessionId
+}
+
 export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProps) {
   const [prompt, setPrompt] = useState("")
   const [conversationHistory, setConversationHistory] = useState<Message[]>([])
@@ -30,6 +42,7 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
   const [showFallbackInfo, setShowFallbackInfo] = useState(false)
   const [showUserKeyInput, setShowUserKeyInput] = useState(false)
   const [userApiKey, setUserApiKey] = useState("")
+  const [rateLimit, setRateLimit] = useState({ remaining: 10, total: 10, resetTime: 0 })
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const apiKeyInputRef = useRef<HTMLInputElement>(null)
 
@@ -73,6 +86,7 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
         prompt: promptToSend,
         context: contextToSend,
         conversationHistory: conversationHistory, // Enviar historial previo
+        sessionId: getSessionId(), // Add session ID for rate limiting
       }
       
       // If user provided their own API key, include it
@@ -98,6 +112,11 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
         }
         setConversationHistory(prev => [...prev, assistantMessage])
         setShowUserKeyInput(false) // Hide key input on success
+        
+        // Update rate limit info
+        if (data.rateLimit) {
+          setRateLimit(data.rateLimit)
+        }
         setUserApiKey("") // Clear user key
         
         // Mostrar info de fallback si se usó
@@ -206,6 +225,11 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
           {showFallbackInfo && (
             <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full">
               Gemini 2
+            </span>
+          )}
+          {rateLimit.remaining < rateLimit.total && (
+            <span className="text-[10px] px-2 py-0.5 bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 rounded-full">
+              {rateLimit.remaining}/{rateLimit.total} consultas
             </span>
           )}
         </div>
@@ -379,7 +403,7 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
                   className="text-[10px] text-blue-700 dark:text-blue-300 hover:underline flex items-center gap-1"
                 >
                   <Send className="h-2.5 w-2.5" />
-                  Conseguir gratis
+                  Conseguir gratis (2 clicks)
                 </a>
                 <p className="text-[10px] text-blue-700 dark:text-blue-300">
                   🔒 No se guarda

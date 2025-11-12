@@ -24,6 +24,18 @@ interface BrujulaResponse {
   fallback?: boolean
 }
 
+// Generate or retrieve session ID for rate limiting
+function getSessionId(): string {
+  if (typeof window === 'undefined') return 'default'
+  
+  let sessionId = sessionStorage.getItem('ai_session_id')
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`
+    sessionStorage.setItem('ai_session_id', sessionId)
+  }
+  return sessionId
+}
+
 export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
   const router = useRouter()
   const [query, setQuery] = useState("")
@@ -34,6 +46,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
   const [usedFallback, setUsedFallback] = useState(false)
   const [showUserKeyInput, setShowUserKeyInput] = useState(false)
   const [userApiKey, setUserApiKey] = useState("")
+  const [rateLimit, setRateLimit] = useState({ remaining: 10, total: 10, resetTime: 0 })
   const inputRef = useRef<HTMLInputElement>(null)
   const apiKeyInputRef = useRef<HTMLInputElement>(null)
   
@@ -85,6 +98,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
       const requestBody: any = {
         mode: "brujula",
         query: query.trim(),
+        sessionId: getSessionId(), // Add session ID for rate limiting
       }
       
       // If user provided their own API key, include it
@@ -115,6 +129,11 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
         setUsedFallback(data.fallbackUsed || false)
         setShowUserKeyInput(false) // Hide key input on success
         setUserApiKey("") // Clear user key
+        
+        // Update rate limit info
+        if (data.rateLimit) {
+          setRateLimit(data.rateLimit)
+        }
       } else {
         console.error("❌ [FRONTEND] API returned error:", data.error)
         // Show specific error messages
@@ -191,6 +210,11 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                   {usedFallback && (
                     <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full">
                       Gemini 2
+                    </span>
+                  )}
+                  {rateLimit.remaining < rateLimit.total && (
+                    <span className="text-[10px] px-2 py-0.5 bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 rounded-full">
+                      {rateLimit.remaining}/{rateLimit.total} consultas
                     </span>
                   )}
                 </div>
