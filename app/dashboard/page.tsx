@@ -131,12 +131,14 @@ export default function Dashboard() {
     "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 4: Haciendo que funcione": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7a0d7d2c-5cca-4244-824a-b3870111edb7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 5: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=117b3fc2-eea5-4b78-87aa-b38e010d7119&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   const classSlides: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
     "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
     "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
+    "Clase 6: Demo y futuro": "https://drive.google.com/file/d/1jGU_XJcGsY9VdZ0Kr68sC5zNdGYtWwPY/preview",
   }
 
   // Filter comunidad content based on user role
