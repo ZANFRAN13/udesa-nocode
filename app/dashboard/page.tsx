@@ -138,6 +138,7 @@ export default function Dashboard() {
     "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
     "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
     "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
+    "Clase 5: Lanzamiento y luego qué?": "https://drive.google.com/file/d/1JPjGuVCVDHFrAbSIi0Oab500vV9ogPOm/preview",
     "Clase 6: Demo y futuro": "https://drive.google.com/file/d/1jGU_XJcGsY9VdZ0Kr68sC5zNdGYtWwPY/preview",
   }
 
