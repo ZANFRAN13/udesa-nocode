@@ -768,6 +768,9 @@ export default function TestingGuidePage() {
                 <p className="text-muted-foreground leading-relaxed">
                   <strong>Objetivo:</strong> validar si tu producto entrega valor real y qué hay que mejorar,
                   sin volverte loco con miles de métricas.
+                  <br />
+                  <br />
+                  <strong>Resumen:</strong> Identifica a tus usuarios (con <strong>quién</strong> vas a testear), elije tus métricas clave (<strong>qué</strong> vas a medir), prepara las pruebas (<strong>cómo</strong> lo vas a efectuar) y analiza los resultados (<strong>qué aprendiste</strong>).
                 </p>
               </CardContent>
             </Card>
