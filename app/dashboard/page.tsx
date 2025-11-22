@@ -72,9 +72,12 @@ export default function Dashboard() {
     if (isFreeUser && sectionId === "comunidad") {
       return // Do nothing for free users
     }
-    
+
     if (sectionId === "guia-rapida" && item === "Guía Rápida de Vibecoding: de idea a MVP") {
       router.push('/dashboard/vibecoding-guide')
+    }
+    if (sectionId === "guia-rapida" && item === "Guía Rápida de Testing con Usuarios") {
+      router.push('/dashboard/testing-guide')
     }
     if (sectionId === "guia-rapida" && item === "Introducción Básica a Cursor") {
       router.push('/dashboard/cursor-intro')
@@ -162,6 +165,7 @@ export default function Dashboard() {
       description: "Guías, tutoriales, flujos de trabajo y otros paso a paso",
       content: [
         "Guía Rápida de Vibecoding: de idea a MVP",
+        "Guía Rápida de Testing con Usuarios",
         "Introducción Básica a Cursor"
       ]
     },
@@ -333,6 +337,7 @@ export default function Dashboard() {
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isGuideQuick = item === "Guía Rápida de Vibecoding: de idea a MVP"
+                              const isTestingGuide = item === "Guía Rápida de Testing con Usuarios"
                               const isCursorIntro = item === "Introducción Básica a Cursor"
                               const isNoCode = item === "Herramientas No-Code"
                               const isSupportTools = item === "Herramientas de Apoyo"
@@ -368,6 +373,7 @@ export default function Dashboard() {
                                     {isClickable && !isSlides && (
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isGuideQuick ? "Ver Guía →" :
+                                         isTestingGuide ? "Ver Guía →" :
                                          isCursorIntro ? "Intro a Cursor →" :
                                          isNoCode ? "Herramientas →" :
                                          isSupportTools ? "Apoyo →" :
