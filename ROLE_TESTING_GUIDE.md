@@ -37,7 +37,7 @@ Cuando inicies sesión, verás mensajes en la consola como estos:
 [useUserRole] Fetching role for user: abc123-uuid-here
 [useUserRole] Role found: free
 ```
-**Resultado esperado:** Ve Comunidad bloqueada con candado 🔒
+**Resultado esperado:** Ve **Comunidad**, **Material de Clase** y **Clases Grabadas** bloqueadas con candado 🔒
 
 ### Paso 3: Verificar Comportamiento Visual
 
@@ -49,11 +49,11 @@ Cuando inicies sesión, verás mensajes en la consola como estos:
 - ✅ Puede acceder a `/dashboard/benefits`
 
 #### Para usuarios FREE:
-- 🔒 Sección "Comunidad" CON candado
-- ❌ NO puede hacer clic (cursor "not-allowed")
-- ❌ Sección aparece con opacidad reducida (60%)
-- ❌ Mensaje: "Acceso exclusivo para miembros premium"
-- ❌ Si intenta acceder a `/dashboard/benefits`, es redirigido
+- 🔒 **Comunidad**, **Material de Clase** y **Clases Grabadas** CON candado
+- ❌ NO puede expandir esas secciones (cursor "not-allowed")
+- ❌ Esas tarjetas aparecen con opacidad reducida (60%)
+- ❌ Descripción: "Acceso exclusivo para miembros premium"
+- ❌ Si intenta `/dashboard/benefits` o `/dashboard/worksheets`, es redirigido al dashboard
 
 ## 🔧 Cómo Configurar Roles en Supabase
 
@@ -170,7 +170,7 @@ USING (auth.uid() = user_id);
 1. Usa un usuario existente
 2. Agrega registro en `user_roles` con `role_name = 'free'`
 3. Inicia sesión
-4. **Esperado:** Ve Comunidad bloqueada con candado
+4. **Esperado:** Ve Comunidad, Material de Clase y Clases Grabadas bloqueadas con candado
 
 ### Test 3: Usuario marcado como premium
 1. Usa un usuario existente

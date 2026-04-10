@@ -35,12 +35,11 @@ Implementa las siguientes restricciones para usuarios "free":
 
 #### Cambios principales:
 1. **Importa y usa el hook `useUserRole`** para obtener el rol del usuario
-2. **Bloquea el acordeón "Comunidad"**:
-   - El usuario puede VER la sección pero NO puede hacer clic en ella
-   - Se muestra un ícono de candado 🔒
-   - La sección aparece con opacidad reducida (60%)
-   - El cursor cambia a "not-allowed"
-   - La descripción cambia a "Acceso exclusivo para miembros premium"
+2. **Bloquea los acordeones premium** (usuarios `free`):
+   - **Comunidad**, **Material de Clase** y **Clases Grabadas**: el usuario ve la tarjeta pero **no** puede expandirla
+   - Ícono de candado 🔒 en el encabezado
+   - Opacidad reducida (60%) y cursor "not-allowed"
+   - Descripción: "Acceso exclusivo para miembros premium"
 
 3. **Oculta los items dentro de Comunidad**:
    - "Comunidad de WhatsApp" - NO se muestra para usuarios free
@@ -48,10 +47,16 @@ Implementa las siguientes restricciones para usuarios "free":
 
 #### Código clave:
 ```typescript
-// Bloquea el toggle del acordeón
+// Bloquea el toggle para secciones solo premium (free no expande)
+const isSectionLockedForFreeUser = (sectionId: string) =>
+  isFreeUser &&
+  (sectionId === "comunidad" ||
+    sectionId === "material-clase" ||
+    sectionId === "clases-grabadas")
+
 const toggleSection = (sectionId: string) => {
-  if (sectionId === "comunidad" && isFreeUser) {
-    return // No hace nada
+  if (isSectionLockedForFreeUser(sectionId)) {
+    return
   }
   // ... resto del código
 }
@@ -68,7 +73,11 @@ const getComunidadContent = () => {
 }
 ```
 
-### 3. `app/dashboard/benefits/page.tsx` (MODIFICADO)
+### 3. `app/dashboard/worksheets/page.tsx` (MODIFICADO)
+
+- Misma idea que beneficios: usuarios `free` son redirigidos al dashboard y no pueden ver worksheets (forman parte de Material de Clase).
+
+### 4. `app/dashboard/benefits/page.tsx` (MODIFICADO)
 
 Protege completamente la página de beneficios:
 
@@ -87,11 +96,11 @@ Protege completamente la página de beneficios:
 graph TD
 A[Usuario accede al Dashboard] --> B{useUserRole consulta BD}
 B --> C{¿Rol = free?}
-C -->|Sí| D[Comunidad bloqueada visualmente]
-C -->|No| E[Acceso completo a Comunidad]
-D --> F[Usuario intenta acceder a /benefits]
-F --> G[Redirección automática al dashboard]
-E --> H[Acceso completo a beneficios]
+C -->|Sí| D[Comunidad, Material de Clase y Clases Grabadas bloqueadas]
+C -->|No| E[Acceso completo a esas secciones]
+D --> F[Intento directo a /benefits o /worksheets]
+F --> G[Redirección al dashboard]
+E --> H[Beneficios y worksheets accesibles]
 ```
 
 ## Seguridad
@@ -127,18 +136,17 @@ if (request.nextUrl.pathname.startsWith('/dashboard/benefits')) {
 ## Experiencia de Usuario
 
 ### Usuario con rol "free":
-- ✅ Ve todas las secciones del dashboard
-- ✅ Puede acceder a: Guía Rápida, Material Complementario, Material de Clase, Clases Grabadas
-- ❌ NO puede expandir la sección "Comunidad"
-- ❌ NO ve los enlaces a WhatsApp ni Beneficios
-- ❌ NO puede acceder a `/dashboard/benefits`
-- 👁️ Ve claramente que "Comunidad" es contenido premium (ícono de candado)
+- ✅ Ve el listado de secciones del dashboard
+- ✅ Puede expandir y usar: **Guías Rápidas** y **Material Complementario**
+- ❌ NO puede expandir **Comunidad**, **Material de Clase** ni **Clases Grabadas** (candado 🔒)
+- ❌ NO ve los enlaces a WhatsApp ni Beneficios dentro de Comunidad
+- ❌ NO puede acceder a `/dashboard/benefits` ni `/dashboard/worksheets` (redirección al dashboard)
 
 ### Usuario con rol "premium":
-- ✅ Acceso completo a todas las secciones
-- ✅ Puede expandir "Comunidad"
+- ✅ Acceso completo a todas las secciones del dashboard
+- ✅ Comunidad, Material de Clase y Clases Grabadas sin candado
 - ✅ Ve y accede a WhatsApp y Beneficios
-- ✅ Puede acceder a `/dashboard/benefits` con códigos de descuento
+- ✅ Puede acceder a `/dashboard/benefits` y `/dashboard/worksheets`
 
 ## Testing
 
@@ -153,8 +161,8 @@ VALUES ('uuid-del-usuario', 'free');
 
 2. **Verificar comportamiento**:
    - Login con usuario free
-   - Intentar hacer clic en "Comunidad" → No debería expandirse
-   - Intentar acceder a `/dashboard/benefits` → Debería redirigir
+   - Intentar expandir Comunidad, Material de Clase o Clases Grabadas → No deberían abrirse
+   - `/dashboard/benefits` y `/dashboard/worksheets` → Redirección al dashboard
 
 3. **Crear usuario de prueba "premium"**:
 ```sql
@@ -181,19 +189,17 @@ Este sistema está diseñado para escalar fácilmente:
 
 **¿Qué hace este sistema?**
 
-Ahora la aplicación puede distinguir entre usuarios "gratuitos" y usuarios "premium". Los usuarios gratuitos pueden ver casi todo el contenido del programa, pero no pueden acceder a la sección de Comunidad donde están los links al grupo de WhatsApp y los beneficios exclusivos como códigos de descuento.
+Ahora la aplicación puede distinguir entre usuarios "gratuitos" y usuarios "premium". Los usuarios gratuitos tienen acceso a guías rápidas y material complementario; el resto del contenido premium (comunidad, materiales de clase, clases grabadas y beneficios) queda reservado.
 
 **¿Cómo funciona?**
 
-Cuando un usuario inicia sesión, la aplicación consulta en la base de datos qué tipo de usuario es. Si es "free" (gratuito), automáticamente se bloquea el acceso a contenido exclusivo. El usuario puede VER que existe la sección de Comunidad, pero aparece con un candado 🔒 y no puede hacer clic en ella. Si intenta acceder directamente escribiendo la URL en el navegador, la aplicación lo redirige automáticamente.
+Cuando un usuario inicia sesión, la aplicación consulta en la base de datos qué tipo de usuario es. Si es "free" (gratuito), se bloquea el acceso a secciones premium. El usuario **ve** las tarjetas de Comunidad, Material de Clase y Clases Grabadas, pero con candado 🔒 y sin poder abrirlas. Si escribe en el navegador una URL reservada (por ejemplo beneficios o worksheets), la app lo devuelve al dashboard.
 
 **¿Qué ve un usuario gratuito?**
 
-- ✅ Todo el material de clases
-- ✅ Videos grabados  
-- ✅ Glosarios y vocabulario
-- ✅ Herramientas y recursos
-- 🔒 La sección "Comunidad" bloqueada con un mensaje: "Acceso exclusivo para miembros premium"
+- ✅ Guías rápidas y material complementario (glosarios, herramientas, recursos, etc.)
+- 🔒 Comunidad, Material de Clase y Clases Grabadas: visibles pero bloqueadas, con mensaje "Acceso exclusivo para miembros premium"
+- 🔒 Sin acceso directo a páginas de beneficios o worksheets (redirección)
 
 **¿Qué necesita hacer el usuario para obtener acceso premium?**
 

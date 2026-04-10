@@ -40,22 +40,21 @@ ON CONFLICT (user_id) DO UPDATE SET role_name = 'premium';
 2. Abre la consola del navegador (F12)
 3. Inicia sesión
 4. Busca en la consola:
-   - ✅ `✓ Role found: free` → Usuario debe ver Comunidad bloqueada 🔒
+   - ✅ `✓ Role found: free` → Debe ver **Comunidad**, **Material de Clase** y **Clases Grabadas** con candado 🔒
    - ✅ `✓ Role found: premium` → Usuario puede acceder a Comunidad
    - ⚠️ Si ves error 406 o "RLS_PERMISSION_ERROR" → Vuelve al paso 1
 
 ## 🎯 Comportamiento Esperado
 
 ### Usuario FREE (role_name = 'free')
-- 🔒 Ve "Comunidad" con candado
-- ❌ No puede hacer clic
-- ❌ No ve "WhatsApp" ni "Beneficios Exclusivos"
-- ❌ Si intenta ir a `/dashboard/benefits`, es redirigido
+- 🔒 Ve **Comunidad**, **Material de Clase** y **Clases Grabadas** con candado (mismo estilo: no puede expandir esas tarjetas)
+- ❌ No ve "WhatsApp" ni "Beneficios Exclusivos" dentro de Comunidad
+- ❌ Si intenta ir a `/dashboard/benefits` o `/dashboard/worksheets`, es redirigido al dashboard
 
 ### Usuario PREMIUM/ADMIN (role_name = 'premium' o 'admin')
-- ✅ Puede abrir "Comunidad"
+- ✅ Puede abrir Comunidad, Material de Clase y Clases Grabadas
 - ✅ Ve "WhatsApp" y "Beneficios Exclusivos"
-- ✅ Accede a códigos en `/dashboard/benefits`
+- ✅ Accede a códigos en `/dashboard/benefits` y a worksheets en `/dashboard/worksheets`
 
 ### Usuario SIN ROL en la tabla
 - ✅ Se trata como PREMIUM (acceso completo)

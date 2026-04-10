@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { useUserRole } from "@/lib/hooks/use-user-role"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -22,6 +23,7 @@ import {
   ExternalLink,
   GraduationCap,
   Info,
+  Lock,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -36,6 +38,7 @@ export default function WorksheetsPage() {
   const [expandedTasks, setExpandedTasks] = useState<Record<string, boolean>>({})
   const [isLoading, setIsLoading] = useState(true)
   const supabase = createClient()
+  const { isFreeUser, isLoading: isLoadingRole } = useUserRole()
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -43,6 +46,12 @@ export default function WorksheetsPage() {
     }, 1500)
     return () => clearTimeout(timer)
   }, [])
+
+  useEffect(() => {
+    if (!isLoadingRole && isFreeUser) {
+      router.push("/dashboard")
+    }
+  }, [isFreeUser, isLoadingRole, router])
 
   // Setup auth listener only for sign out events
   useEffect(() => {
@@ -320,13 +329,36 @@ export default function WorksheetsPage() {
     }
   ]
 
-  if (isLoading) {
+  if (isLoading || isLoadingRole) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
         <div className="text-center">
           <img src="/images/udesa-logo-black-v.jpg" alt="UdeSA" className="h-28 w-auto animate-udesa-in" />
           <p className="text-gray-300 mt-4">Cargando...</p>
         </div>
+      </div>
+    )
+  }
+
+  if (isFreeUser) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="max-w-md w-full">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-full w-fit">
+              <Lock className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Acceso restringido</CardTitle>
+          </CardHeader>
+          <CardContent className="text-center space-y-4">
+            <p className="text-muted-foreground">
+              Los worksheets y el material de clase son exclusivos para miembros premium.
+            </p>
+            <Button onClick={() => router.push("/dashboard")} className="w-full">
+              Volver al Dashboard
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     )
   }

@@ -33,6 +33,13 @@ export default function Dashboard() {
   const supabase = createClient()
   const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
 
+  /** Secciones solo para premium: FREE ve el título con candado y no puede expandir. */
+  const isSectionLockedForFreeUser = (sectionId: string) =>
+    isFreeUser &&
+    (sectionId === "comunidad" ||
+      sectionId === "material-clase" ||
+      sectionId === "clases-grabadas")
+
   // Setup auth listener only for sign out events
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -47,8 +54,7 @@ export default function Dashboard() {
   }, [router, supabase])
 
   const toggleSection = (sectionId: string) => {
-    // Block access to "comunidad" section for free users
-    if (sectionId === "comunidad" && isFreeUser) {
+    if (isSectionLockedForFreeUser(sectionId)) {
       return // Do nothing, prevent toggle
     }
     
@@ -68,9 +74,8 @@ export default function Dashboard() {
   }
 
   const handleItemClick = (sectionId: string, item: string) => {
-    // Block access to restricted items for free users
-    if (isFreeUser && sectionId === "comunidad") {
-      return // Do nothing for free users
+    if (isSectionLockedForFreeUser(sectionId)) {
+      return
     }
 
     if (sectionId === "guia-rapida" && item === "Guía Rápida de Vibecoding: de idea a MVP") {
@@ -191,7 +196,9 @@ export default function Dashboard() {
       id: "material-clase",
       title: "Material de Clase",
       icon: GraduationCap,
-      description: "Presentaciones y contenido de las clases",
+      description: isFreeUser
+        ? "Contenido no disponible"
+        : "Presentaciones y contenido de las clases",
       content: [
         "Slides de presentaciones",
         // "Ejercicios prácticos",
@@ -204,7 +211,9 @@ export default function Dashboard() {
       id: "clases-grabadas",
       title: "Clases Grabadas",
       icon: Video,
-      description: "Grabaciones de todas las sesiones del programa",
+      description: isFreeUser
+        ? "Contenido no disponible"
+        : "Grabaciones de todas las sesiones del programa",
       content: [
         "Clase 1: La revolución de Producto",
         "Clase 2: Definamos IA",
@@ -219,7 +228,7 @@ export default function Dashboard() {
       title: "Comunidad",
       icon: Users,
       description: isFreeUser 
-        ? "Acceso exclusivo para miembros premium" 
+        ? "Contenido no disponible" 
         : "Espacio de interacción con otros estudiantes",
       content: getComunidadContent()
       // "Foro de discusión",
@@ -288,16 +297,16 @@ export default function Dashboard() {
             {sections.map((section) => {
               const IconComponent = section.icon
               const isOpen = openSections[section.id]
-              const isComunidadLocked = section.id === "comunidad" && isFreeUser
+              const isSectionLocked = isSectionLockedForFreeUser(section.id)
 
               return (
-                <Card key={section.id} className={`overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200 ${isComunidadLocked ? 'opacity-60' : ''}`}>
+                <Card key={section.id} className={`overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background group hover:bg-primary/10 transition-all duration-200 ${isSectionLocked ? 'opacity-60' : ''}`}>
                   <Collapsible
                     open={isOpen}
                     onOpenChange={() => toggleSection(section.id)}
                   >
                     <CollapsibleTrigger asChild>
-                      <CardHeader className={`p-4 md:p-6 ${isComunidadLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+                      <CardHeader className={`p-4 md:p-6 ${isSectionLocked ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
                             <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
@@ -306,7 +315,7 @@ export default function Dashboard() {
                             <div className="min-w-0 flex-1">
                               <CardTitle className="text-base md:text-xl font-semibold text-foreground flex items-center gap-2">
                                 {section.title}
-                                {isComunidadLocked && (
+                                {isSectionLocked && (
                                   <Lock className="h-4 w-4 text-muted-foreground" />
                                 )}
                               </CardTitle>
@@ -316,7 +325,7 @@ export default function Dashboard() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            {isComunidadLocked ? (
+                            {isSectionLocked ? (
                               <Lock className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
                             ) : isOpen ? (
                               <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
@@ -336,6 +345,9 @@ export default function Dashboard() {
                                                 (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA" || item === "Vocabulario de producto")) || 
                                                 (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
+                              const isClickableEffective =
+                                isClickable &&
+                                !(isFreeUser && section.id === "material-clase")
                               const isGuideQuick = item === "Guía Rápida de Vibecoding: de idea a MVP"
                               const isTestingGuide = item === "Guía Rápida de Testing con Usuarios"
                               const isCursorIntro = item === "Introducción Básica a Cursor"
@@ -352,7 +364,10 @@ export default function Dashboard() {
                               const isBenefits = item === "Beneficios Exclusivos"
                               const isSlides = item === "Slides de presentaciones"
                               const isWorksheets = item === "Worksheets y actividades"
-                              const hasVideo = section.id === "clases-grabadas" && classVideos[item]
+                              const hasVideo =
+                                section.id === "clases-grabadas" &&
+                                classVideos[item] &&
+                                !isFreeUser
                               const isExpanded = expandedClass === item
                               const isSlidesExpanded = expandedSlide === item
                               
@@ -361,16 +376,16 @@ export default function Dashboard() {
                                   <div
                                     onClick={() => handleItemClick(section.id, item)}
                                     className={`flex items-center gap-2 md:gap-3 p-2.5 md:p-3 rounded-lg transition-colors border border-transparent ${
-                                      isClickable || hasVideo
+                                      isClickableEffective || hasVideo
                                         ? "bg-accent/10 hover:bg-accent/20 cursor-pointer hover:border-accent/30" 
                                         : "bg-accent/5 hover:bg-accent/10 cursor-pointer hover:border-accent/20"
                                     }`}
                                   >
                                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-accent rounded-full flex-shrink-0" />
-                                    <span className={`text-sm md:text-base text-foreground min-w-0 flex-1 ${isClickable || hasVideo ? "font-medium" : ""}`}>
+                                    <span className={`text-sm md:text-base text-foreground min-w-0 flex-1 ${isClickableEffective || hasVideo ? "font-medium" : ""}`}>
                                       {item}
                                     </span>
-                                    {isClickable && !isSlides && (
+                                    {isClickableEffective && !isSlides && (
                                       <span className="ml-auto text-xs text-accent shrink-0 hidden sm:inline">
                                         {isGuideQuick ? "Ver Guía →" :
                                          isTestingGuide ? "Ver Guía →" :
