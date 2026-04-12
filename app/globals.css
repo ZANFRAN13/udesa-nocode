@@ -327,5 +327,5 @@
   filter: blur(0.5px) saturate(1.35);
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
   /* Duración visual = 4.846875s (ver comentario del @keyframes) */
-  animation: birrete-rainbow-cross 3.5s linear forwards;
+  animation: birrete-rainbow-cross 2.5s linear forwards;
 }

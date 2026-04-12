@@ -127,23 +127,26 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
         console.log("✅ [FRONTEND] Success! Fallback used:", data.fallbackUsed)
         setResponse(data.brujulaResponse)
         setUsedFallback(data.fallbackUsed || false)
-        setShowUserKeyInput(false) // Hide key input on success
-        setUserApiKey("") // Clear user key
-        
+        setShowUserKeyInput(false)
+        if (data.provider === "openai") {
+          setUserApiKey("")
+        }
+
         // Update rate limit info
         if (data.rateLimit) {
           setRateLimit(data.rateLimit)
         }
       } else {
         console.error("❌ [FRONTEND] API returned error:", data.error)
-        // Show specific error messages
-        if (data.errorType === 'rate_limit') {
-          setError("⏱️ " + data.error + " (Límite de consultas alcanzado)")
-          setShowUserKeyInput(true) // Show input for user's own API key
-          // Focus the API key input after a short delay
+        if (data.errorType === "openai_rate_limit") {
+          setError(data.error || "Límite de uso en OpenAI. Podés usar una clave de Google AI Studio.")
+          setShowUserKeyInput(true)
           setTimeout(() => {
             apiKeyInputRef.current?.focus()
           }, 100)
+        } else if (data.errorType === "session_limit") {
+          setError(data.error || "Límite de consultas en esta sesión.")
+          setShowUserKeyInput(false)
         } else {
           setError(data.error || "No se pudo procesar tu búsqueda")
           setShowUserKeyInput(false)
@@ -209,7 +212,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                   </h2>
                   {usedFallback && (
                     <span className="text-[10px] px-2 py-0.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full">
-                      Gemini 2
+                      Respaldo Gemini
                     </span>
                   )}
                   {rateLimit.remaining < rateLimit.total && (
@@ -297,20 +300,20 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
             {error && (
               <div className="space-y-4">
                 <div className={`p-4 rounded-lg ${
-                  error.includes('Límite de consultas') 
-                    ? 'bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900'
-                    : 'bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900'
+                  error.includes("Has alcanzado el límite de") || error.includes("aistudio.google.com")
+                    ? "bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900"
+                    : "bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900"
                 }`}>
                   <p className={`text-sm ${
-                    error.includes('Límite de consultas')
-                      ? 'text-orange-800 dark:text-orange-400'
-                      : 'text-red-600 dark:text-red-400'
+                    error.includes("Has alcanzado el límite de") || error.includes("aistudio.google.com")
+                      ? "text-orange-800 dark:text-orange-400"
+                      : "text-red-600 dark:text-red-400"
                   }`}>
                     {error}
                   </p>
-                  {error.includes('Límite de consultas') && !showUserKeyInput && (
+                  {error.includes("Has alcanzado el límite de") && !showUserKeyInput && (
                     <p className="text-xs text-orange-700 dark:text-orange-500 mt-2">
-                      💡 <strong>Tip:</strong> La API gratuita tiene límites. Esperá 30-60 segundos antes de hacer otra búsqueda.
+                      💡 Esperá los minutos que indica el mensaje antes de volver a intentar.
                     </p>
                   )}
                 </div>
@@ -373,7 +376,7 @@ export function BrujulaPopup({ onClose }: BrujulaPopupProps) {
                         </div>
                         
                         <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">
-                          🔒 <strong>Privacidad:</strong> Tu API key solo se usa para esta búsqueda y no se guarda
+                          🔒 <strong>Privacidad:</strong> La clave no se guarda en nuestros servidores; solo se envía desde tu navegador cuando buscás.
                         </p>
                       </div>
                     </div>

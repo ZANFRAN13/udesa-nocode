@@ -58,13 +58,15 @@ Se implementó exitosamente la feature "Brújula" para el Gemini Helper, agregan
   - Hace scroll al término
 - Funciona en todos los glosarios (UI, CSS, Desarrollo, IA, Producto)
 
-### 6. **API de Gemini Extendida**
-- `app/api/gemini/route.ts` ahora soporta dos modos:
-  - `mode: "tutor"` - Modo consulta de contenido (original)
-  - `mode: "brujula"` - Modo navegación (nuevo)
+### 6. **API de IA (`/api/gemini`)**
+- `app/api/gemini/route.ts` soporta dos modos:
+  - `mode: "tutor"` — consulta sobre contenido seleccionado
+  - `mode: "brujula"` — navegación con respuesta JSON (links, ruta, etc.)
+- **Proveedor principal:** OpenAI (`gpt-4o-mini`) con `OPENAI_API_KEY` del servidor.
+- **Respaldo opcional:** si OpenAI del servidor devuelve límite de uso, el usuario puede enviar `userApiKey` (clave de Google AI Studio / Gemini); el modelo por defecto es `gemini-2.5-flash`, con salida JSON en Brújula para parsear la respuesta.
 - Para modo brújula:
   - Envía la base de conocimiento completa como contexto
-  - Instruye a Gemini para responder en formato JSON estructurado
+  - OpenAI usa `response_format: { type: "json_object" }`; Gemini usuario usa `responseMimeType: application/json`
   - Limpia y parsea la respuesta JSON
   - Maneja errores de parsing
 

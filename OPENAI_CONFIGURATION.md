@@ -94,24 +94,25 @@ Both components show remaining queries:
 
 ---
 
-## 🔄 Fallback System
+## Fallback system
 
-### Current Fallback Flow:
-1. **Primary:** OpenAI API (gpt-4o-mini) with server key
-2. **Secondary:** User-provided **Gemini** API key (easier to get - 2 clicks)
+### Flow
+1. **Primary:** OpenAI API (`gpt-4o-mini`) with `OPENAI_API_KEY` (every request attempts this first).
+2. **User fallback (Gemini):** Only if the **OpenAI server key** hits a rate-limit-style error (HTTP 429 / TPM-RPM style). The user may paste a **Google AI Studio** key (`AIza...`). Model default: `gemini-2.5-flash`, overridable with `GEMINI_USER_FALLBACK_MODEL`.
 
-### Why Gemini for User Fallback?
-- **Easier to obtain:** Google AI Studio provides free API keys in 2 clicks
-- **No credit card required:** Users can get started immediately
-- **Free tier:** More generous free tier than OpenAI
-- **Same quality:** Gemini 2.0 Flash performs excellently for educational content
+### Not fallback
+- **App session cap** (10 requests / 120 min): returns `errorType: session_limit`. No Gemini panel.
+- **OpenAI `insufficient_quota`:** returns `errorType: openai_insufficient_quota` (503). Gemini is not offered as a fix.
 
-### Rate Limit Error Handling:
-When rate limit is exceeded:
-- User sees friendly error message
-- Option to provide their own **Gemini** API key
-- Link to get API key: https://aistudio.google.com/api-keys
-- Key is NOT stored, only used for that request
+### Why Gemini for user fallback?
+- Free keys from Google AI Studio, no card required
+- Brújula user path uses `responseMimeType: application/json` for stable JSON parsing
+
+### Error types (API JSON)
+- `session_limit` — app session window exhausted
+- `openai_rate_limit` — OpenAI provider throttled; UI may show Gemini key field
+- `openai_insufficient_quota` — billing / quota on server OpenAI key
+- `invalid_user_key` — user Gemini key rejected
 
 ---
 
@@ -195,7 +196,7 @@ Each successful API response includes:
 - [x] Rate limit counter displays in UI
 - [x] User API key fallback configured for Gemini
 - [x] Server model: `gpt-4o-mini`
-- [x] User fallback model: `gemini-2.0-flash-exp`
+- [x] User fallback model: `gemini-2.5-flash` (default; `GEMINI_USER_FALLBACK_MODEL` optional)
 - [x] Hybrid system working correctly
 - [x] No linter errors
 
@@ -203,15 +204,14 @@ Each successful API response includes:
 
 ## 📝 Important Notes
 
-### Hybrid System:
-- **Server:** Uses OpenAI (gpt-4o-mini) for all standard requests
-- **User Fallback:** Uses Gemini (gemini-2.0-flash-exp) when user provides API key
-- **Active:** Both systems are active and working together
+### Hybrid system
+- **Server:** OpenAI (`gpt-4o-mini`) for all standard requests
+- **User fallback:** Gemini only after OpenAI server call fails with rate limit; user provides Google AI Studio key
+- **Session limit:** Independent; waiting or new window — not bypassed by user Gemini key
 
-### Rate Limit Reset:
+### Rate limit reset (app session)
 - Automatically resets after 120 minutes
 - User can clear sessionStorage to get new session ID
-- Or provide their own **Gemini API key** to bypass (easier, free)
 
 ### Model Specifications:
 - **Model:** `gpt-4o-mini`
@@ -239,17 +239,16 @@ Each successful API response includes:
 
 ## 📞 Support
 
-If users encounter rate limiting:
-1. Wait 120 minutes for automatic reset
-2. Use their own **Gemini API key** (free, 2 clicks to get)
-3. Check status:
-   - OpenAI: https://status.openai.com/
-   - Google AI: https://status.cloud.google.com/
+If users hit the **session** limit: wait for the window or see `session_limit` message.
+
+If **OpenAI** is rate-limited: optional Gemini key (`openai_rate_limit`).
+
+Check status: [OpenAI](https://status.openai.com/), [Google Cloud](https://status.cloud.google.com/).
 
 ---
 
-**Configuration Date:** November 12, 2024  
-**Server Model:** gpt-4o-mini (OpenAI)  
-**User Fallback Model:** gemini-2.0-flash-exp (Google Gemini)  
-**Status:** ✅ Active and Configured - Hybrid System
+**Configuration date:** April 2026  
+**Server model:** gpt-4o-mini (OpenAI)  
+**User fallback model:** gemini-2.5-flash (Google Gemini; override via `GEMINI_USER_FALLBACK_MODEL`)  
+**Status:** OpenAI-first; Gemini user key only on OpenAI rate limit
 

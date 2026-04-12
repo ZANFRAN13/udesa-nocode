@@ -111,21 +111,23 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
           usedFallback: data.fallbackUsed || false
         }
         setConversationHistory(prev => [...prev, assistantMessage])
-        setShowUserKeyInput(false) // Hide key input on success
-        
+        setShowUserKeyInput(false)
+
         // Update rate limit info
         if (data.rateLimit) {
           setRateLimit(data.rateLimit)
         }
-        setUserApiKey("") // Clear user key
-        
+        // Solo borrar la clave pegada si la respuesta vino del OpenAI del servidor
+        if (data.provider === "openai") {
+          setUserApiKey("")
+        }
+
         // Mostrar info de fallback si se usó
         if (data.fallbackUsed) {
           setShowFallbackInfo(true)
         }
       } else {
-        // Check if it's a rate limit error
-        if (data.errorType === 'rate_limit') {
+        if (data.errorType === "openai_rate_limit") {
           setShowUserKeyInput(true)
           setTimeout(() => {
             apiKeyInputRef.current?.focus()
@@ -383,13 +385,16 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
               <div className="flex items-center gap-2">
                 <Sparkles className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                 <h4 className="text-xs font-semibold text-blue-900 dark:text-blue-100">
-                  🔑 Usá tu propia API Key
+                  🔑 Clave de Google AI Studio (Gemini)
                 </h4>
               </div>
+              <p className="text-[10px] text-blue-800 dark:text-blue-200 leading-snug">
+                Solo si el OpenAI del sitio está al límite. Gratis en Google AI Studio (clave AIza…).
+              </p>
               <Input
                 ref={apiKeyInputRef}
                 type="password"
-                placeholder="API key de Gemini (AIza...)"
+                placeholder="Pegá tu clave de Gemini (AIza...)"
                 value={userApiKey}
                 onChange={(e) => setUserApiKey(e.target.value)}
                 disabled={isLoading}
@@ -406,7 +411,7 @@ export function GeminiPopup({ position, selectedText, onClose }: GeminiPopupProp
                   Conseguir gratis (2 clicks)
                 </a>
                 <p className="text-[10px] text-blue-700 dark:text-blue-300">
-                  🔒 No se guarda
+                  🔒 No se guarda en el servidor
                 </p>
               </div>
             </div>

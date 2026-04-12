@@ -28,30 +28,24 @@ Esto significa que te quedan 7 consultas de las 10 disponibles.
 
 ## 🔑 ¿Qué pasa si se me acaban las consultas?
 
-No te preocupes, hay dos opciones:
+Hay **dos cosas distintas** (no las mezcles):
 
-### Opción 1: Esperar (Gratis)
-- Esperá **2 horas** y tus consultas se renuevan automáticamente
-- No necesitás hacer nada
+### 1) Límite de la app (10 consultas cada 2 horas)
+- Cuando llegás a ese tope, tenés que **esperar** el tiempo que indica el mensaje.
+- **No** aparece el recuadro azul para pegar una clave de Gemini por esto: **no** es un fallo de OpenAI, es el control de uso de la plataforma.
 
-### Opción 2: Usar tu propia API Key de Google Gemini
-Si necesitás consultar algo urgente, podés usar tu propia clave de Gemini (¡es más fácil y gratis!):
+### 2) El servicio OpenAI del sitio va “al límite” (muchos usos a la vez)
+- Ahí **sí** puede aparecer el panel azul para pegar una **clave de Google AI Studio (Gemini)** — gratis, empieza con `AIza`.
+- Pasos:
+  1. Abrí https://aistudio.google.com/api-keys
+  2. Creá la clave y copiala
+  3. Pegala en el recuadro cuando la app te lo pida y volvé a enviar la pregunta
 
-1. **Obtené tu API Key gratis en 2 clicks:**
-   - Andá a: https://aistudio.google.com/api-keys
-   - Iniciá sesión con tu cuenta de Google
-   - Hacé clic en "Create API Key"
-   - Copiá la clave (empieza con `AIza`)
+**Importante:** Esa clave **no es** una clave de OpenAI (`sk-...`); la app usa OpenAI con la cuenta del proyecto; Gemini solo como respaldo en ese caso.
 
-2. **Usala en la app:**
-   - Cuando se te acaben las consultas, vas a ver un campo azul
-   - Pegá tu API key ahí
-   - Tu búsqueda se procesará inmediatamente
-
-3. **¿Es seguro?**
-   - ✅ Tu clave NO se guarda en nuestros servidores
-   - ✅ Solo se usa para ESA búsqueda
-   - ✅ La clave se borra cuando cerrás el popup
+### ¿Es seguro pegar la clave?
+- No la guardamos en una base de datos.
+- Se envía solo cuando hacés la consulta; podés cerrar el popup cuando quieras.
 
 ---
 
@@ -103,11 +97,11 @@ Para mantener la app gratuita y sustentable. OpenAI cobra por cada consulta, y e
 ### ¿Se resetea el contador?
 Sí, cada 2 horas automáticamente. También se resetea si cerrás y volvés a abrir el navegador después de un tiempo.
 
-### ¿Puedo conseguir más consultas?
-Sí, usando tu propia API key de OpenAI. Las primeras consultas son gratuitas en OpenAI también.
+### ¿Puedo conseguir más consultas cuando se acaba el cupo de 10/2h?
+No con otra clave: ese límite es de la app. Tenés que esperar o usar otro navegador/sesión según lo que indique el mensaje.
 
-### ¿Qué pasó con Gemini?
-Gemini se usa como fallback para usuarios (porque es más fácil de conseguir). El servidor usa OpenAI para garantizar calidad consistente, pero si se te acaban las consultas, podés usar tu propia clave de Gemini que es gratis y fácil de obtener.
+### ¿Qué es Gemini entonces?
+Es **opcional** y solo entra si el **OpenAI del servidor** está temporalmente saturado (límite de uso del proveedor). En ese caso podés pegar una clave de Google AI Studio; no reemplaza a las 10 consultas de la app.
 
 ### ¿Funciona offline?
 No, necesitás conexión a internet porque se conecta con los servidores de OpenAI.
@@ -137,6 +131,6 @@ Un contador verde arriba que dice `{X}/10 consultas`
 
 ---
 
-**Última actualización:** 12 de Noviembre, 2024  
-**Versión:** 1.0 con OpenAI GPT-4o Mini
+**Última actualización:** abril 2026  
+**Versión:** OpenAI GPT-4o Mini + respaldo Gemini (usuario) solo ante límite de OpenAI del servidor
 

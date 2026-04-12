@@ -1,5 +1,4 @@
 import { OpenAI } from "openai"
-import { GoogleGenerativeAI } from "@google/generative-ai" // For user fallback
 import { NextResponse } from "next/server"
 import { SYSTEM_CONTEXT } from "@/lib/system-context"
 import { formatContentKnowledgeForGemini } from "@/lib/content-knowledge-base"
@@ -77,38 +76,96 @@ function getGeminiClient(useFallback: boolean = false) {
 }
 */
 
-// Helper to check if error is rate limit
+const DEFAULT_GEMINI_USER_MODEL = "gemini-2.5-flash"
+
+function getGeminiUserFallbackModelName(): string {
+  const fromEnv = process.env.GEMINI_USER_FALLBACK_MODEL?.trim()
+  return fromEnv || DEFAULT_GEMINI_USER_MODEL
+}
+
+/** Dynamic import avoids webpack bundling issues with @google/generative-ai in route handlers. */
+async function createUserGeminiModel(apiKey: string, jsonMode: boolean) {
+  const { GoogleGenerativeAI } = await import("@google/generative-ai")
+  const genAI = new GoogleGenerativeAI(apiKey)
+  const generationConfig = jsonMode
+    ? { responseMimeType: "application/json" as const }
+    : undefined
+  return genAI.getGenerativeModel({
+    model: getGeminiUserFallbackModelName(),
+    ...(generationConfig ? { generationConfig } : {}),
+  })
+}
+
+function isInsufficientQuotaError(error: any): boolean {
+  if (!error) return false
+  const code = error?.code ?? error?.error?.code
+  const msg = `${error?.message || ""} ${error?.response?.data?.error?.message || ""}`.toLowerCase()
+  return (
+    code === "insufficient_quota" ||
+    msg.includes("insufficient_quota") ||
+    msg.includes("you exceeded your current quota")
+  )
+}
+
+/** OpenAI throttling (429 / RPM / TPM). Excludes billing insufficient_quota. */
 function isRateLimitError(error: any): boolean {
   if (!error) {
-    console.log('🔍 isRateLimitError: No error object')
+    console.log("🔍 isRateLimitError: No error object")
     return false
   }
-  
-  const errorString = JSON.stringify(error).toLowerCase()
-  const message = error?.message?.toLowerCase() || ''
-  const errorResponse = error?.response?.data?.error?.message?.toLowerCase() || ''
-  
-  const isRateLimit = (
-    error?.status === 429 ||
-    error?.statusCode === 429 ||
-    error?.response?.status === 429 ||
-    message.includes('429') ||
-    message.includes('rate limit') ||
-    message.includes('too many requests') ||
-    message.includes('quota') ||
-    message.includes('resource exhausted') ||
-    errorString.includes('429') ||
-    errorString.includes('resource_exhausted') ||
-    errorString.includes('rate limit') ||
-    errorResponse.includes('quota') ||
-    errorResponse.includes('rate limit')
-  )
-  
+  if (isInsufficientQuotaError(error)) {
+    console.log("🔍 isRateLimitError: false (insufficient_quota)")
+    return false
+  }
+
+  const status = error?.status ?? error?.statusCode ?? error?.response?.status
+  const message = (error?.message || "").toLowerCase()
+  const errorResponse = (error?.response?.data?.error?.message || "").toLowerCase()
+  let errorString = ""
+  try {
+    errorString = JSON.stringify(error).toLowerCase()
+  } catch {
+    // Circular refs on some SDK error objects — ignore
+  }
+
+  const isRateLimit =
+    status === 429 ||
+    message.includes("rate limit") ||
+    message.includes("too many requests") ||
+    message.includes("resource exhausted") ||
+    errorResponse.includes("rate limit") ||
+    errorString.includes("resource_exhausted") ||
+    (message.includes("429") && !message.includes("insufficient_quota"))
+
   console.log(`🔍 isRateLimitError result: ${isRateLimit}`)
-  console.log(`   Status: ${error?.status || error?.statusCode || error?.response?.status}`)
+  console.log(`   Status: ${status}`)
   console.log(`   Message snippet: ${message.substring(0, 100)}`)
-  
+
   return isRateLimit
+}
+
+type RateLimitPayload = { remaining: number; total: number; resetTime: number }
+
+async function attachRateLimit(
+  result: NextResponse,
+  rateLimitResult: RateLimitPayload
+): Promise<NextResponse> {
+  if (!result || typeof result.json !== "function") {
+    console.error("attachRateLimit: invalid response from handler")
+    return NextResponse.json(
+      { error: "Respuesta interna inválida", success: false },
+      { status: 500 }
+    )
+  }
+  const data = await result.json()
+  return NextResponse.json({
+    ...data,
+    rateLimit: {
+      remaining: rateLimitResult.remaining,
+      total: rateLimitResult.total,
+      resetTime: rateLimitResult.resetTime,
+    },
+  })
 }
 
 export async function POST(request: Request) {
@@ -119,11 +176,11 @@ export async function POST(request: Request) {
     const rateLimitResult = checkRateLimit(sessionId)
     if (!rateLimitResult.allowed) {
       const minutesRemaining = Math.ceil((rateLimitResult.resetTime - Date.now()) / 60000)
-      console.log(`⏱️ Rate limit exceeded for session ${sessionId}`)
+      console.log(`⏱️ Session rate limit exceeded for session ${sessionId}`)
       return NextResponse.json({
         error: `Has alcanzado el límite de ${RATE_LIMIT} consultas. Por favor, esperá ${minutesRemaining} minutos antes de hacer otra consulta.`,
         success: false,
-        errorType: 'rate_limit',
+        errorType: 'session_limit',
         remaining: 0,
         resetTime: rateLimitResult.resetTime
       }, { status: 429 })
@@ -131,60 +188,37 @@ export async function POST(request: Request) {
 
     console.log(`✅ Rate limit check passed. Remaining: ${rateLimitResult.remaining}/${RATE_LIMIT}`)
 
+    const rateLimitPayload: RateLimitPayload = {
+      remaining: rateLimitResult.remaining,
+      total: RATE_LIMIT,
+      resetTime: rateLimitResult.resetTime,
+    }
+
     // Handle Brújula mode early (uses 'query' instead of 'prompt')
     if (mode === "brujula") {
       console.log("🧭 [BRÚJULA MODE] Starting request")
-      console.log(`📝 Query: "${query?.substring(0, 100)}${query?.length > 100 ? '...' : ''}"`)
-      
-      // If user provided their own API key, use Gemini with user's key (easier to get)
-      if (userApiKey && userApiKey.trim()) {
-        console.log("🔑 [BRÚJULA] User provided their own Gemini API key, using it directly")
-        try {
-          const genAI = new GoogleGenerativeAI(userApiKey.trim())
-          const userModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
-          const result = await handleBrujulaMode(query, userModel, "user-provided-gemini", false, true)
-          console.log(`✅ [BRÚJULA] User Gemini API key success`)
-          return result
-        } catch (userKeyError: any) {
-          console.error("❌ [BRÚJULA] User API key failed:", userKeyError?.message)
-          // If user's key fails, return specific error
-          return NextResponse.json({
-            error: "La API key de Gemini que proporcionaste no es válida o ha alcanzado su límite. Verificá que sea correcta.",
-            success: false,
-            errorType: 'invalid_user_key'
-          }, { status: 400 })
-        }
-      }
-      
+      console.log(`📝 Query: "${query?.substring(0, 100)}${query?.length > 100 ? "..." : ""}"`)
+
       const openaiClient = getOpenAIClient()
-      
-      // If OpenAI is not configured, return error
       if (!openaiClient) {
         console.error("❌ [BRÚJULA] No API keys configured")
         return NextResponse.json(
-          { error: "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local", success: false },
+          {
+            error:
+              "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local",
+            success: false,
+          },
           { status: 500 }
         )
       }
-      
-      // Use OpenAI for Brújula
+
       const startTime = Date.now()
       try {
         console.log("🚀 [BRÚJULA] Attempting OpenAI API...")
         const result = await handleBrujulaMode(query, openaiClient, "openai", false)
         const duration = Date.now() - startTime
         console.log(`✅ [BRÚJULA] OpenAI API success (${duration}ms)`)
-        
-        // Add rate limit info to response
-        const response = await result.json()
-        return NextResponse.json({
-          ...response,
-          rateLimit: {
-            remaining: rateLimitResult.remaining,
-            total: RATE_LIMIT,
-            resetTime: rateLimitResult.resetTime
-          }
-        })
+        return attachRateLimit(result, rateLimitPayload)
       } catch (error: any) {
         const duration = Date.now() - startTime
         console.log(`⚠️ [BRÚJULA] OpenAI API failed (${duration}ms)`)
@@ -192,84 +226,89 @@ export async function POST(request: Request) {
           status: error?.status,
           statusCode: error?.statusCode,
           message: error?.message,
-          type: error?.constructor?.name
+          type: error?.constructor?.name,
         })
-        
-        // Check if it's a rate limit error
+
+        if (isInsufficientQuotaError(error)) {
+          console.log("🔄 [BRÚJULA] OpenAI insufficient quota")
+          return NextResponse.json(
+            {
+              error:
+                "El servicio de IA del servidor no tiene cuota disponible en OpenAI. Contactá a los Coordinadores Academicos.",
+              success: false,
+              errorType: "openai_insufficient_quota",
+            },
+            { status: 503 }
+          )
+        }
+
         if (isRateLimitError(error)) {
           console.log("🔄 [BRÚJULA] Rate limit detected on OpenAI")
-          return NextResponse.json({
-            error: "El servicio de búsqueda está temporalmente sobrecargado. Por favor, intentá de nuevo en unos segundos o usá tu propia API key.",
-            success: false,
-            errorType: 'rate_limit'
-          }, { status: 429 })
+          const trimmedKey = userApiKey?.trim()
+          if (trimmedKey) {
+            try {
+              console.log("🔑 [BRÚJULA] Trying user Gemini key after OpenAI rate limit")
+              const userModel = await createUserGeminiModel(trimmedKey, true)
+              const result = await handleBrujulaMode(query, userModel, "user-gemini-fallback", true, true)
+              console.log(`✅ [BRÚJULA] User Gemini API key success`)
+              return attachRateLimit(result, rateLimitPayload)
+            } catch (userKeyError: any) {
+              console.error("❌ [BRÚJULA] User API key failed:", userKeyError?.message)
+              return NextResponse.json(
+                {
+                  error:
+                    "La API key de Gemini que proporcionaste no es válida o ha alcanzado su límite. Verificá que sea correcta.",
+                  success: false,
+                  errorType: "invalid_user_key",
+                },
+                { status: 400 }
+              )
+            }
+          }
+          return NextResponse.json(
+            {
+              error:
+                "El servicio de búsqueda está temporalmente al límite de uso (OpenAI). Podés crear una clave gratis en Google AI Studio y pegarla abajo para continuar: https://aistudio.google.com/api-keys",
+              success: false,
+              errorType: "openai_rate_limit",
+            },
+            { status: 429 }
+          )
         }
-        // Not a rate limit error, re-throw
         throw error
       }
     }
 
     // For Tutor mode, prompt is required
     if (!prompt) {
-      return NextResponse.json(
-        { error: "El prompt es requerido" },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: "El prompt es requerido" }, { status: 400 })
     }
 
     console.log("🎓 [TUTOR MODE] Starting request")
-    console.log(`📝 Prompt: "${prompt?.substring(0, 100)}${prompt?.length > 100 ? '...' : ''}"`)
+    console.log(`📝 Prompt: "${prompt?.substring(0, 100)}${prompt?.length > 100 ? "..." : ""}"`)
     console.log(`📚 Context length: ${context?.length || 0} chars`)
     console.log(`💬 Conversation history: ${conversationHistory?.length || 0} messages`)
-    
-    // If user provided their own API key, use Gemini with user's key (easier to get)
-    if (userApiKey && userApiKey.trim()) {
-      console.log("🔑 [TUTOR] User provided their own Gemini API key, using it directly")
-      try {
-        const genAI = new GoogleGenerativeAI(userApiKey.trim())
-        const userModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" })
-        const result = await handleTutorMode(userModel, prompt, context, conversationHistory, "user-provided-gemini", false, true)
-        console.log(`✅ [TUTOR] User Gemini API key success`)
-        return result
-      } catch (userKeyError: any) {
-        console.error("❌ [TUTOR] User API key failed:", userKeyError?.message)
-        return NextResponse.json({
-          error: "La API key de Gemini que proporcionaste no es válida o ha alcanzado su límite. Verificá que sea correcta.",
-          success: false,
-          errorType: 'invalid_user_key'
-        }, { status: 400 })
-      }
-    }
-    
+
     const openaiClient = getOpenAIClient()
-    
-    // If OpenAI is not configured, return error
     if (!openaiClient) {
       console.error("❌ [TUTOR] No API keys configured")
       return NextResponse.json(
-        { error: "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local", success: false },
+        {
+          error:
+            "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local",
+          success: false,
+        },
         { status: 500 }
       )
     }
 
-    // Use OpenAI for Tutor mode
     const startTime = Date.now()
     try {
       console.log("🚀 [TUTOR] Attempting OpenAI API...")
       const result = await handleTutorMode(openaiClient, prompt, context, conversationHistory, "openai", false)
       const duration = Date.now() - startTime
       console.log(`✅ [TUTOR] OpenAI API success (${duration}ms)`)
-      
-      // Add rate limit info to response
-      const response = await result.json()
-      return NextResponse.json({
-        ...response,
-        rateLimit: {
-          remaining: rateLimitResult.remaining,
-          total: RATE_LIMIT,
-          resetTime: rateLimitResult.resetTime
-        }
-      })
+      return attachRateLimit(result, rateLimitPayload)
     } catch (error: any) {
       const duration = Date.now() - startTime
       console.log(`⚠️ [TUTOR] OpenAI API failed (${duration}ms)`)
@@ -277,19 +316,63 @@ export async function POST(request: Request) {
         status: error?.status,
         statusCode: error?.statusCode,
         message: error?.message,
-        type: error?.constructor?.name
+        type: error?.constructor?.name,
       })
-      
-      // Check if it's a rate limit error
+
+      if (isInsufficientQuotaError(error)) {
+        console.log("🔄 [TUTOR] OpenAI insufficient quota")
+        return NextResponse.json(
+          {
+            error:
+              "El servicio de IA del servidor no tiene cuota disponible en OpenAI. Contactá a los Coordinadores Academicos.",
+            success: false,
+            errorType: "openai_insufficient_quota",
+          },
+          { status: 503 }
+        )
+      }
+
       if (isRateLimitError(error)) {
         console.log("🔄 [TUTOR] Rate limit detected on OpenAI")
-        return NextResponse.json({
-          error: "El servicio de IA está temporalmente sobrecargado. Por favor, intentá de nuevo en unos segundos o usá tu propia API key.",
-          success: false,
-          errorType: 'rate_limit'
-        }, { status: 429 })
+        const trimmedKey = userApiKey?.trim()
+        if (trimmedKey) {
+          try {
+            console.log("🔑 [TUTOR] Trying user Gemini key after OpenAI rate limit")
+            const userModel = await createUserGeminiModel(trimmedKey, false)
+            const result = await handleTutorMode(
+              userModel,
+              prompt,
+              context,
+              conversationHistory,
+              "user-gemini-fallback",
+              true,
+              true
+            )
+            console.log(`✅ [TUTOR] User Gemini API key success`)
+            return attachRateLimit(result, rateLimitPayload)
+          } catch (userKeyError: any) {
+            console.error("❌ [TUTOR] User API key failed:", userKeyError?.message)
+            return NextResponse.json(
+              {
+                error:
+                  "La API key de Gemini que proporcionaste no es válida o ha alcanzado su límite. Verificá que sea correcta.",
+                success: false,
+                errorType: "invalid_user_key",
+              },
+              { status: 400 }
+            )
+          }
+        }
+        return NextResponse.json(
+          {
+            error:
+              "El servicio de IA está temporalmente al límite de uso (OpenAI). Podés crear una clave gratis en Google AI Studio y pegarla abajo para continuar: https://aistudio.google.com/api-keys",
+            success: false,
+            errorType: "openai_rate_limit",
+          },
+          { status: 429 }
+        )
       }
-      // Not a rate limit error, re-throw
       throw error
     }
 
@@ -422,10 +505,11 @@ Responde de manera clara y didáctica para personas aprendiendo a programar con 
     throw apiError // Re-throw to be caught by outer try-catch
   }
   
-  console.log(`📤 [TUTOR] Returning response (${text.length} chars)`)
+  const outText = typeof text === "string" ? text : String(text ?? "")
+  console.log(`📤 [TUTOR] Returning response (${outText.length} chars)`)
 
   return NextResponse.json({ 
-    response: text,
+    response: outText,
     success: true,
     provider,
     fallbackUsed: usedFallback

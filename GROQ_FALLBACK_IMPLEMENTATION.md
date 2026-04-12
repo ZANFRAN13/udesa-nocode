@@ -1,5 +1,7 @@
 # Implementación de Fallback con Segunda Key de Gemini ✅
 
+> **Nota (2026):** Arquitectura actual: ver [HYBRID_SYSTEM_SUMMARY.md](./HYBRID_SYSTEM_SUMMARY.md) y [USER_API_KEY_FALLBACK.md](./USER_API_KEY_FALLBACK.md). El route actual usa OpenAI como motor principal y Gemini solo como clave opcional del usuario ante límite de OpenAI.
+
 ## Resumen
 
 Se implementó un sistema de fallback automático usando una segunda clave de Gemini (GEMINI_API_KEY_2) cuando la clave principal alcanza límites de consultas (error 429). Esto mejora la confiabilidad del sistema y garantiza una mejor experiencia de usuario sin las limitaciones de contexto de GROQ.

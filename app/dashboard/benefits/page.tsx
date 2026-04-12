@@ -15,13 +15,16 @@ import {
   Lock
 } from "lucide-react"
 
+/** Set to false when the 021 promo should be visible again. */
+const BLUR_021_CARD = true
+
 export default function BenefitsPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [copiedV0, setCopiedV0] = useState(false)
   const [copied021, setCopied021] = useState(false)
   const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
-  const code = "VIBEUDESA"
+  const code = "NOCODE20"
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -150,7 +153,12 @@ export default function BenefitsPage() {
             
 
             {/* 021 Section */}
-            <Card className="border-2 border-primary/20">
+            <Card
+              className={`border-2 border-primary/20 relative overflow-hidden ${
+                BLUR_021_CARD ? "blur-md pointer-events-none select-none" : ""
+              }`}
+              aria-hidden={BLUR_021_CARD}
+            >
               <CardHeader>
                 <div className="flex items-center justify-center gap-3 mb-2">
                   <div className="bg-white dark:bg-white rounded-lg p-2">

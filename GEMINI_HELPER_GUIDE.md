@@ -137,7 +137,7 @@ Si ves un error "API key no configurada" al usar el asistente, significa que:
 ## 🔧 Componentes creados
 
 ### Archivos nuevos:
-- `app/api/gemini/route.ts` - API route para conectar con Gemini
+- `app/api/gemini/route.ts` - API route: OpenAI primero (Tutor y Brújula); respaldo Gemini con clave del usuario solo si OpenAI del servidor está al límite de uso
 - `components/glossary/gemini-helper.tsx` - Botón flotante y lógica de selección
 - `components/glossary/gemini-popup.tsx` - Popup con input y respuestas
 - `components/glossary/gemini-markdown-styles.css` - Estilos para renderizado de markdown
