@@ -230,3 +230,102 @@
 .animate-udesa-out {
   animation: udesaZoomOutFlash 600ms ease-in forwards;
 }
+
+/* Barra de scroll discreta (modales y paneles oscuros): sin riel blanco del sistema */
+.scrollbar-subtle {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(161, 161, 170, 0.35) transparent;
+}
+
+.scrollbar-subtle::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-subtle::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-subtle::-webkit-scrollbar-thumb {
+  background-color: rgba(161, 161, 170, 0.35);
+  border-radius: 9999px;
+}
+
+.scrollbar-subtle::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(161, 161, 170, 0.5);
+}
+
+/*
+ * Dos barridos de 2.35s cada uno (sweep).
+ * Pausa entre 1.º y 2.º = sweep/16 (mitad de la pausa anterior sweep/8).
+ * Total visual (CSS animation-duration) = 2*sweep + sweep/16 = 4.846875s.
+ * El timeout en JS puede ser mayor (overlay desaparece un poco después).
+ */
+@keyframes birrete-rainbow-cross {
+  /* 1.er barrido: 0% … 48.4848% (= 2.35s) */
+  0% {
+    transform: translateX(-115%) skewX(-8deg);
+    opacity: 0;
+  }
+  3.879% {
+    opacity: 1;
+  }
+  44.606% {
+    opacity: 1;
+  }
+  48.485% {
+    transform: translateX(215%) skewX(-8deg);
+    opacity: 0;
+  }
+  /* Pausa: 48.485% … 51.515% (= sweep/16); 2.º barrido empieza justo después (solape permitido en % si hiciera falta) */
+  48.486% {
+    transform: translateX(-115%) skewX(-8deg);
+    opacity: 0;
+  }
+  51.515% {
+    transform: translateX(-115%) skewX(-8deg);
+    opacity: 0;
+  }
+  /* 2.º barrido: 51.515% … 100% */
+  55.394% {
+    opacity: 1;
+  }
+  96.121% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(215%) skewX(-8deg);
+    opacity: 0;
+  }
+}
+
+.birrete-rainbow-sweep {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.birrete-rainbow-sweep__beam {
+  position: absolute;
+  top: -25%;
+  left: -35%;
+  width: 65%;
+  height: 150%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 80, 180, 0.95) 14%,
+    rgba(255, 220, 60, 0.98) 30%,
+    rgba(80, 255, 160, 0.95) 46%,
+    rgba(80, 200, 255, 1) 62%,
+    rgba(160, 100, 255, 0.95) 78%,
+    transparent 100%
+  );
+  filter: blur(0.5px) saturate(1.35);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.45);
+  /* Duración visual = 4.846875s (ver comentario del @keyframes) */
+  animation: birrete-rainbow-cross 3.5s linear forwards;
+}

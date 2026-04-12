@@ -24,12 +24,19 @@ import {
   Sparkles,
   Lock,
 } from "lucide-react"
+import {
+  SelfEvaluationModal,
+  SelfEvaluationTrigger,
+  SELF_EVAL_SESSION_STORAGE_KEY,
+} from "@/components/dashboard/self-evaluation-modal"
 
 export default function Dashboard() {
   const router = useRouter()
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
   const [expandedClass, setExpandedClass] = useState<string | null>(null)
   const [expandedSlide, setExpandedSlide] = useState<string | null>(null)
+  const [selfEvalOpen, setSelfEvalOpen] = useState(false)
+  const [birreteFlashKey, setBirreteFlashKey] = useState(0)
   const supabase = createClient()
   const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
 
@@ -52,6 +59,20 @@ export default function Dashboard() {
 
     return () => subscription.unsubscribe()
   }, [router, supabase])
+
+  /** Primera visita al Dashboard en esta sesión del navegador: modal de autoevaluación a los 3 s. */
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    if (sessionStorage.getItem(SELF_EVAL_SESSION_STORAGE_KEY)) return
+    const id = window.setTimeout(() => setSelfEvalOpen(true), 3000)
+    return () => window.clearTimeout(id)
+  }, [])
+
+  const handleSelfEvalSessionComplete = () => {
+    if (typeof window === "undefined") return
+    sessionStorage.setItem(SELF_EVAL_SESSION_STORAGE_KEY, "1")
+    setBirreteFlashKey((k) => k + 1)
+  }
 
   const toggleSection = (sectionId: string) => {
     if (isSectionLockedForFreeUser(sectionId)) {
@@ -241,8 +262,8 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
+      {/* Header fijo: sticky falla con overflow-x-hidden en html/body (globals.css); fixed + padding compensa la altura */}
+      <header className="fixed top-0 left-0 right-0 z-30 border-b border-border/50 bg-background/95 backdrop-blur-sm">
         <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
@@ -268,21 +289,33 @@ export default function Dashboard() {
                 </h1>
               </div>
             </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground shrink-0 ml-2"
-            >
-              <LogOut className="h-4 w-4 md:mr-2" />
-              <span className="hidden sm:inline">Cerrar sesión</span>
-            </Button>
+            <div className="flex items-center gap-6 md:gap-8 shrink-0 ml-2">
+              <SelfEvaluationTrigger
+                flashKey={birreteFlashKey}
+                onClick={() => setSelfEvalOpen(true)}
+              />
+              <Button
+                onClick={handleLogout}
+                variant="outline"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground shrink-0"
+              >
+                <LogOut className="h-4 w-4 md:mr-2" />
+                <span className="hidden sm:inline">Cerrar sesión</span>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-3 md:px-4 py-6 md:py-8">
+      <SelfEvaluationModal
+        open={selfEvalOpen}
+        onOpenChange={setSelfEvalOpen}
+        onSessionComplete={handleSelfEvalSessionComplete}
+      />
+
+      {/* Main Content — pt-* deja hueco bajo el header fijo (~py-3/4 + fila de botones) */}
+      <div className="container mx-auto px-3 md:px-4 pt-20 pb-6 md:pt-24 md:pb-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-6 md:mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
