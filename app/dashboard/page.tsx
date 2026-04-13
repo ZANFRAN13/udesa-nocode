@@ -60,11 +60,21 @@ export default function Dashboard() {
     return () => subscription.unsubscribe()
   }, [router, supabase])
 
-  /** Primera visita al Dashboard en esta sesión del navegador: modal de autoevaluación a los 3 s. */
+  /**
+   * Primera entrada al Dashboard en esta sesión del navegador (misma pestaña):
+   * abrir el modal de autoevaluación a los 3 s una sola vez.
+   * La clave se guarda al disparar el temporizador (no solo al cerrar) para no volver a
+   * programar el popup si la persona navega fuera y vuelve sin haber cerrado el modal.
+   */
   useEffect(() => {
     if (typeof window === "undefined") return
     if (sessionStorage.getItem(SELF_EVAL_SESSION_STORAGE_KEY)) return
-    const id = window.setTimeout(() => setSelfEvalOpen(true), 3000)
+    const id = window.setTimeout(() => {
+      // Si ya cerró el modal antes (p. ej. abrió el birrete y salió), no forzar otra apertura.
+      if (sessionStorage.getItem(SELF_EVAL_SESSION_STORAGE_KEY)) return
+      sessionStorage.setItem(SELF_EVAL_SESSION_STORAGE_KEY, "1")
+      setSelfEvalOpen(true)
+    }, 3000)
     return () => window.clearTimeout(id)
   }, [])
 
@@ -90,6 +100,11 @@ export default function Dashboard() {
   }
 
   const handleLogout = async () => {
+    try {
+      sessionStorage.removeItem(SELF_EVAL_SESSION_STORAGE_KEY)
+    } catch {
+      /* ignore */
+    }
     await supabase.auth.signOut()
     router.push('/')
   }
@@ -155,21 +170,43 @@ export default function Dashboard() {
   }
 
   const classVideos: Record<string, string> = {
-    "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 2: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=1cd04b30-ff2a-4413-9ff5-b379010bfde7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 4: Haciendo que funcione": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7a0d7d2c-5cca-4244-824a-b3870111edb7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 5: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=117b3fc2-eea5-4b78-87aa-b38e010d7119&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 2: De Idea a Producto": "",
+    "Clase 3: Definamos IA": "",
+    "Clase 4: Introducción a Herramientas Avanzadas": "",
+    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
+    "Clase 6: Lanzamiento y luego qué?": "",
+    "Clase 7: Demo Day + Frameworks Emergentes": "",
   }
 
+  // COHORTE 1 H2 2025
+  // const classVideos: Record<string, string> = {
+  //   "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=9c06e098-5483-4599-b0fd-b371010fca60&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 2: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=1cd04b30-ff2a-4413-9ff5-b379010bfde7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 3: De idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=013c1ae1-8455-4c36-bfd3-b380010cc54b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 4: Haciendo que funcione": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7a0d7d2c-5cca-4244-824a-b3870111edb7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 5: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=117b3fc2-eea5-4b78-87aa-b38e010d7119&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  // }
+
   const classSlides: Record<string, string> = {
-    "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
-    "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
-    "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
-    "Clase 5: Lanzamiento y luego qué?": "https://drive.google.com/file/d/1JPjGuVCVDHFrAbSIi0Oab500vV9ogPOm/preview",
-    "Clase 6: Demo y futuro": "https://drive.google.com/file/d/1jGU_XJcGsY9VdZ0Kr68sC5zNdGYtWwPY/preview",
+    "Clase 1: La revolución de Producto": "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview",
+    "Clase 2: De idea a Producto": "",
+    "Clase 3: Definamos IA": "",
+    "Clase 4: Introducción a Herramientas Avanzadas": "",
+    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
+    "Clase 6: Lanzamiento y luego qué?": "",
+    "Clase 7: Demo Day + Frameworks Emergentes": "",
   }
+
+  // COHORTE 1 H2 2025
+  // const classSlides: Record<string, string> = {
+  //   "Clase 1: La revolución de Producto": "https://drive.google.com/file/d/1EH9IBNSBmIqZKyzolel0nJ-MomYX4ESH/preview",
+  //   "Clase 3: De idea a Producto": "https://drive.google.com/file/d/1wqrijEweqf11zNvX9q-ZN-w8Vywgk4nI/preview",
+  //   "Clase 4: Haciendo que funcione": "https://drive.google.com/file/d/16WhJ1QpL-gY0tc8zpdrjxE4VKUJlbxII/preview",
+  //   "Clase 5: Lanzamiento y luego qué?": "https://drive.google.com/file/d/1JPjGuVCVDHFrAbSIi0Oab500vV9ogPOm/preview",
+  //   "Clase 6: Demo y futuro": "https://drive.google.com/file/d/1jGU_XJcGsY9VdZ0Kr68sC5zNdGYtWwPY/preview",
+  // }
 
   // Filter comunidad content based on user role
   const getComunidadContent = () => {

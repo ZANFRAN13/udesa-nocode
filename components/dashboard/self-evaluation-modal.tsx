@@ -1,14 +1,14 @@
 "use client"
 
 /**
- * Autoevaluaciones del Dashboard: selector de clase, 3 preguntas tipo test y resultado.
+ * Autoevaluaciones del Dashboard: por clase, confirmar respuesta → explicación → siguiente.
  * El botón con birrete reutiliza el mismo brillo animado que el asistente IA (gemini-helper-glow).
  */
 
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { X, GraduationCap, ChevronRight } from "lucide-react"
+import { X, GraduationCap, ChevronRight, ArrowRight, Lock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   SELF_EVALUATION_CLASSES,
@@ -19,6 +19,13 @@ import "@/components/glossary/gemini-markdown-styles.css"
 export const SELF_EVAL_SESSION_STORAGE_KEY = "udesa-self-eval-session-done"
 
 type Step = "pick" | "quiz" | "results"
+
+const optionLabels = ["A", "B", "C"] as const
+
+/** Autoevaluaciones con contenido listo; el resto se muestra como no disponible hasta agregar datos. */
+function isSelfEvalClassAvailable(classId: string): boolean {
+  return classId === "clase-1"
+}
 
 type SelfEvaluationModalProps = {
   open: boolean
@@ -83,6 +90,8 @@ export function SelfEvaluationModal({
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<(number | null)[]>([])
   const [score, setScore] = useState<number | null>(null)
+  /** Tras «Confirmar»: se muestra la correcta, la elegida (si hubo) y la explicación. */
+  const [revealed, setRevealed] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -91,7 +100,12 @@ export function SelfEvaluationModal({
     setQuestionIndex(0)
     setAnswers([])
     setScore(null)
+    setRevealed(false)
   }, [open])
+
+  useEffect(() => {
+    setRevealed(false)
+  }, [questionIndex])
 
   if (!open) return null
 
@@ -108,6 +122,7 @@ export function SelfEvaluationModal({
     setSelectedClass(c)
     setAnswers(Array(c.questions.length).fill(null))
     setQuestionIndex(0)
+    setRevealed(false)
     setStep("quiz")
   }
 
@@ -117,7 +132,7 @@ export function SelfEvaluationModal({
       : null
 
   const pickOption = (optionIndex: number) => {
-    if (!selectedClass) return
+    if (!selectedClass || revealed) return
     setAnswers((prev) => {
       const next = [...prev]
       next[questionIndex] = optionIndex
@@ -125,9 +140,22 @@ export function SelfEvaluationModal({
     })
   }
 
-  const goNext = () => {
+  /** Confirmar: fija la opción elegida (si la hay) y muestra explicación y respuesta correcta. */
+  const handleConfirm = () => {
+    if (!selectedClass || revealed) return
+    setRevealed(true)
+  }
+
+  /** Pasar de pregunta sin responder ni ver explicación. */
+  const handleSkipQuestion = () => {
+    if (!selectedClass || revealed) return
+    goToNextQuestionOrFinish()
+  }
+
+  const goToNextQuestionOrFinish = () => {
     if (!selectedClass) return
-    if (questionIndex < selectedClass.questions.length - 1) {
+    const last = selectedClass.questions.length - 1
+    if (questionIndex < last) {
       setQuestionIndex((i) => i + 1)
     } else {
       setAnswers((prev) => {
@@ -142,13 +170,15 @@ export function SelfEvaluationModal({
     }
   }
 
+  /** Flecha tras revelar explicación. */
+  const handleContinueAfterReveal = () => {
+    if (!revealed) return
+    goToNextQuestionOrFinish()
+  }
+
   const lastIndex = selectedClass
     ? selectedClass.questions.length - 1
     : 0
-  const canAdvance =
-    selectedClass &&
-    answers[questionIndex] !== null &&
-    answers[questionIndex] !== undefined
 
   return (
     <>
@@ -181,24 +211,45 @@ export function SelfEvaluationModal({
                     Autoevaluaciones
                   </h2>
                   <p className="text-sm text-muted-foreground">
-                    Elegí una clase para responder unas preguntas rápidas y ver
-                    qué tan claro tenés el tema. Son solo tres preguntas por
-                    clase.
+                    Elegí una clase. Podés confirmar tu respuesta para ver la
+                    correcta y una explicación, o seguir sin responder si
+                    preferís.
                   </p>
                 </div>
                 <ul className="space-y-2">
-                  {SELF_EVALUATION_CLASSES.map((c) => (
-                    <li key={c.id}>
-                      <button
-                        type="button"
-                        onClick={() => handleSelectClass(c)}
-                        className="w-full flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-left text-sm font-medium hover:bg-accent/10 hover:border-primary/30 transition-colors"
-                      >
-                        <span className="line-clamp-2">{c.title}</span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      </button>
-                    </li>
-                  ))}
+                  {SELF_EVALUATION_CLASSES.map((c) => {
+                    const available = isSelfEvalClassAvailable(c.id)
+                    return (
+                      <li key={c.id}>
+                        {available ? (
+                          <button
+                            type="button"
+                            onClick={() => handleSelectClass(c)}
+                            className="w-full flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-left text-sm font-medium hover:bg-accent/10 hover:border-primary/30 transition-colors"
+                          >
+                            <span className="line-clamp-2">{c.title}</span>
+                            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                          </button>
+                        ) : (
+                          <div
+                            className="w-full flex items-center justify-between gap-3 rounded-lg border border-border px-4 py-3 text-left text-sm font-medium opacity-60 cursor-not-allowed bg-muted/20"
+                            aria-disabled
+                          >
+                            <span className="line-clamp-2 flex items-center gap-2 text-muted-foreground">
+                              <Lock
+                                className="h-4 w-4 shrink-0 text-muted-foreground"
+                                aria-hidden
+                              />
+                              <span>{c.title}</span>
+                            </span>
+                            <span className="text-xs text-muted-foreground shrink-0">
+                              No disponible
+                            </span>
+                          </div>
+                        )}
+                      </li>
+                    )
+                  })}
                 </ul>
               </>
             )}
@@ -215,34 +266,87 @@ export function SelfEvaluationModal({
                 <h3 className="text-base md:text-lg font-semibold mb-4">
                   {currentQ.prompt}
                 </h3>
-                <div className="grid gap-2 mb-6">
-                  {currentQ.options.map((opt, idx) => (
-                    <button
-                      key={idx}
+                <div className="grid gap-2 mb-4">
+                  {currentQ.options.map((opt, idx) => {
+                    const selected = answers[questionIndex] === idx
+                    const isCorrect = idx === currentQ.correctIndex
+                    const showResult = revealed
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        disabled={revealed}
+                        onClick={() => pickOption(idx)}
+                        className={cn(
+                          "rounded-lg border px-3 py-3 text-left text-sm transition-colors",
+                          !revealed && selected && "border-primary bg-primary/10",
+                          !revealed && !selected && "border-border hover:bg-accent/5",
+                          showResult &&
+                            isCorrect &&
+                            "border-emerald-500/80 bg-emerald-500/15 ring-1 ring-emerald-500/40",
+                          showResult &&
+                            selected &&
+                            !isCorrect &&
+                            "border-destructive/70 bg-destructive/10",
+                          showResult &&
+                            !selected &&
+                            !isCorrect &&
+                            "border-border/50 opacity-60"
+                        )}
+                      >
+                        <span className="font-semibold text-muted-foreground mr-2">
+                          {optionLabels[idx]}.
+                        </span>
+                        {opt}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                {revealed ? (
+                  <>
+                    <div className="rounded-lg border border-border/60 bg-muted/30 px-3 py-3 mb-4 text-sm text-foreground/95 leading-relaxed">
+                      <p className="text-xs font-semibold text-primary mb-1">
+                        Explicación
+                      </p>
+                      <p>{currentQ.explanation}</p>
+                    </div>
+                    <div className="flex justify-end">
+                      <Button
+                        type="button"
+                        size="icon"
+                        onClick={handleContinueAfterReveal}
+                        className="h-10 w-10 rounded-full"
+                        aria-label={
+                          questionIndex >= lastIndex
+                            ? "Ver resultado"
+                            : "Siguiente pregunta"
+                        }
+                        title={
+                          questionIndex >= lastIndex
+                            ? "Ver resultado"
+                            : "Siguiente pregunta"
+                        }
+                      >
+                        <ArrowRight className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col sm:flex-row gap-2 sm:justify-between sm:items-center">
+                    <Button
                       type="button"
-                      onClick={() => pickOption(idx)}
-                      className={cn(
-                        "rounded-lg border px-3 py-3 text-left text-sm transition-colors",
-                        answers[questionIndex] === idx
-                          ? "border-primary bg-primary/10"
-                          : "border-border hover:bg-accent/5"
-                      )}
+                      variant="ghost"
+                      className="text-muted-foreground"
+                      onClick={handleSkipQuestion}
                     >
-                      {opt}
-                    </button>
-                  ))}
-                </div>
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    onClick={goNext}
-                    disabled={!canAdvance}
-                  >
-                    {questionIndex >= lastIndex
-                      ? "Ver resultado"
-                      : "Siguiente"}
-                  </Button>
-                </div>
+                      Seguir sin responder
+                    </Button>
+                    <Button type="button" onClick={handleConfirm}>
+                      Confirmar
+                    </Button>
+                  </div>
+                )}
               </>
             )}
 
@@ -274,6 +378,7 @@ export function SelfEvaluationModal({
                       setQuestionIndex(0)
                       setAnswers([])
                       setScore(null)
+                      setRevealed(false)
                     }}
                   >
                     Otra clase

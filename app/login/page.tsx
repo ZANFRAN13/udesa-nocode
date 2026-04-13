@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Mail, Lock, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { SELF_EVAL_SESSION_STORAGE_KEY } from '@/components/dashboard/self-evaluation-modal'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -49,7 +50,15 @@ export default function LoginPage() {
           password,
         })
         if (error) throw error
-        
+
+        /* Nueva entrada tras login: permitir el aviso automático de autoevaluación en el dashboard
+           (sessionStorage sobrevive en la pestaña si había una visita previa). */
+        try {
+          sessionStorage.removeItem(SELF_EVAL_SESSION_STORAGE_KEY)
+        } catch {
+          /* ignore */
+        }
+
         // Redirect immediately - middleware will handle verification
         window.location.href = '/dashboard'
       }
