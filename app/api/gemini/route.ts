@@ -43,15 +43,50 @@ function checkRateLimit(sessionId: string): { allowed: boolean; remaining: numbe
 // ========================================
 // OPENAI CLIENT (PRIMARY - DEFAULT)
 // ========================================
+/** Trims and strips optional surrounding quotes (common when copying from docs). */
+function normalizeApiKeyEnv(raw: string | undefined): string | undefined {
+  if (raw === undefined) return undefined
+  let s = raw.trim()
+  if (
+    (s.startsWith('"') && s.endsWith('"')) ||
+    (s.startsWith("'") && s.endsWith("'"))
+  ) {
+    s = s.slice(1, -1).trim()
+  }
+  return s || undefined
+}
+
+/**
+ * Next.js does not override env vars already set in the OS/shell. A wrong global
+ * OPENAI_API_KEY can therefore beat `.env.local`. `UDESA_OPENAI_API_KEY` in
+ * `.env.local` is unlikely to collide and takes precedence when set.
+ */
+function getOpenAIApiKeyFromEnv():
+  | { apiKey: string; source: "UDESA_OPENAI_API_KEY" | "OPENAI_API_KEY" }
+  | null {
+  const udesa = normalizeApiKeyEnv(process.env.UDESA_OPENAI_API_KEY)
+  if (udesa && udesa !== "INSERT_YOUR_OPENAI_API_KEY_HERE") {
+    return { apiKey: udesa, source: "UDESA_OPENAI_API_KEY" }
+  }
+  const generic = normalizeApiKeyEnv(process.env.OPENAI_API_KEY)
+  if (!generic || generic === "INSERT_YOUR_OPENAI_API_KEY_HERE") return null
+  return { apiKey: generic, source: "OPENAI_API_KEY" }
+}
+
 function getOpenAIClient() {
-  const apiKey = process.env.OPENAI_API_KEY
-  
-  if (!apiKey || apiKey === 'INSERT_YOUR_OPENAI_API_KEY_HERE') {
-    console.error(`❌ OpenAI API key not configured (OPENAI_API_KEY)`)
+  const resolved = getOpenAIApiKeyFromEnv()
+
+  if (!resolved) {
+    console.error(
+      `❌ OpenAI API key not configured (set UDESA_OPENAI_API_KEY or OPENAI_API_KEY in .env.local)`
+    )
     return null
   }
-  
-  console.log(`✅ OpenAI API key configured (${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)})`)
+
+  const { apiKey, source } = resolved
+  console.log(
+    `✅ OpenAI API key configured (${source}: ${apiKey.substring(0, 8)}...${apiKey.substring(apiKey.length - 4)})`
+  )
   return new OpenAI({ apiKey })
 }
 
@@ -104,6 +139,21 @@ function isInsufficientQuotaError(error: any): boolean {
     code === "insufficient_quota" ||
     msg.includes("insufficient_quota") ||
     msg.includes("you exceeded your current quota")
+  )
+}
+
+/** Wrong/revoked key, or env override with an invalid key (often 401). */
+function isOpenAIAuthError(error: any): boolean {
+  if (!error) return false
+  const status = error?.status ?? error?.statusCode ?? error?.response?.status
+  const code = error?.code ?? error?.error?.code
+  const msg = `${error?.message || ""} ${error?.response?.data?.error?.message || ""}`.toLowerCase()
+  return (
+    status === 401 ||
+    code === "invalid_api_key" ||
+    msg.includes("incorrect api key") ||
+    msg.includes("invalid api key") ||
+    msg.includes("invalid_api_key")
   )
 }
 
@@ -205,7 +255,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             error:
-              "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local",
+              "No hay ningún proveedor de IA configurado. Por favor, configurá UDESA_OPENAI_API_KEY u OPENAI_API_KEY en el archivo .env.local",
             success: false,
           },
           { status: 500 }
@@ -239,6 +289,19 @@ export async function POST(request: Request) {
               errorType: "openai_insufficient_quota",
             },
             { status: 503 }
+          )
+        }
+
+        if (isOpenAIAuthError(error)) {
+          console.log("❌ [BRÚJULA] OpenAI authentication failed (401 / invalid key)")
+          return NextResponse.json(
+            {
+              error:
+                "La clave de OpenAI del servidor no es válida o fue revocada. Si tenés OPENAI_API_KEY definida en Windows (variables de entorno), puede estar pisando la de .env.local: agregá UDESA_OPENAI_API_KEY en .env.local con tu clave correcta o corregí la variable global. Más info: https://platform.openai.com/account/api-keys",
+              success: false,
+              errorType: "openai_invalid_key",
+            },
+            { status: 401 }
           )
         }
 
@@ -295,12 +358,12 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "No hay ningún proveedor de IA configurado. Por favor, configurá OPENAI_API_KEY en el archivo .env.local",
-          success: false,
-        },
-        { status: 500 }
-      )
-    }
+            "No hay ningún proveedor de IA configurado. Por favor, configurá UDESA_OPENAI_API_KEY u OPENAI_API_KEY en el archivo .env.local",
+            success: false,
+          },
+          { status: 500 }
+        )
+      }
 
     const startTime = Date.now()
     try {
@@ -329,6 +392,19 @@ export async function POST(request: Request) {
             errorType: "openai_insufficient_quota",
           },
           { status: 503 }
+        )
+      }
+
+      if (isOpenAIAuthError(error)) {
+        console.log("❌ [TUTOR] OpenAI authentication failed (401 / invalid key)")
+        return NextResponse.json(
+          {
+            error:
+              "La clave de OpenAI del servidor no es válida o fue revocada. Si tenés OPENAI_API_KEY definida en Windows (variables de entorno), puede estar pisando la de .env.local: agregá UDESA_OPENAI_API_KEY en .env.local con tu clave correcta o corregí la variable global. Más info: https://platform.openai.com/account/api-keys",
+            success: false,
+            errorType: "openai_invalid_key",
+          },
+          { status: 401 }
         )
       }
 
