@@ -61,11 +61,11 @@ const CLASE_1_QUESTIONS: SelfEvalQuestion[] = [
     id: "clase-1-q4",
     prompt: "¿Cuál es la diferencia entre Git y GitHub?",
     options: [
-      "Git sirve para trabajar sobre versiones; GitHub sirve para alojar, compartir y colaborar sobre repositorios",
       "Git se usa en proyectos chicos y GitHub en proyectos grandes",
       "Git organiza el código y GitHub reemplaza la base de datos",
+      "Git sirve para trabajar sobre versiones; GitHub sirve para alojar, compartir y colaborar sobre repositorios"
     ],
-    correctIndex: 0,
+    correctIndex: 2,
     explanation:
       "Git controla cambios. GitHub agrega colaboración, repositorio remoto e historial compartido.",
   },
@@ -110,11 +110,11 @@ const CLASE_1_QUESTIONS: SelfEvalQuestion[] = [
     prompt:
       "¿Por qué Supabase aparece mucho en proyectos no-code, low-code o AI-assisted?",
     options: [
-      "Porque reúne piezas útiles como base de datos, autenticación y backend en una misma solución",
       "Porque reemplaza completamente la necesidad de pensar la lógica del producto",
-      "Porque sirve sobre todo para diseñar pantallas y animaciones",
+      "Porque reúne piezas útiles como base de datos, autenticación y backend en una misma solución",
+      "Porque sirve sobre todo para diseñar pantallas y animaciones"
     ],
-    correctIndex: 0,
+    correctIndex: 1,
     explanation:
       "Supabase simplifica varias capas técnicas y acelera la construcción de productos. Además es fácilmente integrable dado su enfoque low-code.",
   },
@@ -148,11 +148,11 @@ const CLASE_1_QUESTIONS: SelfEvalQuestion[] = [
     prompt:
       "¿Qué idea resume mejor la historia del no-code dentro de la evolución del software?",
     options: [
-      "El desarrollo fue creando capas de abstracción que hicieron más simple interactuar con la tecnología",
       "El no-code apareció para reemplazar por completo a la programación",
       "La tecnología avanzó, pero la barrera de entrada siguió siendo casi la misma",
+      "El desarrollo fue creando capas de abstracción que hicieron más simple interactuar con la tecnología"
     ],
-    correctIndex: 0,
+    correctIndex: 2,
     explanation:
       "La historia del software puede leerse como una sucesión de simplificaciones de interfaz.",
   },
@@ -173,12 +173,12 @@ const CLASE_1_QUESTIONS: SelfEvalQuestion[] = [
     id: "clase-1-q13",
     prompt: "¿Qué caracteriza mejor al AI-Assisted Engineering?",
     options: [
-      "Usar IA como apoyo, pero manteniendo criterio, revisión y decisiones conscientes sobre estructura y calidad",
       "Aceptar lo que propone la IA mientras el resultado parezca funcionar",
       "Escribir todo manualmente sin usar herramientas inteligentes",
+      "Usar IA como apoyo, pero manteniendo criterio, revisión y decisiones conscientes sobre estructura y calidad"
     ],
-    correctIndex: 0,
-    explanation: "La IA ayuda mucho, pero el criterio sigue siendo humano.",
+    correctIndex: 2,
+    explanation: "La IA ayuda mucho, pero el criterio aún sigue siendo humano. Combinar decisión humana con mano de obra de máquina es la mejor forma de aprovechar al máximo la IA. Es importante entender los principios fundamentales para decidir y delegar a la IA la implementación.",
   },
   {
     id: "clase-1-q14",
