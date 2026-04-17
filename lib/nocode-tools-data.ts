@@ -170,6 +170,30 @@ export const noCodeToolsData: NoCodeTool[] = [
     website: "https://coderabbit.ai",
     tags: ["ATP"]
   },
+  {
+    id: "claude-code",
+    name: "Claude Code",
+    category: "Editores de Código",
+    description: "Asistente de programación de Anthropic que trabaja desde la terminal. Ideal para tareas complejas, refactorización y automatización con lenguaje natural.",
+    website: "https://claude.com/product/claude-code",
+    tags: ["ATP"]
+  },
+  {
+    id: "antigravity",
+    name: "Antigravity",
+    category: "Editores de Código",
+    description: "Plataforma de desarrollo agéntica de Google. Los agentes de IA trabajan de forma autónoma en el editor, terminal y navegador para construir software end-to-end.",
+    website: "https://antigravity.google",
+    tags: ["ATP"]
+  },
+  {
+    id: "codex",
+    name: "Codex",
+    category: "Editores de Código",
+    description: "Agente de programación de OpenAI que escribe, corrige y ejecuta código por vos. Disponible como CLI y como extensión para tu editor favorito.",
+    website: "https://openai.com/codex",
+    tags: ["ATP"]
+  },
   
   // Infraestructura
   {

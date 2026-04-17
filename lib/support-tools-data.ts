@@ -74,6 +74,38 @@ export const supportToolsData: SupportTool[] = [
     ],
     tags: ["AI-powered"]
   },
+  {
+    id: "groq",
+    name: "Groq",
+    category: "Brainstorming y Writing",
+    description: "Plataforma de IA famosa por su velocidad ultrarrápida. Permite chatear con modelos open-source (Llama, Mixtral, DeepSeek y más) con respuestas casi instantáneas así como usar sus APIs de LLM de forma gratuita (limitada), útil para pruebas o proyectos pequeños.",
+    website: "https://groq.com",
+    pricing: "Gratis con límites, planes de pago por uso",
+    features: [
+      "Respuestas a velocidad récord (cientos de tokens por segundo)",
+      "Acceso a modelos open-source populares",
+      "Chat gratuito en groq.com",
+      "API compatible con OpenAI",
+      "Ideal para apps que requieren respuestas en tiempo real"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
+    id: "notebooklm",
+    name: "NotebookLM",
+    category: "Brainstorming y Writing",
+    description: "Asistente de investigación y escritura de Google. Subí tus documentos (PDFs, notas, videos) y conversá con ellos para resumir, estudiar o generar ideas.",
+    website: "https://notebooklm.google.com",
+    pricing: "Gratis con opción premium",
+    features: [
+      "Análisis de tus propios documentos",
+      "Resúmenes automáticos con fuentes citadas",
+      "Generación de podcasts a partir de tus notas",
+      "Guías de estudio y mapas mentales",
+      "Privacidad: no entrena con tus datos"
+    ],
+    tags: ["AI-powered"]
+  },
 
   // Video creation
   {
@@ -116,6 +148,21 @@ export const supportToolsData: SupportTool[] = [
       "Alta calidad visual",
       "Múltiples escenas y personajes",
       "Física realista"
+    ]
+  },
+  {
+    id: "runway",
+    name: "Runway",
+    category: "Creación de Video",
+    description: "Suite creativa con IA para generar y editar videos. Crea clips desde texto o imagen, aplica efectos y hasta lip-sync profesional.",
+    website: "https://runwayml.com",
+    pricing: "Gratis limitado, planes desde $15/mes",
+    features: [
+      "Generación de video desde texto o imagen (Gen-3/Gen-4)",
+      "Edición avanzada con IA",
+      "Lip-sync y animación de personajes",
+      "Efectos especiales y motion graphics",
+      "Exportación en alta calidad"
     ]
   },
 
@@ -260,6 +307,21 @@ export const supportToolsData: SupportTool[] = [
       "Videos personalizados",
       "Lip-sync automático",
       "Múltiples idiomas"
+    ]
+  },
+  {
+    id: "heygen",
+    name: "HeyGen",
+    category: ["Creación de Avatares", "Creación de Video"],
+    description: "Plataforma líder de avatares por IA. Creá videos profesionales con presentadores virtuales hablando en más de 175 idiomas, sin cámara ni estudio.",
+    website: "https://www.heygen.com",
+    pricing: "Gratis limitado, planes desde $29/mes",
+    features: [
+      "Avatares hiperrealistas con tu cara o de stock",
+      "Traducción y doblaje automático en 175+ idiomas",
+      "Lip-sync de alta precisión",
+      "Clonación de voz",
+      "Plantillas listas para usar"
     ]
   }
 ]
