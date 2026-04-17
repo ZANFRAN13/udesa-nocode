@@ -16,7 +16,7 @@ import {
 } from "lucide-react"
 
 /** Set to false when the 021 promo should be visible again. */
-const BLUR_021_CARD = true
+const BLUR_021_CARD = false
 
 export default function BenefitsPage() {
   const router = useRouter()
@@ -24,7 +24,10 @@ export default function BenefitsPage() {
   const [copiedV0, setCopiedV0] = useState(false)
   const [copied021, setCopied021] = useState(false)
   const { role, isFreeUser, isLoading: isLoadingRole } = useUserRole()
+  /** v0 (unchanged) */
   const code = "NOCODE20"
+  /** 021 / from021.io */
+  const code021 = "02126"
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -56,7 +59,7 @@ export default function BenefitsPage() {
 
   const handleCopyCode021 = async () => {
     try {
-      await navigator.clipboard.writeText(code)
+      await navigator.clipboard.writeText(code021)
       setCopied021(true)
       setTimeout(() => setCopied021(false), 2000)
     } catch (err) {
@@ -184,7 +187,7 @@ export default function BenefitsPage() {
                   
                   <div className="flex items-center gap-2 p-3 bg-slate-800 rounded-lg border border-slate-700">
                     <code className="flex-1 text-lg font-mono font-semibold text-white">
-                      {code}
+                      {code021}
                     </code>
                     <Button
                       onClick={handleCopyCode021}
@@ -219,7 +222,7 @@ export default function BenefitsPage() {
                   <ol className="text-sm text-purple-800 dark:text-purple-200 space-y-1">
                     <li>1. Ve a <a href="https://from021.io" target="_blank" rel="noopener noreferrer" className="underline font-semibold">from021.io</a></li>
                     <li>2. Crea tu cuenta o inicia sesión</li>
-                    <li>3. Usa el código <strong>{code}</strong> al seleccionar el plan Pro</li>
+                    <li>3. Usa el código <strong>{code021}</strong> al seleccionar el plan Pro</li>
                     <li>4. ¡Bajá tu idea a producción con 021!</li>
                   </ol>
                 </div>
