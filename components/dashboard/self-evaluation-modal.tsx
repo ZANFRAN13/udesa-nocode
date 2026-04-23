@@ -12,6 +12,7 @@ import { X, GraduationCap, ChevronRight, ArrowRight, Lock } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   SELF_EVALUATION_CLASSES,
+  SELF_EVAL_CLASS_IDS_LIVE,
   type SelfEvalClass,
 } from "@/lib/self-evaluation-data"
 import "@/components/glossary/gemini-markdown-styles.css"
@@ -24,7 +25,7 @@ const optionLabels = ["A", "B", "C"] as const
 
 /** Autoevaluaciones con contenido listo; el resto se muestra como no disponible hasta agregar datos. */
 function isSelfEvalClassAvailable(classId: string): boolean {
-  return classId === "clase-1"
+  return SELF_EVAL_CLASS_IDS_LIVE.includes(classId)
 }
 
 type SelfEvaluationModalProps = {

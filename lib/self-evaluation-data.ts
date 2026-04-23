@@ -1,6 +1,7 @@
 /**
  * Autoevaluaciones por clase: preguntas de opción múltiple (A/B/C), explicación tras confirmar.
  * Clase 1: contenido alineado al material del programa (autotests clase 1).
+ * Clase 2: proceso de producto, PM, vibecoding, brief/PRD, user flows, 021, v0, APIs.
  */
 
 export type SelfEvalQuestion = {
@@ -232,6 +233,220 @@ const CLASE_1_QUESTIONS: SelfEvalQuestion[] = [
   },
 ]
 
+const CLASE_2_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-2-q1",
+    prompt:
+      "Al inicio del proceso de producto, ¿qué tipo de herramientas suele usar un PM para entender mejor el problema, el usuario y la propuesta de valor?",
+    options: [
+      "Herramientas como Value Proposition Canvas, entrevistas, mapas de problema, research y marcos de priorización",
+      "Principalmente herramientas de deployment, hosting y DevOps",
+      "Solo herramientas de diseño visual, porque al inicio lo importante es la estética",
+    ],
+    correctIndex: 0,
+    explanation:
+      "En etapas tempranas, un PM suele apoyarse en herramientas para entender necesidades, pains, gains, propuesta de valor y oportunidades. Todavía no se trata de construir, sino de pensar mejor qué conviene construir.",
+  },
+  {
+    id: "clase-2-q2",
+    prompt: "¿Cuál de estas frases resume mejor la relación entre vibecoding y éxito de producto?",
+    options: [
+      "Si algo fue hecho con vibecoding y funciona, ya puede considerarse un producto exitoso",
+      "Vibecoding puede acelerar la construcción, pero no reemplaza validación de mercado, criterio de producto ni ejecución",
+      "Vibecoding sirve solo para diseño, no para producto",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Que algo «ande» no significa que resuelva un problema real, que alguien lo quiera usar o que tenga buen encaje con el mercado. El build es una parte; el éxito de producto es bastante más que eso.",
+  },
+  {
+    id: "clase-2-q3",
+    prompt: "¿Cómo conviene pensar el uso de IA a lo largo del proceso de producto?",
+    options: [
+      "Como una herramienta que puede ayudar en brainstorming, research, diseño, prototipado y desarrollo, según la etapa",
+      "Como una herramienta que solo sirve cuando ya está todo definido",
+      "Como un reemplazo completo del trabajo humano en todas las etapas",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La IA puede aportar valor en distintas instancias del proceso, pero no reemplaza el criterio humano ni la validación real.",
+  },
+  {
+    id: "clase-2-q4",
+    prompt: "¿Qué NO conviene delegarle a la IA, incluso si la usamos mucho en el flujo?",
+    options: [
+      "Tareas repetitivas o borradores iniciales",
+      "La redacción inicial de ideas o requerimientos",
+      "El criterio, la decisión final y la responsabilidad de validar si algo tiene sentido",
+    ],
+    correctIndex: 2,
+    explanation:
+      "La IA puede asistir mucho, pero la última palabra no conviene delegarla. Siempre hace falta revisar, contrastar y pensar.",
+  },
+  {
+    id: "clase-2-q5",
+    prompt: "¿Qué diferencia describe mejor a un Product Brief frente a un PRD?",
+    options: [
+      "El Product Brief baja la idea a una visión breve y alineadora; el PRD entra más en requisitos, comportamiento y alcance del producto",
+      "El Product Brief es técnico y el PRD es solo inspiracional",
+      "Son documentos equivalentes con distinto nombre",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El brief ayuda a alinear qué se quiere lograr. El PRD traduce eso a una definición más concreta y operativa.",
+  },
+  {
+    id: "clase-2-q6",
+    prompt: "¿Qué describe mejor a un PRD?",
+    options: [
+      "Un documento que define propósito, funciones, comportamiento y requisitos del producto para alinear al equipo",
+      "Un pitch comercial para convencer inversores",
+      "Un documento visual para mostrar colores y tipografías",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El PRD ayuda a ordenar qué se está construyendo, cómo debería funcionar y qué entra o no entra en el alcance.",
+  },
+  {
+    id: "clase-2-q7",
+    prompt: "¿Qué es un User Flow?",
+    options: [
+      "Un mapa visual de los pasos que sigue una persona para completar una tarea dentro del producto",
+      "Un listado de tecnologías del backend",
+      "Un historial de cambios del repositorio",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El user flow permite pensar la experiencia del usuario antes de construir y detectar posibles fricciones.",
+  },
+  {
+    id: "clase-2-q8",
+    prompt: "¿Qué es 021 dentro de este flujo?",
+    options: [
+      "Un sistema de hosting para desplegar aplicaciones",
+      "Una herramienta de product management asistida por IA que transforma una idea en specs más estructuradas",
+      "Un reemplazo de GitHub para guardar código",
+    ],
+    correctIndex: 1,
+    explanation:
+      "021 ayuda a bajar una idea a documentos y especificaciones más profesionales y accionables.",
+  },
+  {
+    id: "clase-2-q9",
+    prompt: "¿Cómo conviene usar 021 dentro de un flujo de vibecoding o AI-assisted building?",
+    options: [
+      "Como una capa previa para convertir una idea difusa en brief, PRD, user flows y specs más concretas antes de pedirle cosas a la IA constructora",
+      "Como una herramienta de analytics para medir usuarios activos",
+      "Como una base de datos para guardar registros del producto",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Un input más estructurado suele producir mejores resultados que una idea vaga cuando luego se trabaja con herramientas de generación o coding asistido.",
+  },
+  {
+    id: "clase-2-q10",
+    prompt: "¿021 valida si mi idea tiene mercado?",
+    options: [
+      "Sí, porque si genera un PRD sólido entonces la idea ya quedó validada",
+      "No; estructura la idea, pero la validación real hay que hacerla afuera, con mercado y usuarios",
+      "Sí, siempre que luego lo pase a v0 o Lovable",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Estructurar una idea no equivale a validarla. La validación ocurre al contrastarla con usuarios reales y mercado.",
+  },
+  {
+    id: "clase-2-q11",
+    prompt: "Si quiero validar una idea antes de enamorarme del build, ¿qué tiene más sentido?",
+    options: [
+      "Hacer entrevistas, encuestas o pruebas con potenciales usuarios, usando IA para preparar preguntas o analizar respuestas",
+      "Construir toda la app primero y validar después",
+      "Asumir que si la IA pudo construirlo, entonces el mercado existe",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La IA puede ayudar a preparar entrevistas o analizar resultados, pero la validación real no ocurre solo dentro de la herramienta.",
+  },
+  {
+    id: "clase-2-q12",
+    prompt: "En términos prácticos, ¿qué postura conviene asumir sobre lo que construyo en v0?",
+    options: [
+      "Que queda encerrado dentro de v0 y no puedo moverlo a ningún otro lado a menos que pague",
+      "Que puedo sincronizarlo con GitHub y trabajar el código como propio en el ambiente que elija",
+      "Que solo me pertenece si pago un plan Enterprise",
+    ],
+    correctIndex: 1,
+    explanation:
+      "El código creado es de tu propiedad y podés trabajar ese código como parte de tu proyecto, manteniendo control y portabilidad. Exportarlo a GitHub facilita esto.",
+  },
+  {
+    id: "clase-2-q13",
+    prompt: "¿Es razonable decir que hoy se puede lanzar un producto digital por $0?",
+    options: [
+      "Sí, puede ser posible si el proyecto entra dentro de los free tiers y límites de herramientas como v0, Supabase y Vercel",
+      "Sí, independientemente de la complejidad, features, tamaño o intensidad de uso del producto",
+      "No, porque siempre algo hay que pagar",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Para MVPs o proyectos chicos puede ser viable lanzar sin costo usando planes gratuitos, aunque eso depende del consumo y del caso.",
+  },
+  {
+    id: "clase-2-q14",
+    prompt: "¿Cómo se mide normalmente el consumo en plataformas como v0 y otras herramientas de IA?",
+    options: [
+      "En créditos o tokens que se van gastando con cada interacción, generación o cambio",
+      "Solo por cantidad de usuarios finales de la app",
+      "Solo por la cantidad de pantallas diseñadas",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Una buena analogía es pensarlo como combustible: cada acción consume parte del saldo disponible.",
+  },
+  {
+    id: "clase-2-q15",
+    prompt: "¿Puedo usar un dominio propio en un proyecto hecho con herramientas como v0 o Lovable?",
+    options: [
+      "Sí; normalmente estas plataformas permiten conectar un dominio propio al proyecto",
+      "No; necesariamente queda con subdominio de la plataforma",
+      "Solo si exporto todo y rehago el proyecto desde cero",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Usar dominio propio suele ser posible y es una práctica común para dar una identidad más profesional al producto.",
+  },
+  {
+    id: "clase-2-q16",
+    prompt: "¿Qué describe mejor qué es una API y para qué sirve?",
+    options: [
+      "Una forma estandarizada de permitir que distintos sistemas se comuniquen e intercambien datos o acciones",
+      "Una contraseña especial para entrar a cualquier software",
+      "Un tipo de base de datos visual pensada para diseñar apps sin código",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Una API permite que un sistema «hable» con otro de forma ordenada. Gracias a una API, una app puede pedir datos, enviar información o usar funcionalidades de otro servicio.",
+  },
+  {
+    id: "clase-2-q17",
+    prompt: "¿Cuál de estas opciones describe mejor qué es una API key y qué cuidado principal hay que tener?",
+    options: [
+      "Es una contraseña pública pensada para que cualquier integrante del equipo la reutilice",
+      "Es un identificador visual del proyecto que puede dejarse en el navegador sin problema",
+      "Es una clave que identifica y autoriza tu uso de una API; no conviene exponerla en frontend, compartirla ni subirla al repositorio",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Una API key sirve para autenticar el uso de una API. Si se filtra, pueden consumir recursos o generar costos a tu nombre.",
+  },
+]
+
+/**
+ * IDs de clases con cuestionario real (no placeholder). Incluir aquí al dar de alta preguntas nuevas
+ * y refleja qué se puede elegir en el modal de autoevaluación.
+ */
+export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2"]
+
 /** Clase estable por clase para tests y analytics futuros. */
 export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   {
@@ -241,32 +456,32 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   },
   {
     id: "clase-2",
-    title: "Clase 2: Definamos IA",
-    questions: dummyQuestionsFor("Clase 2"),
+    title: "Clase 2: De Idea a Producto",
+    questions: CLASE_2_QUESTIONS,
   },
   {
     id: "clase-3",
-    title: "Clase 3: De idea a Producto",
+    title: "Clase 3: Definamos IA",
     questions: dummyQuestionsFor("Clase 3"),
   },
   {
     id: "clase-4",
-    title: "Clase 4: Haciendo que funcione",
+    title: "Clase 4: Herramientas Avanzadas",
     questions: dummyQuestionsFor("Clase 4"),
   },
   {
     id: "clase-5",
-    title: "Clase 5: Lanzamiento y luego qué?",
+    title: "Clase 5: Haciendo que funcione",
     questions: dummyQuestionsFor("Clase 5"),
   },
   {
     id: "clase-6",
-    title: "Clase 6: Demo y futuro",
+    title: "Clase 6: Lanzamiento y luego qué?",
     questions: dummyQuestionsFor("Clase 6"),
   },
   {
     id: "clase-7",
-    title: "Clase 7: Título pendiente",
+    title: "Clase 7: Demo day + Frameworks Emergentes",
     questions: dummyQuestionsFor("Clase 7"),
   },
 ]

@@ -171,7 +171,7 @@ export default function Dashboard() {
 
   const classVideos: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 2: De Idea a Producto": "",
+    "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ef02dbc2-8a87-4726-9075-b42f0124b017&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: Definamos IA": "",
     "Clase 4: Introducción a Herramientas Avanzadas": "",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
