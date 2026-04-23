@@ -191,7 +191,7 @@ export default function Dashboard() {
 
   const classSlides: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview",
-    "Clase 2: De idea a Producto": "",
+    "Clase 2: De idea a Producto": "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview",
     "Clase 3: Definamos IA": "",
     "Clase 4: Introducción a Herramientas Avanzadas": "",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
