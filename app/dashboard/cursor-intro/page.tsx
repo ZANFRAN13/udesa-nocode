@@ -91,25 +91,6 @@ export default function CursorIntroPage() {
     },
     {
       number: 2,
-      title: "Crear una carpeta vacía en mis documentos",
-      icon: FolderOpen,
-      description: "Esta carpeta será el lugar donde guardarás tu proyecto en tu computadora."
-    },
-    {
-      number: 3,
-      title: "Abrir nueva terminal bash en Cursor",
-      icon: Terminal,
-      description: "La terminal es donde le das órdenes a tu computadora para ejecutar procesos como correr el proyecto localmente (en el navegador) o instalar librerías o enviar/traer cambios a GitHub. No confundir con el chat de IA."
-    },
-    {
-      number: 4,
-      title: 'Posicionarse en la carpeta raíz',
-      icon: FolderOpen,
-      description: "Usa el comando cd seguido del nombre de tu carpeta.",
-      code: "cd nombreCarpeta"
-    },
-    {
-      number: 5,
       title: "Sincronizar Cursor con GitHub",
       icon: Settings,
       description: (
@@ -130,34 +111,124 @@ export default function CursorIntroPage() {
             </Tooltip>
           </TooltipProvider>
           {" "}de GitHub en Cursor.
+          <br /><br />
+          <strong>¿No tenés cuenta de GitHub todavía?</strong> Creá una gratis en{" "}
+          <a
+            href="https://github.com/signup"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline hover:no-underline"
+          >
+            github.com/signup
+          </a>
+          {" "}antes de este paso.
         </>
       )
     },
     {
+      number: 3,
+      title: "Crear una carpeta vacía en mis documentos",
+      icon: FolderOpen,
+      description: "Esta carpeta será el lugar donde guardarás tu proyecto en tu computadora. Cuando abras Cursor te pedirá que abras una carpeta. Esa será la carpeta para abrir."
+    },
+    {
+      number: 4,
+      title: "Abrir nueva terminal bash en Cursor",
+      icon: Terminal,
+      description: 'La terminal es donde le das órdenes a tu computadora para ejecutar procesos como correr el proyecto localmente (en el navegador) o instalar librerías o enviar/traer cambios a GitHub. No confundir con el chat de IA. En Cursor la abrís desde el menú superior: Terminal → New Terminal (o con el atajo Ctrl + `).'
+    },
+    {
+      number: 5,
+      title: "Configurar tu identidad en Git",
+      icon: Settings,
+      description: (
+        <>
+          Este paso le dice a Git <strong>quién eres</strong>, para que cada cambio que guardes en GitHub quede firmado con tu nombre y email. Solo se hace <strong>una vez</strong> por computadora.
+          <br /><br />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="underline decoration-dotted cursor-help text-primary font-medium inline-flex items-center gap-1">
+                  🤔 Pero, ¿acaso no me vinculé ya con GitHub en el paso 2?
+                </span>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-sm">
+                <div className="text-xs space-y-2">
+                  <p>¡Buena observación! Parecen lo mismo pero son <strong>dos cosas distintas</strong>:</p>
+                  <p>
+                    <strong>• Sincronizar con GitHub (paso 2 / SSO):</strong> Le da permiso a <em>Cursor</em> para hablar con tu cuenta de GitHub (ver tus repos, clonar, subir cambios). Es como darle a Cursor la llave de tu casa en GitHub.
+                  </p>
+                  <p>
+                    <strong>• git config (este paso):</strong> Git es <em>otro</em> programa que vive en tu computadora y todavía no sabe quién sos. Cada vez que guardes un cambio, Git lo <strong>firma</strong> con el nombre y email que pongas acá. Sin esto, los cambios aparecerían sin autor o con un autor genérico.
+                  </p>
+                  <p className="pt-2 border-t border-border/50">
+                    <strong>En criollo:</strong> uno conecta <em>Cursor ↔ GitHub</em>, el otro le pone <em>tu firma</em> a los cambios. Los dos hacen falta.
+                  </p>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <br /><br />
+          <strong>¿Dónde lo escribo?</strong> En la misma terminal que abriste en Cursor (la del paso 4). Copiá cada comando con el botón de copiar, pegalo en la terminal y presioná <kbd className="px-1.5 py-0.5 text-xs bg-accent/30 border border-border rounded">Enter</kbd>. Después hacé lo mismo con el segundo.
+          <br /><br />
+          <strong>Importante:</strong> reemplazá el texto entre comillas por tu nombre (o alias) y tu email real (usá el mismo email de tu cuenta de GitHub). Las comillas <code className="px-1 text-xs bg-accent/20 rounded">" "</code> deben quedar en el comando.
+        </>
+      ),
+      codes: [
+        'git config --global user.name "tu nombre o alias"',
+        'git config --global user.email "tu@email.com"'
+      ]
+    },
+    {
       number: 6,
-      title: "Copiar el URL del repositorio en GitHub y clonarlo en Cursor",
-      icon: Download,
-      description: "Esto descarga el código del proyecto desde GitHub a tu computadora.",
-      code: "git clone URL"
+      title: 'Posicionarse en la carpeta raíz',
+      icon: FolderOpen,
+      description: "Verificá que estás parado en la carpeta que creaste. Si no, usá la opción file/archivo en la barra de herramientas para abrir la carpeta nueva y posicionarte en ella.",
     },
     {
       number: 7,
+      title: "Copiar el URL del repositorio en GitHub y clonarlo en Cursor",
+      icon: Download,
+      description: (
+        <>
+          Esto descarga el código del proyecto desde GitHub a tu computadora. El <strong>URL</strong> lo sacás del repositorio en GitHub haciendo click en el botón verde <strong>"Code"</strong> → pestaña <strong>HTTPS</strong> → copiar.
+          <br /><br />
+          Reemplazá la palabra <code className="px-1 text-xs bg-accent/20 rounded">URL</code> en el comando por el link que copiaste (algo como <code className="px-1 text-xs bg-accent/20 rounded">https://github.com/usuario/proyecto.git</code>).
+        </>
+      ),
+      code: "git clone URL"
+    },
+    {
+      number: 8,
+      title: "Entrar en la carpeta del proyecto clonado",
+      icon: FolderOpen,
+      description: (
+        <>
+          Cuando clonaste el repositorio, Git creó una <strong>nueva carpeta</strong> con el nombre del proyecto dentro de la carpeta donde estabas. Ahora tenés que meterte en esa nueva carpeta para poder trabajar con ella.
+          <br /><br />
+          El nombre del proyecto lo ves en el panel de archivos de Cursor (a la izquierda), o es la última parte del URL que clonaste. Reemplazá <code className="px-1 text-xs bg-accent/20 rounded">nombreDelProyecto</code> en el comando.
+        </>
+      ),
+      code: "cd nombreDelProyecto"
+    },
+    {
+      number: 9,
       title: "Instalar librerías",
       icon: Settings,
-      description: "Las librerías son paquetes de código que tu proyecto necesita para funcionar.",
+      description: "Las librerías son paquetes de código que tu proyecto necesita para funcionar. Este comando lee la lista de librerías del proyecto y las descarga todas de una. Puede tardar unos minutos la primera vez.",
       code: "npm install"
     }
   ]
 
   const additionalSteps = [
     {
-      number: 8,
+      number: 10,
       title: "Determinar reglas de usuario y de proyecto en Cursor",
       icon: Settings,
       description: "Define cómo quieres que la IA te ayude en tu proyecto."
     },
     {
-      number: 9,
+      number: 11,
       title: "Correr proyecto en el navegador para hacer pruebas",
       icon: Globe,
       description: "Inicia el servidor local para ver tu proyecto en acción.",
@@ -347,6 +418,34 @@ export default function CursorIntroPage() {
                               </button>
                             </div>
                           )}
+                          {step.codes && (
+                            <div className="space-y-2">
+                              {step.codes.map((cmd, cmdIndex) => {
+                                const cmdId = `step-${step.number}-${cmdIndex}`
+                                return (
+                                  <div
+                                    key={cmdIndex}
+                                    className="flex items-center gap-2 p-2 bg-accent/10 rounded-lg border border-accent/20 w-full"
+                                  >
+                                    <code className="text-xs md:text-sm font-mono text-foreground flex-1 break-all">
+                                      {cmd}
+                                    </code>
+                                    <button
+                                      onClick={() => copyToClipboard(cmd, cmdId)}
+                                      className="p-1.5 rounded-md bg-accent/50 hover:bg-accent transition-colors shrink-0"
+                                      title="Copiar comando"
+                                    >
+                                      {copiedCode === cmdId ? (
+                                        <Check className="h-3.5 w-3.5 text-green-600" />
+                                      ) : (
+                                        <Copy className="h-3.5 w-3.5 text-muted-foreground" />
+                                      )}
+                                    </button>
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -465,7 +564,7 @@ export default function CursorIntroPage() {
               <div className="flex gap-3">
                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2" />
                 <p className="text-sm md:text-base text-muted-foreground">
-                  <strong>Aprovecha las reglas:</strong> Las reglas de usuario y de proyecto (paso 8) le indican 
+                  <strong>Aprovecha las reglas:</strong> Las reglas de usuario y de proyecto (paso 10) le indican 
                   a Cursor cómo quieres que trabaje. Por ejemplo, puedes pedirle que use cierto estilo de código o que siempre explique lo que hace.
                 </p>
               </div>
@@ -473,7 +572,7 @@ export default function CursorIntroPage() {
                 <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2" />
                 <p className="text-sm md:text-base text-muted-foreground">
                   <strong>Revisa en el navegador:</strong> Siempre prueba tus cambios corriendo el proyecto 
-                  localmente (paso 9) para ver cómo se ve y funciona en tiempo real.
+                  localmente (paso 11) para ver cómo se ve y funciona en tiempo real.
                 </p>
               </div>
             </CardContent>
