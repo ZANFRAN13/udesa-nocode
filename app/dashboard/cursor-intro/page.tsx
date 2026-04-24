@@ -175,7 +175,7 @@ export default function CursorIntroPage() {
         </>
       ),
       codes: [
-        'git config --global user.name "tu nombre o alias"',
+        'git config --global user.name "tu username o alias"',
         'git config --global user.email "tu@email.com"'
       ]
     },
