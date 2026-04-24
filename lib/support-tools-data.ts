@@ -323,6 +323,75 @@ export const supportToolsData: SupportTool[] = [
       "Clonación de voz",
       "Plantillas listas para usar"
     ]
+  },
+
+  // Herramientas Adicionales
+  {
+    id: "elicit",
+    name: "Elicit",
+    category: "Herramientas Adicionales",
+    description: "Asistente de investigación con IA especializado en papers académicos y científicos. Buscá entre más de 138 millones de publicaciones, generá resúmenes con citas y armá reportes de investigación sin necesidad de saber buscar palabras clave exactas.",
+    website: "https://elicit.com",
+    pricing: "Gratis con límites, Pro desde $49/mes",
+    features: [
+      "Búsqueda semántica en 138M+ papers académicos",
+      "Generación automática de reportes de investigación",
+      "Tablas interactivas con datos extraídos de papers",
+      "Revisiones sistemáticas de literatura",
+      "Alertas de nuevas publicaciones sobre tu tema",
+      "Todas las respuestas vienen con citas verificables"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
+    id: "theresanaiforthat",
+    name: "There's An AI For That",
+    category: "Herramientas Adicionales",
+    description: "El directorio más grande de herramientas de IA. Si necesitás una IA para cualquier tarea imaginable, acá la vas a encontrar. Tiene miles de herramientas organizadas por categoría con descripción, precio y valoraciones.",
+    website: "https://theresanaiforthat.com",
+    pricing: "Gratis",
+    features: [
+      "Miles de herramientas de IA organizadas por categoría",
+      "Filtros por precio, popularidad y tipo de tarea",
+      "Comparaciones entre herramientas similares",
+      "Reseñas y valoraciones de usuarios",
+      "Actualizaciones diarias con herramientas nuevas"
+    ]
+  },
+  {
+    id: "chatgpt-images-2",
+    name: "ChatGPT Images (GPT-4o)",
+    category: ["Herramientas Adicionales", "Creación de Imágenes"],
+    description: "La generación de imágenes nativa de ChatGPT usando el modelo GPT-4o. A diferencia de DALL-E, entiende instrucciones complejas con mucho más detalle, edita partes de una imagen sin tocar el resto y mantiene coherencia visual a lo largo de varias generaciones.",
+    website: "https://chat.openai.com",
+    pricing: "Incluido en ChatGPT Plus ($20/mes)",
+    features: [
+      "Generación de imágenes desde texto con altísima precisión",
+      "Edición de zonas específicas de una imagen (inpainting)",
+      "Comprensión de instrucciones detalladas y complejas",
+      "Consistencia visual entre múltiples imágenes",
+      "Texto legible dentro de las imágenes",
+      "Integración directa en la conversación de ChatGPT"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
+    id: "openclaw",
+    name: "OpenClaw",
+    category: "Herramientas Adicionales",
+    description: "Agente de IA personal open-source que corre en tu propia computadora. Lo conectás a tu modelo de IA favorito (Claude, ChatGPT, etc.) y lo usás desde WhatsApp, Telegram, Discord u otras apps de mensajería. Puede manejar archivos, navegar la web, automatizar tareas y recordar conversaciones anteriores.",
+    website: "https://openclaw.ai",
+    pricing: "Gratis y open-source (pagás solo el uso de la API de IA)",
+    features: [
+      "Corre en tu máquina: Mac, Windows o Linux",
+      "Controlable desde WhatsApp, Telegram, Discord, Slack, Signal e iMessage",
+      "Compatible con Claude, ChatGPT y modelos locales",
+      "Memoria persistente entre conversaciones",
+      "Navegación web y control del navegador",
+      "Automatización de tareas y archivos del sistema",
+      "Extensible con plugins y habilidades propias"
+    ],
+    tags: ["AI-powered"]
   }
 ]
 
@@ -336,6 +405,7 @@ export const supportCategories = [
   "Componentes UI",
   "Analytics",
   "Creación Musical",
-  "Creación de Avatares"
+  "Creación de Avatares",
+  "Herramientas Adicionales"
 ]
 

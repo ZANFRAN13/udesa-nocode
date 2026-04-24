@@ -411,6 +411,14 @@ export const noCodeToolsData: NoCodeTool[] = [
     description: "Proyecto experimental de Google DeepMind para agentes de navegación web.",
     website: "https://deepmind.google/technologies/project-mariner",
     tags: []
+  },
+  {
+    id: "google-canvas",
+    name: "Google Canvas",
+    category: "Otras Herramientas",
+    description: "Espacio de trabajo colaborativo con IA dentro de Gemini. Permite crear, editar y refinar documentos, código o contenido en tiempo real junto con la IA, de manera similar al Canvas de ChatGPT o los Artefactos de Claude.",
+    website: "https://gemini.google.com",
+    tags: ["ATP"]
   }
 ]
 

@@ -274,8 +274,14 @@ export default function WorksheetsPage() {
           description: "Comunidad de desarrolladores y noticias tech"
         }
       ]
+    },
+    {
+      id: "task-2",
+      title: "Seguir desarrollando el producto",
+      description: "Continuar desarrollando el producto según el PRD y las funcionalidades principales. Integrar servicios externos como base de datos, autenticación, etc.",
     }
   ]
+
   const class4Tasks: ClassTask[] = [
     {
       id: "task-1",
