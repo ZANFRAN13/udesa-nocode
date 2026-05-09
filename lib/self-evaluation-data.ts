@@ -2,6 +2,8 @@
  * Autoevaluaciones por clase: preguntas de opción múltiple (A/B/C), explicación tras confirmar.
  * Clase 1: contenido alineado al material del programa (autotests clase 1).
  * Clase 2: proceso de producto, PM, vibecoding, brief/PRD, user flows, 021, v0, APIs.
+ * Clase 3: IA, ML, Deep Learning, redes neuronales, LLMs, tokens, ventana de contexto, entrenamiento.
+ * Clase 4: v0 vs Cursor vs Claude Code, local vs online, commits, sesiones, localhost, MCP, costos.
  */
 
 export type SelfEvalQuestion = {
@@ -441,11 +443,377 @@ const CLASE_2_QUESTIONS: SelfEvalQuestion[] = [
   },
 ]
 
+const CLASE_3_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-3-q1",
+    prompt: "¿Qué describe mejor qué es la Inteligencia Artificial?",
+    options: [
+      "Un conjunto de sistemas capaces de realizar tareas que normalmente asociamos con capacidades humanas como reconocer patrones, generar texto o tomar decisiones asistidas",
+      "Un tipo específico de robot físico con forma humana",
+      "Una base de datos especialmente rápida para automatizar procesos",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La Inteligencia Artificial es un campo amplio. No se limita a robots ni a chatbots: incluye sistemas que clasifican, recomiendan, predicen, generan contenido o ayudan a decidir.",
+  },
+  {
+    id: "clase-3-q2",
+    prompt: "¿Qué es Machine Learning?",
+    options: [
+      "Una rama de la IA en la que los sistemas aprenden patrones a partir de datos en lugar de seguir únicamente reglas programadas a mano",
+      "Un lenguaje de programación creado exclusivamente para entrenar chatbots",
+      "Un proceso por el cual una base de datos ordena mejor la información automáticamente",
+    ],
+    correctIndex: 0,
+    explanation:
+      "En Machine Learning el sistema aprende a partir de ejemplos o datos. No hace falta programar cada caso uno por uno con reglas explícitas.",
+  },
+  {
+    id: "clase-3-q3",
+    prompt: "¿Cómo se relacionan Machine Learning y Deep Learning?",
+    options: [
+      "Son sinónimos: Deep Learning es simplemente otra forma de llamar al Machine Learning",
+      "Deep Learning es un subconjunto dentro de Machine Learning que usa redes neuronales con varias capas para abordar problemas de mayor complejidad",
+      "Machine Learning es un subconjunto de Deep Learning",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Todo Deep Learning es Machine Learning, pero no todo Machine Learning es Deep Learning.",
+  },
+  {
+    id: "clase-3-q4",
+    prompt: "¿Qué describe mejor qué es una red neuronal?",
+    options: [
+      "Una red de computadoras conectadas entre sí para compartir internet",
+      "Un sistema que guarda millones de documentos para responder preguntas",
+      "Un modelo inspirado de forma general en cómo se conectan neuronas, que transforma entradas en salidas aprendiendo patrones a partir de datos",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Una red neuronal no es literalmente un cerebro, pero toma inspiración muy general de esa idea de conexiones y aprendizaje a partir de ejemplos.",
+  },
+  {
+    id: "clase-3-q5",
+    prompt: "¿Qué es un LLM o Gran Modelo de Lenguaje?",
+    options: [
+      "Un tipo de red neuronal entrenada sobre mucho texto para predecir y generar secuencias de tokens",
+      "Un chat para crear apps sin código",
+      "Una base de datos especializada en documentos largos",
+    ],
+    correctIndex: 0,
+    explanation:
+      "LLM significa Large Language Model. Su función central es modelar lenguaje y generar texto probabilísticamente a partir de patrones aprendidos durante el entrenamiento.",
+  },
+  {
+    id: "clase-3-q6",
+    prompt: "V0 o Cursor son LLMs especializados en código.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo Cursor es un LLM; v0 no lo es",
+    ],
+    correctIndex: 1,
+    explanation:
+      "V0 y Cursor no son LLMs. En cambio, usan LLMs para generación de texto (el código es esencialmente texto) y tienen un agente especializado en software para mayor precisión. El modelo es como el «motor» que genera respuestas o código. El agente es más parecido al «auto completo»: usa ese motor, pero además agrega interfaz, herramientas, contexto, archivos, memoria operativa y acciones.",
+  },
+  {
+    id: "clase-3-q7",
+    prompt: "Siguiendo la analogía auto y motor, ¿qué comparación representa mejor la relación entre modelo y agente?",
+    options: [
+      "El modelo es el auto y el agente es la rueda que le permite avanzar",
+      "El modelo es el motor; el agente es el sistema completo que usa ese motor para realizar tareas concretas",
+      "El modelo y el agente son equivalentes; solo cambia el nombre comercial",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Un agente puede usar uno o más modelos, además de contexto, archivos, instrucciones del sistema y herramientas externas para ejecutar tareas más complejas.",
+  },
+  {
+    id: "clase-3-q8",
+    prompt: "Un agente de coding puede hacer más cosas que un modelo «pelado» porque además de generar texto o código puede leer archivos, usar herramientas y seguir flujos de trabajo.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo si se le da acceso explícito al sistema operativo",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Esa es justamente una de las diferencias prácticas más importantes entre un modelo y un agente que trabaja sobre un proyecto real.",
+  },
+  {
+    id: "clase-3-q9",
+    prompt: "Los LLMs pueden cometer errores porque…",
+    options: [
+      "Siempre consultan una fuente externa verificable antes de responder y esa fuente a veces está caída",
+      "Trabajan con predicción probabilística, pueden interpretar mal el prompt, carecer de contexto suficiente o generar información incorrecta con tono convincente",
+      "Solo fueron entrenados para responder preguntas específicas",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Un LLM no garantiza verdad. Predice en base a patrones estadísticos y contexto, por eso puede sonar convincente y aun así equivocarse. Los errores pueden venir de falta de contexto, ambigüedad en el pedido, límites del entrenamiento o simple predicción equivocada.",
+  },
+  {
+    id: "clase-3-q10",
+    prompt: "¿Qué es un token en el contexto de los LLMs?",
+    options: [
+      "Una unidad básica de texto que el modelo procesa, que puede ser una palabra, parte de una palabra o un símbolo",
+      "Una contraseña secreta para iniciar sesión en el modelo",
+      "Un archivo donde el modelo guarda respuestas anteriores",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Los modelos no trabajan exactamente «palabra por palabra». Trabajan sobre tokens, que son unidades más pequeñas o flexibles.",
+  },
+  {
+    id: "clase-3-q11",
+    prompt: "¿Cómo usan los LLMs los tokens?",
+    options: [
+      "Los usan como unidades de entrada y salida para leer el prompt, procesar contexto y generar la respuesta paso a paso",
+      "Los usan solo para cobrarle al usuario, pero no para procesar el lenguaje",
+      "Los usan únicamente cuando responden en inglés",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El modelo recibe tokens de entrada, los procesa dentro de su ventana de contexto y genera tokens de salida uno detrás de otro.",
+  },
+  {
+    id: "clase-3-q12",
+    prompt: "¿Qué es la ventana de contexto de un LLM?",
+    options: [
+      "El límite de información que el modelo puede tener «a la vista» en una interacción dada, incluyendo prompt, historial y a veces archivos o instrucciones",
+      "La velocidad máxima con la que el modelo puede responder",
+      "La cantidad de personas que pueden usar el modelo al mismo tiempo",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La ventana de contexto define cuánta información entra en la conversación activa del modelo para que pueda tenerla en cuenta al responder.",
+  },
+  {
+    id: "clase-3-q13",
+    prompt: "Si un prompt o una conversación excede la ventana de contexto, el modelo puede perder información relevante o no tenerla en cuenta correctamente.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo ocurre con modelos pequeños o gratuitos",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Si el contexto es demasiado largo, parte de la información puede quedar afuera o diluirse, lo que afecta la calidad de la respuesta.",
+  },
+  {
+    id: "clase-3-q14",
+    prompt: "¿Qué describe mejor el pre-entrenamiento de un LLM?",
+    options: [
+      "La etapa en la que el modelo aprende patrones generales del lenguaje a partir de enormes volúmenes de texto",
+      "La etapa en la que usuarios finales corrigen respuestas una por una dentro del chat",
+      "La etapa en la que el modelo se conecta por primera vez a herramientas externas como un navegador o una terminal",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El pre-entrenamiento le da al modelo una base general sobre lenguaje, conceptos, estilos y relaciones estadísticas entre tokens.",
+  },
+  {
+    id: "clase-3-q15",
+    prompt: "¿Qué papel cumplen etapas como fine-tuning o RLHF después del pre-entrenamiento?",
+    options: [
+      "Ayudan a especializar, alinear o ajustar el comportamiento del modelo para ciertos objetivos, tareas o preferencias humanas",
+      "Sirven únicamente para reducir el tamaño del modelo y que ocupe menos memoria",
+      "Reemplazan por completo todo lo aprendido durante el pre-entrenamiento",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Después del pre-entrenamiento, se pueden aplicar ajustes adicionales para mejorar comportamiento, utilidad, seguridad o adaptación a tareas más específicas.",
+  },
+]
+
+const CLASE_4_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-4-q1",
+    prompt: "¿Cuál describe mejor la diferencia entre v0, Cursor y Claude Code?",
+    options: [
+      "v0 es más rápido e intuitivo; Cursor y Claude Code son más flexibles y permiten hacer cosas más complejas",
+      "v0 sirve solo para diseño, mientras que Cursor y Claude Code sirven solo para backend",
+      "Los tres funcionan exactamente igual; solo cambia la empresa que los ofrece",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La diferencia más útil para un principiante es el nivel en el que operan. v0 suele abstraer más y acercarte rápido a una UI o app inicial. Cursor y Claude Code dan más libertad y potencia. Claude Code, aparte, puede usar tu computadora para tareas fuera del código.",
+  },
+  {
+    id: "clase-4-q2",
+    prompt: "¿Puedo arrancar un proyecto nuevo desde cero en Cursor o Claude Code?",
+    options: [
+      "No. Solo sirven si ya existe un proyecto completo hecho por otra herramienta",
+      "Sí. Pueden ayudarte a inicializar un proyecto nuevo, crear archivos, proponer estructura y avanzar desde una carpeta vacía",
+      "Solo Cursor puede; Claude Code no puede crear proyectos nuevos",
+    ],
+    correctIndex: 1,
+    explanation:
+      "No hace falta llegar con todo armado. Estas herramientas pueden ayudarte a empezar desde cero, aunque conviene darles un objetivo claro, stack y alcance.",
+  },
+  {
+    id: "clase-4-q3",
+    prompt: "Si hice una app en v0 y ahora quiero seguirla en Cursor o Claude Code, ¿cuál es el camino más razonable?",
+    options: [
+      "Pasarla por GitHub o descargar el proyecto como zip y abrirlo en mi entorno local",
+      "Copiar capturas de pantalla de la app en el chat y pedir que la reconstruyan desde cero",
+      "No se puede: los proyectos hechos en v0 no pueden seguirse en otras herramientas",
+    ],
+    correctIndex: 0,
+    explanation:
+      "La forma práctica de mover el proyecto es trabajar sobre el código fuente: lo más prolijo suele ser GitHub (lo subo a la nube y me lo traigo a cualquier otro entorno); también puede servir descargar la carpeta raíz y abrirla localmente.",
+  },
+  {
+    id: "clase-4-q4",
+    prompt: "Si mi proyecto está en Cursor o Claude Code, ¿eso significa que ya está online automáticamente?",
+    options: [
+      "Sí. Apenas el proyecto existe en el editor, ya queda publicado para cualquier persona",
+      "No. Tenerlo en el editor o en local no equivale a tenerlo desplegado en internet",
+      "Sí, salvo que el proyecto use base de datos",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Una cosa es tener el proyecto en tu compu o editor; otra distinta es desplegarlo en la web (por ejemplo, con Vercel) para que quede accesible online.",
+  },
+  {
+    id: "clase-4-q5",
+    prompt: "¿Qué significa correr mi proyecto «en local»?",
+    options: [
+      "Que la app está ejecutándose en mi propia computadora para probarla antes de publicarla",
+      "Que la app ya está publicada globalmente, pero con menos velocidad",
+      "Que la app está guardada en GitHub, aunque todavía no la haya abierto",
+    ],
+    correctIndex: 0,
+    explanation:
+      "«En local» significa que corre en tu máquina. Sirve para desarrollar, probar y corregir antes de desplegar.",
+  },
+  {
+    id: "clase-4-q6",
+    prompt: "¿Qué es un «commit»?",
+    options: [
+      "Un error de sincronización entre la IA y el editor",
+      "Una versión online automática del proyecto lista para compartir",
+      "Un paquete de cambios guardado en el historial del proyecto, normalmente acompañado por un mensaje que explica qué se modificó",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El commit permite registrar cambios de manera ordenada y volver atrás si hace falta. Lo que nos permite hacer un commit es Git (instalado previamente).",
+  },
+  {
+    id: "clase-4-q7",
+    prompt: "En Cursor o Claude Code puedo trabajar con varios chats o sesiones en paralelo, y hasta puede convenir separarlos por tarea.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo si tengo una suscripción paga",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Separar sesiones por objetivo puede ayudar a no mezclar o agotar contexto: una para debugging, otra para refactor, otra para research o planificación, o para features separadas.",
+  },
+  {
+    id: "clase-4-q8",
+    prompt: "¿Por qué puede convenir usar varios chats o sesiones distintas en estas herramientas?",
+    options: [
+      "Porque ayuda a separar contextos, evitar mezclar tareas y mantener cada conversación más enfocada",
+      "Porque cada chat usa un modelo completamente distinto aunque yo no elija ninguno",
+      "Porque si abro más chats, el proyecto se despliega automáticamente",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Una sesión muy mezclada puede volverse menos clara (y cara, dado que estamos usando contexto que no necesitamos, o sea tokens). Separar temas suele mejorar foco, trazabilidad y eficiencia en general.",
+  },
+  {
+    id: "clase-4-q9",
+    prompt: "Con herramientas como Claude Code se pueden automatizar ciertas tareas periódicas o disparadas por eventos, por ejemplo usando workflows, schedulers o triggers.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo si tengo acceso a un servidor dedicado",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Además del uso interactivo, estas herramientas pueden integrarse en automatizaciones o flujos programados, por ejemplo en CI/CD o tareas recurrentes.",
+  },
+  {
+    id: "clase-4-q10",
+    prompt: "Si veo mi proyecto en localhost:3000 o una dirección parecida en mi navegador, ¿puedo pasarle ese link a otra persona para que lo vea desde su computadora?",
+    options: [
+      "Sí, porque localhost es una dirección pública accesible desde cualquier equipo",
+      "No, porque localhost normalmente apunta a mi propia máquina, no a internet",
+      "Sí, siempre que la otra persona también use Cursor o Claude Code",
+    ],
+    correctIndex: 1,
+    explanation:
+      "localhost suele apuntar a tu compu. Para compartirlo, normalmente hace falta desplegarlo o exponerlo de otra manera.",
+  },
+  {
+    id: "clase-4-q11",
+    prompt: "Todos los modelos en Cursor o Claude Code consumen lo mismo, así que con la suscripción que elija da igual cuál use.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo aplica a modelos de Anthropic",
+    ],
+    correctIndex: 1,
+    explanation:
+      "No necesariamente consumen lo mismo. El uso puede variar según el modelo, la cantidad de contexto y la complejidad de la tarea. En la práctica, modelos más potentes o tareas más pesadas suelen implicar mayor consumo o límites distintos. La suscripción nos da una cantidad de tokens y según cómo los usemos se acabarán antes o después.",
+  },
+  {
+    id: "clase-4-q12",
+    prompt: "Si conecto APIs externas a mi proyecto, esos costos ya vienen incluidos dentro de la suscripción de Cursor o Claude Code.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo si las APIs son de empresas asociadas a Anthropic o Microsoft",
+    ],
+    correctIndex: 1,
+    explanation:
+      "La suscripción de la herramienta de coding no suele cubrir automáticamente el costo de APIs externas. Eso depende del proveedor de cada API, que puede cobrar aparte o tener su propio free tier.",
+  },
+  {
+    id: "clase-4-q13",
+    prompt: "¿Qué describe mejor qué es un MCP y para qué sirve?",
+    options: [
+      "Un estándar para conectar herramientas de IA con fuentes externas de datos, herramientas y sistemas; se parece conceptualmente a una capa de integración, relacionada con el uso de APIs",
+      "Un tipo de base de datos donde se guarda el código fuente del proyecto",
+      "Un lenguaje visual para diseñar pantallas dentro del editor",
+    ],
+    correctIndex: 0,
+    explanation:
+      "MCP ayuda a conectar al agente con herramientas, documentos, servicios o sistemas externos. En ese sentido, se relaciona con el mundo de las APIs, pero como una forma estandarizada de integración para agentes.",
+  },
+  {
+    id: "clase-4-q14",
+    prompt: "Puedo darle acceso a mi computadora a Claude Code para que haga ciertas cosas por mí.",
+    options: [
+      "Verdadero",
+      "Falso",
+      "Solo en sistemas operativos macOS o Linux",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Estas herramientas pueden leer archivos, ejecutar comandos y, en algunos contextos o productos relacionados, interactuar más activamente con tu entorno. Por eso es importante revisar detenidamente permisos, alcance y riesgos.",
+  },
+  {
+    id: "clase-4-q15",
+    prompt: "¿Cuál de estas afirmaciones muestra mejor buen criterio de uso con Cursor o Claude Code?",
+    options: [
+      "Si la herramienta puede editar archivos o ejecutar acciones, ya no hace falta revisar nada manualmente",
+      "Cuanto más acceso le doy, menos necesito entender el proyecto",
+      "Son herramientas muy potentes, pero conviene usarlas con control, revisión y una idea clara de qué quiero que hagan",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El valor de estas herramientas aumenta mucho con buen criterio humano: claridad de objetivo, revisión de cambios, manejo de permisos y control del proceso.",
+  },
+]
+
 /**
  * IDs de clases con cuestionario real (no placeholder). Incluir aquí al dar de alta preguntas nuevas
  * y refleja qué se puede elegir en el modal de autoevaluación.
  */
-export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2"]
+export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2", "clase-3", "clase-4"]
 
 /** Clase estable por clase para tests y analytics futuros. */
 export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
@@ -462,12 +830,12 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   {
     id: "clase-3",
     title: "Clase 3: Definamos IA",
-    questions: dummyQuestionsFor("Clase 3"),
+    questions: CLASE_3_QUESTIONS,
   },
   {
     id: "clase-4",
     title: "Clase 4: Herramientas Avanzadas",
-    questions: dummyQuestionsFor("Clase 4"),
+    questions: CLASE_4_QUESTIONS,
   },
   {
     id: "clase-5",

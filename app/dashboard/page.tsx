@@ -172,8 +172,8 @@ export default function Dashboard() {
   const classVideos: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ef02dbc2-8a87-4726-9075-b42f0124b017&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 3: Definamos IA": "",
-    "Clase 4: Introducción a Herramientas Avanzadas": "",
+    "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=65274bce-d98b-477e-8996-b436011524c9&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
     "Clase 6: Lanzamiento y luego qué?": "",
     "Clase 7: Demo Day + Frameworks Emergentes": "",
@@ -192,8 +192,9 @@ export default function Dashboard() {
   const classSlides: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview",
     "Clase 2: De idea a Producto": "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview",
-    "Clase 3: Definamos IA": "",
-    "Clase 4: Introducción a Herramientas Avanzadas": "",
+    "Clase 3: Definamos IA": "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview",
+    "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview",
+    "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
     "Clase 6: Lanzamiento y luego qué?": "",
     "Clase 7: Demo Day + Frameworks Emergentes": "",
@@ -274,11 +275,12 @@ export default function Dashboard() {
         : "Grabaciones de todas las sesiones del programa",
       content: [
         "Clase 1: La revolución de Producto",
-        "Clase 2: Definamos IA",
-        "Clase 3: De idea a Producto",
-        "Clase 4: Haciendo que funcione",
-        "Clase 5: Lanzamiento y luego qué?",
-        "Clase 6: Demo y futuro"
+        "Clase 2: De Idea a Producto",
+        "Clase 3: Definamos IA",
+        "Clase 4: Introducción a Herramientas Avanzadas",
+        "Clase 5: De Vibe-Coding a AI-Assisted Engineering",
+        "Clase 6: Lanzamiento y luego qué?",
+        "Clase 7: Demo Day + Frameworks Emergentes"
       ]
     },
     {
