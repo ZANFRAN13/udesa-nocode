@@ -174,7 +174,7 @@ export default function Dashboard() {
     "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ef02dbc2-8a87-4726-9075-b42f0124b017&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=65274bce-d98b-477e-8996-b436011524c9&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
+    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14fbef81-d0fd-4c02-a251-b44b0111f68b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 6: Lanzamiento y luego qué?": "",
     "Clase 7: Demo Day + Frameworks Emergentes": "",
   }
@@ -195,7 +195,8 @@ export default function Dashboard() {
     "Clase 3: Definamos IA": "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview",
     "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview",
     "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview",
-    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "",
+    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://drive.google.com/file/d/1fKWdRCsYmlfCbb9860iVh4ygaoU_Kn5K/preview",
+    "Bonus Track: Features con AI, Pseudo-RAG, Integración MercadoPago": "https://drive.google.com/file/d/1DudlQlhoxernb0lBZacXZPeXSkky6IRs/preview",
     "Clase 6: Lanzamiento y luego qué?": "",
     "Clase 7: Demo Day + Frameworks Emergentes": "",
   }

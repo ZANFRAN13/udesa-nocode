@@ -4,6 +4,8 @@
  * Clase 2: proceso de producto, PM, vibecoding, brief/PRD, user flows, 021, v0, APIs.
  * Clase 3: IA, ML, Deep Learning, redes neuronales, LLMs, tokens, ventana de contexto, entrenamiento.
  * Clase 4: v0 vs Cursor vs Claude Code, local vs online, commits, sesiones, localhost, MCP, costos.
+ * Clase 5: Cursor (interfaz, modos, @, terminal, rules), git/GitHub (commit, push, merge, branch, deploy),
+ *          variables de entorno (.env, Vercel), V0 vs Cursor, herramientas del flujo, colaboración.
  */
 
 export type SelfEvalQuestion = {
@@ -775,7 +777,7 @@ const CLASE_4_QUESTIONS: SelfEvalQuestion[] = [
     id: "clase-4-q13",
     prompt: "¿Qué describe mejor qué es un MCP y para qué sirve?",
     options: [
-      "Un estándar para conectar herramientas de IA con fuentes externas de datos, herramientas y sistemas; se parece conceptualmente a una capa de integración, relacionada con el uso de APIs",
+      "Un estándar para conectar herramientas de IA con fuentes externas de datos, herramientas y sistemas",
       "Un tipo de base de datos donde se guarda el código fuente del proyecto",
       "Un lenguaje visual para diseñar pantallas dentro del editor",
     ],
@@ -809,11 +811,194 @@ const CLASE_4_QUESTIONS: SelfEvalQuestion[] = [
   },
 ]
 
+const CLASE_5_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-5-q1",
+    prompt: "¿Qué es un commit?",
+    options: [
+      "Un error de sincronización entre la IA y el editor",
+      "Una versión online automática del proyecto lista para compartir",
+      "Un grupo de cambios guardado en el historial del proyecto con un mensaje que los describe",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El commit es la forma que tiene Git de registrar el progreso. Es como tomar una foto del estado del proyecto en un momento dado, con una nota que dice qué cambió. Así podés volver atrás si algo sale mal.",
+  },
+  {
+    id: "clase-5-q2",
+    prompt: "¿Cuál es la diferencia principal entre Git y GitHub?",
+    options: [
+      "Git controla versiones localmente; GitHub lo aloja en la nube y permite colaborar",
+      "Git es para proyectos chicos y GitHub para proyectos grandes",
+      "Son lo mismo con distinto nombre comercial",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Git es la herramienta que corre en tu computadora y registra cada cambio. GitHub es la plataforma online donde subís esos cambios para guardarlos en la nube, compartirlos con el equipo y trabajar juntos desde distintos lugares.",
+  },
+  {
+    id: "clase-5-q3",
+    prompt: "¿Qué es una branch (rama) en Git?",
+    options: [
+      "Una copia de seguridad automática del proyecto en Vercel",
+      "Una línea de trabajo separada para no afectar lo que ya funciona",
+      "Un archivo especial que conecta GitHub con Cursor",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Una rama te permite trabajar en algo nuevo (una funcionalidad, un experimento) de forma aislada. Si algo sale mal, el resto del proyecto no se ve afectado. Cuando esté listo, lo incorporás al proyecto principal con un merge.",
+  },
+  {
+    id: "clase-5-q4",
+    prompt: "Tu equipo terminó una nueva funcionalidad en una rama separada y quiere incorporarla al proyecto principal. ¿Qué operación hacen?",
+    options: [
+      "Un commit — para guardar los cambios localmente",
+      "Un push — para subir los cambios a GitHub",
+      "Un merge — para fusionar la rama con el proyecto principal",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Merge es la operación que une dos ramas. Es el paso que se hace cuando una funcionalidad está lista y aprobada, y queremos que forme parte del proyecto principal. Git intenta combinar los cambios automáticamente; si hay conflictos, alguien del equipo los resuelve.",
+  },
+  {
+    id: "clase-5-q5",
+    prompt: "¿Qué significa hacer un deploy?",
+    options: [
+      "Publicar la app en internet para que cualquiera pueda acceder",
+      "Guardar los cambios del proyecto en GitHub",
+      "Eliminar una versión vieja del proyecto",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Deploy (o despliegue) es el proceso de publicar la app en un servidor para que quede disponible online. Plataformas como Vercel o Netlify automatizan gran parte de este proceso: conectás tu repositorio y cada vez que subís cambios, se despliegan solos.",
+  },
+  {
+    id: "clase-5-q6",
+    prompt: "En tu flujo de desarrollo usás varias herramientas. ¿Cuál es la que se encarga de publicar la app en internet?",
+    options: [
+      "GitHub — porque ahí sube el código",
+      "Cursor — porque ahí se escribe el código",
+      "Vercel o Netlify — porque toman el código y lo despliegan online",
+    ],
+    correctIndex: 2,
+    explanation:
+      "GitHub guarda y versiona el código. Cursor es el entorno donde lo editás. Vercel y Netlify son las plataformas de hosting que toman ese código y lo ponen en un servidor para que cualquier persona pueda acceder desde su navegador.",
+  },
+  {
+    id: "clase-5-q7",
+    prompt: "¿Para qué sirve Supabase en un proyecto digital?",
+    options: [
+      "Para publicar y hostear la app en internet",
+      "Para versionar el código y gestionar branches",
+      "Base de datos, autenticación y backend reunidos en una plataforma",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Supabase reúne herramientas que normalmente habría que configurar por separado: una base de datos (donde viven los datos de los usuarios, registros, etc.), manejo de autenticación (login/registro) y acceso desde el frontend. Es muy popular en proyectos AI-assisted por ser fácil de integrar.",
+  },
+  {
+    id: "clase-5-q8",
+    prompt: "¿Cuál es la diferencia principal entre V0 y Cursor?",
+    options: [
+      "V0 corre en el navegador para diseñar interfaces rápido; Cursor es un entorno completo para desarrollar con IA",
+      "V0 genera código y Cursor solo genera imágenes",
+      "Son idénticos, solo cambia la empresa que los ofrece",
+    ],
+    correctIndex: 0,
+    explanation:
+      "V0 (y Lovable) están optimizados para generar interfaces visualmente rápido, desde el navegador, sin instalar nada. Cursor es un entorno de desarrollo completo donde trabajás sobre el código, lo editás, lo depurás y lo integrás con el resto del proyecto. Ambos pueden generar código; la diferencia es el alcance y profundidad del trabajo.",
+  },
+  {
+    id: "clase-5-q9",
+    prompt: "¿Puedo crear un proyecto de software completamente nuevo desde Cursor, sin tener nada previo?",
+    options: [
+      "Sí, podés iniciar desde una carpeta vacía y la IA estructura todo el proyecto",
+      "No, Cursor solo sirve para editar proyectos que ya existen",
+      "Solo si tenés la versión paga de Cursor",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Cursor puede ayudarte a empezar desde cero: crear la estructura de carpetas, instalar dependencias y armar el proyecto inicial. Conviene darle un objetivo claro, el stack tecnológico que querés usar y el alcance del proyecto para que los resultados sean mejores.",
+  },
+  {
+    id: "clase-5-q10",
+    prompt: "Querés que la IA de Cursor te explique qué va a hacer antes de tocar nada en el proyecto. ¿Qué modo usás?",
+    options: [
+      "Agent — porque actúa solo y es el modo principal",
+      "Debug — porque detecta errores antes de ejecutar",
+      "Plan — te muestra qué hará antes de ejecutar nada",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El modo Plan es el que te conviene usar cuando el cambio es importante o abarca muchos archivos: la IA genera un plan de acción detallado que podés revisar, ajustar o cancelar antes de que toque una sola línea de código. El modo Agent, en cambio, actúa directamente.",
+  },
+  {
+    id: "clase-5-q11",
+    prompt: "Estás en Cursor y necesitás instalar una nueva librería en tu proyecto. ¿Cómo lo hacés?",
+    options: [
+      "Pedirle a la IA en el chat que lo haga por vos",
+      "Abrir la terminal integrada y escribir el comando directamente (ej: npm install nombre)",
+      "Ambas son formas válidas dentro de Cursor",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Las dos opciones funcionan en Cursor. Podés pedirle a la IA que instale la librería (ella ejecuta el comando en la terminal por vos) o podés abrir la terminal integrada e ingresarlo directamente. La terminal en Cursor se abre con el atajo Ctrl+` (o desde el menú View → Terminal) y es la misma que usarías fuera del editor.",
+  },
+  {
+    id: "clase-5-q12",
+    prompt: "¿Para qué sirve escribir @ seguido del nombre de un archivo en el chat de Cursor?",
+    options: [
+      "Para darle a la IA acceso al contenido de ese archivo como contexto",
+      "Para crear ese archivo desde cero en el proyecto",
+      "Para borrarlo del historial del chat",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El símbolo @ es la forma de darle contexto específico a la IA. En lugar de copiar y pegar el contenido del archivo, con @nombre-de-archivo la IA lo lee directamente. También podés etiquetar carpetas enteras, documentación o incluso URLs con el mismo símbolo.",
+  },
+  {
+    id: "clase-5-q13",
+    prompt: "¿Qué tipo de contenido conviene poner en las Rules (reglas) de Cursor?",
+    options: [
+      "Las API Keys y claves secretas del proyecto",
+      "Instrucciones permanentes para la IA sobre cómo comportarse en ese proyecto",
+      "El historial completo de cambios del proyecto",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Las Rules son instrucciones que le das a la IA para que se comporte de cierta manera siempre en ese proyecto. Por ejemplo: \"Escribí siempre en español\", \"Preferí componentes funcionales en React\", \"Este es un e-commerce para adultos mayores, usá lenguaje simple\". Las claves secretas van en el archivo .env, nunca en las Rules.",
+  },
+  {
+    id: "clase-5-q14",
+    prompt: "Subiste tu app a Vercel y funciona perfecto en tu computadora, pero en producción no conecta con la base de datos. ¿Qué es lo más probable que esté pasando?",
+    options: [
+      "El código está mal escrito y hay que reescribirlo desde cero",
+      "Vercel no es compatible con bases de datos externas",
+      "La variable existe en el .env local, pero falta configurarla en Vercel",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El archivo .env de tu computadora no se sube automáticamente a Vercel (ni debe hacerlo, porque es un archivo secreto). Tenés que configurar cada variable de entorno manualmente en el panel de Vercel: Settings → Environment Variables. Eso es lo que le permite a tu app en producción saber cómo conectarse a la base de datos.",
+  },
+  {
+    id: "clase-5-q15",
+    prompt: "Un compañero te manda el archivo .env del proyecto por WhatsApp para que puedas correrlo en tu máquina. ¿Hay algún problema con esto?",
+    options: [
+      "Ninguno, es la forma más práctica de compartir la configuración",
+      "WhatsApp comprime el archivo y lo daña al enviarlo",
+      "Es un riesgo: las claves secretas nunca deben compartirse por canales inseguros",
+    ],
+    correctIndex: 2,
+    explanation:
+      "El .env contiene información sensible como claves de APIs, conexiones a bases de datos y contraseñas de servicios. Si alguien accede a esas claves puede consumir servicios a tu nombre o acceder a tu información. Lo correcto es compartirlas por un canal seguro (como un gestor de contraseñas) y que cada integrante configure su propio .env local. Nunca deben subirse al repositorio de GitHub tampoco.",
+  },
+]
+
 /**
  * IDs de clases con cuestionario real (no placeholder). Incluir aquí al dar de alta preguntas nuevas
  * y refleja qué se puede elegir en el modal de autoevaluación.
  */
-export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2", "clase-3", "clase-4"]
+export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2", "clase-3", "clase-4", "clase-5"]
 
 /** Clase estable por clase para tests y analytics futuros. */
 export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
@@ -839,8 +1024,8 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   },
   {
     id: "clase-5",
-    title: "Clase 5: Haciendo que funcione",
-    questions: dummyQuestionsFor("Clase 5"),
+    title: "Clase 5: De Vibe-Coding a AI-Assisted Engineering",
+    questions: CLASE_5_QUESTIONS,
   },
   {
     id: "clase-6",
