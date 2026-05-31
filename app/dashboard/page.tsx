@@ -175,7 +175,7 @@ export default function Dashboard() {
     "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=65274bce-d98b-477e-8996-b436011524c9&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14fbef81-d0fd-4c02-a251-b44b0111f68b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 6: Lanzamiento y luego qué?": "",
+    "Clase 6: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f979cc7c-7bc5-4a7a-bc09-b4520111154d&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 7: Demo Day + Frameworks Emergentes": "",
   }
 
