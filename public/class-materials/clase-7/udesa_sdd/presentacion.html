@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec Driven Development — UDESA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --surface: #1c2230;
+    --cyan: #46C4F0;
+    --pink: #E856C3;
+    --teal: #0097A7;
+    --orange: #FFAB40;
+    --green: #00c853;
+    --red: #ff5252;
+    --yellow: #EEFF41;
+    --gray: #8b949e;
+    --light: #c9d1d9;
+    --white: #f0f6fc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Libre Franklin', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--light);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Slides ── */
+  .slide {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 60px 100px;
+    position: absolute;
+    top: 0; left: 0;
+  }
+  .slide.active { display: flex; }
+
+  .slide-content {
+    max-width: 1100px;
+    width: 100%;
+    animation: fadeIn 0.35s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Section covers ── */
+  .slide.cover {
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 120px;
+  }
+
+  .cover .section-number {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+  }
+
+  .cover h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .cover .cover-sub {
+    font-size: 1.2rem;
+    color: var(--gray);
+    margin-top: 16px;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .cover .cover-time {
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: var(--cyan);
+    opacity: 0.7;
+  }
+
+  /* ── Typography ── */
+  h1 {
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 20px;
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+
+  .acc { color: var(--cyan); }
+  .acc-pink { color: var(--pink); }
+  .acc-orange { color: var(--orange); }
+  .acc-green { color: var(--green); }
+  .acc-red { color: var(--red); }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--gray);
+    margin-bottom: 36px;
+    line-height: 1.5;
+    font-weight: 300;
+  }
+
+  /* ── Quote ── */
+  .quote {
+    border-left: 4px solid var(--cyan);
+    padding: 20px 28px;
+    margin: 24px 0;
+    background: rgba(70,196,240,0.05);
+    border-radius: 0 12px 12px 0;
+    font-size: 1.35rem;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.5;
+    font-weight: 300;
+  }
+  .quote .author { font-style: normal; font-size: 0.95rem; color: var(--gray); margin-top: 10px; display: block; }
+  .quote.orange { border-left-color: var(--orange); background: rgba(255,171,64,0.05); }
+  .quote.green { border-left-color: var(--green); background: rgba(0,200,83,0.05); }
+  .quote.pink { border-left-color: var(--pink); background: rgba(232,86,195,0.05); }
+
+  /* ── Lists ── */
+  ul, ol { font-size: 1.2rem; line-height: 1.9; margin-left: 20px; font-weight: 300; }
+  li { margin-bottom: 6px; }
+  li strong { color: var(--white); font-weight: 600; }
+
+  .check-list { list-style: none; margin-left: 0; }
+  .check-list li::before { content: "✓ "; color: var(--green); font-weight: 700; }
+  .cross-list { list-style: none; margin-left: 0; }
+  .cross-list li::before { content: "✗ "; color: var(--red); font-weight: 700; }
+
+  /* ── Grids ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 16px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 16px; }
+  .four-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+
+  .col-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .col-card h3 { font-size: 1rem; margin-bottom: 10px; }
+  .col-card p, .col-card ul { font-size: 1rem; font-weight: 300; }
+  .col-card ul { margin-left: 16px; font-size: 0.95rem; }
+
+  .col-card.b-cyan { border-color: rgba(70,196,240,0.3); }
+  .col-card.b-green { border-color: rgba(0,200,83,0.3); }
+  .col-card.b-orange { border-color: rgba(255,171,64,0.3); }
+  .col-card.b-red { border-color: rgba(255,82,82,0.3); }
+  .col-card.b-pink { border-color: rgba(232,86,195,0.3); }
+  .col-card.b-teal { border-color: rgba(0,151,167,0.3); }
+
+  /* ── Tables ── */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 1.02rem; font-weight: 300; }
+  th { text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--cyan); color: var(--cyan); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  td { padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  tr.bug td { background: rgba(255,82,82,0.08); color: var(--red); font-weight: 600; }
+
+  /* ── Big number ── */
+  .big-num { font-size: 5rem; font-weight: 900; text-align: center; margin: 16px 0; }
+
+  /* ── Engine compare ── */
+  .engine-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+  .engine-box { background: var(--card); border-radius: 12px; padding: 22px; border: 2px solid rgba(255,255,255,0.04); }
+  .engine-box.vibe { border-color: rgba(255,171,64,0.35); }
+  .engine-box.sdd { border-color: rgba(0,200,83,0.35); }
+  .engine-box h3 { margin-bottom: 14px; }
+  .engine-box.vibe h3 { color: var(--orange); }
+  .engine-box.sdd h3 { color: var(--green); }
+  .engine-box ol { font-size: 1.02rem; margin-left: 16px; }
+  .engine-box .result { margin-top: 12px; padding-top: 12px; border-top: 2px solid rgba(255,255,255,0.06); font-size: 1.8rem; font-weight: 900; text-align: center; }
+  .engine-box.vibe .result { color: var(--orange); }
+  .engine-box.sdd .result { color: var(--green); }
+
+  /* ── Spectrum ── */
+  .spectrum { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--orange), var(--cyan), var(--green)); margin: 28px 0 8px; }
+  .spectrum-labels { display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--gray); font-weight: 300; }
+
+  /* ── Agenda ── */
+  .agenda-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 1.15rem;
+    font-weight: 300;
+  }
+  .agenda-item:last-child { border-bottom: none; }
+  .agenda-num { width: 36px; color: var(--cyan); font-weight: 700; font-size: 0.9rem; }
+  .agenda-title { flex: 1; color: var(--white); font-weight: 400; }
+  .agenda-time { color: var(--gray); font-size: 0.9rem; min-width: 60px; text-align: right; }
+
+  /* ── Nav ── */
+  .nav {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    gap: 6px;
+    z-index: 100;
+  }
+  .nav button {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--light);
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .nav button:hover { border-color: var(--cyan); color: var(--white); }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 24px;
+    left: 30px;
+    font-size: 0.8rem;
+    color: var(--gray);
+    z-index: 100;
+    font-variant-numeric: tabular-nums;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════ S1: TITLE ══════════ -->
+<div class="slide active" data-section="Apertura" data-section-min="5">
+  <div class="slide-content" style="text-align:center;">
+    <h1 style="font-size:3.8rem;"><span class="acc">Spec Driven</span> Development</h1>
+    <div style="color:var(--gray); margin-top:30px;">
+      <strong style="color:var(--white);">Federico Barabasch</strong><br>
+      <span style="font-size:0.9rem;">Programa NO-CODE & AI · UDESA · 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S2: SOBRE MI ══════════ -->
+<div class="slide" data-section="Apertura" data-section-min="5">
+  <div class="slide-content">
+    <h2>Sobre mi</h2>
+    <div class="two-col">
+      <div>
+        <h3>Recorrido</h3>
+        <ul style="font-size:1rem; line-height:1.9; list-style:none; margin:0;">
+          <li><strong style="color:var(--cyan);">Mercado Libre</strong> — Senior Staff Engineer, GenAI <span style="color:var(--gray);">(2023–hoy)</span></li>
+          <li><strong>Wildlife Studios</strong> — Senior Staff Engineer, Dev Platform <span style="color:var(--gray);">(2021–2022)</span></li>
+          <li><strong>Mural</strong> — Director of Engineering <span style="color:var(--gray);">(2019–2021)</span></li>
+          <li><strong>Mercado Libre</strong> — Tech Lead / Sr Big Data Engineer <span style="color:var(--gray);">(2015–2018)</span></li>
+          <li><strong>BVision</strong> — Senior Big Data Engineer <span style="color:var(--gray);">(2010–2014)</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Que hago hoy</h3>
+        <p style="font-size:1.05rem; line-height:1.8;">
+          En Mercado Libre lidero iniciativas de <strong style="color:var(--cyan);">coding autonomo con IA</strong>: plataformas de agentes, arquitecturas multi-agente, context engineering y analiticas de productividad para developers.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S3: AGENDA ══════════ -->
+<div class="slide" data-section="Apertura" data-section-min="5">
+  <div class="slide-content">
+    <h2>Agenda</h2>
+    <div class="agenda-item"><span class="agenda-num">01</span><span class="agenda-title">El momento AI y el Vibe Coding</span><span class="agenda-time">15 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">02</span><span class="agenda-title">Spec Driven Development: la alternativa con rigor</span><span class="agenda-time">15 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">03</span><span class="agenda-title">Herramientas SDD</span><span class="agenda-time">10 min</span></div>
+    <div class="agenda-item" style="background:rgba(70,196,240,0.04); margin:0 -12px; padding:12px; border-radius:8px;">
+      <span class="agenda-num">04</span><span class="agenda-title"><strong>Caso practico: "El bug de los 100K USD"</strong></span><span class="agenda-time">35 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">05</span><span class="agenda-title">Esto pasa en todas las industrias</span><span class="agenda-time">10 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">06</span><span class="agenda-title">Cuando usar que</span><span class="agenda-time">10 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">07</span><span class="agenda-title">Cierre y preguntas</span><span class="agenda-time">20 min</span></div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 1: AI Y VIBE CODING ══════════ -->
+<div class="slide cover" data-section="AI y Vibe Coding" data-section-min="15">
+  <div class="slide-content">
+    <div class="section-number">Seccion 01</div>
+    <h1>El momento <span class="acc">AI</span><br>y el <span class="acc-orange">Vibe Coding</span></h1>
+    <div class="cover-sub">Donde estamos, que esta pasando, y por que importa</div>
+    <div class="cover-time">15 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="AI y Vibe Coding" data-section-min="15">
+  <div class="slide-content">
+    <h2>La adopcion en <span class="acc">numeros</span></h2>
+    <div class="three-col" style="margin-top:8px;">
+      <div class="col-card b-cyan" style="text-align:center;">
+        <div style="font-size:3rem; font-weight:900; color:var(--cyan);">85%</div>
+        <p style="margin-top:6px;">de los developers usan herramientas de AI regularmente</p>
+        <p style="margin-top:8px; font-size:0.75rem; color:var(--gray);">JetBrains State of Developer Ecosystem, 2025</p>
+      </div>
+      <div class="col-card b-green" style="text-align:center;">
+        <div style="font-size:3rem; font-weight:900; color:var(--green);">2x</div>
+        <p style="margin-top:6px;">mas rapido en tareas de desarrollo para organizaciones que integran AI en su flujo</p>
+        <p style="margin-top:8px; font-size:0.75rem; color:var(--gray);">McKinsey — AI in Software Development, 2025</p>
+      </div>
+      <div class="col-card b-red" style="text-align:center;">
+        <div style="font-size:3rem; font-weight:900; color:var(--red);">29%</div>
+        <p style="margin-top:6px;">confian en la precision de lo que genera la AI</p>
+        <p style="margin-top:8px; font-size:0.75rem; color:var(--gray);">Stack Overflow Developer Survey, 2025</p>
+      </div>
+    </div>
+    <p style="margin-top:20px; font-size:1.1rem; color:var(--gray); font-weight:300; text-align:center;">
+      La oportunidad es enorme. El desafio es como aprovecharla sin comprometer la calidad.
+    </p>
+  </div>
+</div>
+
+<div class="slide" data-section="AI y Vibe Coding" data-section-min="15">
+  <div class="slide-content">
+    <h2>La tension: <span class="acc">velocidad</span> vs <span class="acc-red">calidad</span></h2>
+    <ul style="font-size:1.2rem; line-height:2;">
+      <li>Las empresas ven gains de productividad, pero tambien <strong>nuevas categorias de bugs</strong></li>
+      <li>La AI es impresionante para tareas repetitivas, pero lucha con <strong>logica de negocio compleja</strong></li>
+      <li>El modelo no conoce tus reglas de negocio <strong>a menos que se las des</strong></li>
+      <li>Un bug en produccion cuesta <strong style="color:var(--red);">10-100x</strong> mas que detectarlo en diseño</li>
+    </ul>
+    <div class="quote orange" style="margin-top:24px; font-size:1.2rem;">
+      "I just see things, say things, run things, and copy-paste things, and it mostly works."
+      <span class="author">— Andrej Karpathy, Febrero 2025, definiendo el "Vibe Coding"</span>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="AI y Vibe Coding" data-section-min="15">
+  <div class="slide-content">
+    <h2>Vibe Coding: <span class="acc-green">ideal para</span> y <span class="acc-orange">con cuidado en</span></h2>
+    <div class="two-col">
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Ideal para</h3>
+        <ul class="check-list">
+          <li>Prototipos y pruebas de concepto</li>
+          <li>Scripts internos de uso unico</li>
+          <li>Exploracion de ideas</li>
+          <li>Aprender una tecnologia nueva</li>
+        </ul>
+      </div>
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Necesita mas rigor cuando...</h3>
+        <ul style="list-style:none; margin-left:0; font-size:1rem;">
+          <li style="margin-bottom:6px;">&#9888; Hay usuarios reales dependiendo del resultado</li>
+          <li style="margin-bottom:6px;">&#9888; La logica de negocio tiene reglas que interactuan</li>
+          <li style="margin-bottom:6px;">&#9888; Un error tiene impacto economico o legal</li>
+          <li>&#9888; El codigo va a necesitar mantenimiento a largo plazo</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote orange" style="margin-top:16px; font-size:1.05rem;">
+      Es como construir una casa solo con la idea en la cabeza. Sin planos, las cañerias van a cruzar los cables y te vas a enterar cuando ya este todo construido.
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="AI y Vibe Coding" data-section-min="15">
+  <div class="slide-content">
+    <h2>Los riesgos concretos</h2>
+    <ol style="font-size:1.3rem; line-height:2.2;">
+      <li><strong>Bugs invisibles</strong> — "anda" en tests simples, falla en combinaciones reales</li>
+      <li><strong>Deuda tecnica instantanea</strong> — el codigo generado no sigue patrones del proyecto</li>
+      <li><strong>Falta de trazabilidad</strong> — no hay documentacion de por que se tomo cada decision</li>
+      <li><strong>Seguridad</strong> — el modelo no piensa en vulnerabilidades ni permisos</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 2: SDD ══════════ -->
+<div class="slide cover" data-section="Spec Driven Development" data-section-min="15">
+  <div class="slide-content">
+    <div class="section-number">Seccion 02</div>
+    <h1><span class="acc">Spec Driven</span><br>Development</h1>
+    <div class="cover-sub">La alternativa con rigor</div>
+    <div class="cover-time">15 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="Spec Driven Development" data-section-min="15">
+  <div class="slide-content">
+    <h2>Que es <span class="acc">SDD</span></h2>
+    <p class="subtitle">En vez de pedirle a la IA "haceme un motor de descuentos" y ver que sale, primero escribis las reglas. Despues la IA genera el codigo.</p>
+    <div class="two-col">
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Vibe Coding</h3>
+        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; font-family:monospace; font-size:0.85rem; color:var(--orange); margin-top:8px;">
+          "Haceme un motor de descuentos<br>para mi e-commerce, que soporte<br>promos y cupones"
+        </div>
+        <p style="margin-top:10px; font-size:0.9rem; color:var(--gray);">La IA interpreta, adivina las reglas, y genera codigo. A veces acierta. A veces no.</p>
+      </div>
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Spec Driven</h3>
+        <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:12px; font-family:monospace; font-size:0.85rem; color:var(--green); margin-top:8px; line-height:1.6;">
+          <span style="color:var(--gray);"># Motor de Descuentos</span><br>
+          1. Aplicar promos de categoria<br>
+          2. Recalcular subtotal<br>
+          3. Evaluar cupon sobre subtotal<br>
+          4. Cupon aplica si total <strong>&gt;</strong> umbral
+        </div>
+        <p style="margin-top:10px; font-size:0.9rem; color:var(--gray);">Un archivo de texto plano con las reglas del negocio. La IA lo lee y genera codigo que las respeta.</p>
+      </div>
+    </div>
+    <div class="quote green" style="margin-top:16px; font-size:1.05rem;">
+      Una spec es simplemente un documento de texto — puede ser un .md, un .txt, un Google Doc. Lo importante es que las reglas esten escritas antes de generar codigo.
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Spec Driven Development" data-section-min="15">
+  <div class="slide-content">
+    <h2>Tres niveles de <span class="acc">madurez</span></h2>
+    <div class="three-col">
+      <div class="col-card b-cyan">
+        <h3>Nivel 1: Spec-First</h3>
+        <p>Escribis la spec antes de codear. La spec guia a la IA pero el codigo es el artefacto principal.</p>
+        <p style="margin-top:10px; color:var(--gray); font-size:0.9rem;"><strong>Ejemplo:</strong> Un .md con reglas de negocio que le pasas a Claude Code</p>
+      </div>
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Nivel 2: Spec-Anchored</h3>
+        <p>La spec tiene governance: reviews, validaciones, checkpoints. El codigo se valida contra la spec.</p>
+        <p style="margin-top:10px; color:var(--gray); font-size:0.9rem;"><strong>Ejemplo:</strong> OpenAPI que genera validaciones automaticas</p>
+      </div>
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Nivel 3: Spec-as-Source</h3>
+        <p>La spec ES la fuente de verdad. El codigo generado no se edita manualmente.</p>
+        <p style="margin-top:10px; color:var(--gray); font-size:0.9rem;"><strong>Ejemplo:</strong> Protocol Buffers generando codigo en multiples lenguajes</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Spec Driven Development" data-section-min="15">
+  <div class="slide-content">
+    <h2>Beneficios</h2>
+    <table>
+      <thead><tr><th>Beneficio</th><th>Para tecnicos</th><th>Para ejecutivos</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Contratos claros</strong></td><td>Interfaces bien definidas, menos bugs</td><td>Equipos alineados, menos ida y vuelta</td></tr>
+        <tr><td><strong>Validacion temprana</strong></td><td>Bugs detectados antes de escribir codigo</td><td>Menos retrabajo, menor time-to-market</td></tr>
+        <tr><td><strong>Documentacion viva</strong></td><td>La spec siempre esta actualizada</td><td>Onboarding rapido, menos dependencia de personas</td></tr>
+        <tr><td><strong>Generacion de codigo</strong></td><td>Boilerplate automatico, foco en logica</td><td>Mayor productividad real (no solo percibida)</td></tr>
+      </tbody>
+    </table>
+    <div class="quote green" style="margin-top:16px;">
+      El plano del arquitecto. Si algo no cuadra, se detecta en el plano — no cuando la pared ya esta levantada.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 3: FRAMEWORKS ══════════ -->
+<div class="slide cover" data-section="Frameworks" data-section-min="10">
+  <div class="slide-content">
+    <div class="section-number">Seccion 03</div>
+    <h1>Frameworks y<br><span class="acc">herramientas</span></h1>
+    <div class="cover-time">10 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="Frameworks" data-section-min="10">
+  <div class="slide-content">
+    <h2>Herramientas SDD <span class="acc">(2025)</span></h2>
+    <div class="quote" style="margin-top:0; margin-bottom:20px; font-size:1.05rem; font-style:normal;">
+      Estas herramientas ayudan a escribir y organizar specs mas rapido, pero <strong style="color:var(--white);">no son obligatorias</strong>. Un archivo <code style="color:var(--cyan);">.md</code> escrito a mano y pasado a cualquier agente (Cursor, Windsurf, Claude, v0) ya es SDD.
+    </div>
+    <div class="three-col">
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Spec-kit (GitHub)</h3>
+        <p>CLI que organiza specs en carpetas con slash commands. Compatible con cualquier asistente de codigo.</p>
+        <ul class="check-list" style="margin-top:10px; font-size:0.9rem;">
+          <li>Agnostico al IDE y al modelo</li>
+          <li>Liviano, se integra a lo que ya usas</li>
+        </ul>
+        <ul class="cross-list" style="margin-top:6px; font-size:0.9rem;">
+          <li>Mas manual, menos guiado</li>
+          <li>Requiere disciplina del equipo</li>
+        </ul>
+      </div>
+      <div class="col-card b-cyan">
+        <h3>Claude Code (Anthropic)</h3>
+        <p>Plan mode: escribis un .md con la spec, Claude lo planifica, vos aprobas, y ejecuta.</p>
+        <ul class="check-list" style="margin-top:10px; font-size:0.9rem;">
+          <li>Barrera de entrada bajisima: un .md</li>
+          <li>Iteracion rapida con el modelo</li>
+        </ul>
+        <ul class="cross-list" style="margin-top:6px; font-size:0.9rem;">
+          <li>Depende de la calidad de la spec</li>
+          <li>Menos estructura formal que Kiro</li>
+        </ul>
+      </div>
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Kiro (AWS)</h3>
+        <p>IDE basado en VS Code con workflow guiado: Requirements → Design → Tasks.</p>
+        <ul class="check-list" style="margin-top:10px; font-size:0.9rem;">
+          <li>Flujo paso a paso, ideal para equipos</li>
+          <li>Integrado en el editor</li>
+        </ul>
+        <ul class="cross-list" style="margin-top:6px; font-size:0.9rem;">
+          <li>Atado al ecosistema AWS</li>
+          <li>Requiere adoptar un IDE nuevo</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:20px; font-size:1.05rem; color:var(--gray); font-weight:300; text-align:center;">
+      Lo importante no es la herramienta — es que las reglas esten escritas <strong style="color:var(--green)">antes</strong> de generar codigo.
+    </p>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 4: CASO PRACTICO ══════════ -->
+<div class="slide cover" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <div class="section-number">Seccion 04</div>
+    <h1>Caso practico:<br><span class="acc-red">"El bug de los 100K USD"</span></h1>
+    <div class="cover-sub">Una tienda online, dos motores de descuentos, un bug invisible</div>
+    <div class="cover-time">35 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <h2>El escenario</h2>
+    <p class="subtitle">Una tienda online necesita un motor de descuentos con dos tipos:</p>
+    <div class="two-col">
+      <div class="col-card b-cyan">
+        <h3>Promos por categoria</h3>
+        <p style="font-size:1.15rem;"><strong style="color:var(--cyan)">20% OFF</strong> en toda la categoria <strong>Electronica</strong></p>
+        <p style="margin-top:6px; color:var(--gray);">Se aplica automaticamente</p>
+      </div>
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Cupones con umbral</h3>
+        <p style="font-size:1.15rem;">Cupon <strong style="color:var(--orange)">AHORRO</strong>: $3.000 off en compras <strong>> $80.000</strong></p>
+        <p style="margin-top:6px; color:var(--gray);">Requiere codigo del usuario</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <h2>El catalogo</h2>
+    <table style="font-size:1.1rem;">
+      <thead><tr><th></th><th>Producto</th><th>Categoria</th><th>Precio</th><th>Post-promo</th></tr></thead>
+      <tbody>
+        <tr><td>🎧</td><td>Auriculares Wireless</td><td>Electronica</td><td>$55.000</td><td style="color:var(--green)">$44.000</td></tr>
+        <tr><td>⌚</td><td>Smartwatch</td><td>Electronica</td><td>$180.000</td><td style="color:var(--green)">$144.000</td></tr>
+        <tr><td>🔌</td><td>Cargador USB-C</td><td>Electronica</td><td>$25.000</td><td style="color:var(--green)">$20.000</td></tr>
+        <tr><td>📱</td><td>Funda de Celular</td><td>Accesorios</td><td>$35.000</td><td>$35.000</td></tr>
+        <tr><td>🎒</td><td>Mochila Urban</td><td>Accesorios</td><td>$65.000</td><td>$65.000</td></tr>
+        <tr><td>👕</td><td>Remera Basica</td><td>Ropa</td><td>$28.000</td><td>$28.000</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <h2>Auriculares + Funda + Cupon AHORRO</h2>
+    <p class="subtitle">Carrito: $55.000 + $35.000 = <strong style="color:var(--white)">$90.000</strong></p>
+    <div class="engine-compare">
+      <div class="engine-box vibe">
+        <h3>Motor A — Vibe Coding</h3>
+        <ol>
+          <li>Total del carrito: $90.000</li>
+          <li>Cupon AHORRO: $90.000 > $80.000? <strong style="color:var(--green)">Si</strong></li>
+          <li>20% off auriculares: -$11.000</li>
+          <li>Cupon AHORRO: -$3.000</li>
+        </ol>
+        <div class="result">$76.000</div>
+      </div>
+      <div class="engine-box sdd">
+        <h3>Motor B — Spec Driven</h3>
+        <ol>
+          <li>Total del carrito: $90.000</li>
+          <li>20% off auriculares: -$11.000</li>
+          <li>Subtotal post-promo: $79.000</li>
+          <li>Cupon AHORRO: $79.000 > $80.000? <strong style="color:var(--red)">No</strong></li>
+        </ol>
+        <div class="result">$79.000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content" style="text-align:center;">
+    <h1>Cual esta <span class="acc-green">bien</span>?</h1>
+    <div class="engine-compare" style="margin-top:36px;">
+      <div class="engine-box vibe" style="text-align:center;">
+        <h3>Motor A — Vibe Coding</h3>
+        <div style="font-size:3.5rem; font-weight:900; color:var(--orange); margin:16px 0;">$76.000</div>
+      </div>
+      <div class="engine-box sdd" style="text-align:center;">
+        <h3>Motor B — Spec Driven</h3>
+        <div style="font-size:3.5rem; font-weight:900; color:var(--green); margin:16px 0;">$79.000</div>
+      </div>
+    </div>
+    <p style="margin-top:28px; font-size:1.3rem; color:var(--gray); font-weight:300;">Levanten la mano...</p>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35" style="padding:0;">
+  <iframe src="demo/index.html" style="width:100%; height:100%; border:none;"></iframe>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <h2>Por que el bug es <span class="acc-red">invisible</span></h2>
+    <p class="subtitle">De las 63 combinaciones posibles de carrito (subconjuntos de 2+ productos, uno de cada):</p>
+    <table style="font-size:1.1rem;">
+      <thead><tr><th>Resultado</th><th>Combos</th><th>%</th></tr></thead>
+      <tbody>
+        <tr><td>Carrito no llega a $80.000 — cupon nunca aplica, ambos coinciden</td><td>10</td><td>15,9%</td></tr>
+        <tr><td>Carrito supera $80.000 post-promo — cupon aplica, ambos coinciden</td><td>51</td><td>80,9%</td></tr>
+        <tr class="bug"><td>BUG: supera $80.000 original pero NO post-promo</td><td>2</td><td>3,2%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:16px;">
+      <h3 style="color:var(--red)">Las unicas 2 combinaciones con bug</h3>
+      <table style="font-size:1rem;">
+        <thead><tr><th>Combinacion</th><th>Original</th><th>Post-promo</th></tr></thead>
+        <tbody>
+          <tr><td>Auriculares + Funda</td><td>$90.000</td><td>$79.000</td></tr>
+          <tr><td>Auriculares + Remera</td><td>$83.000</td><td>$72.000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content" style="text-align:center;">
+    <div class="big-num" style="color:var(--red);">3,2%</div>
+    <div style="font-size:1.3rem; color:var(--gray); font-weight:300;">de las combinaciones de carrito exponen el bug</div>
+    <p style="font-size:1.25rem; color:var(--light); margin-top:24px; font-weight:300;">
+      El otro <strong style="color:var(--green)">96,8%</strong> funciona perfecto.
+      <br>Por eso ni QA, ni testing manual, ni code review lo detectan.
+    </p>
+    <div class="quote green" style="margin-top:24px; text-align:left;">
+      Pero una spec con 4 reglas claras lo previene desde el diseño.
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content" style="text-align:center;">
+    <h2>El impacto en <span class="acc-red">numeros</span></h2>
+    <div class="three-col" style="margin-top:24px;">
+      <div class="col-card b-red" style="text-align:center;">
+        <h3 style="color:var(--red)">Por orden</h3>
+        <div style="font-size:2.4rem; font-weight:900; color:var(--red); margin:10px 0;">-$3.000</div>
+      </div>
+      <div class="col-card b-red" style="text-align:center;">
+        <h3 style="color:var(--red)">Por dia</h3>
+        <div style="font-size:2.4rem; font-weight:900; color:var(--red); margin:10px 0;">-$450.000</div>
+        <div style="font-size:0.85rem; color:var(--gray);">150 ordenes/dia</div>
+      </div>
+      <div class="col-card b-red" style="text-align:center;">
+        <h3 style="color:var(--red)">Anual</h3>
+        <div style="font-size:2.4rem; font-weight:900; color:var(--red); margin:10px 0;">-$164M</div>
+        <div style="font-size:1rem; font-weight:600; color:var(--orange); margin-top:4px;">~USD 117.000</div>
+      </div>
+    </div>
+    <p style="margin-top:28px; font-size:1.1rem; color:var(--gray); font-weight:300;">
+      Y el bug solo aparece en el 3,2% de las combinaciones posibles.
+    </p>
+  </div>
+</div>
+
+<div class="slide" data-section="El bug de los 100K" data-section-min="35">
+  <div class="slide-content">
+    <h2>Ahora imaginen esto en <span class="acc-orange">Mercado Libre</span></h2>
+    <p class="subtitle">Nuestra tienda tiene 6 productos y 1 promo. Un marketplace real tiene otra escala.</p>
+    <div class="two-col">
+      <div>
+        <table style="font-size:1.05rem;">
+          <thead><tr><th>Dimension</th><th>Nuestra demo</th><th>Marketplace real</th></tr></thead>
+          <tbody>
+            <tr><td>Productos</td><td>6</td><td style="color:var(--orange); font-weight:600;">+400 millones</td></tr>
+            <tr><td>Promos activas</td><td>1</td><td style="color:var(--orange); font-weight:600;">Miles simultaneas</td></tr>
+            <tr><td>Cupones</td><td>1</td><td style="color:var(--orange); font-weight:600;">Por seller, categoria, usuario, nivel</td></tr>
+            <tr><td>Combinatoria</td><td>63 combos</td><td style="color:var(--red); font-weight:600;">Practicamente infinita</td></tr>
+            <tr><td>Ordenes/dia</td><td>150</td><td style="color:var(--orange); font-weight:600;">+3 millones</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="col-card b-red" style="margin-bottom:12px;">
+          <h3 style="color:var(--red)">Impacto financiero</h3>
+          <p>Si solo el <strong>0,1%</strong> de las ordenes diarias tuviera un error de $3.000, serian <strong style="color:var(--red);">$9M/dia</strong> — mas de <strong style="color:var(--red);">USD 2.3M/anual</strong>.</p>
+        </div>
+        <div class="col-card b-orange">
+          <h3 style="color:var(--orange)">Impacto legal y reputacional</h3>
+          <p>Defensa del Consumidor, reclamos masivos, sellers demandando por cobros incorrectos, perdida de confianza en la plataforma.</p>
+        </div>
+      </div>
+    </div>
+    <div class="quote" style="margin-top:16px; font-size:1.05rem; border-left-color:var(--orange); background:rgba(255,171,64,0.04);">
+      A esta escala, un bug de descuentos no es un problema tecnico — es un riesgo de negocio existencial. Y sin specs, cada nuevo cupon o promo es una ruleta.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 5: OTRAS INDUSTRIAS ══════════ -->
+<div class="slide cover" data-section="Otras industrias" data-section-min="10">
+  <div class="slide-content">
+    <div class="section-number">Seccion 05</div>
+    <h1>Esto pasa en<br><span class="acc-pink">todas las industrias</span></h1>
+    <div class="cover-sub">El motor de descuentos es un ejemplo. Pero cada industria tiene su version del bug.</div>
+    <div class="cover-time">10 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="Otras industrias" data-section-min="10">
+  <div class="slide-content">
+    <h2>Donde aparece este tipo de bug en <span class="acc-pink">sus industrias</span></h2>
+    <div class="four-col">
+      <div class="col-card b-cyan">
+        <h3>Consultoria y servicios</h3>
+        <p><strong>Prompt:</strong> "Haceme un estimador de esfuerzo para proyectos"</p>
+        <p style="margin-top:8px; color:var(--red);"><strong>Bug:</strong> Estima horas por proyecto sin cruzar disponibilidad real del equipo. Asigna al mismo consultor senior a dos proyectos en paralelo. El delivery se atrasa y nadie entiende por que.</p>
+        <p style="margin-top:8px; color:var(--cyan);"><strong>Spec previene:</strong> Reglas de capacidad por recurso, restricciones de solapamiento y prioridad entre proyectos.</p>
+      </div>
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Finanzas y fintech</h3>
+        <p><strong>Prompt:</strong> "Haceme un simulador de cuotas para creditos"</p>
+        <p style="margin-top:8px; color:var(--red);"><strong>Bug:</strong> Calcula interes sobre el monto original en vez del saldo. En 1 cuota no se nota; en 12 cuotas el cliente paga de mas — o de menos. Problema regulatorio.</p>
+        <p style="margin-top:8px; color:var(--cyan);"><strong>Spec previene:</strong> Formula de amortizacion explicita con interes sobre saldo pendiente.</p>
+      </div>
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Emprendedores y startups</h3>
+        <p><strong>Prompt:</strong> "Haceme el sistema de billing para mi SaaS"</p>
+        <p style="margin-top:8px; color:var(--red);"><strong>Bug:</strong> Cobra el mes completo cuando un cliente hace upgrade a mitad de ciclo. O peor: no cobra la diferencia y pierde revenue sin darse cuenta durante meses.</p>
+        <p style="margin-top:8px; color:var(--cyan);"><strong>Spec previene:</strong> Reglas de pro-rata por upgrade/downgrade, ciclos de facturacion y casos borde.</p>
+      </div>
+      <div class="col-card b-pink">
+        <h3 style="color:var(--pink)">Consumo masivo y produccion</h3>
+        <p><strong>Prompt:</strong> "Haceme un sistema de planificacion de produccion"</p>
+        <p style="margin-top:8px; color:var(--red);"><strong>Bug:</strong> Planifica produccion sin considerar que una linea necesita limpieza de 4hs al cambiar de producto, generando cuellos de botella invisibles.</p>
+        <p style="margin-top:8px; color:var(--cyan);"><strong>Spec previene:</strong> Reglas de setup time por linea y restricciones de secuencia entre productos.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Otras industrias" data-section-min="10">
+  <div class="slide-content">
+    <h2>El patron comun</h2>
+    <div class="quote pink" style="font-size:1.4rem;">
+      En todos los casos, la IA genera codigo que funciona para el caso simple.
+      El bug aparece en la <strong>interaccion entre reglas</strong> — exactamente lo que una spec define y un prompt no.
+    </div>
+    <div class="three-col" style="margin-top:24px;">
+      <div class="col-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:8px;">🎯</div>
+        <p><strong style="color:var(--orange);">El prompt</strong> describe el <em>que</em></p>
+      </div>
+      <div class="col-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:8px;">📋</div>
+        <p><strong style="color:var(--cyan);">La spec</strong> define el <em>como</em> y el <em>cuando</em></p>
+      </div>
+      <div class="col-card" style="text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:8px;">🐛</div>
+        <p><strong style="color:var(--red);">El bug</strong> vive en la distancia entre ambos</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Otras industrias" data-section-min="10">
+  <div class="slide-content">
+    <h2>"Pero si soy prolijo con vibe coding, <span class="acc-orange">llego igual</span>"</h2>
+    <p class="subtitle">Si. Probablemente llegues. Pero la pregunta es otra.</p>
+    <div class="two-col">
+      <div class="col-card b-orange">
+        <h3 style="color:var(--orange)">Vibe coding prolijo</h3>
+        <ul style="font-size:1rem; line-height:1.9; list-style:none; margin:0;">
+          <li>&#9888; Las reglas quedan ancladas al codigo</li>
+          <li>&#9888; Si queres revisarlas, tenes que leer el codigo — o pedirle a un agente que te lo explique</li>
+          <li>&#9888; Si queres regenerar, las reglas no estan en ningun lado</li>
+          <li>&#9888; Cambia el dev, cambia el agente, cambia el contexto — se pierde todo</li>
+        </ul>
+      </div>
+      <div class="col-card b-green">
+        <h3 style="color:var(--green)">Spec Driven</h3>
+        <ul style="font-size:1rem; line-height:1.9; list-style:none; margin:0;">
+          <li>&#10003; Las reglas estan en un documento separado, legible por cualquiera</li>
+          <li>&#10003; Podes regenerar el codigo cuando quieras, las reglas persisten</li>
+          <li>&#10003; Cualquier persona del equipo puede leer, revisar y cuestionar las reglas</li>
+          <li>&#10003; Es un proceso repetible y reproducible, no depende de una persona</li>
+        </ul>
+      </div>
+    </div>
+    <div class="quote green" style="margin-top:16px; font-size:1.1rem;">
+      La diferencia no es si llegas — es si podes explicar como llegaste, y si otro puede repetirlo.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 6: CUANDO USAR QUE ══════════ -->
+<div class="slide cover" data-section="Cuando usar que" data-section-min="10">
+  <div class="slide-content">
+    <div class="section-number">Seccion 06</div>
+    <h1>Cuando usar <span class="acc">que</span></h1>
+    <div class="cover-time">10 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="Cuando usar que" data-section-min="10">
+  <div class="slide-content">
+    <h2>Matriz de decision</h2>
+    <table style="font-size:1.1rem;">
+      <thead><tr><th>Situacion</th><th>Approach</th></tr></thead>
+      <tbody>
+        <tr><td>Prototipo / hackathon</td><td><span style="color:var(--orange)">Vibe coding</span></td></tr>
+        <tr><td>Script interno, uso unico</td><td><span style="color:var(--orange)">Vibe coding</span></td></tr>
+        <tr><td>MVP con usuarios beta</td><td><span style="color:var(--cyan)">Spec-First (Nivel 1)</span></td></tr>
+        <tr><td>Feature en produccion con logica de negocio</td><td><span style="color:var(--cyan)">Spec-First / Spec-Anchored</span></td></tr>
+        <tr><td>Interfaz publica / multi-equipo</td><td><span style="color:var(--green)">Spec-Anchored (Nivel 2)</span></td></tr>
+        <tr><td>Infraestructura critica (pagos, facturacion)</td><td><span style="color:var(--green)">Spec-as-Source (Nivel 3)</span></td></tr>
+      </tbody>
+    </table>
+    <div class="spectrum"></div>
+    <div class="spectrum-labels">
+      <strong style="color:var(--orange)">Vibe Coding — Velocidad maxima</strong>
+      <strong style="color:var(--green)">SDD Nivel 3 — Rigor maximo</strong>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Cuando usar que" data-section-min="10">
+  <div class="slide-content" style="text-align:center;">
+    <h1>Discusion</h1>
+    <div style="text-align:left; max-width:700px; margin:28px auto;">
+      <ul style="font-size:1.3rem; line-height:2.4; list-style:none; margin:0;">
+        <li>Como hubieran <strong style="color:var(--cyan)">detectado</strong> este bug sin la spec?</li>
+        <li>Quien <strong style="color:var(--green)">escribe</strong> la spec? El developer? El product manager?</li>
+        <li>Cuanto les habria <strong style="color:var(--red)">costado</strong> este bug en su industria?</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 7: CIERRE ══════════ -->
+<div class="slide cover" data-section="Cierre" data-section-min="20">
+  <div class="slide-content">
+    <div class="section-number">Seccion 07</div>
+    <h1>Cierre y <span class="acc">preguntas</span></h1>
+    <div class="cover-time">20 minutos</div>
+  </div>
+</div>
+
+<div class="slide" data-section="Cierre" data-section-min="20">
+  <div class="slide-content" style="text-align:center;">
+    <div class="quote green" style="font-size:1.5rem; max-width:800px; margin:0 auto;">
+      No hay que elegir uno u otro.<br>
+      Hay que elegir el nivel de rigor apropiado para cada situacion.<br><br>
+      SDD no reemplaza la creatividad — <strong>la canaliza</strong>.
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-section="Cierre" data-section-min="20">
+  <div class="slide-content" style="text-align:center;">
+    <h1><span class="acc">Preguntas</span></h1>
+    <p style="font-size:1.2rem; color:var(--gray); margin-top:16px; font-weight:300;">
+      Federico Barabasch · Programa NO-CODE & AI · UDESA · 2026
+    </p>
+    <div style="margin-top:36px; text-align:left; max-width:550px; margin-left:auto; margin-right:auto;">
+      <h3>Recursos</h3>
+      <ul style="font-size:0.95rem; color:var(--gray);">
+        <li>ThoughtWorks — "Spec Driven Development" (2025)</li>
+        <li>Martin Fowler — "Exploring SDD Tools"</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ NAV ══════════ -->
+<div class="slide-counter"><span id="cur">1</span> / <span id="tot"></span></div>
+<div class="nav">
+  <button onclick="prev()">← Anterior</button>
+  <button onclick="next()">Siguiente →</button>
+</div>
+
+<!-- ══════════ SCRIPT ══════════ -->
+<script>
+const slides = document.querySelectorAll('.slide');
+let cur = 0;
+
+document.getElementById('tot').textContent = slides.length;
+
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(n, slides.length - 1));
+  slides[cur].classList.add('active');
+  document.getElementById('cur').textContent = cur + 1;
+}
+
+function next() { show(cur + 1); }
+function prev() { show(cur - 1); }
+
+// Escape exits iframe focus back to presentation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { document.activeElement.blur(); return; }
+  // Don't capture keys when iframe has focus
+  if (document.activeElement && document.activeElement.tagName === 'IFRAME') return;
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') { e.preventDefault(); next(); }
+  if (e.key === 'ArrowLeft' || e.key === 'Backspace') { e.preventDefault(); prev(); }
+  if (e.key === 'Home') { e.preventDefault(); show(0); }
+  if (e.key === 'End') { e.preventDefault(); show(slides.length - 1); }
+
+});
+</script>
+
+</body>
+</html>

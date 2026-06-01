@@ -23,12 +23,19 @@ import {
   HelpCircle,
   Sparkles,
   Lock,
+  ExternalLink,
 } from "lucide-react"
 import {
   SelfEvaluationModal,
   SelfEvaluationTrigger,
   SELF_EVAL_SESSION_STORAGE_KEY,
 } from "@/components/dashboard/self-evaluation-modal"
+import { MarkdownMaterialBox } from "@/components/dashboard/markdown-material-box"
+
+type ClassSlideMaterial = {
+  url: string
+  type: "pdf" | "html" | "markdown"
+}
 
 export default function Dashboard() {
   const router = useRouter()
@@ -176,7 +183,7 @@ export default function Dashboard() {
     "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14fbef81-d0fd-4c02-a251-b44b0111f68b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 6: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f979cc7c-7bc5-4a7a-bc09-b4520111154d&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 7: Demo Day + Frameworks Emergentes": "",
+    "Clase 7: Demo Day + Frameworks Emergentes": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7916cc86-99b9-4748-881f-b4590122b677",
   }
 
   // COHORTE 1 H2 2025
@@ -189,16 +196,18 @@ export default function Dashboard() {
   //   "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   // }
 
-  const classSlides: Record<string, string> = {
-    "Clase 1: La revolución de Producto": "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview",
-    "Clase 2: De idea a Producto": "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview",
-    "Clase 3: Definamos IA": "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview",
-    "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview",
-    "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview",
-    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://drive.google.com/file/d/1fKWdRCsYmlfCbb9860iVh4ygaoU_Kn5K/preview",
-    "Bonus Track: Features con AI, Pseudo-RAG, Integración MercadoPago": "https://drive.google.com/file/d/1DudlQlhoxernb0lBZacXZPeXSkky6IRs/preview",
-    "Clase 6: Lanzamiento y luego qué?": "",
-    "Clase 7: Demo Day + Frameworks Emergentes": "",
+  const classSlides: Record<string, ClassSlideMaterial> = {
+    "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview", type: "pdf" },
+    "Clase 2: De idea a Producto": { url: "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview", type: "pdf" },
+    "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview", type: "pdf" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": { url: "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview", type: "pdf" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": { url: "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview", type: "pdf" },
+    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://drive.google.com/file/d/1fKWdRCsYmlfCbb9860iVh4ygaoU_Kn5K/preview", type: "pdf" },
+    "Bonus Track: Features con AI, Pseudo-RAG, Integración MercadoPago": { url: "https://drive.google.com/file/d/1DudlQlhoxernb0lBZacXZPeXSkky6IRs/preview", type: "pdf" },
+    "Clase 6: Lanzamiento y luego qué?": { url: "https://drive.google.com/file/d/1qLf5zx1GHwW4RRVgDo0ssFBcxWXHNzeN/preview", type: "pdf" },
+    "Clase 7: Demo Day + Frameworks Emergentes": { url: "/class-materials/clase-7/udesa_sdd/presentacion.html", type: "html" },
+    "Clase 7: Vibe-Coding vs Spec Driven Development (Demo)": { url: "/class-materials/clase-7/udesa_sdd/demo/index.html", type: "html" },
+    "Clase 7: SDD Demo Spec": { url: "/class-materials/clase-7/udesa_sdd/demo/spec.md", type: "markdown" },
   }
 
   // COHORTE 1 H2 2025
@@ -506,19 +515,49 @@ export default function Dashboard() {
 
                                   {isSlides && isSlidesExpanded && (
                                     <div className="mt-2 md:mt-3 space-y-2 md:space-y-3 animate-in slide-in-from-top-2 duration-200">
-                                      {Object.entries(classSlides).map(([className, slideUrl]) => (
-                                        <div key={className} className="p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20">
-                                          <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3">{className}</h4>
-                                          <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                                            <iframe
-                                              src={slideUrl}
-                                              className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
-                                              allowFullScreen
-                                              allow="autoplay"
-                                            />
+                                      {Object.entries(classSlides).map(([className, material]) =>
+                                        material.type === "markdown" ? (
+                                          <MarkdownMaterialBox
+                                            key={className}
+                                            src={material.url}
+                                            title={className}
+                                          />
+                                        ) : (
+                                          <div key={className} className="p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20">
+                                            <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3">{className}</h4>
+                                            {material.type === "html" ? (
+                                              <div className="relative">
+                                                <iframe
+                                                  src={material.url}
+                                                  title={className}
+                                                  className="w-full h-[min(80vh,900px)] rounded-lg border border-border/20 bg-background"
+                                                  allowFullScreen
+                                                />
+                                                <a
+                                                  href={material.url}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  className="absolute top-2 right-2 z-10 inline-flex items-center justify-center p-2 rounded-md bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm transition-colors shadow-sm"
+                                                  title="Abrir en pestaña nueva"
+                                                  aria-label="Abrir en pestaña nueva"
+                                                >
+                                                  <ExternalLink className="h-4 w-4" />
+                                                </a>
+                                              </div>
+                                            ) : (
+                                              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                                                <iframe
+                                                  src={material.url}
+                                                  title={className}
+                                                  className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
+                                                  allowFullScreen
+                                                  allow="autoplay"
+                                                />
+                                              </div>
+                                            )}
                                           </div>
-                                        </div>
-                                      ))}
+                                        )
+                                      )}
                                     </div>
                                   )}
                                 </div>

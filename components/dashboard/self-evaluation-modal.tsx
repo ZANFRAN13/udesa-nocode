@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils"
 import {
   SELF_EVALUATION_CLASSES,
   SELF_EVAL_CLASS_IDS_LIVE,
+  isSelfEvalAnswerCorrect,
+  isSelfEvalOptionCorrect,
   type SelfEvalClass,
 } from "@/lib/self-evaluation-data"
 import "@/components/glossary/gemini-markdown-styles.css"
@@ -162,7 +164,7 @@ export function SelfEvaluationModal({
       setAnswers((prev) => {
         let correct = 0
         selectedClass.questions.forEach((q, i) => {
-          if (prev[i] === q.correctIndex) correct += 1
+          if (isSelfEvalAnswerCorrect(q, prev[i])) correct += 1
         })
         setScore(correct)
         setStep("results")
@@ -270,7 +272,7 @@ export function SelfEvaluationModal({
                 <div className="grid gap-2 mb-4">
                   {currentQ.options.map((opt, idx) => {
                     const selected = answers[questionIndex] === idx
-                    const isCorrect = idx === currentQ.correctIndex
+                    const isCorrect = isSelfEvalOptionCorrect(currentQ, idx)
                     const showResult = revealed
                     return (
                       <button

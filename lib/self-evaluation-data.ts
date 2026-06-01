@@ -6,15 +6,45 @@
  * Clase 4: v0 vs Cursor vs Claude Code, local vs online, commits, sesiones, localhost, MCP, costos.
  * Clase 5: Cursor (interfaz, modos, @, terminal, rules), git/GitHub (commit, push, merge, branch, deploy),
  *          variables de entorno (.env, Vercel), V0 vs Cursor, herramientas del flujo, colaboración.
+ * Clase 6: CRUD, constraints, RLS, SQL, DBML, migraciones, modelado lógico, UI vs dominio, cuándo conviene
+ *          un agente, harness, system prompt, skills, tools, MCP.
+ * Clase 7: SDD, vibe coding vs SDD, niveles de madurez, bug 100K, prompt vs spec, herramientas (Spec-kit, Kiro),
+ *          matriz de decisión, riesgos del vibe coding, frameworks de desarrollo asistido con IA.
  */
 
 export type SelfEvalQuestion = {
   id: string
   prompt: string
-  /** Tres opciones (A, B, C); la correcta es `options[correctIndex]`. */
+  /** Tres opciones (A, B, C); la correcta es `options[correctIndex]` salvo que haya `correctIndices`. */
   options: [string, string, string]
   correctIndex: 0 | 1 | 2
+  /** Si está definido, cualquiera de estos índices cuenta como respuesta correcta. */
+  correctIndices?: readonly (0 | 1 | 2)[]
   explanation: string
+}
+
+export function isSelfEvalAnswerCorrect(
+  question: SelfEvalQuestion,
+  answerIndex: number | null
+): boolean {
+  if (answerIndex === null || answerIndex < 0 || answerIndex > 2) return false
+  const idx = answerIndex as 0 | 1 | 2
+  if (question.correctIndices?.length) {
+    return question.correctIndices.includes(idx)
+  }
+  return idx === question.correctIndex
+}
+
+export function isSelfEvalOptionCorrect(
+  question: SelfEvalQuestion,
+  optionIndex: number
+): boolean {
+  if (optionIndex < 0 || optionIndex > 2) return false
+  const idx = optionIndex as 0 | 1 | 2
+  if (question.correctIndices?.length) {
+    return question.correctIndices.includes(idx)
+  }
+  return idx === question.correctIndex
 }
 
 export type SelfEvalClass = {
@@ -994,11 +1024,385 @@ const CLASE_5_QUESTIONS: SelfEvalQuestion[] = [
   },
 ]
 
+const CLASE_6_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-6-q1",
+    prompt: "¿Qué significa CRUD en el contexto de una aplicación con base de datos?",
+    options: [
+      "Create, Read, Update, Delete — las cuatro operaciones básicas sobre datos",
+      "Connect, Route, Upload, Deploy — el ciclo de publicación de una app",
+      "Copy, Restore, Undo, Duplicate — acciones del historial de Git",
+    ],
+    correctIndex: 0,
+    explanation:
+      "CRUD resume casi todo lo que hace una app con datos: crear registros, leerlos, actualizarlos y borrarlos. Cuando diseñás una pantalla o un agente, conviene preguntarte qué operaciones CRUD necesita cada entidad (usuarios, turnos, productos, etc.).",
+  },
+  {
+    id: "clase-6-q2",
+    prompt: "Al armar un producto digital, ¿qué conviene diseñar primero?",
+    options: [
+      "Las pantallas, porque el usuario solo ve la interfaz",
+      "El modelo de datos del dominio; la UI debería derivar de ahí",
+      "El deploy en Vercel, para tener la URL lista desde el día uno",
+    ],
+    correctIndex: 1,
+    explanation:
+      "El dominio (qué entidades existen y cómo se relacionan) debería guiar la base de datos y, después, la UI. Si empezás por las pantallas, las tablas suelen quedar atadas al diseño visual y es más difícil evolucionar el producto sin romper datos.",
+  },
+  {
+    id: "clase-6-q3",
+    prompt:
+      "Un equipo diseñó cada pantalla y luego creó tablas en Supabase para que «calcen» con esos formularios. ¿Cuál es el principal riesgo de este enfoque?",
+    options: [
+      "Que Supabase no permita más de diez tablas por proyecto",
+      "Que las tablas reflejen la UI y no el dominio; cambiar la app obliga a migrar la base",
+      "Que la IA no pueda generar código React a partir de esas tablas",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Este es el antipatrón clásico: diseñar pantallas primero y modelar tablas para que encajen. El resultado suele ser datos duplicados, tablas que no representan el negocio real y una base rígida. Si cambiás la UI, muchas veces tenés que migrar la base. Un agente también cuesta más integrarlo cuando el modelo de datos no está bien pensado.",
+  },
+  {
+    id: "clase-6-q4",
+    prompt: "¿Para qué sirven los constraints en una base de datos?",
+    options: [
+      "Para acelerar el deploy en Vercel",
+      "Para garantizar integridad: obligatorios, únicos, referencias válidas",
+      "Para que la IA pueda leer el esquema más rápido",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Los constraints son reglas que la base aplica sola: un email no puede quedar vacío, un DNI no se repite, un turno debe apuntar a un paciente que existe. Así evitás datos inconsistentes aunque la UI o el agente cometan un error.",
+  },
+  {
+    id: "clase-6-q5",
+    prompt: "¿Qué es RLS (Row Level Security) en Supabase?",
+    options: [
+      "Un lenguaje para escribir migraciones de base de datos",
+      "Controla qué filas ve o modifica cada usuario según quién está autenticado",
+      "Un modo de Cursor para depurar consultas SQL",
+    ],
+    correctIndex: 1,
+    explanation:
+      "RLS define políticas por fila: por ejemplo, que un usuario solo vea sus propios pedidos o que un médico solo acceda a turnos de su consultorio. Es clave en productos multiusuario: sin RLS, cualquiera con acceso a la API podría leer o cambiar datos de otros.",
+  },
+  {
+    id: "clase-6-q6",
+    prompt: "¿Qué es SQL?",
+    options: [
+      "El lenguaje estándar para consultar y manipular bases de datos relacionales",
+      "Un formato de archivo para exportar diseños de Figma",
+      "El protocolo que usa Cursor para conectarse a GitHub",
+    ],
+    correctIndex: 0,
+    explanation:
+      "SQL (Structured Query Language) es el idioma con el que pedís datos, insertás filas, actualizás campos y creás tablas en bases relacionales como PostgreSQL (la que usa Supabase). No hace falta memorizarlo entero: con IA podés generar consultas, pero conviene entender qué hace cada operación.",
+  },
+  {
+    id: "clase-6-q7",
+    prompt: "¿Para qué sirve DBML al diseñar una base de datos?",
+    options: [
+      "Para publicar la app en internet sin usar Vercel",
+      "Para diseñar tablas y relaciones de forma legible antes de escribir SQL",
+      "Para reemplazar RLS en proyectos con Supabase",
+    ],
+    correctIndex: 1,
+    explanation:
+      "DBML es un lenguaje pensado para modelar bases de datos: definís tablas, columnas y relaciones en un texto claro que el equipo (y la IA) pueden leer. Es un buen paso intermedio entre «lo tengo en la cabeza» y el SQL o las migraciones finales.",
+  },
+  {
+    id: "clase-6-q8",
+    prompt:
+      "El equipo necesita agregar una columna nueva. Un integrante propone hacerlo directo desde el panel de Supabase. ¿Por qué suele ser mejor usar una migración versionada?",
+    options: [
+      "Porque el Dashboard de Supabase no permite agregar columnas",
+      "Porque las migraciones versionan el esquema, se replican y se pueden revertir con control",
+      "Porque Vercel exige migraciones para cada deploy",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Cambiar el esquema solo en el panel deja el cambio «invisible» para el resto del equipo y para otros entornos (local, staging, producción). Las migraciones son archivos en el repo que documentan cada cambio, se aplican en orden y permiten que todos tengan la misma estructura y, si hace falta, volver atrás.",
+  },
+  {
+    id: "clase-6-q9",
+    prompt: "¿Cuándo suele convenir un agente conversacional en lugar de (o además de) una UI clásica?",
+    options: [
+      "Siempre: reemplaza cualquier pantalla y reduce costos de diseño",
+      "En tareas multi-paso, lenguaje ambiguo o cuando el usuario explora información",
+      "Solo cuando el producto no tiene base de datos",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Un agente no reemplaza toda la UI: es otra interfaz para otros usos. Conviene cuando el usuario puede pedir algo en lenguaje natural («buscá y reservá», «mové el turno del jueves») o cuando necesita explorar datos sin saber exactamente qué filtro usar.",
+  },
+  {
+    id: "clase-6-q10",
+    prompt:
+      "Un consultorio registra unas 200 reservas por hora con una UI optimizada. El equipo quiere reemplazar esa pantalla por un agente de chat. ¿Es buena idea?",
+    options: [
+      "Sí, porque el agente siempre es más moderno y barato de mantener",
+      "No necesariamente: alta frecuencia y flujo repetitivo favorecen una UI eficiente",
+      "Sí, siempre que el agente use el modelo más potente disponible",
+    ],
+    correctIndex: 1,
+    explanation:
+      "En flujos de alta frecuencia y bajo margen de error (muchas cargas por hora), una UI bien diseñada suele ser más rápida y predecible que escribir mensajes. Los agentes brillan en exploración y tareas complejas en lenguaje natural, no en reemplar por agregar fricción donde la UI ya es óptima.",
+  },
+  {
+    id: "clase-6-q11",
+    prompt: "En Cursor, ¿qué es el Agent Harness?",
+    options: [
+      "El modelo de IA que genera el código (el «cerebro»)",
+      "El sistema que orquesta al modelo con instrucciones, herramientas y contexto",
+      "La terminal integrada donde se ejecutan los comandos npm",
+    ],
+    correctIndex: 1,
+    explanation:
+      "El harness es el «cuerpo» que envuelve al modelo: le da instrucciones ajustadas, acceso a buscar en el código, leer y escribir archivos, correr la terminal y ver errores del linter. El modelo piensa; el harness ejecuta y conecta con tu proyecto.",
+  },
+  {
+    id: "clase-6-q12",
+    prompt: "¿Qué es el System Prompt de un agente?",
+    options: [
+      "Las instrucciones base que definen quién es el agente y cómo debe comportarse",
+      "El archivo .env con las claves secretas del proyecto",
+      "La lista de commits más recientes en GitHub",
+    ],
+    correctIndex: 0,
+    explanation:
+      "El system prompt responde a «quién es el agente»: su rol, tono, restricciones generales y límites. Es distinto de las Skills (saber hacer tareas concretas) y de las Tools (acciones ejecutables). En Cursor, parte de esto vive en Rules y en instrucciones del proyecto.",
+  },
+  {
+    id: "clase-6-q13",
+    prompt: "¿Qué son las Skills en la arquitectura de un agente?",
+    options: [
+      "Las API Keys necesarias para conectar Supabase",
+      "Instrucciones especializadas que se cargan solo cuando la tarea las requiere",
+      "Los atajos de teclado del editor Cursor",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Las Skills empaquetan conocimiento procedural (cómo hacer X). Muchas veces se cargan de forma «lazy»: primero solo la descripción, y el contenido completo del archivo SKILL.md cuando el agente decide que hace falta. Así no saturás el contexto con todo el manual en cada conversación.",
+  },
+  {
+    id: "clase-6-q14",
+    prompt:
+      "¿Qué enfoque es más seguro y mantenible para que un agente interactúe con tu base de datos?",
+    options: [
+      "Darle acceso SQL directo a Postgres para máxima flexibilidad",
+      "Tools que encapsulan lógica de negocio y limitan qué puede hacer el agente",
+      "Copiar y pegar el esquema completo en cada mensaje del chat",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Si le das SQL libre, el agente es tan poderoso (y riesgoso) como el rol de la base: puede borrar datos o inventar consultas distintas en cada conversación. Las Tools reutilizan tu código, las mismas validaciones que la UI y un esquema explícito de acciones permitidas: vos elegís el «radio de impacto» del agente.",
+  },
+  {
+    id: "clase-6-q15",
+    prompt: "En la arquitectura de un agente, ¿qué rol cumple MCP?",
+    options: [
+      "Define la personalidad y restricciones generales del agente",
+      "Empaqueta conocimiento procedural para tareas específicas",
+      "Protocolo estándar para exponer herramientas y fuentes externas al agente",
+    ],
+    correctIndex: 2,
+    explanation:
+      "MCP (Model Context Protocol) es cómo se exponen las tools hacia clientes externos: conecta el agente con servicios, documentos o sistemas de forma estandarizada. No es lo mismo que el system prompt (quién es), las skills (qué sabe hacer) ni las tools en sí (qué acciones ejecuta): MCP es el «enchufe» para que otras piezas las consuman.",
+  },
+]
+
+const CLASE_7_QUESTIONS: SelfEvalQuestion[] = [
+  {
+    id: "clase-7-q1",
+    prompt: "¿Qué es Spec Driven Development (SDD)?",
+    options: [
+      "Escribir las reglas de negocio antes de que la IA genere código",
+      "Dejar que la IA decida todas las reglas mientras genera el código",
+      "Un framework obligatorio de GitHub para publicar en Vercel",
+    ],
+    correctIndex: 0,
+    explanation:
+      "SDD invierte el orden: primero definís qué debe hacer el sistema (en un .md, Google Doc o herramienta), después la IA genera código que respeta esas reglas. No reemplaza la creatividad — la canaliza con más rigor cuando el impacto de un error es alto.",
+  },
+  {
+    id: "clase-7-q2",
+    prompt: "¿Cuál es la diferencia principal entre vibe coding y SDD?",
+    options: [
+      "Vibe coding usa Cursor y SDD solo usa Claude Code",
+      "En SDD las reglas están escritas antes; en vibe coding la IA las interpreta del prompt",
+      "Son lo mismo; SDD es solo un nombre comercial más nuevo",
+    ],
+    correctIndex: 1,
+    explanation:
+      "En vibe coding le decís a la IA «haceme un motor de descuentos» y ella interpreta, adivina reglas y genera código. En SDD esas reglas ya están en un documento (la spec) y el código debe alinearse a ellas. La IA puede participar en ambos; lo que cambia es si las reglas existen por escrito antes de codear.",
+  },
+  {
+    id: "clase-7-q3",
+    prompt:
+      "La clase compara SDD con la construcción de una casa. ¿Qué afirmaciones forman parte de esa analogía?",
+    options: [
+      "Construir sin planos es como empezar por paredes y techo y después ver dónde van los caños",
+      "SDD es como los planos del arquitecto: detectás errores antes de construir",
+      "SDD es como construir sin planos pero más rápido porque la IA ayuda",
+    ],
+    correctIndex: 1,
+    correctIndices: [0, 1],
+    explanation:
+      "Nadie empieza una casa por las paredes y después resuelve cimientos y cañerías. El plano (la spec) permite ver si algo no cierra antes de levantar paredes. En software, eso significa detectar bugs de lógica de negocio en el diseño, no      cuando ya está en producción.",
+  },
+  {
+    id: "clase-7-q4",
+    prompt: "¿Cuál de estas opciones NO es un riesgo típico del vibe coding?",
+    options: [
+      "Bugs invisibles que «andan» en casos simples y fallan en combinaciones reales",
+      "Deuda técnica instantánea y falta de trazabilidad de decisiones",
+      "Que la IA siempre genere código incompatible con Supabase",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Los riesgos reales que vimos en clase incluyen bugs invisibles, código que no sigue patrones del proyecto, falta de documentación del por qué de cada decisión y problemas de seguridad (permisos, vulnerabilidades). Que Supabase sea incompatible no es un riesgo inherente del vibe coding: depende de cómo uses la herramienta y qué tan bien definas el contexto.",
+  },
+  {
+    id: "clase-7-q5",
+    prompt: "¿Qué describe el nivel Spec-as-Source (Nivel 3 de madurez en SDD)?",
+    options: [
+      "La spec es la fuente de verdad; el código generado no se edita a mano",
+      "Escribís la spec una vez y después solo usás vibe coding",
+      "La spec solo sirve para prototipos de hackathon",
+    ],
+    correctIndex: 0,
+    explanation:
+      "En Spec-as-Source la spec ES el artefacto principal (como Protocol Buffers que generan código en varios lenguajes). Nivel 1 (Spec-First) guía a la IA pero el código sigue siendo el foco. Nivel 2 (Spec-Anchored) agrega governance y validación contra la spec. Nivel 3 es el máximo rigor.",
+  },
+  {
+    id: "clase-7-q6",
+    prompt: "¿Cuál es un beneficio clave de la validación temprana en SDD?",
+    options: [
+      "Elimina la necesidad de probar la app con usuarios reales",
+      "Detectar bugs de lógica antes de escribir código",
+      "Hacer deploy automático sin revisar nada",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Un bug en producción puede costar 10 a 100 veces más que detectarlo en diseño. Cuando las reglas están en la spec, podés revisar casos borde (¿el cupón se evalúa antes o después de las promos?) sin tocar una línea de código. Eso es validación temprana.",
+  },
+  {
+    id: "clase-7-q7",
+    prompt: "Según la clase, ¿cuál es el mensaje central del espectro entre vibe coding y SDD?",
+    options: [
+      "Siempre hay que usar SDD Nivel 3 en todo proyecto",
+      "Vibe coding está prohibido en productos profesionales",
+      "Elegir el nivel de rigor apropiado para cada situación",
+    ],
+    correctIndex: 2,
+    explanation:
+      "No hay que elegir uno u otro para siempre. Un hackathon o prototipo puede ir con vibe coding (velocidad máxima). Pagos, facturación o lógica con muchas reglas que interactúan piden más rigor (Spec-First, Spec-Anchored o Spec-as-Source). Es un slider de autonomía y rigor según impacto y riesgo.",
+  },
+  {
+    id: "clase-7-q8",
+    prompt:
+      "Un carrito suma $90.000 antes de promos y $79.000 después. El cupón AHORRO exige más de $80.000. ¿Cuándo conviene evaluar si aplica?",
+    options: [
+      "Sobre el total original, antes de las promos",
+      "Después de las promos, sobre el subtotal recalculado",
+      "Solo si el usuario lo pide en el chat",
+    ],
+    correctIndex: 1,
+    explanation:
+      "La spec del demo define la REGLA CRÍTICA: la elegibilidad del cupón se evalúa DESPUÉS de aplicar promociones por categoría, sobre el subtotal resultante — nunca sobre el total original. Si evaluás sobre $90.000 el cupón aplica; si evaluás sobre $79.000, no. Esa diferencia es el bug del caso «100K USD».",
+  },
+  {
+    id: "clase-7-q9",
+    prompt:
+      "En el caso Auriculares + Funda + cupón AHORRO, el Motor A (vibe) da $76.000 y el Motor B (spec) da $79.000. ¿Cuál sigue la spec?",
+    options: [
+      "Motor A — porque el cupón debe aplicarse sobre el total original",
+      "Motor B — no aplica cupón porque $79.000 no supera $80.000",
+      "Ambos están bien; es cuestión de preferencia del negocio",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Motor A aplica el cupón sobre $90.000 (antes de promos) y descuenta $3.000 de más. Motor B aplica promos primero, recalcula a $79.000 y correctamente NO aplica el cupón ($79.000 no es mayor que $80.000). La spec dice comparación estrictamente mayor (>) sobre subtotal post-promos.",
+  },
+  {
+    id: "clase-7-q10",
+    prompt: "¿Por qué QA y testing manual a menudo no detectan el bug del motor de descuentos?",
+    options: [
+      "Porque Supabase no permite probar descuentos en staging",
+      "Solo el 3,2% de combinaciones lo exponen; el 96,8% funciona bien",
+      "Porque la IA siempre genera código sin bugs en tests simples",
+    ],
+    correctIndex: 1,
+    explanation:
+      "De 63 combinaciones de carrito posibles, solo 2 exponen el bug (auriculares + funda, auriculares + remera). El resto coincide entre ambos motores. Por eso parece que «todo anda» hasta que aparece el caso borde. Una spec con 4 reglas claras lo previene desde el diseño.",
+  },
+  {
+    id: "clase-7-q11",
+    prompt: "Según la clase, ¿dónde «vive» el bug en casos como el motor de descuentos?",
+    options: [
+      "En el lenguaje de programación elegido (Python vs JavaScript)",
+      "En la distancia entre lo que el prompt describe y lo que la spec define",
+      "En que Vercel no soporta cupones con umbral",
+    ],
+    correctIndex: 1,
+    explanation:
+      "El prompt describe el qué («motor de descuentos con promos y cupones»). La spec define el cómo y el cuándo (orden de aplicación, sobre qué monto se evalúa el umbral). El bug aparece en la interacción entre reglas — exactamente lo que un prompt vago no fija y una spec sí.",
+  },
+  {
+    id: "clase-7-q12",
+    prompt: "¿Hace falta usar Spec-kit, Kiro o Claude Code para practicar SDD?",
+    options: [
+      "Sí, sin esas herramientas no es SDD",
+      "No; un .md escrito a mano y pasado a cualquier agente ya es SDD",
+      "Solo si el proyecto está en AWS",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Las herramientas (Spec-kit, Claude Code Plan mode, Kiro) ayudan a organizar specs más rápido, pero no son obligatorias. Lo importante es que las reglas estén escritas antes de generar código. Podés usar Cursor, v0 o un Google Doc y cumplir el espíritu del SDD.",
+  },
+  {
+    id: "clase-7-q13",
+    prompt: "¿Qué diferencia principal hay entre Spec-kit y Kiro?",
+    options: [
+      "Spec-kit es CLI agnóstico al IDE; Kiro es un IDE con workflow guiado",
+      "Kiro solo funciona sin internet; Spec-kit requiere AWS",
+      "Son la misma herramienta con distinto nombre",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Spec-kit (GitHub) organiza specs en carpetas con comandos slash y es compatible con cualquier asistente de código — más manual, más disciplina del equipo. Kiro (AWS) es un IDE basado en VS Code con flujo Requirements → Design → Tasks, más guiado pero atado al ecosistema AWS.",
+  },
+  {
+    id: "clase-7-q14",
+    prompt: "Tu equipo va a lanzar una feature de pagos en producción con lógica de negocio compleja. ¿Qué approach conviene según la matriz de la clase?",
+    options: [
+      "Vibe coding puro para llegar más rápido al mercado",
+      "Spec-Anchored o Spec-as-Source (rigor alto)",
+      "Solo documentar después del deploy en un Google Doc",
+    ],
+    correctIndex: 1,
+    explanation:
+      "La matriz de decisión ubica infraestructura crítica (pagos, facturación) en Spec-as-Source o al menos Spec-Anchored. Features en producción con reglas que interactúan también piden Spec-First o más. Vibe coding queda para prototipos, scripts internos y exploración.",
+  },
+  {
+    id: "clase-7-q15",
+    prompt: "Tenés un fin de semana para un prototipo de hackathon sin usuarios reales. ¿Qué approach conviene?",
+    options: [
+      "Spec-as-Source Nivel 3 obligatorio",
+      "Vibe coding (velocidad máxima)",
+      "No usar IA en absoluto",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Para prototipos, pruebas de concepto y exploración de ideas, la clase recomienda vibe coding: máxima velocidad, bajo costo de setup. Cuando hay usuarios reales, impacto económico o legal, o mantenimiento a largo plazo, subís el rigor en el slider hacia SDD.",
+  },
+]
+
 /**
  * IDs de clases con cuestionario real (no placeholder). Incluir aquí al dar de alta preguntas nuevas
  * y refleja qué se puede elegir en el modal de autoevaluación.
  */
-export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2", "clase-3", "clase-4", "clase-5"]
+export const SELF_EVAL_CLASS_IDS_LIVE: readonly string[] = ["clase-1", "clase-2", "clase-3", "clase-4", "clase-5", "clase-6", "clase-7"]
 
 /** Clase estable por clase para tests y analytics futuros. */
 export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
@@ -1030,12 +1434,12 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   {
     id: "clase-6",
     title: "Clase 6: Lanzamiento y luego qué?",
-    questions: dummyQuestionsFor("Clase 6"),
+    questions: CLASE_6_QUESTIONS,
   },
   {
     id: "clase-7",
     title: "Clase 7: Demo day + Frameworks Emergentes",
-    questions: dummyQuestionsFor("Clase 7"),
+    questions: CLASE_7_QUESTIONS,
   },
 ]
 
