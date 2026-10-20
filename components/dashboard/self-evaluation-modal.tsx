@@ -17,6 +17,7 @@ import {
   isSelfEvalOptionCorrect,
   type SelfEvalClass,
 } from "@/lib/self-evaluation-data"
+import { isClassIdUnlocked } from "@/lib/cohort-schedule"
 import "@/components/glossary/gemini-markdown-styles.css"
 
 export const SELF_EVAL_SESSION_STORAGE_KEY = "udesa-self-eval-session-done"
@@ -25,9 +26,12 @@ type Step = "pick" | "quiz" | "results"
 
 const optionLabels = ["A", "B", "C"] as const
 
-/** Autoevaluaciones con contenido listo; el resto se muestra como no disponible hasta agregar datos. */
+/**
+ * Autoevaluaciones con contenido listo y cuya clase ya se dictó (se desbloquean solas cada
+ * viernes, ver lib/cohort-schedule.ts); el resto se muestra como no disponible.
+ */
 function isSelfEvalClassAvailable(classId: string): boolean {
-  return SELF_EVAL_CLASS_IDS_LIVE.includes(classId)
+  return SELF_EVAL_CLASS_IDS_LIVE.includes(classId) && isClassIdUnlocked(classId)
 }
 
 type SelfEvaluationModalProps = {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { isClassUnlocked } from "@/lib/cohort-schedule"
 import { createClient } from "@/lib/supabase/client"
 import { useUserRole } from "@/lib/hooks/use-user-role"
 import { Button } from "@/components/ui/button"
@@ -593,248 +594,67 @@ export default function WorksheetsPage() {
             </p>
           </div>
 
-          {/* Clase 1 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-1"]}
-              onOpenChange={() => toggleTask("clase-1")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 1: La revolución de producto</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 2
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-1"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class1Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
+          {/* Clase 1 Tasks — se desbloquea sola el viernes de la clase 1 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(1) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-1"]}
+                onOpenChange={() => toggleTask("clase-1")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 1: La revolución de producto</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 2
                           </p>
-
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={resource.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
-                                      >
-                                        {resource.title}
-                                      </a>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-
-          {/* Clase 2 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-2"]}
-              onOpenChange={() => toggleTask("clase-2")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 2: De idea a producto</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 3
-                        </p>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-1"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-2"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class2Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
-                          </p>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class1Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
 
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={resource.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
-                                      >
-                                        {resource.title}
-                                      </a>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-
-          {/* ⏸️ Clases 3 a 7 ocultas temporalmente. Para volver a mostrarlas, cambiar `false` por `true` en la línea de abajo. Los arrays de tareas (class3Tasks..class7Tasks) se mantienen definidos arriba para que vuelvan a renderizarse sin más cambios. */}
-          {false && (
-          <>
-          {/* Clase 3 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-3"]}
-              onOpenChange={() => toggleTask("clase-3")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 3: Definamos IA</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 4
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-3"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class3Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
-                          </p>
-
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-1.5">
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
                                         <a
                                           href={resource.url}
                                           target="_blank"
@@ -843,98 +663,89 @@ export default function WorksheetsPage() {
                                         >
                                           {resource.title}
                                         </a>
-                                        {resource.tooltip && (
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
-                                            </TooltipTrigger>
-                                            <TooltipContent className="max-w-xs">
-                                              <p className="text-xs">{resource.tooltip}</p>
-                                            </TooltipContent>
-                                          </Tooltip>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
                                         )}
                                       </div>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                                     </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-          {/* Clase 4 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-4"]}
-              onOpenChange={() => toggleTask("clase-4")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 4: Introducción a herramientas avanzadas</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 5
-                        </p>
-                      </div>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-4"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class4Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
-                          </p>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
 
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-1.5">
+          {/* Clase 2 Tasks — se desbloquea sola el viernes de la clase 2 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(2) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-2"]}
+                onOpenChange={() => toggleTask("clase-2")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                        </div>
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 2: De idea a producto</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 3
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-2"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class2Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
+
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
                                         <a
                                           href={resource.url}
                                           target="_blank"
@@ -943,99 +754,397 @@ export default function WorksheetsPage() {
                                         >
                                           {resource.title}
                                         </a>
-                                        {resource.tooltip && (
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
-                                            </TooltipTrigger>
-                                            <TooltipContent className="max-w-xs">
-                                              <p className="text-xs">{resource.tooltip}</p>
-                                            </TooltipContent>
-                                          </Tooltip>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
                                         )}
                                       </div>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                                     </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
 
-          {/* Clase 5 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-5"]}
-              onOpenChange={() => toggleTask("clase-5")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 5: De VibeCoding a Desarrollo Asistido por IA</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 6
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-5"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class5Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
+          {/* Clase 3 Tasks — se desbloquea sola el viernes de la clase 3 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(3) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-3"]}
+                onOpenChange={() => toggleTask("clase-3")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 3: Definamos IA</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 4
                           </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-3"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class3Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
 
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <div className="flex items-center gap-1.5">
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                          <a
+                                            href={resource.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
+                                          >
+                                            {resource.title}
+                                          </a>
+                                          {resource.tooltip && (
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
+                                              </TooltipTrigger>
+                                              <TooltipContent className="max-w-xs">
+                                                <p className="text-xs">{resource.tooltip}</p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          )}
+                                        </div>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
+          {/* Clase 4 Tasks — se desbloquea sola el viernes de la clase 4 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(4) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-4"]}
+                onOpenChange={() => toggleTask("clase-4")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                        </div>
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 4: Introducción a herramientas avanzadas</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 5
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-4"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class4Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
+
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                          <a
+                                            href={resource.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
+                                          >
+                                            {resource.title}
+                                          </a>
+                                          {resource.tooltip && (
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
+                                              </TooltipTrigger>
+                                              <TooltipContent className="max-w-xs">
+                                                <p className="text-xs">{resource.tooltip}</p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          )}
+                                        </div>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
+
+          {/* Clase 5 Tasks — se desbloquea sola el viernes de la clase 5 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(5) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-5"]}
+                onOpenChange={() => toggleTask("clase-5")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                        </div>
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 5: De VibeCoding a Desarrollo Asistido por IA</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 6
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-5"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class5Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
+
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1.5">
+                                          <a
+                                            href={resource.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
+                                          >
+                                            {resource.title}
+                                          </a>
+                                          {resource.tooltip && (
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
+                                              </TooltipTrigger>
+                                              <TooltipContent className="max-w-xs">
+                                                <p className="text-xs">{resource.tooltip}</p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          )}
+                                        </div>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
+
+          {/* Clase 6 Tasks — se desbloquea sola el viernes de la clase 6 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(6) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-6"]}
+                onOpenChange={() => toggleTask("clase-6")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                        </div>
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 6: Lanzamiento y luego ¿qué?</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Tareas para preparar la Clase 7
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Para la próxima clase
+                        </Badge>
+                        {expandedTasks["clase-6"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class6Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
+
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
                                         <a
                                           href={resource.url}
                                           target="_blank"
@@ -1044,217 +1153,117 @@ export default function WorksheetsPage() {
                                         >
                                           {resource.title}
                                         </a>
-                                        {resource.tooltip && (
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <Info className="h-3 w-3 text-muted-foreground cursor-help shrink-0" />
-                                            </TooltipTrigger>
-                                            <TooltipContent className="max-w-xs">
-                                              <p className="text-xs">{resource.tooltip}</p>
-                                            </TooltipContent>
-                                          </Tooltip>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
                                         )}
                                       </div>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                                     </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          )}
 
-          {/* Clase 6 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-6"]}
-              onOpenChange={() => toggleTask("clase-6")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 6: Lanzamiento y luego ¿qué?</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Tareas para preparar la Clase 7
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Para la próxima clase
-                      </Badge>
-                      {expandedTasks["clase-6"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class6Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
+          {/* Clase 7 Tasks — se desbloquea sola el viernes de la clase 7 (lib/cohort-schedule.ts) */}
+          {isClassUnlocked(7) && (
+            <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
+              <Collapsible
+                open={expandedTasks["clase-7"]}
+                onOpenChange={() => toggleTask("clase-7")}
+              >
+                <CollapsibleTrigger className="w-full">
+                  <CardHeader className="cursor-pointer p-4 md:p-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                        <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
+                          <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
+                        <div className="text-left min-w-0">
+                          <CardTitle className="text-base md:text-xl">📚 Clase 7: Demo day + Frameworks emergentes</CardTitle>
+                          <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
+                            Cierre del curso y presentación final
                           </p>
-
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={resource.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
-                                      >
-                                        {resource.title}
-                                      </a>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-
-          {/* Clase 7 Tasks */}
-          <Card className="overflow-hidden border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-background mb-6 group hover:bg-primary/10 transition-all duration-200">
-            <Collapsible
-              open={expandedTasks["clase-7"]}
-              onOpenChange={() => toggleTask("clase-7")}
-            >
-              <CollapsibleTrigger className="w-full">
-                <CardHeader className="cursor-pointer p-4 md:p-6">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
-                      <div className="p-1.5 md:p-2 bg-primary/10 rounded-lg shrink-0">
-                        <GraduationCap className="h-4 w-4 md:h-5 md:w-5 text-primary" />
-                      </div>
-                      <div className="text-left min-w-0">
-                        <CardTitle className="text-base md:text-xl">📚 Clase 7: Demo day + Frameworks emergentes</CardTitle>
-                        <p className="text-xs md:text-sm text-muted-foreground mt-1 line-clamp-2">
-                          Cierre del curso y presentación final
-                        </p>
+                      <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
+                          Clase final
+                        </Badge>
+                        {expandedTasks["clase-7"] ? (
+                          <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                        )}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 md:gap-2 shrink-0">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary text-xs hidden sm:inline-flex">
-                        Clase final
-                      </Badge>
-                      {expandedTasks["clase-7"] ? (
-                        <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              
-              <CollapsibleContent>
-                <CardContent className="p-4 md:p-6">
-                  <div className="space-y-3 md:space-y-4">
-                    {class7Tasks.map((task, index) => (
-                      <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
-                        <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <span className="text-xs font-medium text-accent">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
-                            {task.title}
-                          </h3>
-                          <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
-                            {task.description}
-                          </p>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                
+                <CollapsibleContent>
+                  <CardContent className="p-4 md:p-6">
+                    <div className="space-y-3 md:space-y-4">
+                      {class7Tasks.map((task, index) => (
+                        <div key={task.id} className="flex items-start gap-2 md:gap-3 p-3 md:p-4 rounded-lg bg-accent/5 border border-accent/10">
+                          <div className="w-5 h-5 md:w-6 md:h-6 bg-accent/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span className="text-xs font-medium text-accent">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-medium text-sm md:text-base text-foreground mb-1">
+                              {task.title}
+                            </h3>
+                            <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-3">
+                              {task.description}
+                            </p>
 
-                          {task.resources && task.resources.length > 0 && (
-                            <div className="mt-2 md:mt-3">
-                              <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
-                              <div className="space-y-1.5 md:space-y-2">
-                                {task.resources.map((resource, idx) => (
-                                  <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
-                                    <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
-                                    <div className="flex-1 min-w-0">
-                                      <a
-                                        href={resource.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
-                                      >
-                                        {resource.title}
-                                      </a>
-                                      {resource.description && (
-                                        <p className="text-xs text-muted-foreground line-clamp-2">
-                                          {resource.description}
-                                        </p>
-                                      )}
+                            {task.resources && task.resources.length > 0 && (
+                              <div className="mt-2 md:mt-3">
+                                <h4 className="font-medium text-foreground mb-1.5 md:mb-2 text-xs md:text-sm">Recursos útiles:</h4>
+                                <div className="space-y-1.5 md:space-y-2">
+                                  {task.resources.map((resource, idx) => (
+                                    <div key={idx} className="flex items-center gap-2 p-2 md:p-2.5 bg-background rounded border border-border/20">
+                                      <FileText className="h-3 w-3 md:h-4 md:w-4 text-accent shrink-0" />
+                                      <div className="flex-1 min-w-0">
+                                        <a
+                                          href={resource.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-xs md:text-sm font-medium text-accent hover:text-accent/80 transition-colors block truncate"
+                                        >
+                                          {resource.title}
+                                        </a>
+                                        {resource.description && (
+                                          <p className="text-xs text-muted-foreground line-clamp-2">
+                                            {resource.description}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
                                     </div>
-                                    <ExternalLink className="h-3 w-3 text-muted-foreground shrink-0" />
-                                  </div>
-                                ))}
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-
-          </>
+                      ))}
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
           )}
 
           {/* Future classes placeholder */}

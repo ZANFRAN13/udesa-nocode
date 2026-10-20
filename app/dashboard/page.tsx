@@ -176,6 +176,11 @@ export default function Dashboard() {
     }
   }
 
+  // COHORTE 3 H2 2026
+  const classVideos: Record<string, string> = {
+    "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a649c36e-c328-4db2-8ed1-b4e50135ad33&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  }
+
   // COHORTE 2 H1 2026
   // const classVideos: Record<string, string> = {
   //   "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
@@ -197,6 +202,10 @@ export default function Dashboard() {
   //   "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   // }
 
+  // COHORTE 3 H2 2026
+  const classSlides: Record<string, ClassSlideMaterial> = {
+    "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/172nLY6hYy4oZcBuX8h6_IpPBpFfAxiDgIa-AvzMtkyM/preview", type: "pdf" },
+  }
 
   // COHORTE 2 H1 2026
   // const classSlides: Record<string, ClassSlideMaterial> = {

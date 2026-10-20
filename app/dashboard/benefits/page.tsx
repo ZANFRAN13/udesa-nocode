@@ -16,7 +16,9 @@ import {
 } from "lucide-react"
 
 /** Set to false when the 021 promo should be visible again. */
-const BLUR_021_CARD = false
+const BLUR_021_CARD = true
+/** Set to false when the v0 promo should be visible again. */
+const BLUR_V0_CARD = true
 
 export default function BenefitsPage() {
   const router = useRouter()
@@ -230,7 +232,12 @@ export default function BenefitsPage() {
             </Card>
 
             {/* v0 Section */}
-            <Card className="border-2 border-primary/20">
+            <Card
+              className={`border-2 border-primary/20 ${
+                BLUR_V0_CARD ? "blur-md pointer-events-none select-none" : ""
+              }`}
+              aria-hidden={BLUR_V0_CARD}
+            >
               <CardHeader>
                 <div className="flex items-center justify-center gap-3 mb-2">
                   <div className="bg-black dark:bg-white rounded-lg p-2">
