@@ -176,15 +176,16 @@ export default function Dashboard() {
     }
   }
 
-  const classVideos: Record<string, string> = {
-    "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ef02dbc2-8a87-4726-9075-b42f0124b017&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=65274bce-d98b-477e-8996-b436011524c9&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14fbef81-d0fd-4c02-a251-b44b0111f68b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 6: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f979cc7c-7bc5-4a7a-bc09-b4520111154d&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
-    "Clase 7: Demo Day + Frameworks Emergentes": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7916cc86-99b9-4748-881f-b4590122b677",
-  }
+  // COHORTE 2 H1 2026
+  // const classVideos: Record<string, string> = {
+  //   "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e9233d8d-9ab2-4455-8df1-b42801165252&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=ef02dbc2-8a87-4726-9075-b42f0124b017&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=65274bce-d98b-477e-8996-b436011524c9&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=6a9f4b92-7b0f-41a6-949c-b44401190f4c&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=14fbef81-d0fd-4c02-a251-b44b0111f68b&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 6: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=f979cc7c-7bc5-4a7a-bc09-b4520111154d&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+  //   "Clase 7: Demo Day + Frameworks Emergentes": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=7916cc86-99b9-4748-881f-b4590122b677",
+  // }
 
   // COHORTE 1 H2 2025
   // const classVideos: Record<string, string> = {
@@ -196,19 +197,21 @@ export default function Dashboard() {
   //   "Clase 6: Demo y futuro": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=dfd09b19-95cf-45da-b6f1-b395012cb469&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   // }
 
-  const classSlides: Record<string, ClassSlideMaterial> = {
-    "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview", type: "pdf" },
-    "Clase 2: De idea a Producto": { url: "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview", type: "pdf" },
-    "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview", type: "pdf" },
-    "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": { url: "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview", type: "pdf" },
-    "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": { url: "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview", type: "pdf" },
-    "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://drive.google.com/file/d/1fKWdRCsYmlfCbb9860iVh4ygaoU_Kn5K/preview", type: "pdf" },
-    "Bonus Track: Features con AI, Pseudo-RAG, Integración MercadoPago": { url: "https://drive.google.com/file/d/1DudlQlhoxernb0lBZacXZPeXSkky6IRs/preview", type: "pdf" },
-    "Clase 6: Lanzamiento y luego qué?": { url: "https://drive.google.com/file/d/1qLf5zx1GHwW4RRVgDo0ssFBcxWXHNzeN/preview", type: "pdf" },
-    "Clase 7: Demo Day + Frameworks Emergentes": { url: "/class-materials/clase-7/udesa_sdd/presentacion.html", type: "html" },
-    "Clase 7: Vibe-Coding vs Spec Driven Development (Demo)": { url: "/class-materials/clase-7/udesa_sdd/demo/index.html", type: "html" },
-    "Clase 7: SDD Demo Spec": { url: "/class-materials/clase-7/udesa_sdd/demo/spec.md", type: "markdown" },
-  }
+
+  // COHORTE 2 H1 2026
+  // const classSlides: Record<string, ClassSlideMaterial> = {
+  //   "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/1mMeTSFI0_qJZ5KpHh9BvsfIOcaZDPytKlXiaS33N7b4/preview", type: "pdf" },
+  //   "Clase 2: De idea a Producto": { url: "https://drive.google.com/file/d/11Xk4Ic-EuutXkexMjKTcjYXM1qbvW_r2/preview", type: "pdf" },
+  //   "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1-3f_zDFvBMKMqkG2ZX_qqiBd9heDvuVZ/preview", type: "pdf" },
+  //   "Clase 4: Introducción a Herramientas Avanzadas (Cursor)": { url: "https://drive.google.com/file/d/13IjGxIoYhqS1577nGyapCL_UA6-Uapvs/preview", type: "pdf" },
+  //   "Clase 4: Introducción a Herramientas Avanzadas (Claude Code)": { url: "https://drive.google.com/file/d/1t1n0sqykUS8IpUHZWoCAddS_QYVmPFYq/preview", type: "pdf" },
+  //   "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://drive.google.com/file/d/1fKWdRCsYmlfCbb9860iVh4ygaoU_Kn5K/preview", type: "pdf" },
+  //   "Bonus Track: Features con AI, Pseudo-RAG, Integración MercadoPago": { url: "https://drive.google.com/file/d/1DudlQlhoxernb0lBZacXZPeXSkky6IRs/preview", type: "pdf" },
+  //   "Clase 6: Lanzamiento y luego qué?": { url: "https://drive.google.com/file/d/1qLf5zx1GHwW4RRVgDo0ssFBcxWXHNzeN/preview", type: "pdf" },
+  //   "Clase 7: Demo Day + Frameworks Emergentes": { url: "/class-materials/clase-7/udesa_sdd/presentacion.html", type: "html" },
+  //   "Clase 7: Vibe-Coding vs Spec Driven Development (Demo)": { url: "/class-materials/clase-7/udesa_sdd/demo/index.html", type: "html" },
+  //   "Clase 7: SDD Demo Spec": { url: "/class-materials/clase-7/udesa_sdd/demo/spec.md", type: "markdown" },
+  // }
 
   // COHORTE 1 H2 2025
   // const classSlides: Record<string, string> = {
