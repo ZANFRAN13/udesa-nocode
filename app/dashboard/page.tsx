@@ -208,6 +208,7 @@ export default function Dashboard() {
   const classSlides: Record<string, ClassSlideMaterial> = {
     "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/172nLY6hYy4oZcBuX8h6_IpPBpFfAxiDgIa-AvzMtkyM/preview", type: "pdf" },
     "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
+    "Clase 2: prompts": { url: "/class-materials/clase-2/prompts.html", type: "html" },
   }
 
   // COHORTE 2 H1 2026
@@ -547,6 +548,7 @@ export default function Dashboard() {
                                                   title={className}
                                                   className="w-full h-[min(80vh,900px)] rounded-lg border border-border/20 bg-background"
                                                   allowFullScreen
+                                                  allow="clipboard-write"
                                                 />
                                                 <a
                                                   href={material.url}

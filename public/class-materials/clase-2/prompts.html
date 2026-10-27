@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;box-sizing:border-box}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Prompts de la clase</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: una sola columna de lectura; cada prompt es un bloque de código con su botón de copiar, en el orden en que se usan en clase. */
+:root {
+  --bg: #F6F4EF;
+  --surface: #FFFFFF;
+  --ink: #0C1A3E;
+  --muted: #4A5368;
+  --line: #DDD7C9;
+  --accent: #C2185B;
+  --accent-soft: #F6C9DD;
+  --code-bg: #0C1A3E;
+  --code-fg: #F6F4EF;
+  --code-slot: #F6C9DD;
+  --font-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1430; --surface: #111E44; --ink: #EEF0F6; --muted: #A9B3CC; --line: #24335F;
+    --accent: #F48FB8; --accent-soft: #4A1F3A; --code-bg: #050B1F; --code-fg: #EEF0F6; --code-slot: #F6C9DD;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1430; --surface: #111E44; --ink: #EEF0F6; --muted: #A9B3CC; --line: #24335F;
+  --accent: #F48FB8; --accent-soft: #4A1F3A; --code-bg: #050B1F; --code-fg: #EEF0F6; --code-slot: #F6C9DD;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 48px 72px;
+}
+main { max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+header { display: flex; flex-direction: column; gap: 10px; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin: 0; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+section { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.step { display: flex; gap: 14px; align-items: baseline; }
+.step-n { font-family: var(--font-mono); font-size: 14px; color: var(--accent); }
+h2 { font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.note { color: var(--muted); margin: 0; max-width: 62ch; }
+.block { background: var(--code-bg); color: var(--code-fg); border-radius: 16px; overflow: hidden; min-width: 0; }
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.bar span { font-family: var(--font-mono); font-size: 13px; opacity: 0.7; }
+button.copy {
+  font: 600 15px var(--font-body); color: var(--ink); background: var(--code-slot); border: 0; border-radius: 999px;
+  padding: 9px 18px; cursor: pointer; white-space: nowrap;
+}
+button.copy:hover { filter: brightness(1.05); }
+button.copy:focus-visible { outline: 3px solid var(--code-fg); outline-offset: 2px; }
+pre { margin: 0; padding: 20px; overflow-x: auto; font-family: var(--font-mono); font-size: 14.5px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+.slot { color: var(--code-slot); }
+.key { display: block; border: 2px dashed var(--code-slot); border-radius: 10px; padding: 10px 12px; margin-top: 4px; }
+.opt { display: block; border: 2px dotted rgba(246,201,221,0.6); border-radius: 10px; padding: 10px 12px; }
+.callout { background: var(--accent-soft); border-radius: 14px; padding: 16px 20px; margin: 0; }
+footer { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 20px; }
+@media (prefers-reduced-motion: no-preference) { button.copy { transition: filter .15s ease; } }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">UdeSA · No-Code &amp; AI · Encuentro 2</p>
+    <h1>Prompts de la clase</h1>
+    <p class="lede">Los dos prompts que usamos hoy. Copialos con el botón y completá lo que está entre corchetes.</p>
+  </header>
+
+  <section aria-labelledby="t1">
+    <div class="step"><span class="step-n">01</span><h2 id="t1">Template del master prompt</h2></div>
+    <p class="note">Pegalo en ChatGPT, Claude o Gemini, contale tu idea y completalo con su ayuda. No lo pegues en Lovable todavía.</p>
+    <div class="block">
+      <div class="bar"><span>master-prompt.txt</span><button class="copy" type="button" data-target="p1">Copiar prompt</button></div>
+<pre id="p1">Quiero construir <span class="slot">[NOMBRE]</span>, una web app para <span class="slot">[USUARIO]</span> que tiene el problema de <span class="slot">[PROBLEMA]</span>.
+Hoy lo resuelven con <span class="slot">[ALTERNATIVA ACTUAL]</span>.
+<span class="slot">[NOMBRE]</span> los ayuda a <span class="slot">[PROPUESTA DE VALOR]</span>.
+
+Happy path:
+1. Inicio: <span class="slot">[PRIMERA INTERACCIÓN]</span>
+2. Setup: <span class="slot">[REGISTRO O CONFIGURACIÓN]</span>
+3. Valor: <span class="slot">[MOMENTO EN QUE LA APP RESUELVE EL PROBLEMA]</span>
+4. Confirmación: <span class="slot">[QUÉ VE EL USUARIO AL TERMINAR]</span>
+5. Final: <span class="slot">[CÓMO QUEDA EL USUARIO]</span>
+
+Funcionalidad principal:
+<span class="slot">[QUÉ TIENE QUE PODER HACER EL USUARIO]</span>
+
+Design guidelines:
+- Logo: adjunto (PNG con fondo transparente)
+- Color primario: <span class="slot">[#HEX]</span>
+- Color secundario: <span class="slot">[#HEX]</span>
+- Referencias visuales: <span class="slot">[LINKS O CAPTURAS ADJUNTAS]</span>
+- Estilo: <span class="slot">[DIRECCIÓN DE ESTILO]</span>
+<span class="key">Ayudame a ordenar esta idea para armar el prompt para Lovable. Antes, haceme las preguntas que necesites. Basate solo en lo que te mando y devolveme un prompt corto y claro.</span></pre>
+    </div>
+    <p class="callout"><b>La última línea es la clave.</b> ChatGPT te pregunta antes de escribir el prompt. Con tus respuestas terminás de refinar la idea, en vez de que la IA adivine. El resultado es lo que pegás en Lovable.</p>
+  </section>
+
+  <section aria-labelledby="t2">
+    <div class="step"><span class="step-n">02</span><h2 id="t2">Ejemplo: FitPlan AI</h2></div>
+    <p class="note">Así queda un master prompt listo para pegar en Lovable, en Plan Mode. La parte de estructura es opcional: sirve cuando tu app tiene varias páginas, como un producto con login y pagos.</p>
+    <div class="block">
+      <div class="bar"><span>fitplan-ai.txt</span><button class="copy" type="button" data-target="p2">Copiar prompt</button></div>
+<pre id="p2">Quiero construir FitPlan AI, una web app para personas ocupadas que quieren ponerse en forma pero no saben qué hacer en el gimnasio.
+Hoy lo resuelven con videos sueltos de YouTube o pagando un personal trainer.
+FitPlan AI les arma un plan de entrenamiento semanal personalizado en segundos.
+
+Happy path:
+1. Inicio: el usuario entra con su cuenta de Google.
+2. Setup: responde objetivo, nivel de experiencia, días disponibles y equipamiento.
+3. Valor: la IA le arma un plan semanal con ejercicios, series y repeticiones.
+4. Confirmación: se suscribe y ve el plan del día listo para usar.
+5. Final: llega al gimnasio sabiendo exactamente qué hacer.
+<span class="opt">Estructura de la app (opcional):
+/ home con la propuesta de valor
+/auth login con Google
+/onboarding pedir objetivo, nivel de experiencia, días disponibles y equipamiento
+/paywall suscripción de USD 5 por mes
+/app plan semanal generado con IA, con opción de regenerarlo</span>
+Design guidelines:
+- Logo: adjunto (PNG con fondo transparente)
+- Color primario: #FF5A1F
+- Color secundario: #111827
+- Referencias visuales: capturas adjuntas de apps de fitness
+- Estilo: moderno, enérgico, mobile-first.
+<span class="key">Antes de escribir código, haceme todas las preguntas que necesites para refinar este brief.</span></pre>
+    </div>
+  </section>
+
+  <footer>Martín Haiek · Signal Studio · Viernes 23 de octubre de 2026</footer>
+</main>
+
+<script>
+document.querySelectorAll('button.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = document.getElementById(btn.dataset.target);
+    var text = pre.innerText.replace(/\n{3,}/g, '\n\n').trim();
+    var done = function (label) {
+      btn.textContent = label;
+      setTimeout(function () { btn.textContent = 'Copiar prompt'; }, 2000);
+    };
+    var selectIt = function () {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      done('Seleccionado: copialo');
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done('Copiado'); }, selectIt);
+      } else { selectIt(); }
+    } catch (e) { selectIt(); }
+  });
+});
+</script>
+
+</body></html>
