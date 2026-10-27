@@ -34,7 +34,8 @@ import { MarkdownMaterialBox } from "@/components/dashboard/markdown-material-bo
 
 type ClassSlideMaterial = {
   url: string
-  type: "pdf" | "html" | "markdown"
+  // "slides": deck HTML propio, embebido en 16:9 igual que los PDFs
+  type: "pdf" | "html" | "markdown" | "slides"
 }
 
 export default function Dashboard() {
@@ -179,6 +180,7 @@ export default function Dashboard() {
   // COHORTE 3 H2 2026
   const classVideos: Record<string, string> = {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a649c36e-c328-4db2-8ed1-b4e50135ad33&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=2765c850-ec9a-4f85-8457-b4ec0117f764&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   // COHORTE 2 H1 2026
@@ -205,6 +207,8 @@ export default function Dashboard() {
   // COHORTE 3 H2 2026
   const classSlides: Record<string, ClassSlideMaterial> = {
     "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/172nLY6hYy4oZcBuX8h6_IpPBpFfAxiDgIa-AvzMtkyM/preview", type: "pdf" },
+    "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
+    "Clase 2: prompts": { url: "/class-materials/clase-2/prompts.html", type: "html" },
   }
 
   // COHORTE 2 H1 2026
@@ -544,6 +548,7 @@ export default function Dashboard() {
                                                   title={className}
                                                   className="w-full h-[min(80vh,900px)] rounded-lg border border-border/20 bg-background"
                                                   allowFullScreen
+                                                  allow="clipboard-write"
                                                 />
                                                 <a
                                                   href={material.url}
