@@ -34,9 +34,8 @@ import { MarkdownMaterialBox } from "@/components/dashboard/markdown-material-bo
 
 type ClassSlideMaterial = {
   url: string
-  // "external": sitios que no permiten iframe (p. ej. artifacts de claude.ai); se muestra
-  // un placeholder 16:9 que abre la presentación en pestaña nueva.
-  type: "pdf" | "html" | "markdown" | "external"
+  // "slides": deck HTML propio, embebido en 16:9 igual que los PDFs
+  type: "pdf" | "html" | "markdown" | "slides"
 }
 
 export default function Dashboard() {
@@ -208,7 +207,7 @@ export default function Dashboard() {
   // COHORTE 3 H2 2026
   const classSlides: Record<string, ClassSlideMaterial> = {
     "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/172nLY6hYy4oZcBuX8h6_IpPBpFfAxiDgIa-AvzMtkyM/preview", type: "pdf" },
-    "Clase 2: De Idea a Producto": { url: "https://claude.ai/artifact/7Pk6qJMRKL7gCzdgaLt8e2", type: "external" },
+    "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -560,24 +559,6 @@ export default function Dashboard() {
                                                   <ExternalLink className="h-4 w-4" />
                                                 </a>
                                               </div>
-                                            ) : material.type === "external" ? (
-                                              <a
-                                                href={material.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="group/ext relative block w-full rounded-lg border border-border/20 bg-gradient-to-br from-primary/10 to-accent/10 hover:from-primary/15 hover:to-accent/15 transition-colors"
-                                                style={{ paddingBottom: "56.25%" }}
-                                              >
-                                                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center">
-                                                  <GraduationCap className="h-8 w-8 md:h-10 md:w-10 text-accent" />
-                                                  <span className="text-sm md:text-base font-medium text-foreground">{className}</span>
-                                                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-primary-foreground text-xs md:text-sm shadow-sm group-hover/ext:opacity-90">
-                                                    Ver presentación
-                                                    <ExternalLink className="h-4 w-4" />
-                                                  </span>
-                                                  <span className="text-xs text-muted-foreground">Se abre en una pestaña nueva</span>
-                                                </div>
-                                              </a>
                                             ) : (
                                               <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                                                 <iframe

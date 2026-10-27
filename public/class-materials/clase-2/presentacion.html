@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UdeSA · De idea a Producto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #0B0F1A; overflow: hidden; }
+  body { font-family: 'DM Sans', Arial, sans-serif; }
+
+  #viewport { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #stage { position: relative; width: 1920px; height: 1080px; flex-shrink: 0; transform-origin: center center; box-shadow: 0 10px 40px rgba(0,0,0,.4); }
+
+  /* Slide format: 1920x1080, inline styles; divs are flex columns by default */
+  #stage > section { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: flex; flex-direction: column; font-size: 32px; line-height: 1.4; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility 0s linear .35s; }
+  #stage > section.active { opacity: 1; visibility: visible; transition: opacity .35s ease; z-index: 1; }
+  section div { display: flex; flex-direction: column; }
+  section div[style*="display:flex"], section div[style*="display: flex"] { flex-direction: row; }
+  section h1, section h2, section h3, section p, section ul, section ol, section table { margin: 0; }
+  section h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+  section h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+  section h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+  section ul, section ol { padding-left: 1.2em; }
+  section li + li { margin-top: .25em; }
+  section img { display: block; flex-shrink: 0; }
+  section a { color: inherit; }
+  section aside { display: none; }
+  section table { border-collapse: collapse; width: 100%; }
+  section th, section td { text-align: left; vertical-align: top; padding: 18px 24px 18px 0; border-bottom: 1px solid #D9D3C4; }
+  section th { font-weight: 700; }
+  x-shape, x-icon { display: block; flex-shrink: 0; }
+  x-shape[kind="arrow-right"] { clip-path: polygon(0 30%, 60% 30%, 60% 0, 100% 50%, 60% 100%, 60% 70%, 0 70%); }
+  x-icon svg { width: 100%; height: 100%; display: block; }
+
+  /* Controls */
+  #controls { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: rgba(12,26,62,.82); color: #fff; font: 500 14px/1 'DM Sans', Arial, sans-serif; backdrop-filter: blur(6px); z-index: 10; transition: opacity .3s; }
+  body.idle #controls { opacity: 0; pointer-events: none; }
+  #controls button { all: unset; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 999px; }
+  #controls button:hover { background: rgba(255,255,255,.15); }
+  #controls button:disabled { opacity: .35; cursor: default; background: none; }
+  #controls svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  #counter { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+  #progress { position: fixed; left: 0; bottom: 0; height: 3px; background: #E0357B; transition: width .3s; z-index: 10; }
+
+  @media print {
+    @page { size: 1920px 1080px; margin: 0; }
+    html, body { overflow: visible; height: auto; background: none; }
+    #viewport { position: static; display: block; }
+    #stage { transform: none !important; width: auto; height: auto; box-shadow: none; }
+    #stage > section { position: relative; opacity: 1; visibility: visible; transition: none; page-break-after: always; break-after: page; }
+    #controls, #progress { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+<section id="cover" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<div style="position:absolute;left:0;top:0;width:24px;height:1080px;background:#E0357B"></div>
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">UdeSA · Educación Ejecutiva · No-Code &amp; AI</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:160px;font-weight:700;line-height:1.0;letter-spacing:-4px;color:#F6F4EF">De idea<br>a Producto</h1>
+<p style="font-size:44px;line-height:1.3;color:#B9C2D8;width:1300px">Encuentro 2 · Master prompt, Lovable y tu primera app</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:28px;color:#9AA5C2">Martín Haiek · Founder, Signal Studio · Viernes 23 de octubre de 2026</p>
+</section>
+
+<section id="agenda" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Agenda de hoy</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 96px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:00</p><p style="font-size:32px">Apertura</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:06</p><p style="font-size:32px">El mapa de herramientas</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:11</p><p style="font-size:32px">Apps reales y por qué Lovable</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:20</p><p style="font-size:32px">Del cómo al qué</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:27</p><p style="font-size:32px">Development 101</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:40</p><p style="font-size:32px">Mastering the master prompt</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">9:56</p><p style="font-size:32px">Prompting fundamentals</p></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:04</p><p style="font-size:32px">Plan Mode y build en vivo</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:16</p><p style="font-size:32px"><b>Break</b></p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:26</p><p style="font-size:32px">Editar sin romper</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:34</p><p style="font-size:32px">Login, pagos e IA</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:45</p><p style="font-size:32px">Dominio y GitHub</p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">10:50</p><p style="font-size:32px"><b>Tu turno: construí tu app</b></p></div>
+<div style="display:flex;gap:32px;align-items:baseline;border-top:1px solid #D9D3C4;padding:14px 0 0 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B;width:110px">11:20</p><p style="font-size:32px">Demos y cierre</p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="mano1" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:32px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">Levantá la mano si...</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1500px">Usás IA todos los días en tu trabajo.</h1>
+</section>
+
+<section id="mano2" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; justify-content:center; padding:128px; background:#0c1a3e">
+  <p style="font-family:'DM Sans', Arial, sans-serif; font-size:32px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:#f6c9dd">Levantá la mano si...</p>
+  <h1 style="width:1600px; font-family:'Space Grotesk', Arial, sans-serif; font-size:120px; font-weight:700; line-height:1.05; letter-spacing:-3px; color:#f6f4ef">Ya armaste una app en Lovable, V0 o alguna herramienta parecida.</h1>
+</section>
+
+<section id="software" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1.05;letter-spacing:-2px;width:1500px">El software se está comiendo el mundo.</h2>
+<div style="display:flex;gap:64px;align-items:center">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:240px;font-weight:700;line-height:1;color:#E0357B;letter-spacing:-8px">&lt;1%</p>
+<p style="font-size:44px;line-height:1.3;color:#4A5368;width:900px">de las personas sabe programar. El 99% no tiene el conocimiento técnico para construir.</p>
+</div>
+</section>
+
+<section id="lenguaje" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; justify-content:center; align-items:center; padding:128px; background:#0c1a3e">
+  <img src="img/5c6a21a48d1b.png" alt="Tweet de Andrej Karpathy del 24 de enero de 2023: The hottest new programming language is English. 4 millones de vistas." style="width:1500px; height:512px; object-fit:contain; border-radius:24px">
+</section>
+
+<section id="quien" data-transition="fade" style="display:grid; gap:96px; align-items:center; grid-template-columns:600px 1fr; padding:128px 128px 160px; background:#f6f4ef">
+  <img src="img/784fea504c69.jpg" alt="Martín Haiek, sonriendo, con remera negra sobre fondo claro" style="width:600px; height:600px; border-radius:32px">
+  <div style="display:flex; flex-direction:column; gap:20px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Quién soy</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:88px; font-weight:700; line-height:1.05; letter-spacing:-2px; color:#0c1a3e">Martín Haiek</h2>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:34px; line-height:1.35; color:#4a5368">Founder de Signal Studio. Construyo apps propias con estas herramientas.</p>
+    <div style="display:flex; flex-direction:column">
+      <p style="padding:16px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; color:#0c1a3e; border-top:1px solid #d9d3c4">10+ años en producto</p>
+      <p style="padding:16px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; color:#0c1a3e; border-top:1px solid #d9d3c4">Co-fundé una startup que levantó USD 4M</p>
+      <p style="padding:16px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; color:#0c1a3e; border-top:1px solid #d9d3c4">150+ startups acompañadas en US, LatAm, Asia y Europa</p>
+      <p style="padding:16px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; color:#0c1a3e; border-top:1px solid #d9d3c4">Lovable Ambassador LatAm</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="escalera" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:72px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">El mapa de herramientas</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">El camino: de la idea al producto</h2>
+</div>
+<div style="display:flex;gap:24px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">01</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">Pensar</h3>
+<div style="display:flex;align-items:center;gap:24px;height:112px">
+<img src="img/29e4de96759c.png" alt="Logo de ChatGPT" style="width:96px;height:96px;object-fit:contain">
+</div>
+<p style="font-size:30px;line-height:1.35;color:#4A5368">ChatGPT. Armás el master prompt y refinás la idea.</p>
+</div>
+<x-shape kind="arrow-right" style="width:64px;height:32px;background:#E0357B"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:3px solid #E0357B;border-radius:20px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">02 · hoy</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">Construir</h3>
+<div style="display:flex;align-items:center;gap:24px;height:112px">
+<img src="img/bc35fa6fb58d.png" alt="Logo de Lovable" style="width:220px;height:100px;object-fit:contain">
+<img src="img/21511947ce6f.png" alt="Logo de v0" style="width:80px;height:80px;object-fit:contain">
+</div>
+<p style="font-size:30px;line-height:1.35;color:#4A5368">Lovable o v0. La primera versión, con datos, login y pagos.</p>
+</div>
+<x-shape kind="arrow-right" style="width:64px;height:32px;background:#E0357B"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">03</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">Refinar</h3>
+<div style="display:flex;align-items:center;gap:24px;height:112px">
+<img src="img/9d27b07be646.png" alt="Logo de Cursor" style="width:200px;height:52px;object-fit:contain">
+<img src="img/dc888c8d3ddd.png" alt="Logo de Claude Code" style="width:130px;height:100px;object-fit:contain">
+</div>
+<p style="font-size:30px;line-height:1.35;color:#4A5368">Cursor o Claude Code. Ajustes finos y proyectos más grandes.</p>
+</div>
+</div>
+<p style="font-size:32px;color:#4A5368">Se empieza simple y se sube cuando el proyecto lo justifica.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="meetsignals" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:1fr 760px;gap:96px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Apps reales · comunidad</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">meetsignals.com</h2>
+<p style="font-size:36px;line-height:1.35;color:#4A5368">Convierte señales de compra en ventas reales.</p>
+<div style="display:flex;flex-direction:column;gap:0">
+<p style="font-size:30px;border-top:1px solid #D9D3C4;padding:18px 0"><b>USD 10.000</b> por mes con 4 clientes</p>
+<p style="font-size:30px;border-top:1px solid #D9D3C4;padding:18px 0">3 cofundadores, sin inversores</p>
+<p style="font-size:30px;border-top:1px solid #D9D3C4;border-bottom:1px solid #D9D3C4;padding:18px 0">Web en Lovable + Claude Code</p>
+</div>
+</div>
+<img src="img/e9da9ab78234.png" alt="Tweet de Ismael Diaby: Signal llegó a USD 10.000 por mes, 4 clientes, 92% de margen, sin inversión, 3 cofundadores, web hecha con Lovable, Claude Code, Apify y scrapers, en 3 meses." style="width:760px;height:612px;object-fit:contain;border-radius:20px;border:1px solid #D9D3C4">
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto · Fuente: @diabyismael en X</p>
+</section>
+
+<section id="ideabank" data-transition="fade" style="display:grid; gap:80px; align-items:center; grid-template-columns:1fr 880px; padding:128px 128px 160px; background:#0c1a3e">
+  <div style="display:flex; flex-direction:column; gap:32px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#f6c9dd">Apps reales · construida por mí</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#f6f4ef">IdeaBank</h2>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:32px; line-height:1.4; color:#b9c2d8">Una IA que te dice qué publicar todos los días, según los nichos que monitorea.</p>
+    <div style="display:flex; flex-direction:row; gap:48px">
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:700; line-height:1; color:#f6c9dd">$500</p>
+        <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; color:#b9c2d8">por mes</p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:8px">
+        <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:700; line-height:1; color:#f6c9dd">60</p>
+        <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; color:#b9c2d8">usuarios pagos</p>
+      </div>
+    </div>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.4; color:#f6f4ef">Hecha en Lovable, conectando servicios e integrando IA en el producto. Lanzada hace unos meses.</p>
+  </div>
+  <img src="img/04f6aa40526b.png" alt="Home de IdeaBank: Nunca más te quedes sin ideas para tus Reels. 5 ideas diarias personalizadas a tu estilo, nicho y audiencia." style="width:880px; height:532px; border:1px solid #2a3a63; border-radius:20px">
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#9aa5c2">Encuentro 2 · De idea a Producto · getideabank.com</p>
+</section>
+
+<section id="trabajo" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Apps reales</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Y lo mismo sirve para tu trabajo</h2>
+<p style="font-size:32px;line-height:1.4;color:#4A5368;width:1400px">Hoy construimos un producto para clientes. La misma lógica sirve para una herramienta tuya o de tu equipo.</p>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+  <path d="M18 17V9" />
+  <path d="M13 17V5" />
+  <path d="M8 17v-3" />
+</svg></x-icon>
+<p style="font-size:32px;line-height:1.35">Dashboards que antes eran un Excel compartido</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <path d="m9 12 2 2 4-4" />
+</svg></x-icon>
+<p style="font-size:32px;line-height:1.35">Formularios con aprobaciones y avisos</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+  <path d="M9 18h6" />
+  <path d="M10 22h4" />
+</svg></x-icon>
+<p style="font-size:32px;line-height:1.35">Validar una idea con clientes antes de pedir presupuesto</p>
+</div>
+</div>
+<p style="font-size:32px;font-weight:700;background:#F6C9DD;padding:24px 32px;border-radius:16px">En el chat: ¿qué planilla, papel o grupo de WhatsApp de tu trabajo debería ser una app?</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="porque" data-transition="fade" style="display:flex; flex-direction:column; gap:56px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Por qué Lovable</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Todo en un solo lugar</h2>
+  </div>
+  <div style="display:grid; gap:24px; grid-template-columns:1fr 1fr 1fr">
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Lovable Cloud</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#4a5368">Guarda los datos y maneja el login sin configurar nada. Por debajo usa Supabase.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Lovable AI</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#4a5368">Sumás inteligencia artificial adentro de tu app sin contratar nada aparte.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Integraciones</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#4a5368">Login con Google, pagos con Stripe y más, listos para usar.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Publicar en un clic</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#4a5368">Tu app queda online con su propia dirección.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Un solo cobro</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#4a5368">Todo se paga con créditos.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:36px; background:#0c1a3e; border-radius:20px">
+      <h3 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#f6c9dd">¿Y v0?</h3>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#f6f4ef">Casi todo lo que vemos hoy aplica también ahí.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="ahorra" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Por qué Lovable</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Lo que te ahorra</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<p style="font-size:26px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Antes</p>
+<ul style="font-size:30px;line-height:1.55;color:#4A5368">
+<li>Elegir dónde publicar la app</li>
+<li>Crear la base de datos</li>
+<li>Configurar el login</li>
+<li>Conseguir claves de cada servicio</li>
+<li>Conectar todo</li>
+<li>Pagar 5 servicios distintos</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;justify-content:center;gap:24px;background:#0C1A3E;border-radius:20px;padding:44px">
+<p style="font-size:26px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F6C9DD">Ahora</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:700;line-height:1.1;color:#F6F4EF">Lo pedís en español.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="nohace" data-transition="fade" style="display:flex; flex-direction:column; gap:56px; justify-content:center; padding:128px; background:#0c1a3e">
+  <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#f6f4ef">Lo que todavía no hace por vos</h2>
+  <div style="display:flex; flex-direction:column">
+    <div style="display:flex; flex-direction:row; gap:48px; align-items:baseline; padding:28px 0; border-top:1px solid #2a3a63">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#f6c9dd">01</p>
+      <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:56px; font-weight:600; color:#f6f4ef">Pensar el producto</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:48px; align-items:baseline; padding:28px 0; border-top:1px solid #2a3a63">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#f6c9dd">02</p>
+      <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:56px; font-weight:600; color:#f6f4ef">Decidir qué problema resolver</p>
+    </div>
+    <div style="display:flex; flex-direction:row; gap:48px; align-items:baseline; padding:28px 0; border-top:1px solid #2a3a63; border-bottom:1px solid #2a3a63">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:32px; color:#f6c9dd">03</p>
+      <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:56px; font-weight:600; color:#f6f4ef">Conseguir usuarios - coming soon</p>
+    </div>
+  </div>
+</section>
+
+<section id="skill" data-transition="fade" style="background:#E0357B;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#0C1A3E">Del cómo al qué</p>
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:80px;font-weight:500;line-height:1.1;color:#3A0E22;text-decoration:line-through">Antes, lo escaso era saber construir.</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1600px">Hoy, lo escaso es saber qué construir.</h1>
+</section>
+
+<section id="vi" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Del cómo al qué</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Lo que vi en 10 años de producto</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:88px;font-weight:700;line-height:1;color:#C2185B">150+</p>
+<p style="font-size:30px;line-height:1.4">startups acompañadas en US, LatAm, Asia y Europa.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<x-icon style="width:72px;height:72px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" />
+</svg></x-icon>
+<p style="font-size:30px;line-height:1.4">La mayoría no fracasó por la tecnología. Fracasó por construir algo que nadie necesitaba.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#0C1A3E;border-radius:20px;padding:44px">
+<x-icon style="width:72px;height:72px;color:#F6C9DD"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg></x-icon>
+<p style="font-size:30px;line-height:1.4;color:#F6F4EF">Antes, equivocarse costaba meses y mucha plata. Hoy cuesta un par de días.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="nichos" data-transition="fade" style="display:flex; flex-direction:column; gap:48px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Del cómo al qué</p>
+    <h2 style="width:1600px; font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Cuando construir es barato, los nichos se vuelven negocio</h2>
+  </div>
+  <div style="display:grid; gap:32px; grid-template-columns:1fr 1fr">
+    <div style="display:flex; flex-direction:column; gap:12px; padding:24px 0 0; border-top:4px solid #b9b3a4">
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7285">Antes</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:32px; line-height:1.4; color:#4a5368">Un equipo de programadores trabajando meses. Solo valía la pena para mercados grandes.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; padding:24px 0 0; border-top:4px solid #e0357b">
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#c2185b">Hoy</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:32px; line-height:1.4; color:#0c1a3e">Una persona, unas semanas y una suscripción a estas herramientas.</p>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:12px; padding:40px 48px; background:#0c1a3e; border-radius:20px">
+    <p style="font-family:'Space Grotesk', Arial, sans-serif; font-size:56px; font-weight:700; color:#f6f4ef">200 clientes × USD 20 por mes = <span style="color:#f6c9dd">USD 4.000 por mes</span></p>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:30px; color:#b9c2d8">Para una empresa grande no mueve la aguja. Para una persona, es un negocio.</p>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="ventaja" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Del cómo al qué</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Tu ventaja no es el código. Es lo que sabés.</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:600">Un pediatra</h3>
+<p style="font-size:30px;line-height:1.4;color:#4A5368">sabe qué le falta a un consultorio mejor que cualquier programador.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:600">Un contador</h3>
+<p style="font-size:30px;line-height:1.4;color:#4A5368">sabe qué planilla le hace perder horas a un estudio.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:44px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:44px;font-weight:600">Un gerente</h3>
+<p style="font-size:30px;line-height:1.4;color:#4A5368">sabe qué proceso de su equipo vive en un grupo de WhatsApp.</p>
+</div>
+</div>
+<p style="font-size:36px;font-weight:500">La IA pone el código. <b>Vos ponés el problema bien entendido.</b></p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="signal" data-transition="fade" style="display:flex; flex-direction:column; gap:56px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Del cómo al qué</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Cómo lo estoy aprovechando con Signal Studio</h2>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:14px; align-items:center">
+    <div style="width:1120px; display:flex; flex-direction:row; gap:36px; align-items:center; padding:30px 44px; background:#f6c9dd; border-radius:20px">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; white-space:nowrap; color:#8a1446">Capa 3</p>
+      <h3 style="width:300px; font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Socios por nicho</h3>
+      <p style="flex:1; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e">Cada app la hacemos con alguien que tiene expertise en ese nicho.</p>
+    </div>
+    <div style="width:1392px; display:flex; flex-direction:row; gap:36px; align-items:center; padding:30px 44px; background:#ffffff; border:1px solid #d9d3c4; border-radius:20px">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; white-space:nowrap; color:#c2185b">Capa 2</p>
+      <h3 style="width:300px; font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#0c1a3e">Apps propias</h3>
+      <p style="flex:1; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#4a5368">IdeaBank, Onion y las que vienen. Se montan sobre la distribución.</p>
+    </div>
+    <div style="width:1664px; display:flex; flex-direction:row; gap:36px; align-items:center; padding:36px 44px; background:#0c1a3e; border-radius:20px">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:28px; white-space:nowrap; color:#f6c9dd">Capa 1</p>
+      <h3 style="width:300px; font-family:'Space Grotesk', Arial, sans-serif; font-size:36px; font-weight:600; color:#f6f4ef">Distribución</h3>
+      <p style="flex:1; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#b9c2d8">Video corto en alto volumen para distribuir apps en redes, a un costo muy eficiente. Resuelve el cuello de botella.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="pregunta" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">La pregunta para hoy</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:112px;font-weight:700;line-height:1.08;letter-spacing:-3px;width:1600px">¿Qué sabés vos, por tu trabajo, que un programador no sabe?</h1>
+<p style="font-size:36px;color:#B9C2D8">Respondé en el chat.</p>
+</section>
+
+<section id="dev101" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Development 101</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Toda app tiene tres partes</h2>
+<p style="font-size:32px;color:#4A5368">Pensala como un local a la calle.</p>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">Frontend</h3>
+<p style="font-size:28px;line-height:1.4">Lo que el usuario ve y toca: pantallas, botones, formularios.</p>
+<p style="font-size:28px;line-height:1.4;color:#C2185B">En el local: la vidriera y el mostrador.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6B7285">React · HTML · CSS</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">Backend</h3>
+<p style="font-size:28px;line-height:1.4">La lógica y los datos que el usuario no ve.</p>
+<p style="font-size:28px;line-height:1.4;color:#C2185B">En el local: el depósito y el inventario.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6B7285">Node.js · bases de datos</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:48px;font-weight:600">APIs</h3>
+<p style="font-size:28px;line-height:1.4">Cómo viajan los datos entre frontend y backend.</p>
+<p style="font-size:28px;line-height:1.4;color:#C2185B">En el local: la comunicación entre mostrador y depósito.</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;color:#6B7285">REST · GraphQL · JSON</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="glostec" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Glosario</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Palabras técnicas que vas a escuchar</h2>
+  </div>
+  <div style="display:grid; gap:24px; row-gap:16px; grid-template-columns:1fr 1fr">
+    <p style="padding:14px 24px; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; background:#f6c9dd; border-radius:14px"><b>Base de datos:</b> donde se guarda todo. Una planilla gigante y ordenada.</p>
+    <p style="padding:14px 24px; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; background:#f6c9dd; border-radius:14px"><b>Autenticación (auth):</b> el login. Saber quién es cada usuario.</p>
+    <p style="padding:14px 24px; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; background:#f6c9dd; border-radius:14px"><b>Hosting o deploy:</b> publicar tu app en internet con una dirección.</p>
+    <p style="padding:14px 24px; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; background:#f6c9dd; border-radius:14px"><b>Dominio:</b> la dirección de tu app, como miapp.com.</p>
+    <p style="padding:14px 24px; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; background:#f6c9dd; border-radius:14px"><b>GitHub:</b> el historial de cambios del código, como el de un Google Doc.</p>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7285">Para leer después</p>
+    <div style="display:grid; gap:48px; row-gap:12px; grid-template-columns:1fr 1fr 1fr">
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Componente:</b> una pieza reutilizable, como un botón.</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Design system:</b> las reglas visuales del producto.</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Webhook:</b> un aviso automático entre sistemas.</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Secrets:</b> claves privadas que nunca van en un prompt.</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Supabase:</b> guarda los datos. Lovable lo usa por detrás.</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#4a5368"><b>Bug:</b> algo que no funciona como esperabas.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="glosprod" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Glosario</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Palabras de producto y negocio</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 24px">
+<p style="font-size:28px;line-height:1.35;background:#F6C9DD;padding:14px 24px;border-radius:14px"><b>Prompt:</b> el pedido que le escribís a la IA.</p>
+<p style="font-size:28px;line-height:1.35;background:#F6C9DD;padding:14px 24px;border-radius:14px"><b>Landing page:</b> la página de entrada que explica qué hace tu app.</p>
+<p style="font-size:28px;line-height:1.35;background:#F6C9DD;padding:14px 24px;border-radius:14px"><b>Onboarding:</b> las primeras pantallas donde el usuario nuevo carga sus datos.</p>
+<p style="font-size:28px;line-height:1.35;background:#F6C9DD;padding:14px 24px;border-radius:14px"><b>Paywall:</b> la pantalla donde el usuario paga para acceder.</p>
+<p style="font-size:28px;line-height:1.35;background:#F6C9DD;padding:14px 24px;border-radius:14px"><b>Crédito:</b> la moneda de Lovable. Cada pedido gasta créditos.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Para leer después</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 48px">
+<p style="font-size:24px;line-height:1.35;color:#4A5368"><b>MVP:</b> la versión más chica de tu app que ya le sirve a alguien.</p>
+<p style="font-size:24px;line-height:1.35;color:#4A5368"><b>SaaS:</b> software que se cobra por suscripción.</p>
+<p style="font-size:24px;line-height:1.35;color:#4A5368"><b>MRR:</b> ingreso mensual recurrente, lo que cobrás todos los meses.</p>
+<p style="font-size:24px;line-height:1.35;color:#4A5368"><b>Mobile-first:</b> diseñada primero para verse bien en el celular.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="problema" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">Mastering the master prompt</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:112px;font-weight:700;line-height:1.08;letter-spacing:-3px;width:1600px">Empezá por el problema, no por las features.</h1>
+<p style="font-size:40px;line-height:1.35;color:#B9C2D8;width:1400px">Tu primer prompt es tu documento de producto. Dale a la IA el problema, el usuario y el recorrido.</p>
+</section>
+
+<section id="preguntas5" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Master prompt · paso 1</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Las 5 preguntas antes de escribir nada</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:0">
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">01</p><p style="font-size:40px;font-weight:500">¿Para quién es?</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">02</p><p style="font-size:40px;font-weight:500">¿Qué problema tiene hoy?</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">03</p><p style="font-size:40px;font-weight:500">¿Cómo lo resuelve ahora?</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">04</p><p style="font-size:40px;font-weight:500">¿Qué hace tu app distinto?</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;border-bottom:1px solid #D9D3C4;padding:20px 0"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#C2185B">05</p><p style="font-size:40px;font-weight:500">¿Qué es lo mínimo que tiene que hacer para ser útil?</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="happypath" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Master prompt · paso 2</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Mapeá tu happy path</h2>
+<p style="font-size:32px;color:#4A5368">El recorrido ideal de tu usuario, cuando todo sale bien.</p>
+</div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#C2185B">1</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:34px;font-weight:600">Inicio</h3>
+<p style="font-size:26px;line-height:1.35;color:#4A5368">La primera interacción.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#C2185B">2</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:34px;font-weight:600">Setup</h3>
+<p style="font-size:26px;line-height:1.35;color:#4A5368">Se registra o configura lo básico.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#0C1A3E;border-radius:20px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#F6C9DD">3</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:34px;font-weight:600;color:#F6F4EF">Valor</h3>
+<p style="font-size:26px;line-height:1.35;color:#B9C2D8">La app le resuelve el problema.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#C2185B">4</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:34px;font-weight:600">Confirmación</h3>
+<p style="font-size:26px;line-height:1.35;color:#4A5368">Ve que terminó o que salió bien.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:28px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:26px;color:#C2185B">5</p>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:34px;font-weight:600">Final</h3>
+<p style="font-size:26px;line-height:1.35;color:#4A5368">Cómo queda. Qué cambió para él.</p>
+</div>
+</div>
+<div style="display:flex;gap:24px">
+<p style="flex:1;font-size:28px;line-height:1.35;background:#DDEFE5;padding:20px 28px;border-radius:14px"><b>Enfocate en:</b> lo que el usuario ve y hace.</p>
+<p style="flex:1;font-size:28px;line-height:1.35;background:#EFEBE1;padding:20px 28px;border-radius:14px"><b>Dejá para después:</b> lo de atrás, los casos raros y los “¿y si...?”.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="mealmate" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Master prompt · ejemplo</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Happy path de MealMate</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:0">
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-size:28px;font-weight:700;color:#C2185B;width:260px">Inicio</p><p style="font-size:32px;line-height:1.35;width:1360px">Entra a MealMate y crea su cuenta.</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-size:28px;font-weight:700;color:#C2185B;width:260px">Setup</p><p style="font-size:32px;line-height:1.35;width:1360px">Encuesta corta: restricciones, tiempo para cocinar, cocinas favoritas.</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-size:28px;font-weight:700;color:#C2185B;width:260px">Valor</p><p style="font-size:32px;line-height:1.35;width:1360px">La IA le arma un plan de 3 comidas con recetas.</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;padding:20px 0"><p style="font-size:28px;font-weight:700;color:#C2185B;width:260px">Confirmación</p><p style="font-size:32px;line-height:1.35;width:1360px">Recibe la lista de compras automática con cantidades.</p></div>
+<div style="display:flex;gap:40px;align-items:baseline;border-top:1px solid #D9D3C4;border-bottom:1px solid #D9D3C4;padding:20px 0"><p style="font-size:28px;font-weight:700;color:#C2185B;width:260px">Final</p><p style="font-size:32px;line-height:1.35;width:1360px">Tiene un plan claro y se siente tranquilo con la semana.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="iguales" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">La pregunta de la clase pasada</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1600px">¿Por qué todas las apps quedan iguales?</h1>
+<p style="font-size:44px;line-height:1.3;color:#B9C2D8;width:1400px">Porque nadie le dice a la IA cómo se tienen que ver.</p>
+</section>
+
+<section id="guidelines" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Master prompt · paso 3</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Design guidelines</h2>
+</div>
+<div style="display:grid;grid-template-columns:3fr 2fr;gap:64px">
+<div style="display:flex;flex-direction:column;gap:0">
+<p style="font-size:30px;line-height:1.35;border-top:1px solid #D9D3C4;padding:18px 0"><b>Logo:</b> PNG con fondo transparente.</p>
+<p style="font-size:30px;line-height:1.35;border-top:1px solid #D9D3C4;padding:18px 0"><b>Color primario:</b> en código hex, como #FF5A1F.</p>
+<p style="font-size:30px;line-height:1.35;border-top:1px solid #D9D3C4;padding:18px 0"><b>Color secundario:</b> como #111827.</p>
+<p style="font-size:30px;line-height:1.35;border-top:1px solid #D9D3C4;padding:18px 0"><b>Referencias visuales:</b> links o capturas de apps que te gusten.</p>
+<p style="font-size:30px;line-height:1.35;border-top:1px solid #D9D3C4;border-bottom:1px solid #D9D3C4;padding:18px 0"><b>Estilo, en palabras:</b> minimalista, cálido, profesional, divertido.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Ejemplo: FitPlan AI</p>
+<div style="display:flex;flex-direction:column;justify-content:end;height:200px;background:#FF5A1F;border-radius:20px;padding:28px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#111827">#FF5A1F · primario</p></div>
+<div style="display:flex;flex-direction:column;justify-content:end;height:200px;background:#111827;border-radius:20px;padding:28px"><p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:28px;color:#F6F4EF">#111827 · secundario</p></div>
+<p style="font-size:26px;color:#4A5368">Estilo: moderno, enérgico, mobile-first.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="template" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:96px 128px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Master prompt · el template</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;letter-spacing:-1px">Copiá, completá lo que está entre corchetes</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="background:#0C1A3E;border-radius:20px;padding:36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F6F4EF">Quiero construir <span style="color:#F6C9DD">[NOMBRE]</span>, una web app para <span style="color:#F6C9DD">[USUARIO]</span> que tiene el problema de <span style="color:#F6C9DD">[PROBLEMA]</span>.<br>Hoy lo resuelven con <span style="color:#F6C9DD">[ALTERNATIVA]</span>.<br><span style="color:#F6C9DD">[NOMBRE]</span> los ayuda a <span style="color:#F6C9DD">[VALOR]</span>.<br><br>Happy path:<br>1. Inicio: <span style="color:#F6C9DD">[PRIMERA INTERACCIÓN]</span><br>2. Setup: <span style="color:#F6C9DD">[REGISTRO]</span><br>3. Valor: <span style="color:#F6C9DD">[QUÉ RESUELVE]</span><br>4. Confirmación: <span style="color:#F6C9DD">[QUÉ VE]</span><br>5. Final: <span style="color:#F6C9DD">[CÓMO QUEDA]</span></p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px">
+<div style="background:#0C1A3E;border-radius:20px;padding:36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F6F4EF">Funcionalidad principal:<br><span style="color:#F6C9DD">[QUÉ TIENE QUE PODER HACER]</span><br><br>Design guidelines:<br>Logo: adjunto (PNG transparente)<br>Primario: <span style="color:#F6C9DD">[#HEX]</span> · Secundario: <span style="color:#F6C9DD">[#HEX]</span><br>Referencias: <span style="color:#F6C9DD">[LINKS O CAPTURAS]</span><br>Estilo: <span style="color:#F6C9DD">[DIRECCIÓN]</span></p>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#F6C9DD;border:3px dashed #C2185B;border-radius:20px;padding:24px 32px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#8A1446">El hack · al final, en ChatGPT</p>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;line-height:1.4">Ayudame a ordenar esta idea para armar el prompt para Lovable. Antes, haceme las preguntas que necesites. Basate solo en lo que te mando y devolveme un prompt corto y claro.</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;right:128px;top:96px;width:340px;text-align:center;font-size:28px;font-weight:700;color:#0C1A3E;background:#E0357B;padding:16px 24px;border-radius:999px"><a target="_blank" rel="noopener noreferrer" href="https://claude.ai/artifact/HuMNrfdvxtEk4c5nJ5RnjB">Copiar prompt ↗</a></p>
+</section>
+
+<section id="fitplan" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:96px 128px 128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">La app de hoy</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;letter-spacing:-1px">El master prompt de FitPlan AI</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="background:#111827;border-radius:20px;padding:36px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F6F4EF">Quiero construir FitPlan AI, una web app para personas ocupadas que quieren ponerse en forma pero no saben qué hacer en el gimnasio.<br>Hoy lo resuelven con videos sueltos de YouTube o un personal trainer.<br>FitPlan AI les arma un plan semanal personalizado en segundos.<br><br><span style="color:#FFB08F">Happy path:</span><br>1. Entra con su cuenta de Google.<br>2. Responde objetivo, nivel, días y equipamiento.<br>3. La IA arma su plan semanal.<br>4. Se suscribe y ve el plan del día.<br>5. Llega al gimnasio sabiendo qué hacer.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:20px;background:#111827;border-radius:20px;padding:36px">
+<div style="display:flex;flex-direction:column;gap:6px;border:3px dotted #FFB08F;border-radius:14px;padding:16px 20px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F6F4EF"><span style="color:#FFB08F">Estructura (opcional):</span><br>/ home con la propuesta de valor<br>/auth login con Google<br>/onboarding objetivo, nivel, días<br>/paywall USD 5 por mes<br>/app plan semanal con IA</p>
+</div>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.5;color:#F6F4EF"><span style="color:#FFB08F">Design guidelines:</span><br>Logo adjunto · #FF5A1F · #111827<br>Capturas de apps de fitness<br>Moderno, enérgico, mobile-first.<br><br>Antes de escribir código, haceme todas las preguntas que necesites.</p>
+</div>
+</div>
+<p style="position:absolute;right:128px;top:96px;width:340px;text-align:center;font-size:28px;font-weight:700;color:#0C1A3E;background:#E0357B;padding:16px 24px;border-radius:999px"><a target="_blank" rel="noopener noreferrer" href="https://claude.ai/artifact/HuMNrfdvxtEk4c5nJ5RnjB">Copiar prompt ↗</a></p>
+</section>
+
+<section id="ejercicio1" data-transition="fade" style="background:#E0357B;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase">Ejercicio · 5 minutos</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:96px;font-weight:700;line-height:1.08;letter-spacing:-2px;width:1600px">Armá tu master prompt con ChatGPT</h1>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:36px;line-height:1.35">1. Abrí ChatGPT, Claude o Gemini.</p>
+<p style="font-size:36px;line-height:1.35">2. Pegá el template y contale tu idea.</p>
+<p style="font-size:36px;line-height:1.35">3. Pedile que te ayude con el happy path primero.</p>
+</div>
+<p style="font-size:36px;font-weight:700;background:#0C1A3E;color:#F6F4EF;padding:20px 32px;border-radius:14px;width:820px">No lo pegues en Lovable todavía.</p>
+</section>
+
+<section id="reglasa" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Prompting fundamentals</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Mejores prompts, mejores resultados</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">1 · Sé específico</h3>
+<p style="font-size:26px;line-height:1.4;background:#F9E3E1;padding:20px 24px;border-radius:14px"><b style="color:#B42318">Mal:</b> “Agregá un perfil”</p>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> “Agregá una página de perfil con nombre, email, nivel de experiencia y un botón de guardar”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">2 · Sin ambigüedad</h3>
+<p style="font-size:26px;line-height:1.4;background:#F9E3E1;padding:20px 24px;border-radius:14px"><b style="color:#B42318">Mal:</b> “Que tenga notificaciones”</p>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> “Mandá un email cuando se genere el plan semanal”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">3 · Con estructura</h3>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> secciones con títulos, listas numeradas. Bloques de contexto, tarea, pautas y restricciones.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto · Fuente: Lovable Prompting Handbook</p>
+</section>
+
+<section id="reglasb" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Prompting fundamentals</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Dos reglas más</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">4 · Una tarea por prompt</h3>
+<p style="font-size:26px;line-height:1.4;background:#F9E3E1;padding:20px 24px;border-radius:14px"><b style="color:#B42318">Mal:</b> cinco cambios en un mensaje.</p>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> primero las pantallas, de a una. Después los datos. Después los detalles visuales.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">5 · Decí qué no tocar</h3>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> “Hacé solo cambios visuales, sin cambiar cómo funciona nada.”</p>
+<p style="font-size:26px;line-height:1.4;background:#DDEFE5;padding:20px 24px;border-radius:14px"><b style="color:#17643F">Bien:</b> “No modifiques la página de login.”</p>
+</div>
+</div>
+<p style="font-size:30px;line-height:1.4;background:#0C1A3E;color:#F6F4EF;padding:24px 32px;border-radius:14px">Tip: poné lo más importante al principio o al final. La IA le presta más atención a los extremos.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto · Fuente: Lovable Prompting Handbook</p>
+</section>
+
+<section id="tips" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef; color:#0c1a3e; font-family:'DM Sans', Arial, sans-serif">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Prompting fundamentals</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px">Tips que ahorran tiempo y créditos</h2>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px">
+    <p style="font-size:28px; line-height:1.35; background:#f6c9dd; padding:20px 28px; border-radius:14px"><b>Fotos:</b> <a target="_blank" rel="noopener noreferrer" href="https://unsplash.com/">Unsplash</a> para fotos gratis, Pinterest para inspiración.</p>
+    <p style="font-size:28px; line-height:1.35; background:#f6c9dd; padding:20px 28px; border-radius:14px"><b>Componentes:</b> buscá en <a target="_blank" rel="noopener noreferrer" href="https://ui.shadcn.com/">ui.shadcn.com</a>. Del que te guste, sacá un screenshot o copiá el código y pasaselo a Lovable.</p>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-size:24px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#6b7285">Para leer después</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px 48px">
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Colores:</b> Coolors para armar la paleta y sacar los hex.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Referencias:</b> una captura explica más que tres párrafos.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Logo:</b> remove.bg saca el fondo gratis. Canva para uno simple.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Meta prompting:</b> pedile a ChatGPT que mejore tu prompt. No gasta créditos.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Si falla:</b> botón “Try to Fix”. Si no alcanza, contá qué esperabas y qué pasó.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Si se rompió mucho:</b> volvé a una versión anterior.</p>
+      <p style="font-size:24px; line-height:1.35; color:#4a5368"><b>Project Knowledge:</b> contexto fijo que Lovable lee en cada pedido.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="modos" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Lovable en vivo</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Dos formas de hablar con Lovable</h2>
+</div>
+<div style="display:flex;gap:28px;align-items:center">
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;background:#0C1A3E;border-radius:24px;padding:44px 48px">
+<div style="display:flex;align-items:center;gap:20px">
+<x-icon style="width:56px;height:56px;color:#F6C9DD"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+  <path d="M9 18h6" />
+  <path d="M10 22h4" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:52px;font-weight:700;color:#F6F4EF">Plan Mode</h3>
+<p style="font-size:24px;font-weight:700;color:#0C1A3E;background:#F6C9DD;padding:8px 20px;border-radius:999px;white-space:nowrap">Empezá acá</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #2A3A63;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9AA5C2">Qué hace</p><p style="font-size:30px;line-height:1.35;color:#F6F4EF">Lee, pregunta y propone un plan. No toca código.</p></div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #2A3A63;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9AA5C2">Cuándo</p><p style="font-size:30px;line-height:1.35;color:#F6F4EF">Al principio y antes de cambios grandes.</p></div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #2A3A63;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9AA5C2">Costo</p><p style="font-size:30px;line-height:1.35;color:#F6C9DD"><b>1 crédito por mensaje</b></p></div>
+</div>
+<x-shape kind="arrow-right" style="width:64px;height:32px;background:#E0357B"></x-shape>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:24px;padding:44px 48px">
+<div style="display:flex;align-items:center;gap:20px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:52px;font-weight:700">Build</h3>
+<p style="font-size:24px;font-weight:700;color:#4A5368;background:#EFEBE1;padding:8px 20px;border-radius:999px;white-space:nowrap">Después</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #E6E1D5;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Qué hace</p><p style="font-size:30px;line-height:1.35">Escribe y modifica el código de tu app.</p></div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #E6E1D5;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Cuándo</p><p style="font-size:30px;line-height:1.35">Cuando el plan ya está claro.</p></div>
+<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #E6E1D5;padding:18px 0 0 0"><p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#6B7285">Costo</p><p style="font-size:30px;line-height:1.35"><b>Variable según el cambio</b></p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="reglaplan" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">La regla</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px">Siempre arrancá en Plan Mode.</h1>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:36px;line-height:1.4;color:#F6C9DD;width:1500px">“Antes de escribir código, haceme las preguntas que necesites.”</p>
+<p style="font-size:40px;color:#B9C2D8">Si la IA adivina, adivina mal. Si pregunta, vos decidís.</p>
+</section>
+
+<section id="demo" data-transition="fade" style="background:#111827;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#FFB08F">En vivo</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px">Construimos FitPlan AI</h1>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px 64px">
+<p style="font-size:34px;line-height:1.35"><span style="color:#FFB08F">1.</span> Master prompt en Plan Mode</p>
+<p style="font-size:34px;line-height:1.35"><span style="color:#FFB08F">2.</span> Respondemos sus preguntas</p>
+<p style="font-size:34px;line-height:1.35"><span style="color:#FFB08F">3.</span> Revisamos y corregimos el plan</p>
+<p style="font-size:34px;line-height:1.35"><span style="color:#FFB08F">4.</span> Aprobamos y pasa a build</p>
+</div>
+</section>
+
+<section id="break" data-transition="fade" style="background:#E0357B;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:32px">
+<x-icon style="width:120px;height:120px;color:#0C1A3E"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg></x-icon>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:200px;font-weight:700;line-height:1;letter-spacing:-6px;text-align:center">Break</h1>
+<p style="font-size:48px;text-align:center">10 minutos · volvemos 10:26</p>
+<p style="font-size:32px;text-align:center;color:#3A0E22">A la vuelta vemos qué construyó Lovable.</p>
+</section>
+
+<section id="editar" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Editar sin romper</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Tres formas de editar</h2>
+</div>
+<div style="display:flex;gap:28px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+  <circle cx="12" cy="12" r="3" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Visual edits</h3>
+<p style="font-size:28px;line-height:1.4;color:#4A5368">Seleccionás un elemento y cambiás texto, color o tamaño directo. Para ajustes chicos.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="11" cy="11" r="8" />
+  <path d="m21 21-4.3-4.3" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Prompt con selección</h3>
+<p style="font-size:28px;line-height:1.4;color:#4A5368">Marcás un elemento y pedís el cambio. La IA sabe exactamente de qué hablás.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:40px">
+<x-icon style="width:56px;height:56px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Prompt general</h3>
+<p style="font-size:28px;line-height:1.4;color:#4A5368">Para cambios de lógica o de funcionalidad.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="reglaseditar" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Editar sin romper</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Cuatro reglas para editar</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #E0357B;padding:24px 0 0 0"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Un cambio por prompt</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Si pedís cinco cosas, se rompen dos.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #E0357B;padding:24px 0 0 0"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Sé específico</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">“El botón naranja de la home”, no “el botón”.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #E0357B;padding:24px 0 0 0"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Contá qué pasó</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Qué esperabas y qué salió. Pegá el mensaje de error.</p></div>
+<div style="display:flex;flex-direction:column;gap:12px;border-top:4px solid #E0357B;padding:24px 0 0 0"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Usá el historial</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Si algo se rompió, volvé a la versión anterior.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="avanzadas" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Funciones avanzadas · en mi pantalla</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Login, pagos e IA con un prompt</h2>
+</div>
+<div style="display:flex;gap:24px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px">
+<x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Login con Google</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;color:#4A5368">“Agregá login con Google. Guardá nombre y email. Si no está logueado, mandalo a /auth.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px">
+<x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600">Pagos con Stripe</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;color:#4A5368">“Agregá un paywall con suscripción de USD 5 por mes. Solo los pagos acceden a /app.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#0C1A3E;border-radius:20px;padding:36px">
+<x-icon style="width:52px;height:52px;color:#F6C9DD"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+</svg></x-icon>
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#F6F4EF">IA adentro de tu app</h3>
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;line-height:1.45;color:#B9C2D8">“Generá el plan semanal con IA usando los datos del onboarding. Botón para regenerar un día.”</p>
+</div>
+</div>
+<p style="font-size:28px;color:#4A5368">Stripe no es solo para startups: el pediatra podría cobrar los turnos así.</p>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="dominio" data-transition="fade" style="display:flex; flex-direction:column; gap:56px; justify-content:center; padding:128px 128px 160px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:16px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Going live</p>
+    <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:72px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Tu propio dominio</h2>
+  </div>
+  <div style="display:flex; flex-direction:row; gap:32px; align-items:center">
+    <p style="padding:20px 32px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:40px; color:#6b7285; background:#efebe1; border-radius:14px">miapp.lovable.app</p>
+    <x-shape kind="arrow-right" style="width:80px; height:40px; background:#e0357b"></x-shape>
+    <p style="padding:20px 32px; font-family:'JetBrains Mono', 'Courier New', monospace; font-size:40px; font-weight:600; color:#f6f4ef; background:#0c1a3e; border-radius:14px">miapp.com</p>
+  </div>
+  <div style="display:flex; flex-direction:row; gap:28px">
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px 0 0; border-top:4px solid #e0357b">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; color:#c2185b">01</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:30px; line-height:1.4; color:#0c1a3e">Comprás el dominio dentro de Lovable</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px 0 0; border-top:4px solid #e0357b">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; color:#c2185b">02</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:30px; line-height:1.4; color:#0c1a3e">Ahi mismo lo conectas a tu app</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px 0 0; border-top:4px solid #e0357b">
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:26px; color:#c2185b">03</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:30px; line-height:1.4; color:#0c1a3e">Copiás los datos que te da Lovable en el registrador. En unos minutos funciona.</p>
+    </div>
+  </div>
+  <p style="position:absolute; bottom:64px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto · Requiere plan pago de Lovable</p>
+</section>
+
+<section id="github" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:64px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Going live</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">GitHub: para qué sirve</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+<div style="display:flex;gap:24px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px"><x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <ellipse cx="12" cy="5" rx="9" ry="3" />
+  <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+  <path d="M3 12A9 3 0 0 0 21 12" />
+</svg></x-icon><p style="font-size:30px;line-height:1.4">Guarda una copia de todo el código, con el historial de cada cambio.</p></div>
+<div style="display:flex;gap:24px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px"><x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <circle cx="12" cy="12" r="10" />
+  <polyline points="12 6 12 12 16 14" />
+</svg></x-icon><p style="font-size:30px;line-height:1.4">Si algo se rompe, siempre podés volver atrás.</p></div>
+<div style="display:flex;gap:24px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px"><x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+  <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+</svg></x-icon><p style="font-size:30px;line-height:1.4">El código es tuyo: lo seguís en Cursor o se lo pasás a un programador.</p></div>
+<div style="display:flex;gap:24px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:36px"><x-icon style="width:52px;height:52px;color:#C2185B"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+</svg></x-icon><p style="font-size:30px;line-height:1.4">Lovable se conecta en un par de clics y sincroniza solo.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="desafio" data-transition="fade" style="display:flex; flex-direction:column; gap:44px; justify-content:center; padding:128px; background:#e0357b">
+  <p style="font-family:'DM Sans', Arial, sans-serif; font-size:28px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:#0c1a3e">Tu turno · 30 minutos</p>
+  <h1 style="width:1600px; font-family:'Space Grotesk', Arial, sans-serif; font-size:112px; font-weight:700; line-height:1.05; letter-spacing:-3px; color:#0c1a3e">Convertí tu master prompt en tu primera versión.</h1>
+  <p style="width:1500px; font-family:'DM Sans', Arial, sans-serif; font-size:40px; line-height:1.35; color:#0c1a3e"><b>Objetivo:</b> una home y la pantalla principal funcionando. No tiene que estar perfecta.</p>
+</section>
+
+<section id="codigo" data-transition="fade" style="display:grid; gap:88px; align-items:center; grid-template-columns:1fr 1fr; padding:112px 128px 144px; background:#f6f4ef">
+  <div style="display:flex; flex-direction:column; gap:28px">
+    <div style="display:flex; flex-direction:column; gap:14px">
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#c2185b">Tu turno · CREDITOS GRATIS</p>
+      <h2 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:64px; font-weight:600; line-height:1.1; letter-spacing:-1px; color:#0c1a3e">Activá tu mes de Lovable Pro gratis</h2>
+    </div>
+    <div style="display:flex; flex-direction:column">
+      <p style="padding:14px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; border-top:1px solid #d9d3c4"><b>1.</b> Entrá a lovable.dev</p>
+      <p style="padding:14px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; border-top:1px solid #d9d3c4"><b>2.</b> Sin cuenta: “Get started” y creala.</p>
+      <p style="padding:14px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; border-top:1px solid #d9d3c4"><b>3.</b> Con cuenta: Settings, Plans &amp; Credits.</p>
+      <p style="padding:14px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; border-top:1px solid #d9d3c4"><b>4.</b> Elegí <b>Pro Plan 1 (100 créditos)</b>, plan mensual.</p>
+      <p style="padding:14px 0; font-family:'DM Sans', Arial, sans-serif; font-size:28px; line-height:1.35; color:#0c1a3e; border-top:1px solid #d9d3c4; border-bottom:1px solid #d9d3c4"><b>5.</b> En el checkout, ingresá el código.</p>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:24px; justify-content:center">
+    <div style="display:flex; flex-direction:column; gap:12px; padding:40px; background:#0c1a3e; border-radius:24px">
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:24px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#f6c9dd">Tu código</p>
+      <p style="font-family:'JetBrains Mono', 'Courier New', monospace; font-size:56px; font-weight:600; white-space:nowrap; color:#f6f4ef">COMM-EVENT-M83G</p>
+      <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; color:#b9c2d8">Canjealo hoy. Es solo para esta clase.</p>
+    </div>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#0c1a3e"><b>Solo en USD.</b> Revisá la moneda del checkout. Si no es USD, escribí a community@lovable.dev.</p>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#0c1a3e"><b>¿Ya pagás Lovable?</b> Creá un workspace nuevo y canjealo ahí.</p>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#0c1a3e; background:#f6c9dd; border:3px dashed #c2185b; border-radius:16px; padding:20px 24px"><b>Te va a pedir una tarjeta.</b> Cancelá la suscripción apenas se active, así no te olvidás. Los créditos no se pierden.</p>
+  </div>
+  <p style="position:absolute; bottom:56px; left:128px; width:1664px; font-family:'DM Sans', Arial, sans-serif; font-size:24px; color:#6b7285">Encuentro 2 · De idea a Producto · Código de la comunidad de Lovable</p>
+</section>
+
+<section id="ayuda" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">Tu turno · ¿Tenés una duda?</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:120px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1600px">Levantá la mano en Zoom.</h1>
+<p style="font-size:44px;line-height:1.3;color:#B9C2D8;width:1400px">Te respondo para toda la clase: casi siempre tu duda es la de varios.</p>
+</section>
+
+<section id="demos" data-transition="fade" style="background:#E0357B;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:40px">
+<x-icon style="width:120px;height:120px;color:#0C1A3E"><svg
+ 
+  xmlns="http://www.w3.org/2000/svg"
+ 
+ 
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M2 3h20" />
+  <path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3" />
+  <path d="m7 21 5-5 5 5" />
+</svg></x-icon>
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#3A0E22;text-align:center">Demos</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:128px;font-weight:700;line-height:1.05;letter-spacing:-4px;text-align:center;width:1600px">¿Alguien quiere compartir lo que armó?</h1>
+<p style="font-size:40px;line-height:1.35;text-align:center;color:#3A0E22;width:1300px">3 minutos: qué problema resuelve y qué construiste.</p>
+</section>
+
+<section id="cierre" data-transition="fade" style="background:#0C1A3E;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Lo que hicimos hoy</h2>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Problema</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Happy path</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#E0357B;color:#0C1A3E;font-weight:700;padding:16px 28px;border-radius:999px">Master prompt</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Plan Mode</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Build</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Editar</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Login</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Pagos</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">IA</p>
+<p style="font-size:34px;color:#F6C9DD">→</p>
+<p style="font-size:34px;background:#1C2B55;padding:16px 28px;border-radius:999px">Publicar</p>
+</div>
+</section>
+
+<section id="proxima" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Cierre</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Para la próxima clase</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:0">
+<p style="font-size:32px;line-height:1.4;border-top:1px solid #D9D3C4;padding:22px 0">Si no llegaste: pegá tu master prompt en Lovable o v0 y traé una captura.</p>
+<p style="font-size:32px;line-height:1.4;border-top:1px solid #D9D3C4;padding:22px 0">Usá tus 100 créditos de Lovable Pro: son más que suficientes para una primera versión.</p>
+<p style="font-size:32px;line-height:1.4;border-top:1px solid #D9D3C4;padding:22px 0">Definí tu landing y tus 3 funcionalidades principales: el MVP del programa.</p>
+<p style="font-size:32px;line-height:1.4;border-top:1px solid #D9D3C4;padding:22px 0">Les mando esta presentación con todos los prompts para copiar.</p>
+<p style="font-size:32px;line-height:1.4;border-top:1px solid #D9D3C4;border-bottom:1px solid #D9D3C4;padding:22px 0;color:#4A5368">Próxima clase: teoría de IA. La siguiente: Cursor y Claude Code.</p>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+
+<section id="contacto" data-transition="fade" style="display:flex; flex-direction:column; gap:40px; justify-content:center; padding:128px; background:#0c1a3e">
+  <div style="position:absolute; top:0; left:0; width:24px; height:1080px; display:flex; flex-direction:column; background:#e0357b">
+  </div>
+  <h1 style="font-family:'Space Grotesk', Arial, sans-serif; font-size:160px; font-weight:700; line-height:1; letter-spacing:-4px; color:#f6f4ef">Gracias.</h1>
+  <p style="font-family:'DM Sans', Arial, sans-serif; font-size:48px; font-weight:500; color:#f6f4ef">Martin Haiek</p>
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:34px; color:#b9c2d8"><a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/martinhaiek/">linkedin.com/in/martinhaiek</a></p>
+    <p style="font-family:'DM Sans', Arial, sans-serif; font-size:34px; color:#b9c2d8">martohaiek@gmail.com</p>
+  </div>
+</section>
+
+<section id="anexoc" data-transition="fade" style="background:#1C2B55;color:#F6F4EF;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:40px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#F6C9DD">Anexo · si nos sobra tiempo</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:112px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1600px">Hablar con usuarios y conseguir los primeros</h1>
+</section>
+
+<section id="hablar5" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<p style="font-size:28px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#C2185B">Anexo</p>
+<h1 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:112px;font-weight:700;line-height:1.05;letter-spacing:-3px;width:1600px">Antes de seguir construyendo, hablá con 5 personas.</h1>
+<p style="font-size:40px;line-height:1.35;color:#4A5368;width:1400px">Una app que nadie usa no está terminada. El paso siguiente no es agregar features.</p>
+</section>
+
+<section id="momtest" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:grid;grid-template-columns:2fr 3fr;gap:80px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:28px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Anexo · The Mom Test</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1px">Entrevistas que no te mienten</h2>
+<p style="font-size:28px;line-height:1.4;color:#4A5368">Si le preguntás a tu mamá si tu idea es buena, te va a decir que sí.</p>
+<div style="display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;line-height:1.35"><b>1.</b> Hablá de su vida, no de tu idea.</p>
+<p style="font-size:28px;line-height:1.35"><b>2.</b> Preguntá por hechos del pasado, no opiniones del futuro.</p>
+<p style="font-size:28px;line-height:1.35"><b>3.</b> Hablá poco y escuchá mucho.</p>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;justify-content:center">
+<table style="font-size:28px;color:#0C1A3E">
+<tr><th style="width:50%;text-align:left;color:#B42318">Evitá</th><th style="width:50%;text-align:left;color:#17643F">Preguntá</th></tr>
+<tr><td>“¿Usarías una app que...?”</td><td>“¿Cuándo fue la última vez que te pasó?”</td></tr>
+<tr><td>“¿Pagarías por esto?”</td><td>“¿Cómo lo resolviste esa vez?”</td></tr>
+<tr><td>“¿Te parece buena idea?”</td><td>“¿Qué intentaste antes? ¿Por qué no sirvió?”</td></tr>
+<tr><td>“¿Te gustaría que tenga X?”</td><td>“¿Cuánto tiempo o plata te cuesta hoy?”</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto · Fuente: Rob Fitzpatrick, The Mom Test</p>
+</section>
+
+<section id="porque2" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:112px 128px 144px;display:flex;flex-direction:column;justify-content:center;gap:36px">
+<div style="display:flex;flex-direction:column;gap:14px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Anexo · Los 5 por qué</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1px">Preguntá “¿por qué?” hasta llegar a la causa raíz</h2>
+</div>
+<p style="font-size:32px;line-height:1.35">Un pediatra te dice: <b>“Pierdo muchos turnos.”</b></p>
+<div style="display:flex;gap:12px;align-items:stretch">
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;color:#C2185B">1 · ¿Por qué?</p>
+<p style="font-size:24px;line-height:1.35">“Los pacientes no vienen y no avisan.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;color:#C2185B">2 · ¿Por qué?</p>
+<p style="font-size:24px;line-height:1.35">“Para cancelar tienen que llamar, y solo atendemos de 9 a 13.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;color:#C2185B">3 · ¿Por qué?</p>
+<p style="font-size:24px;line-height:1.35">“Es el único horario en que la secretaria puede atender.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;color:#C2185B">4 · ¿Por qué?</p>
+<p style="font-size:24px;line-height:1.35">“El resto del día carga los turnos a mano en una planilla.”</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:3px solid #E0357B;border-radius:16px;padding:24px">
+<p style="font-family:'JetBrains Mono', 'Courier New', monospace;font-size:24px;font-weight:600;color:#C2185B">5 · ¿Por qué?</p>
+<p style="font-size:24px;line-height:1.35">“No hay forma de que el paciente cancele o cambie el turno solo.”</p>
+</div>
+</div>
+<div style="display:flex;gap:32px;align-items:center;background:#0C1A3E;border-radius:20px;padding:32px 40px">
+<p style="font-size:24px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F6C9DD;white-space:nowrap">Causa raíz</p>
+<p style="font-size:32px;line-height:1.35;color:#F6F4EF">No era un problema de recordatorios. Era que el paciente no puede <b>autogestionar su turno</b>, a cualquier hora.</p>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#4A5368">Tip: no hace falta decir “¿por qué?” cinco veces. Funcionan igual “contame más”, “¿qué pasó después?” o “¿cómo lo resolviste esa vez?”.</p>
+<p style="position:absolute;left:128px;bottom:56px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto · Técnica de los 5 por qué, popularizada por The Lean Startup</p>
+</section>
+
+<section id="primeros" data-transition="fade" style="background:#F6F4EF;color:#0C1A3E;font-family:'DM Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C2185B">Anexo</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:72px;font-weight:600;line-height:1.1;letter-spacing:-1px">Tus primeros usuarios</h2>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:32px"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:36px;font-weight:600">Tu red primero</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Mandá el link a 10 personas con el problema, de a una, con un mensaje personal.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:32px"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:36px;font-weight:600">Donde ya está tu usuario</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Grupos de tu rubro, Reddit, foros. Sé útil antes de promocionar.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#FFFFFF;border:1px solid #D9D3C4;border-radius:20px;padding:32px"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:36px;font-weight:600">Contá lo que construís</h3><p style="font-size:28px;line-height:1.4;color:#4A5368">Un post en LinkedIn con el antes y el después genera curiosidad y feedback.</p></div>
+<div style="display:flex;flex-direction:column;gap:10px;background:#0C1A3E;border-radius:20px;padding:32px"><h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:36px;font-weight:600;color:#F6C9DD">Cosas que no escalan</h3><p style="font-size:28px;line-height:1.4;color:#F6F4EF">Acompañá a los primeros uno por uno. Mirá cómo la usan.</p></div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1664px;font-size:24px;color:#6B7285">Encuentro 2 · De idea a Producto</p>
+</section>
+</div></div>
+
+<div id="progress"></div>
+<div id="controls">
+  <button id="prev" title="Anterior (←)" aria-label="Slide anterior"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+  <span id="counter"></span>
+  <button id="next" title="Siguiente (→)" aria-label="Slide siguiente"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+  <button id="fs" title="Pantalla completa (F)" aria-label="Pantalla completa"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+</div>
+
+<script>
+(function () {
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.filter.call(stage.children, function (el) {
+    return el.tagName === 'SECTION' && !el.hasAttribute('hidden');
+  });
+  var counter = document.getElementById('counter');
+  var progress = document.getElementById('progress');
+  var prevBtn = document.getElementById('prev');
+  var nextBtn = document.getElementById('next');
+  var current = 0;
+
+  function fit() {
+    var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+
+  function show(i, fromHash) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + slides.length;
+    progress.style.width = ((current + 1) / slides.length * 100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+    if (!fromHash) {
+      try { history.replaceState(null, '', '#' + (current + 1)); } catch (e) {}
+    }
+  }
+
+  function fromHash() {
+    var n = parseInt(location.hash.slice(1), 10);
+    return isNaN(n) ? 0 : n - 1;
+  }
+
+  function toggleFullscreen() {
+    var d = document, el = d.documentElement;
+    if (d.fullscreenElement || d.webkitFullscreenElement) {
+      (d.exitFullscreen || d.webkitExitFullscreen).call(d);
+    } else if (el.requestFullscreen || el.webkitRequestFullscreen) {
+      (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+    }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ': case 'Enter':
+        show(current + 1); e.preventDefault(); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp': case 'Backspace':
+        show(current - 1); e.preventDefault(); break;
+      case 'Home': show(0); e.preventDefault(); break;
+      case 'End': show(slides.length - 1); e.preventDefault(); break;
+      case 'f': case 'F': toggleFullscreen(); break;
+    }
+  });
+
+  document.getElementById('viewport').addEventListener('click', function (e) {
+    if (e.target.closest('a')) return;
+    show(e.clientX < window.innerWidth / 3 ? current - 1 : current + 1);
+  });
+
+  var touchX = null;
+  document.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+    touchX = null;
+  });
+
+  prevBtn.addEventListener('click', function () { show(current - 1); });
+  nextBtn.addEventListener('click', function () { show(current + 1); });
+  document.getElementById('fs').addEventListener('click', toggleFullscreen);
+
+  var idleTimer;
+  function wake() {
+    document.body.classList.remove('idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () { document.body.classList.add('idle'); }, 2500);
+  }
+  document.addEventListener('mousemove', wake);
+  document.addEventListener('touchstart', wake, { passive: true });
+
+  window.addEventListener('resize', fit);
+  window.addEventListener('hashchange', function () { show(fromHash(), true); });
+  fit();
+  slides[0].classList.add('active');
+  show(fromHash(), true);
+  wake();
+})();
+</script>
+</body>
+</html>
