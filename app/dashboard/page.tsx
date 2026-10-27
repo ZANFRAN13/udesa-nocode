@@ -208,6 +208,7 @@ export default function Dashboard() {
   // COHORTE 3 H2 2026
   const classSlides: Record<string, ClassSlideMaterial> = {
     "Clase 1: La revolución de Producto": { url: "https://docs.google.com/file/d/172nLY6hYy4oZcBuX8h6_IpPBpFfAxiDgIa-AvzMtkyM/preview", type: "pdf" },
+    "Clase 2: De Idea a Producto": { url: "https://claude.ai/artifact/7Pk6qJMRKL7gCzdgaLt8e2", type: "external" },
   }
 
   // COHORTE 2 H1 2026
