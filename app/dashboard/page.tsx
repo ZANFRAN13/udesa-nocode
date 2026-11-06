@@ -211,6 +211,8 @@ export default function Dashboard() {
     "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
     "Clase 2: prompts": { url: "/class-materials/clase-2/prompts.html", type: "html" },
     "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1cfMnwersN60UvSdJqS4o2nsfjeYI44Ct/preview", type: "pdf" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Joaquín van Peborgh)": { url: "https://docs.google.com/presentation/d/1lhsMS111yQb_Lwqe-XFJZU7IabsUuIXKv2Mo4Lc2CKQ/embed?start=false&loop=false&delayms=3000", type: "slides" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -572,6 +574,18 @@ export default function Dashboard() {
                                                   allowFullScreen
                                                   allow="autoplay"
                                                 />
+                                                {material.type === "slides" && (
+                                                  <a
+                                                    href={material.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="absolute top-2 right-2 z-10 inline-flex items-center justify-center p-2 rounded-md bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm transition-colors shadow-sm"
+                                                    title="Abrir en pestaña nueva"
+                                                    aria-label="Abrir en pestaña nueva"
+                                                  >
+                                                    <ExternalLink className="h-4 w-4" />
+                                                  </a>
+                                                )}
                                               </div>
                                             )}
                                           </div>
