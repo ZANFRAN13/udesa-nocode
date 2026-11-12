@@ -37,7 +37,8 @@ type ClassSlideMaterial = {
   url: string
   // "slides": deck HTML propio, embebido en 16:9 igual que los PDFs
   // "download": archivo descargable (p. ej. un .zip), se muestra como botón
-  type: "pdf" | "html" | "markdown" | "slides" | "download"
+  // "link": sitio externo que no se deja embeber, se muestra como botón para abrirlo
+  type: "pdf" | "html" | "markdown" | "slides" | "download" | "link"
   description?: string
 }
 
@@ -217,7 +218,7 @@ export default function Dashboard() {
     "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1cfMnwersN60UvSdJqS4o2nsfjeYI44Ct/preview", type: "pdf" },
     "Clase 4: Introducción a Herramientas Avanzadas (Joaquín van Peborgh)": { url: "https://docs.google.com/presentation/d/1lhsMS111yQb_Lwqe-XFJZU7IabsUuIXKv2Mo4Lc2CKQ/embed?start=false&loop=false&delayms=3000", type: "slides" },
     "Clase 4: Anexo (Joaquín van Peborgh): skills de la clase": { url: "/class-materials/clase-4/skills-claude-charla.zip", type: "download", description: "Las 5 skills de Claude Code que se usaron en clase, de los mensajes de clientes a un ad en Meta. Adentro hay un README con cómo instalarlas." },
-    "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "slides" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
   }
 
   // COHORTE 2 H1 2026
@@ -550,7 +551,19 @@ export default function Dashboard() {
                                         ) : (
                                           <div key={className} className="p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20">
                                             <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3">{className}</h4>
-                                            {material.type === "download" ? (
+                                            {material.type === "link" ? (
+                                              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                                {material.description && (
+                                                  <p className="text-xs md:text-sm text-muted-foreground flex-1">{material.description}</p>
+                                                )}
+                                                <Button asChild size="sm" className="shrink-0">
+                                                  <a href={material.url} target="_blank" rel="noopener noreferrer">
+                                                    <ExternalLink className="h-4 w-4 mr-2" />
+                                                    Abrir presentación
+                                                  </a>
+                                                </Button>
+                                              </div>
+                                            ) : material.type === "download" ? (
                                               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                                                 {material.description && (
                                                   <p className="text-xs md:text-sm text-muted-foreground flex-1">{material.description}</p>
