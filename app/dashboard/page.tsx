@@ -185,6 +185,7 @@ export default function Dashboard() {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a649c36e-c328-4db2-8ed1-b4e50135ad33&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=2765c850-ec9a-4f85-8457-b4ec0117f764&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e7f2b31b-e2a8-4c99-8f2c-b4f301133abd&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=215495b5-c6d8-434c-9795-b4fa0118def7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   // COHORTE 2 H1 2026
