@@ -24,6 +24,7 @@ import {
   Sparkles,
   Lock,
   ExternalLink,
+  Download,
 } from "lucide-react"
 import {
   SelfEvaluationModal,
@@ -35,7 +36,9 @@ import { MarkdownMaterialBox } from "@/components/dashboard/markdown-material-bo
 type ClassSlideMaterial = {
   url: string
   // "slides": deck HTML propio, embebido en 16:9 igual que los PDFs
-  type: "pdf" | "html" | "markdown" | "slides"
+  // "download": archivo descargable (p. ej. un .zip), se muestra como botón
+  type: "pdf" | "html" | "markdown" | "slides" | "download"
+  description?: string
 }
 
 export default function Dashboard() {
@@ -182,6 +185,7 @@ export default function Dashboard() {
     "Clase 1: La revolución de Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=a649c36e-c328-4db2-8ed1-b4e50135ad33&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 2: De Idea a Producto": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=2765c850-ec9a-4f85-8457-b4ec0117f764&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e7f2b31b-e2a8-4c99-8f2c-b4f301133abd&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=215495b5-c6d8-434c-9795-b4fa0118def7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   // COHORTE 2 H1 2026
@@ -211,6 +215,9 @@ export default function Dashboard() {
     "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
     "Clase 2: prompts": { url: "/class-materials/clase-2/prompts.html", type: "html" },
     "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1cfMnwersN60UvSdJqS4o2nsfjeYI44Ct/preview", type: "pdf" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Joaquín van Peborgh)": { url: "https://docs.google.com/presentation/d/1lhsMS111yQb_Lwqe-XFJZU7IabsUuIXKv2Mo4Lc2CKQ/embed?start=false&loop=false&delayms=3000", type: "slides" },
+    "Clase 4: Anexo (Joaquín van Peborgh): skills de la clase": { url: "/class-materials/clase-4/skills-claude-charla.zip", type: "download", description: "Las 5 skills de Claude Code que se usaron en clase, de los mensajes de clientes a un ad en Meta. Adentro hay un README con cómo instalarlas." },
+    "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -543,7 +550,19 @@ export default function Dashboard() {
                                         ) : (
                                           <div key={className} className="p-3 md:p-4 bg-accent/5 rounded-lg border border-accent/20">
                                             <h4 className="text-xs md:text-sm font-medium text-foreground mb-2 md:mb-3">{className}</h4>
-                                            {material.type === "html" ? (
+                                            {material.type === "download" ? (
+                                              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                                                {material.description && (
+                                                  <p className="text-xs md:text-sm text-muted-foreground flex-1">{material.description}</p>
+                                                )}
+                                                <Button asChild size="sm" className="shrink-0">
+                                                  <a href={material.url} download>
+                                                    <Download className="h-4 w-4 mr-2" />
+                                                    Descargar
+                                                  </a>
+                                                </Button>
+                                              </div>
+                                            ) : material.type === "html" ? (
                                               <div className="relative">
                                                 <iframe
                                                   src={material.url}
@@ -572,6 +591,18 @@ export default function Dashboard() {
                                                   allowFullScreen
                                                   allow="autoplay"
                                                 />
+                                                {material.type === "slides" && (
+                                                  <a
+                                                    href={material.url}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="absolute top-2 right-2 z-10 inline-flex items-center justify-center p-2 rounded-md bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm transition-colors shadow-sm"
+                                                    title="Abrir en pestaña nueva"
+                                                    aria-label="Abrir en pestaña nueva"
+                                                  >
+                                                    <ExternalLink className="h-4 w-4" />
+                                                  </a>
+                                                )}
                                               </div>
                                             )}
                                           </div>
