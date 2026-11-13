@@ -220,7 +220,7 @@ export default function Dashboard() {
     "Clase 2: De Idea a Producto": { url: "/class-materials/clase-2/presentacion.html", type: "slides" },
     "Clase 2: prompts": { url: "/class-materials/clase-2/prompts.html", type: "html" },
     "Clase 3: Definamos IA": { url: "https://drive.google.com/file/d/1cfMnwersN60UvSdJqS4o2nsfjeYI44Ct/preview", type: "pdf" },
-    "Clase 4: Introducción a Herramientas Avanzadas (Joaquín van Peborgh)": { url: "https://docs.google.com/presentation/d/1lhsMS111yQb_Lwqe-XFJZU7IabsUuIXKv2Mo4Lc2CKQ/embed?start=false&loop=false&delayms=3000", type: "slides" },
+    "Clase 4: Introducción a Herramientas Avanzadas (Joaquín van Peborgh)": { url: "https://docs.google.com/presentation/d/1WeZbIHtyE6Fq6d2HzPTixOOVlGT8myUAclMO_W8x3kU/embed?start=false&loop=false&delayms=3000", type: "slides" },
     "Clase 4: Anexo (Joaquín van Peborgh): skills de la clase": { url: "/class-materials/clase-4/skills-claude-charla.zip", type: "download", description: "Las 5 skills de Claude Code que se usaron en clase, de los mensajes de clientes a un ad en Meta. Adentro hay un README con cómo instalarlas." },
     "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://slides.from021.io/udesa-clase-2", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
