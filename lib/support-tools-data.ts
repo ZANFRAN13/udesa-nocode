@@ -107,6 +107,55 @@ export const supportToolsData: SupportTool[] = [
     tags: ["AI-powered"]
   },
 
+  {
+    id: "obsidian",
+    name: "Obsidian",
+    category: "Brainstorming y Writing",
+    description: "App de notas que guarda todo como archivos Markdown en tu propia compu. Podés conectar notas entre sí y armar tu \"segundo cerebro\". Como son archivos locales, los agentes de IA (Claude Code, OpenCode, etc.) pueden leerlos y editarlos directamente.",
+    website: "https://obsidian.md",
+    pricing: "Gratis (también para uso comercial); Sync y Publish son pagos",
+    features: [
+      "Notas en Markdown guardadas localmente",
+      "Links entre notas y vista de grafo",
+      "Miles de plugins de la comunidad",
+      "Funciona offline y en todos los dispositivos",
+      "Ideal como base de conocimiento para agentes de IA"
+    ]
+  },
+
+  // Video programático y con IA
+  {
+    id: "remotion",
+    name: "Remotion",
+    category: "Creación de Video",
+    description: "Framework open-source para crear videos con código usando React. Ideal para hacer videos que se generan automáticamente a partir de datos (recaps, demos de producto, videos personalizados) y se combina muy bien con agentes de IA que escriben el código por vos.",
+    website: "https://www.remotion.dev",
+    pricing: "Gratis para personas y equipos chicos; licencia paga para empresas",
+    features: [
+      "Videos definidos como componentes de React",
+      "Renderizado a MP4 desde tu compu o en la nube",
+      "Ideal para videos generados a partir de datos",
+      "Plantillas y ejemplos para arrancar rápido",
+      "Funciona muy bien con Claude Code, Cursor y otros agentes"
+    ]
+  },
+  {
+    id: "invideo",
+    name: "InVideo",
+    category: "Creación de Video",
+    description: "Generador de videos con IA: escribís una idea o un guion y arma el video completo con escenas, voz en off, subtítulos y música. Muy útil para videos de marketing, redes sociales y explicativos sin saber editar.",
+    website: "https://invideo.io",
+    pricing: "Plan gratis con límites, planes pagos mensuales",
+    features: [
+      "Video completo a partir de un prompt o guion",
+      "Voz en off con IA en varios idiomas",
+      "Subtítulos y música automáticos",
+      "Edición del resultado con instrucciones en lenguaje natural",
+      "Formatos para YouTube, Reels y TikTok"
+    ],
+    tags: ["AI-powered"]
+  },
+
   // Video creation
   {
     id: "midjourney",
@@ -392,6 +441,57 @@ export const supportToolsData: SupportTool[] = [
       "Extensible con plugins y habilidades propias"
     ],
     tags: ["AI-powered"]
+  },
+
+  // Desarrollo con IA
+  {
+    id: "opencode",
+    name: "OpenCode",
+    category: "Desarrollo con IA",
+    description: "Agente de programación open-source que corre en la terminal (también tiene app de escritorio y extensión para el editor). Es una alternativa abierta a Claude Code: lo conectás al modelo que quieras y le pedís que lea, escriba y corra código en tu proyecto.",
+    website: "https://opencode.ai",
+    pricing: "Gratis y open-source (pagás el modelo que uses; hay opciones gratuitas)",
+    features: [
+      "Agente de código en la terminal, escritorio o editor",
+      "Compatible con Claude, GPT, Gemini, modelos locales y más",
+      "Lee y edita archivos, corre comandos y tests",
+      "Soporta MCP y skills",
+      "Varias sesiones en paralelo sobre el mismo proyecto"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
+    id: "openrouter",
+    name: "OpenRouter",
+    category: "Desarrollo con IA",
+    description: "Una sola API (y una sola cuenta) para usar cientos de modelos de IA de distintos proveedores: Anthropic, OpenAI, Google, Meta, Mistral y más. Ideal para probar y comparar modelos en tu app sin tener que abrir una cuenta en cada proveedor.",
+    website: "https://openrouter.ai",
+    pricing: "Pagás por uso según el modelo; hay modelos gratis con límites",
+    features: [
+      "Cientos de modelos con una sola API key",
+      "Compatible con el formato de la API de OpenAI",
+      "Comparador de precios y rankings de modelos",
+      "Fallback automático si un proveedor se cae",
+      "Chat web para probar modelos lado a lado"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
+    id: "eve-vercel",
+    name: "Eve (Vercel)",
+    category: "Desarrollo con IA",
+    description: "Framework open-source de Vercel para construir agentes de IA. Cada agente es una carpeta con archivos simples (instrucciones, herramientas, skills y horarios) y se despliega en Vercel, donde las sesiones sobreviven a cortes y pueden pausarse para pedir aprobación humana.",
+    website: "https://vercel.com/docs/frameworks/agents/eve",
+    pricing: "Open-source (Apache-2.0); pagás los recursos de Vercel que use. En beta",
+    features: [
+      "Agentes definidos como carpetas y archivos",
+      "Sesiones durables que se pausan y retoman",
+      "Aprobación humana para acciones sensibles",
+      "Canales para web, Slack, Discord y HTTP",
+      "Subagentes, skills y tareas programadas",
+      "Se arranca con: npx eve@latest init mi-agente"
+    ],
+    tags: ["AI-powered"]
   }
 ]
 
@@ -406,6 +506,7 @@ export const supportCategories = [
   "Analytics",
   "Creación Musical",
   "Creación de Avatares",
+  "Desarrollo con IA",
   "Herramientas Adicionales"
 ]
 

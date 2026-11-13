@@ -306,6 +306,15 @@ async function buildCompleteKnowledgeBase(): Promise<ContentItem[]> {
       description: 'Recursos adicionales y lecturas recomendadas sobre vibecoding y desarrollo con IA'
     },
     {
+      id: 'page-templates',
+      title: 'Templates, repos y skills',
+      type: 'page',
+      url: '/dashboard/templates',
+      category: 'Recursos',
+      keywords: ['templates', 'plantillas', 'repos', 'repositorios', 'skills', 'github', 'starter', 'claude code', 'plugins'],
+      description: 'Skills, repositorios y templates populares y seguros para arrancar proyectos y potenciar a tu agente de IA'
+    },
+    {
       id: 'page-heuristics',
       title: 'Heurísticas y Buenas Prácticas',
       type: 'page',
