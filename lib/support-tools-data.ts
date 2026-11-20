@@ -408,6 +408,21 @@ export const supportToolsData: SupportTool[] = [
     ]
   },
   {
+    id: "the-rundown",
+    name: "The Rundown AI",
+    category: "Aprendizaje y Actualización",
+    description: "Plataforma para mantenerse al día y aprender a usar IA, con más de 3,5 millones de lectores. Ofrece un newsletter diario que resume lo más importante de IA en 5 minutos, guías prácticas por rol, un directorio de herramientas, un podcast y Rundown University, con cursos y workshops en vivo.",
+    website: "https://www.therundown.ai",
+    pricing: "Newsletter, noticias, guías y directorio gratis; Rundown University es paga",
+    features: [
+      "Newsletter diario de IA (también ediciones de Tech y Robótica)",
+      "Guías prácticas con casos de uso de IA por rol",
+      "Directorio de herramientas de IA por categoría",
+      "Rundown University: cursos y workshops en vivo",
+      "Podcast Rowan's Notes"
+    ]
+  },
+  {
     id: "chatgpt-images-2",
     name: "ChatGPT Images (GPT-4o)",
     category: ["Herramientas Adicionales", "Creación de Imágenes"],
@@ -507,6 +522,7 @@ export const supportCategories = [
   "Creación Musical",
   "Creación de Avatares",
   "Desarrollo con IA",
+  "Aprendizaje y Actualización",
   "Herramientas Adicionales"
 ]
 
