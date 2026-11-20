@@ -170,6 +170,11 @@ export default function WorksheetsPage() {
           description: "Cobertura de IA en The Verge"
         },
         {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
+        },
+        {
           title: "Hacker News",
           url: "https://news.ycombinator.com",
           description: "Comunidad de desarrolladores y noticias tech"
@@ -245,6 +250,11 @@ export default function WorksheetsPage() {
           description: "Cobertura de IA en The Verge"
         },
         {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
+        },
+        {
           title: "Hacker News",
           url: "https://news.ycombinator.com",
           description: "Comunidad de desarrolladores y noticias tech"
@@ -268,6 +278,11 @@ export default function WorksheetsPage() {
           title: "The Verge - IA",
           url: "https://www.theverge.com/ai-artificial-intelligence",
           description: "Cobertura de IA en The Verge"
+        },
+        {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
         },
         {
           title: "Hacker News",
@@ -333,6 +348,11 @@ export default function WorksheetsPage() {
           description: "Cobertura de IA en The Verge"
         },
         {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
+        },
+        {
           title: "Hacker News",
           url: "https://news.ycombinator.com",
           description: "Comunidad de desarrolladores y noticias tech"
@@ -391,6 +411,11 @@ export default function WorksheetsPage() {
           description: "Cobertura de IA en The Verge"
         },
         {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
+        },
+        {
           title: "Hacker News",
           url: "https://news.ycombinator.com",
           description: "Comunidad de desarrolladores y noticias tech"
@@ -443,6 +468,11 @@ export default function WorksheetsPage() {
           description: "Cobertura de IA en The Verge"
         },
         {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
+        },
+        {
           title: "Hacker News",
           url: "https://news.ycombinator.com",
           description: "Comunidad de desarrolladores y noticias tech"
@@ -493,6 +523,11 @@ export default function WorksheetsPage() {
           title: "The Verge - IA",
           url: "https://www.theverge.com/ai-artificial-intelligence",
           description: "Cobertura de IA en The Verge"
+        },
+        {
+          title: "The Rundown AI",
+          url: "https://www.therundown.ai/news",
+          description: "Noticias diarias de IA explicadas en pocos minutos"
         },
         {
           title: "Hacker News",

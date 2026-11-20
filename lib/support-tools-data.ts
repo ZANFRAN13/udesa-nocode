@@ -408,6 +408,20 @@ export const supportToolsData: SupportTool[] = [
     ]
   },
   {
+    id: "the-rundown",
+    name: "The Rundown AI",
+    category: "Herramientas Adicionales",
+    description: "Uno de los newsletters y sitios de noticias de IA más populares. Resume cada día lo más importante sobre IA en pocos minutos, con un lenguaje simple y foco en cómo aplicarlo. Ideal para mantenerse al día sin perder tiempo.",
+    website: "https://www.therundown.ai/news",
+    pricing: "Gratis (newsletter diario)",
+    features: [
+      "Resumen diario de las noticias más importantes de IA",
+      "Explicaciones claras y sin tecnicismos",
+      "Tutoriales prácticos para aplicar IA en el trabajo",
+      "Newsletter por email o lectura en la web"
+    ]
+  },
+  {
     id: "chatgpt-images-2",
     name: "ChatGPT Images (GPT-4o)",
     category: ["Herramientas Adicionales", "Creación de Imágenes"],
