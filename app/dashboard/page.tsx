@@ -191,6 +191,7 @@ export default function Dashboard() {
     "Clase 3: Definamos IA": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=e7f2b31b-e2a8-4c99-8f2c-b4f301133abd&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 4: Introducción a Herramientas Avanzadas": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=215495b5-c6d8-434c-9795-b4fa0118def7&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=62e3b4a2-ed1d-4832-8b90-b50101133a2f&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
+    "Clase 6: Lanzamiento y luego qué?": "https://udesa.hosted.panopto.com/Panopto/Pages/Embed.aspx?id=696a837f-8479-44fb-a972-b508010f07cc&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all",
   }
 
   // COHORTE 2 H1 2026
@@ -224,6 +225,8 @@ export default function Dashboard() {
     "Clase 4: Anexo (Joaquín van Peborgh): skills de la clase": { url: "/class-materials/clase-4/skills-claude-charla.zip", type: "download", description: "Las 5 skills de Claude Code que se usaron en clase, de los mensajes de clientes a un ad en Meta. Adentro hay un README con cómo instalarlas." },
     "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://slides.from021.io/udesa-clase-2", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
+    "Clase 6: Lanzamiento y luego qué?": { url: "/class-materials/clase-6/presentacion.pdf", type: "pdf" },
+    "Clase 6: Anexo: kit de escalabilidad": { url: "/class-materials/clase-6/kit-de-escalabilidad.pdf", type: "download", description: "Qué mirar cuando tu app se pone lenta o empieza a fallar, qué pedirle a tu agente y cómo vigilarla desde afuera para enterarte antes que tus usuarios." },
   }
 
   // COHORTE 2 H1 2026
