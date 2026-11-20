@@ -410,15 +410,16 @@ export const supportToolsData: SupportTool[] = [
   {
     id: "the-rundown",
     name: "The Rundown AI",
-    category: "Herramientas Adicionales",
-    description: "Uno de los newsletters y sitios de noticias de IA más populares. Resume cada día lo más importante sobre IA en pocos minutos, con un lenguaje simple y foco en cómo aplicarlo. Ideal para mantenerse al día sin perder tiempo.",
-    website: "https://www.therundown.ai/news",
-    pricing: "Gratis (newsletter diario)",
+    category: "Aprendizaje y Actualización",
+    description: "Plataforma para mantenerse al día y aprender a usar IA, con más de 3,5 millones de lectores. Ofrece un newsletter diario que resume lo más importante de IA en 5 minutos, guías prácticas por rol, un directorio de herramientas, un podcast y Rundown University, con cursos y workshops en vivo.",
+    website: "https://www.therundown.ai",
+    pricing: "Newsletter, noticias, guías y directorio gratis; Rundown University es paga",
     features: [
-      "Resumen diario de las noticias más importantes de IA",
-      "Explicaciones claras y sin tecnicismos",
-      "Tutoriales prácticos para aplicar IA en el trabajo",
-      "Newsletter por email o lectura en la web"
+      "Newsletter diario de IA (también ediciones de Tech y Robótica)",
+      "Guías prácticas con casos de uso de IA por rol",
+      "Directorio de herramientas de IA por categoría",
+      "Rundown University: cursos y workshops en vivo",
+      "Podcast Rowan's Notes"
     ]
   },
   {
@@ -521,6 +522,7 @@ export const supportCategories = [
   "Creación Musical",
   "Creación de Avatares",
   "Desarrollo con IA",
+  "Aprendizaje y Actualización",
   "Herramientas Adicionales"
 ]
 
