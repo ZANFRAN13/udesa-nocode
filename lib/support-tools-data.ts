@@ -492,6 +492,22 @@ export const supportToolsData: SupportTool[] = [
     tags: ["AI-powered"]
   },
   {
+    id: "webmcp",
+    name: "WebMCP",
+    category: "Desarrollo con IA",
+    description: "Estándar web propuesto en el W3C (impulsado por Google y Microsoft) para que un sitio le ofrezca herramientas a los agentes de IA directamente desde el navegador. En lugar de que el agente adivine dónde hacer clic, tu web declara acciones como \"buscar producto\" o \"reservar turno\" y el agente las usa de forma confiable.",
+    website: "https://github.com/webmachinelearning/webmcp",
+    pricing: "Gratis (estándar abierto). En preview en Chrome",
+    features: [
+      "Tu web expone herramientas con navigator.modelContext",
+      "Los agentes usan tu sitio sin depender de capturas de pantalla",
+      "Reutiliza la sesión y los permisos del usuario en el navegador",
+      "Se puede declarar con JavaScript o con atributos en formularios",
+      "Herramientas y demos oficiales en GoogleChromeLabs/webmcp-tools"
+    ],
+    tags: ["AI-powered"]
+  },
+  {
     id: "eve-vercel",
     name: "Eve (Vercel)",
     category: "Desarrollo con IA",
