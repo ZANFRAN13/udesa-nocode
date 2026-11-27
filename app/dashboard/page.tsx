@@ -168,6 +168,9 @@ export default function Dashboard() {
     if (sectionId === "comunidad" && item === "Comunidad de WhatsApp") {
       window.open('https://chat.whatsapp.com/GKcXD6NINyJL36qbm3U6VX?mode=ems_qr_t', '_blank')
     }
+    if (sectionId === "comunidad" && item === "Proyectos No-Code & AI UdeSA") {
+      window.open('https://docs.google.com/spreadsheets/d/14WqD-ZqPU0c-WdfTHb2veaZdRsRfHVdlamlNoNumH70/edit?usp=sharing', '_blank')
+    }
     if (sectionId === "comunidad" && item === "Beneficios Exclusivos") {
       router.push('/dashboard/benefits')
     }
@@ -227,6 +230,7 @@ export default function Dashboard() {
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://slides.from021.io/udesa-clase-2", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
     "Clase 6: Lanzamiento y luego qué?": { url: "/class-materials/clase-6/presentacion.pdf", type: "pdf" },
     "Clase 6: Anexo: kit de escalabilidad": { url: "/class-materials/clase-6/kit-de-escalabilidad.pdf", type: "download", description: "Qué mirar cuando tu app se pone lenta o empieza a fallar, qué pedirle a tu agente y cómo vigilarla desde afuera para enterarte antes que tus usuarios." },
+    "Clase 7: Demo Day + Personal Agents": { url: "/class-materials/clase-7/personal-agents/presentacion.html", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -261,6 +265,7 @@ export default function Dashboard() {
     }
     return [
       "Comunidad de WhatsApp",
+      "Proyectos No-Code & AI UdeSA",
       "Beneficios Exclusivos"
     ]
   }
@@ -324,7 +329,8 @@ export default function Dashboard() {
         "Clase 4: Introducción a Herramientas Avanzadas",
         "Clase 5: De Vibe-Coding a AI-Assisted Engineering",
         "Clase 6: Lanzamiento y luego qué?",
-        "Clase 7: Demo Day + Frameworks Emergentes"
+        // "Clase 7: Demo Day + Frameworks Emergentes"
+        "Clase 7: Demo Day + Personal Agents"
       ]
     },
     {
@@ -459,7 +465,7 @@ export default function Dashboard() {
                             {section.content.map((item, index) => {
                               const isClickable = (section.id === "guia-rapida") || 
                                                 (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Templates, repos y skills" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA" || item === "Vocabulario de producto")) || 
-                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
+                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Proyectos No-Code & AI UdeSA" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isClickableEffective =
                                 isClickable &&
@@ -478,6 +484,7 @@ export default function Dashboard() {
                               const isAI = item === "Vocabulario de IA"
                               const isProduct = item === "Vocabulario de producto"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
+                              const isProjects = item === "Proyectos No-Code & AI UdeSA"
                               const isBenefits = item === "Beneficios Exclusivos"
                               const isSlides = item === "Slides de presentaciones"
                               const isWorksheets = item === "Worksheets y actividades"
@@ -518,6 +525,7 @@ export default function Dashboard() {
                                          isAI ? "Glosario IA →" :
                                          isProduct ? "Glosario Producto →" :
                                          isWhatsApp ? "WhatsApp →" :
+                                         isProjects ? "Proyectos →" :
                                          isBenefits ? "Beneficios →" :
                                          isWorksheets ? "Worksheets →" : ""}
                                       </span>
@@ -612,7 +620,7 @@ export default function Dashboard() {
                                                   title={className}
                                                   className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
                                                   allowFullScreen
-                                                  allow="autoplay"
+                                                  allow="autoplay; clipboard-write"
                                                 />
                                                 {material.type === "slides" && (
                                                   <a
