@@ -1690,7 +1690,7 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   {
     id: "clase-7",
     // title: "Clase 7: Demo day + Frameworks Emergentes",
-    title: "Clase 7: Personal Agents",
+    title: "Clase 7: Demo Day + Personal Agents",
     questions: CLASE_7_QUESTIONS,
   },
 ]
