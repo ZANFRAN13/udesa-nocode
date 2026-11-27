@@ -168,6 +168,9 @@ export default function Dashboard() {
     if (sectionId === "comunidad" && item === "Comunidad de WhatsApp") {
       window.open('https://chat.whatsapp.com/GKcXD6NINyJL36qbm3U6VX?mode=ems_qr_t', '_blank')
     }
+    if (sectionId === "comunidad" && item === "Proyectos No-Code & AI UdeSA") {
+      window.open('https://docs.google.com/spreadsheets/d/14WqD-ZqPU0c-WdfTHb2veaZdRsRfHVdlamlNoNumH70/edit?usp=sharing', '_blank')
+    }
     if (sectionId === "comunidad" && item === "Beneficios Exclusivos") {
       router.push('/dashboard/benefits')
     }
@@ -262,6 +265,7 @@ export default function Dashboard() {
     }
     return [
       "Comunidad de WhatsApp",
+      "Proyectos No-Code & AI UdeSA",
       "Beneficios Exclusivos"
     ]
   }
@@ -461,7 +465,7 @@ export default function Dashboard() {
                             {section.content.map((item, index) => {
                               const isClickable = (section.id === "guia-rapida") || 
                                                 (section.id === "material-complementario" && (item === "Herramientas No-Code" || item === "Herramientas de Apoyo" || item === "Recursos Adicionales" || item === "Templates, repos y skills" || item === "Heurísticas y buenas prácticas" || item === "Vocabulario de diseño: UI" || item === "Vocabulario de diseño: CSS" || item === "Vocabulario de desarrollo" || item === "Vocabulario de IA" || item === "Vocabulario de producto")) || 
-                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Beneficios Exclusivos")) ||
+                                                (section.id === "comunidad" && (item === "Comunidad de WhatsApp" || item === "Proyectos No-Code & AI UdeSA" || item === "Beneficios Exclusivos")) ||
                                                 (section.id === "material-clase" && (item === "Slides de presentaciones" || item === "Worksheets y actividades"))
                               const isClickableEffective =
                                 isClickable &&
@@ -480,6 +484,7 @@ export default function Dashboard() {
                               const isAI = item === "Vocabulario de IA"
                               const isProduct = item === "Vocabulario de producto"
                               const isWhatsApp = item === "Comunidad de WhatsApp"
+                              const isProjects = item === "Proyectos No-Code & AI UdeSA"
                               const isBenefits = item === "Beneficios Exclusivos"
                               const isSlides = item === "Slides de presentaciones"
                               const isWorksheets = item === "Worksheets y actividades"
@@ -520,6 +525,7 @@ export default function Dashboard() {
                                          isAI ? "Glosario IA →" :
                                          isProduct ? "Glosario Producto →" :
                                          isWhatsApp ? "WhatsApp →" :
+                                         isProjects ? "Proyectos →" :
                                          isBenefits ? "Beneficios →" :
                                          isWorksheets ? "Worksheets →" : ""}
                                       </span>
