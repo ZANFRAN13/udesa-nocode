@@ -228,9 +228,9 @@ export default function Dashboard() {
     "Clase 4: Anexo (Joaquín van Peborgh): skills de la clase": { url: "/class-materials/clase-4/skills-claude-charla.zip", type: "download", description: "Las 5 skills de Claude Code que se usaron en clase, de los mensajes de clientes a un ad en Meta. Adentro hay un README con cómo instalarlas." },
     "Clase 4: Introducción a Herramientas Avanzadas (Ariel Mathov)": { url: "https://slides.from021.io/udesa-clase-1", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://slides.from021.io/udesa-clase-2", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
-    "Clase 6: Lanzamiento y luego qué?": { url: "/class-materials/clase-6/presentacion.pdf", type: "pdf" },
+    "Clase 6: Lanzamiento y luego qué?": { url: "/class-materials/deck-viewer.html?images=/class-materials/clase-6/slides/s-{n}.jpg&count=56&pad=2", type: "slides" },
     "Clase 6: Anexo: kit de escalabilidad": { url: "/class-materials/clase-6/kit-de-escalabilidad.pdf", type: "download", description: "Qué mirar cuando tu app se pone lenta o empieza a fallar, qué pedirle a tu agente y cómo vigilarla desde afuera para enterarte antes que tus usuarios." },
-    "Clase 7: Demo Day + Personal Agents": { url: "/class-materials/clase-7/personal-agents/presentacion.html", type: "slides" },
+    "Clase 7: Demo Day + Personal Agents": { url: "/class-materials/deck-viewer.html?html=/class-materials/clase-7/personal-agents/presentacion.html&w=1600&h=900", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -614,7 +614,7 @@ export default function Dashboard() {
                                                 </a>
                                               </div>
                                             ) : (
-                                              <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                                              <div className="group relative w-full" style={{ paddingBottom: "56.25%" }}>
                                                 <iframe
                                                   src={material.url}
                                                   title={className}
@@ -627,7 +627,7 @@ export default function Dashboard() {
                                                     href={material.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="absolute top-2 right-2 z-10 inline-flex items-center justify-center p-2 rounded-md bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm transition-colors shadow-sm"
+                                                    className="absolute top-2 right-2 z-10 inline-flex items-center justify-center p-2 rounded-md bg-black/60 hover:bg-black/80 text-white backdrop-blur-sm transition-all shadow-sm md:opacity-0 md:group-hover:opacity-100 focus:opacity-100"
                                                     title="Abrir en pestaña nueva"
                                                     aria-label="Abrir en pestaña nueva"
                                                   >
