@@ -8,8 +8,11 @@
  *          variables de entorno (.env, Vercel), V0 vs Cursor, herramientas del flujo, colaboración.
  * Clase 6: CRUD, constraints, RLS, SQL, DBML, migraciones, modelado lógico, UI vs dominio, cuándo conviene
  *          un agente, harness, system prompt, skills, tools, MCP.
- * Clase 7: SDD, vibe coding vs SDD, niveles de madurez, bug 100K, prompt vs spec, herramientas (Spec-kit, Kiro),
- *          matriz de decisión, riesgos del vibe coding, frameworks de desarrollo asistido con IA.
+ * Clase 7: Personal Agents: definición, confianza como barrera, niveles de autonomía, panorama y estrategia de
+ *          proveedores, ciclo y cinco piezas, conectores vs pantalla, rutinas y triggers, agentes de código,
+ *          matriz de delegación, controles, prompt injection, exfiltración, comercio agéntico, buenas prácticas.
+ * (Clase 7 anterior, comentada: SDD, vibe coding vs SDD, niveles de madurez, bug 100K, prompt vs spec,
+ *          herramientas (Spec-kit, Kiro), matriz de decisión, riesgos del vibe coding.)
  */
 
 export type SelfEvalQuestion = {
@@ -1211,190 +1214,438 @@ const CLASE_6_QUESTIONS: SelfEvalQuestion[] = [
   },
 ]
 
+// Clase 7 (cohorte anterior): Spec Driven Development. Se reemplazó por Personal Agents; se deja comentada.
+// const CLASE_7_SDD_QUESTIONS: SelfEvalQuestion[] = [
+//   {
+//     id: "clase-7-q1",
+//     prompt: "¿Qué es Spec Driven Development (SDD)?",
+//     options: [
+//       "Escribir las reglas de negocio antes de que la IA genere código",
+//       "Dejar que la IA decida todas las reglas mientras genera el código",
+//       "Un framework obligatorio de GitHub para publicar en Vercel",
+//     ],
+//     correctIndex: 0,
+//     explanation:
+//       "SDD invierte el orden: primero definís qué debe hacer el sistema (en un .md, Google Doc o herramienta), después la IA genera código que respeta esas reglas. No reemplaza la creatividad — la canaliza con más rigor cuando el impacto de un error es alto.",
+//   },
+//   {
+//     id: "clase-7-q2",
+//     prompt: "¿Cuál es la diferencia principal entre vibe coding y SDD?",
+//     options: [
+//       "Vibe coding usa Cursor y SDD solo usa Claude Code",
+//       "En SDD las reglas están escritas antes; en vibe coding la IA las interpreta del prompt",
+//       "Son lo mismo; SDD es solo un nombre comercial más nuevo",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "En vibe coding le decís a la IA «haceme un motor de descuentos» y ella interpreta, adivina reglas y genera código. En SDD esas reglas ya están en un documento (la spec) y el código debe alinearse a ellas. La IA puede participar en ambos; lo que cambia es si las reglas existen por escrito antes de codear.",
+//   },
+//   {
+//     id: "clase-7-q3",
+//     prompt:
+//       "La clase compara SDD con la construcción de una casa. ¿Qué afirmaciones forman parte de esa analogía?",
+//     options: [
+//       "Construir sin planos es como empezar por paredes y techo y después ver dónde van los caños",
+//       "SDD es como los planos del arquitecto: detectás errores antes de construir",
+//       "SDD es como construir sin planos pero más rápido porque la IA ayuda",
+//     ],
+//     correctIndex: 1,
+//     correctIndices: [0, 1],
+//     explanation:
+//       "Nadie empieza una casa por las paredes y después resuelve cimientos y cañerías. El plano (la spec) permite ver si algo no cierra antes de levantar paredes. En software, eso significa detectar bugs de lógica de negocio en el diseño, no      cuando ya está en producción.",
+//   },
+//   {
+//     id: "clase-7-q4",
+//     prompt: "¿Cuál de estas opciones NO es un riesgo típico del vibe coding?",
+//     options: [
+//       "Bugs invisibles que «andan» en casos simples y fallan en combinaciones reales",
+//       "Deuda técnica instantánea y falta de trazabilidad de decisiones",
+//       "Que la IA siempre genere código incompatible con Supabase",
+//     ],
+//     correctIndex: 2,
+//     explanation:
+//       "Los riesgos reales que vimos en clase incluyen bugs invisibles, código que no sigue patrones del proyecto, falta de documentación del por qué de cada decisión y problemas de seguridad (permisos, vulnerabilidades). Que Supabase sea incompatible no es un riesgo inherente del vibe coding: depende de cómo uses la herramienta y qué tan bien definas el contexto.",
+//   },
+//   {
+//     id: "clase-7-q5",
+//     prompt: "¿Qué describe el nivel Spec-as-Source (Nivel 3 de madurez en SDD)?",
+//     options: [
+//       "La spec es la fuente de verdad; el código generado no se edita a mano",
+//       "Escribís la spec una vez y después solo usás vibe coding",
+//       "La spec solo sirve para prototipos de hackathon",
+//     ],
+//     correctIndex: 0,
+//     explanation:
+//       "En Spec-as-Source la spec ES el artefacto principal (como Protocol Buffers que generan código en varios lenguajes). Nivel 1 (Spec-First) guía a la IA pero el código sigue siendo el foco. Nivel 2 (Spec-Anchored) agrega governance y validación contra la spec. Nivel 3 es el máximo rigor.",
+//   },
+//   {
+//     id: "clase-7-q6",
+//     prompt: "¿Cuál es un beneficio clave de la validación temprana en SDD?",
+//     options: [
+//       "Elimina la necesidad de probar la app con usuarios reales",
+//       "Detectar bugs de lógica antes de escribir código",
+//       "Hacer deploy automático sin revisar nada",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "Un bug en producción puede costar 10 a 100 veces más que detectarlo en diseño. Cuando las reglas están en la spec, podés revisar casos borde (¿el cupón se evalúa antes o después de las promos?) sin tocar una línea de código. Eso es validación temprana.",
+//   },
+//   {
+//     id: "clase-7-q7",
+//     prompt: "Según la clase, ¿cuál es el mensaje central del espectro entre vibe coding y SDD?",
+//     options: [
+//       "Siempre hay que usar SDD Nivel 3 en todo proyecto",
+//       "Vibe coding está prohibido en productos profesionales",
+//       "Elegir el nivel de rigor apropiado para cada situación",
+//     ],
+//     correctIndex: 2,
+//     explanation:
+//       "No hay que elegir uno u otro para siempre. Un hackathon o prototipo puede ir con vibe coding (velocidad máxima). Pagos, facturación o lógica con muchas reglas que interactúan piden más rigor (Spec-First, Spec-Anchored o Spec-as-Source). Es un slider de autonomía y rigor según impacto y riesgo.",
+//   },
+//   {
+//     id: "clase-7-q8",
+//     prompt:
+//       "Un carrito suma $90.000 antes de promos y $79.000 después. El cupón AHORRO exige más de $80.000. ¿Cuándo conviene evaluar si aplica?",
+//     options: [
+//       "Sobre el total original, antes de las promos",
+//       "Después de las promos, sobre el subtotal recalculado",
+//       "Solo si el usuario lo pide en el chat",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "La spec del demo define la REGLA CRÍTICA: la elegibilidad del cupón se evalúa DESPUÉS de aplicar promociones por categoría, sobre el subtotal resultante — nunca sobre el total original. Si evaluás sobre $90.000 el cupón aplica; si evaluás sobre $79.000, no. Esa diferencia es el bug del caso «100K USD».",
+//   },
+//   {
+//     id: "clase-7-q9",
+//     prompt:
+//       "En el caso Auriculares + Funda + cupón AHORRO, el Motor A (vibe) da $76.000 y el Motor B (spec) da $79.000. ¿Cuál sigue la spec?",
+//     options: [
+//       "Motor A — porque el cupón debe aplicarse sobre el total original",
+//       "Motor B — no aplica cupón porque $79.000 no supera $80.000",
+//       "Ambos están bien; es cuestión de preferencia del negocio",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "Motor A aplica el cupón sobre $90.000 (antes de promos) y descuenta $3.000 de más. Motor B aplica promos primero, recalcula a $79.000 y correctamente NO aplica el cupón ($79.000 no es mayor que $80.000). La spec dice comparación estrictamente mayor (>) sobre subtotal post-promos.",
+//   },
+//   {
+//     id: "clase-7-q10",
+//     prompt: "¿Por qué QA y testing manual a menudo no detectan el bug del motor de descuentos?",
+//     options: [
+//       "Porque Supabase no permite probar descuentos en staging",
+//       "Solo el 3,2% de combinaciones lo exponen; el 96,8% funciona bien",
+//       "Porque la IA siempre genera código sin bugs en tests simples",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "De 63 combinaciones de carrito posibles, solo 2 exponen el bug (auriculares + funda, auriculares + remera). El resto coincide entre ambos motores. Por eso parece que «todo anda» hasta que aparece el caso borde. Una spec con 4 reglas claras lo previene desde el diseño.",
+//   },
+//   {
+//     id: "clase-7-q11",
+//     prompt: "Según la clase, ¿dónde «vive» el bug en casos como el motor de descuentos?",
+//     options: [
+//       "En el lenguaje de programación elegido (Python vs JavaScript)",
+//       "En la distancia entre lo que el prompt describe y lo que la spec define",
+//       "En que Vercel no soporta cupones con umbral",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "El prompt describe el qué («motor de descuentos con promos y cupones»). La spec define el cómo y el cuándo (orden de aplicación, sobre qué monto se evalúa el umbral). El bug aparece en la interacción entre reglas — exactamente lo que un prompt vago no fija y una spec sí.",
+//   },
+//   {
+//     id: "clase-7-q12",
+//     prompt: "¿Hace falta usar Spec-kit, Kiro o Claude Code para practicar SDD?",
+//     options: [
+//       "Sí, sin esas herramientas no es SDD",
+//       "No; un .md escrito a mano y pasado a cualquier agente ya es SDD",
+//       "Solo si el proyecto está en AWS",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "Las herramientas (Spec-kit, Claude Code Plan mode, Kiro) ayudan a organizar specs más rápido, pero no son obligatorias. Lo importante es que las reglas estén escritas antes de generar código. Podés usar Cursor, v0 o un Google Doc y cumplir el espíritu del SDD.",
+//   },
+//   {
+//     id: "clase-7-q13",
+//     prompt: "¿Qué diferencia principal hay entre Spec-kit y Kiro?",
+//     options: [
+//       "Spec-kit es CLI agnóstico al IDE; Kiro es un IDE con workflow guiado",
+//       "Kiro solo funciona sin internet; Spec-kit requiere AWS",
+//       "Son la misma herramienta con distinto nombre",
+//     ],
+//     correctIndex: 0,
+//     explanation:
+//       "Spec-kit (GitHub) organiza specs en carpetas con comandos slash y es compatible con cualquier asistente de código — más manual, más disciplina del equipo. Kiro (AWS) es un IDE basado en VS Code con flujo Requirements → Design → Tasks, más guiado pero atado al ecosistema AWS.",
+//   },
+//   {
+//     id: "clase-7-q14",
+//     prompt: "Tu equipo va a lanzar una feature de pagos en producción con lógica de negocio compleja. ¿Qué approach conviene según la matriz de la clase?",
+//     options: [
+//       "Vibe coding puro para llegar más rápido al mercado",
+//       "Spec-Anchored o Spec-as-Source (rigor alto)",
+//       "Solo documentar después del deploy en un Google Doc",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "La matriz de decisión ubica infraestructura crítica (pagos, facturación) en Spec-as-Source o al menos Spec-Anchored. Features en producción con reglas que interactúan también piden Spec-First o más. Vibe coding queda para prototipos, scripts internos y exploración.",
+//   },
+//   {
+//     id: "clase-7-q15",
+//     prompt: "Tenés un fin de semana para un prototipo de hackathon sin usuarios reales. ¿Qué approach conviene?",
+//     options: [
+//       "Spec-as-Source Nivel 3 obligatorio",
+//       "Vibe coding (velocidad máxima)",
+//       "No usar IA en absoluto",
+//     ],
+//     correctIndex: 1,
+//     explanation:
+//       "Para prototipos, pruebas de concepto y exploración de ideas, la clase recomienda vibe coding: máxima velocidad, bajo costo de setup. Cuando hay usuarios reales, impacto económico o legal, o mantenimiento a largo plazo, subís el rigor en el slider hacia SDD.",
+//   },
+// ]
+
 const CLASE_7_QUESTIONS: SelfEvalQuestion[] = [
   {
     id: "clase-7-q1",
-    prompt: "¿Qué es Spec Driven Development (SDD)?",
+    prompt: "¿Qué tres elementos definen a un personal agent?",
     options: [
-      "Escribir las reglas de negocio antes de que la IA genere código",
-      "Dejar que la IA decida todas las reglas mientras genera el código",
-      "Un framework obligatorio de GitHub para publicar en Vercel",
+      "Actúa (no solo responde), lo hace en tu nombre y usa tu contexto",
+      "Responde rápido, es gratis y tiene una app propia",
+      "Usa el modelo más nuevo, tiene voz y corre en tu compu",
     ],
     correctIndex: 0,
     explanation:
-      "SDD invierte el orden: primero definís qué debe hacer el sistema (en un .md, Google Doc o herramienta), después la IA genera código que respeta esas reglas. No reemplaza la creatividad — la canaliza con más rigor cuando el impacto de un error es alto.",
+      "Un personal agent es un agente (decide el próximo paso hasta cumplir un objetivo) que actúa en nombre de una persona y usa su contexto. Si falta alguna de las tres, no es un personal agent: sin actuar es un chatbot, sin tu nombre es un bot genérico (como el de atención al cliente de una empresa) y sin contexto es un asistente al que hay que explicarle todo cada vez.",
   },
   {
     id: "clase-7-q2",
-    prompt: "¿Cuál es la diferencia principal entre vibe coding y SDD?",
+    prompt: "Según la tesis de la clase, ¿cuál es hoy la principal barrera para adoptar agentes?",
     options: [
-      "Vibe coding usa Cursor y SDD solo usa Claude Code",
-      "En SDD las reglas están escritas antes; en vibe coding la IA las interpreta del prompt",
-      "Son lo mismo; SDD es solo un nombre comercial más nuevo",
+      "Que los modelos todavía no saben resolver las tareas que les delegaríamos",
+      "La confianza: cuánta autonomía estamos dispuestos a darles",
+      "El precio, porque ningún agente baja de USD 100 por mes",
     ],
     correctIndex: 1,
     explanation:
-      "En vibe coding le decís a la IA «haceme un motor de descuentos» y ella interpreta, adivina reglas y genera código. En SDD esas reglas ya están en un documento (la spec) y el código debe alinearse a ellas. La IA puede participar en ambos; lo que cambia es si las reglas existen por escrito antes de codear.",
+      "Los modelos ya resuelven la mayoría de las tareas que le delegaríamos a un agente. La discusión es cuánta autonomía darles. Por eso, donde la confianza se resolvió (los agentes de código), la adopción explotó. Y los precios van de gratis (Instinct, Muse) a USD 100 o más (dots): el mercado todavía no encontró su precio.",
   },
   {
     id: "clase-7-q3",
     prompt:
-      "La clase compara SDD con la construcción de una casa. ¿Qué afirmaciones forman parte de esa analogía?",
+      "Organizando un viaje, el agente hace tu check-in solo, pero para comprar el pasaje te pide el sí. ¿En qué nivel de autonomía está?",
     options: [
-      "Construir sin planos es como empezar por paredes y techo y después ver dónde van los caños",
-      "SDD es como los planos del arquitecto: detectás errores antes de construir",
-      "SDD es como construir sin planos pero más rápido porque la IA ayuda",
+      "Nivel 1: propone opciones y vos elegís",
+      "Nivel 4: resuelve todo y vos solo ves las excepciones",
+      "Nivel 3: hace lo simple solo y lo importante pide el sí",
     ],
-    correctIndex: 1,
-    correctIndices: [0, 1],
+    correctIndex: 2,
     explanation:
-      "Nadie empieza una casa por las paredes y después resuelve cimientos y cañerías. El plano (la spec) permite ver si algo no cierra antes de levantar paredes. En software, eso significa detectar bugs de lógica de negocio en el diseño, no      cuando ya está en producción.",
+      "La escalera va de 0 (manual) a 4 (resuelve). En el nivel 3 lo simple sale solo (el check-in) y la compra pide el sí. Como en los autos autónomos, para llegar al nivel 4 falta más confianza que tecnología.",
   },
   {
     id: "clase-7-q4",
-    prompt: "¿Cuál de estas opciones NO es un riesgo típico del vibe coding?",
+    prompt: "Cada proveedor apalanca el activo que ya tiene. ¿Cuál es el de Google con Gemini Spark?",
     options: [
-      "Bugs invisibles que «andan» en casos simples y fallan en combinaciones reales",
-      "Deuda técnica instantánea y falta de trazabilidad de decisiones",
-      "Que la IA siempre genere código incompatible con Supabase",
+      "Tus datos: ya tiene tu Gmail, tu calendario y tus fotos",
+      "La distribución: 3.000 millones de personas en WhatsApp",
+      "Los desarrolladores: viene incluido con Cursor",
     ],
-    correctIndex: 2,
+    correctIndex: 0,
     explanation:
-      "Los riesgos reales que vimos en clase incluyen bugs invisibles, código que no sigue patrones del proyecto, falta de documentación del por qué de cada decisión y problemas de seguridad (permisos, vulnerabilidades). Que Supabase sea incompatible no es un riesgo inherente del vibe coding: depende de cómo uses la herramienta y qué tan bien definas el contexto.",
+      "Google no tiene que pedirte acceso a nada nuevo: ya tiene tus datos. Meta apuesta a la distribución (WhatsApp), OpenAI a la marca más usada de IA de consumo, Anthropic al trabajo y la confianza, xAI a los desarrolladores (Grok Bot viene con Cursor y con X) e Instinct a la facilidad de uso (sin app, le escribís como a una persona).",
   },
   {
     id: "clase-7-q5",
-    prompt: "¿Qué describe el nivel Spec-as-Source (Nivel 3 de madurez en SDD)?",
+    prompt: "Si los productos tienen funciones parecidas, ¿de qué depende la elección según la clase?",
     options: [
-      "La spec es la fuente de verdad; el código generado no se edita a mano",
-      "Escribís la spec una vez y después solo usás vibe coding",
-      "La spec solo sirve para prototipos de hackathon",
+      "De cuál usa el modelo con más parámetros",
+      "De quién ya tiene tus datos y de cuánto confiás en el proveedor",
+      "De cuál tiene la app con mejor diseño",
     ],
-    correctIndex: 0,
+    correctIndex: 1,
     explanation:
-      "En Spec-as-Source la spec ES el artefacto principal (como Protocol Buffers que generan código en varios lenguajes). Nivel 1 (Spec-First) guía a la IA pero el código sigue siendo el foco. Nivel 2 (Spec-Anchored) agrega governance y validación contra la spec. Nivel 3 es el máximo rigor.",
+      "Todos convergen en lo mismo: una compu propia en la nube, siempre encendido, miles de conectores y pedir el sí antes de enviar, gastar, firmar o borrar. Con funciones similares, la diferencia está en quién ya tiene tus datos y en cuánto confiás en el proveedor.",
   },
   {
     id: "clase-7-q6",
-    prompt: "¿Cuál es un beneficio clave de la validación temprana en SDD?",
+    prompt: "¿Qué diferencia a un agente de un chatbot en su ciclo de funcionamiento?",
     options: [
-      "Elimina la necesidad de probar la app con usuarios reales",
-      "Detectar bugs de lógica antes de escribir código",
-      "Hacer deploy automático sin revisar nada",
-    ],
-    correctIndex: 1,
-    explanation:
-      "Un bug en producción puede costar 10 a 100 veces más que detectarlo en diseño. Cuando las reglas están en la spec, podés revisar casos borde (¿el cupón se evalúa antes o después de las promos?) sin tocar una línea de código. Eso es validación temprana.",
-  },
-  {
-    id: "clase-7-q7",
-    prompt: "Según la clase, ¿cuál es el mensaje central del espectro entre vibe coding y SDD?",
-    options: [
-      "Siempre hay que usar SDD Nivel 3 en todo proyecto",
-      "Vibe coding está prohibido en productos profesionales",
-      "Elegir el nivel de rigor apropiado para cada situación",
+      "El chatbot usa herramientas y el agente solo conversa",
+      "Ninguna: los dos dan una sola vuelta por pedido",
+      "El agente decide, usa una herramienta, mira el resultado y vuelve a decidir hasta cumplir el objetivo",
     ],
     correctIndex: 2,
     explanation:
-      "No hay que elegir uno u otro para siempre. Un hackathon o prototipo puede ir con vibe coding (velocidad máxima). Pagos, facturación o lógica con muchas reglas que interactúan piden más rigor (Spec-First, Spec-Anchored o Spec-as-Source). Es un slider de autonomía y rigor según impacto y riesgo.",
+      "Un chatbot da una vuelta y se detiene. El agente da todas las vueltas que haga falta: en el ejemplo de la reunión, mira los calendarios, propone el viernes a las 10, ve que Pedro no puede y vuelve a decidir (lunes a las 9) hasta mover el evento y avisarte.",
+  },
+  {
+    id: "clase-7-q7",
+    prompt: "¿Cuál de estas NO es una de las cinco piezas de un agente que vimos en clase?",
+    options: [
+      "El disparador: a pedido, a cierta hora o cuando pasa algo",
+      "La marca del modelo que usa (GPT, Claude o Gemini)",
+      "Los permisos: leer, borradores, enviar, pagar",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Las cinco piezas son instrucciones, herramientas, contexto, permisos y disparador. El modelo es lo que más se nombra, pero lo que diferencia a los productos son las otras piezas: a qué se conecta, cuánto te recuerda y qué le dejás hacer. En Nido las definieron ustedes en la spec; en un personal agent vienen configuradas por el proveedor y el usuario las ajusta.",
   },
   {
     id: "clase-7-q8",
-    prompt:
-      "Un carrito suma $90.000 antes de promos y $79.000 después. El cupón AHORRO exige más de $80.000. ¿Cuándo conviene evaluar si aplica?",
+    prompt: "Querés que el agente opere en el home banking, que no tiene API ni conector. ¿Cómo lo puede hacer?",
     options: [
-      "Sobre el total original, antes de las promos",
-      "Después de las promos, sobre el subtotal recalculado",
-      "Solo si el usuario lo pide en el chat",
-    ],
-    correctIndex: 1,
-    explanation:
-      "La spec del demo define la REGLA CRÍTICA: la elegibilidad del cupón se evalúa DESPUÉS de aplicar promociones por categoría, sobre el subtotal resultante — nunca sobre el total original. Si evaluás sobre $90.000 el cupón aplica; si evaluás sobre $79.000, no. Esa diferencia es el bug del caso «100K USD».",
-  },
-  {
-    id: "clase-7-q9",
-    prompt:
-      "En el caso Auriculares + Funda + cupón AHORRO, el Motor A (vibe) da $76.000 y el Motor B (spec) da $79.000. ¿Cuál sigue la spec?",
-    options: [
-      "Motor A — porque el cupón debe aplicarse sobre el total original",
-      "Motor B — no aplica cupón porque $79.000 no supera $80.000",
-      "Ambos están bien; es cuestión de preferencia del negocio",
-    ],
-    correctIndex: 1,
-    explanation:
-      "Motor A aplica el cupón sobre $90.000 (antes de promos) y descuenta $3.000 de más. Motor B aplica promos primero, recalcula a $79.000 y correctamente NO aplica el cupón ($79.000 no es mayor que $80.000). La spec dice comparación estrictamente mayor (>) sobre subtotal post-promos.",
-  },
-  {
-    id: "clase-7-q10",
-    prompt: "¿Por qué QA y testing manual a menudo no detectan el bug del motor de descuentos?",
-    options: [
-      "Porque Supabase no permite probar descuentos en staging",
-      "Solo el 3,2% de combinaciones lo exponen; el 96,8% funciona bien",
-      "Porque la IA siempre genera código sin bugs en tests simples",
-    ],
-    correctIndex: 1,
-    explanation:
-      "De 63 combinaciones de carrito posibles, solo 2 exponen el bug (auriculares + funda, auriculares + remera). El resto coincide entre ambos motores. Por eso parece que «todo anda» hasta que aparece el caso borde. Una spec con 4 reglas claras lo previene desde el diseño.",
-  },
-  {
-    id: "clase-7-q11",
-    prompt: "Según la clase, ¿dónde «vive» el bug en casos como el motor de descuentos?",
-    options: [
-      "En el lenguaje de programación elegido (Python vs JavaScript)",
-      "En la distancia entre lo que el prompt describe y lo que la spec define",
-      "En que Vercel no soporta cupones con umbral",
-    ],
-    correctIndex: 1,
-    explanation:
-      "El prompt describe el qué («motor de descuentos con promos y cupones»). La spec define el cómo y el cuándo (orden de aplicación, sobre qué monto se evalúa el umbral). El bug aparece en la interacción entre reglas — exactamente lo que un prompt vago no fija y una spec sí.",
-  },
-  {
-    id: "clase-7-q12",
-    prompt: "¿Hace falta usar Spec-kit, Kiro o Claude Code para practicar SDD?",
-    options: [
-      "Sí, sin esas herramientas no es SDD",
-      "No; un .md escrito a mano y pasado a cualquier agente ya es SDD",
-      "Solo si el proyecto está en AWS",
-    ],
-    correctIndex: 1,
-    explanation:
-      "Las herramientas (Spec-kit, Claude Code Plan mode, Kiro) ayudan a organizar specs más rápido, pero no son obligatorias. Lo importante es que las reglas estén escritas antes de generar código. Podés usar Cursor, v0 o un Google Doc y cumplir el espíritu del SDD.",
-  },
-  {
-    id: "clase-7-q13",
-    prompt: "¿Qué diferencia principal hay entre Spec-kit y Kiro?",
-    options: [
-      "Spec-kit es CLI agnóstico al IDE; Kiro es un IDE con workflow guiado",
-      "Kiro solo funciona sin internet; Spec-kit requiere AWS",
-      "Son la misma herramienta con distinto nombre",
+      "Usando la pantalla: mira, hace clic y tipea como vos, aunque es más lento y frágil",
+      "Por MCP, porque todas las apps publican un conector",
+      "No puede: sin API un agente no tiene forma de operar",
     ],
     correctIndex: 0,
     explanation:
-      "Spec-kit (GitHub) organiza specs en carpetas con comandos slash y es compatible con cualquier asistente de código — más manual, más disciplina del equipo. Kiro (AWS) es un IDE basado en VS Code con flujo Requirements → Design → Tasks, más guiado pero atado al ecosistema AWS.",
+      "Hay dos formas. Por conectores (casi siempre vía MCP) es rápido, preciso, barato y auditable, pero solo existe donde hay integración. Usando la pantalla (computer use) funciona en cualquier sitio, incluso sistemas viejos sin API como el home banking o ARCA, pero un cambio de diseño en la web lo confunde. La mayoría de los productos combina las dos.",
+  },
+  {
+    id: "clase-7-q9",
+    prompt: "«Cuando entra una factura, el agente la carga y la valida contra la orden de compra.» ¿Qué forma de iniciar un agente es?",
+    options: [
+      "Un pedido: vos le hablás",
+      "Una rutina: corre a cierta hora",
+      "Un trigger: arranca cuando pasa algo",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Hay tres formas de arrancar un agente: el pedido (como un chat), la rutina (todos los días, todas las semanas, a fin de mes) y el trigger (llega un mail, entra una factura, baja un precio). Con las dos últimas, el agente arranca sin que nadie le pida nada.",
+  },
+  {
+    id: "clase-7-q10",
+    prompt:
+      "En la receta de un trigger (cuando pase X, si se cumple Y, hacé Z, y un último paso), ¿qué paso define cuánta autonomía le das?",
+    options: [
+      "«Cuando pase X»: el evento que lo dispara",
+      "El último: «avisame o pedime el sí»",
+      "«Hacé Z»: la acción que ejecuta",
+    ],
+    correctIndex: 1,
+    explanation:
+      "La receta de cuatro pasos sirve para diseñar cualquier automatización. El último paso decide si el agente solo te avisa o si se frena a pedirte el sí: por ejemplo, ante el mail de un cliente top arma un borrador y te lo manda por WhatsApp, pero no lo envía.",
+  },
+  {
+    id: "clase-7-q11",
+    prompt: "¿Por qué los agentes de código maduraron antes que los personal agents?",
+    options: [
+      "Porque su trabajo es verificable (tests), reversible (git), aislado y alguien lo revisa en el pull request",
+      "Porque los programadores pagan suscripciones más caras",
+      "Porque el código no necesita contexto ni permisos",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Cada propiedad que hace fácil al código es difícil en lo personal: ¿el mail estuvo bien? es difícil de verificar, un pago o un mail enviado no siempre se deshace, se trabaja en el mundo real (tu banco, tus clientes) y revisa cualquiera, sin ganas. Por eso los personal agents tardaron más y por eso piden tanto el sí. Varios, como Claude Cowork, dots o Grok Bot, derivan de agentes de código.",
+  },
+  {
+    id: "clase-7-q12",
+    prompt: "Según la matriz de delegación, mandar un mail a un cliente (impacto bajo, no se puede deshacer) conviene que…",
+    options: [
+      "Se automatice sin miedo",
+      "Pida el sí antes de hacerlo",
+      "No se delegue todavía",
+    ],
+    correctIndex: 1,
+    explanation:
+      "La matriz cruza impacto y reversibilidad. Bajo y reversible: automatizá (ordenar el inbox, recordatorios). Alto y reversible: que haga y avise (mover reuniones, preparar borradores). Bajo e irreversible: que pida el sí (compras chicas, mails a clientes). Alto e irreversible: no delegues, todavía (pagos grandes, firmar contratos).",
+  },
+  {
+    id: "clase-7-q13",
+    prompt: "Mover una reunión importante tiene impacto alto pero se puede deshacer. ¿Qué control sugiere la matriz?",
+    options: [
+      "Que lo haga y te avise",
+      "No delegarlo nunca",
+      "Que pida el sí cada vez",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Alto impacto y reversible es el cuadrante de «que haga y avise»: si algo sale mal, se puede corregir. Lo que no se delega todavía es lo de alto impacto e irreversible. Como mostró el ejemplo de las cobranzas de Nido, no se trata de «automatizar un área»: se decide acción por acción.",
   },
   {
     id: "clase-7-q14",
-    prompt: "Tu equipo va a lanzar una feature de pagos en producción con lógica de negocio compleja. ¿Qué approach conviene según la matriz de la clase?",
+    prompt: "¿Cuál es la regla general de controles para un agente que vimos en clase?",
     options: [
-      "Vibe coding puro para llegar más rápido al mercado",
-      "Spec-Anchored o Spec-as-Source (rigor alto)",
-      "Solo documentar después del deploy en un Google Doc",
+      "Escritura libre; lectura con aprobación de la persona",
+      "Todo con aprobación, siempre, para estar seguros",
+      "Lectura sin aprobación; escritura con aprobación de la persona",
     ],
-    correctIndex: 1,
+    correctIndex: 2,
     explanation:
-      "La matriz de decisión ubica infraestructura crítica (pagos, facturación) en Spec-as-Source o al menos Spec-Anchored. Features en producción con reglas que interactúan también piden Spec-First o más. Vibe coding queda para prototipos, scripts internos y exploración.",
+      "Los controles mínimos son aprobaciones, límites (presupuesto, destinatarios, horarios), permisos mínimos, registro y botón de pausa. El más importante es el de permisos mínimos: leer no es lo mismo que escribir. Pedir el sí para todo tampoco sirve: si lo mirás todo el tiempo, no estás delegando.",
   },
   {
     id: "clase-7-q15",
-    prompt: "Tenés un fin de semana para un prototipo de hackathon sin usuarios reales. ¿Qué approach conviene?",
+    prompt:
+      "Un mail de «factura» trae texto oculto, blanco sobre blanco, que le ordena al agente reenviar facturas a otra dirección. ¿Qué dice la clase sobre este ataque?",
     options: [
-      "Spec-as-Source Nivel 3 obligatorio",
-      "Vibe coding (velocidad máxima)",
-      "No usar IA en absoluto",
+      "Se resuelve instalando un antivirus en tu compu",
+      "Es prompt injection: el agente no distingue bien tus órdenes de lo que lee, y como no hay parche, existen las aprobaciones",
+      "Solo afecta a agentes que corren en tu compu, no a los de la nube",
     ],
     correctIndex: 1,
     explanation:
-      "Para prototipos, pruebas de concepto y exploración de ideas, la clase recomienda vibe coding: máxima velocidad, bajo costo de setup. Cuando hay usuarios reales, impacto económico o legal, o mantenimiento a largo plazo, subís el rigor en el slider hacia SDD.",
+      "Prompt injection es el ataque más importante contra agentes: cualquier mail, web o documento puede intentar darle órdenes. No se arregla con un parche, porque es una limitación de cómo funcionan estos modelos hoy. Por eso existen las aprobaciones.",
+  },
+  {
+    id: "clase-7-q16",
+    prompt:
+      "Un personal agent necesita datos privados, leer contenido de afuera y poder mandar cosas afuera. Si no se pueden separar esos accesos, ¿cuál es la defensa?",
+    options: [
+      "Controlar las salidas: aprobaciones y destinatarios permitidos",
+      "Sacarle el acceso a tu mail para siempre",
+      "Usar un modelo más grande, que no se equivoca",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Con los tres accesos combinados (lo que describió Simon Willison), un texto malicioso puede hacer que el agente saque tus datos. En Nido se podía separar: el analista de los lunes era solo lectura. Un personal agent necesita los tres para ser útil, así que la defensa pasa a ser controlar lo que sale.",
+  },
+  {
+    id: "clase-7-q17",
+    prompt: "En Grok Bot, ¿separar tareas en varios bots también separa los riesgos?",
+    options: [
+      "Sí, cada bot tiene su propia compu y sus propios logins",
+      "Sí, porque Auto Review bloquea cualquier acción peligrosa",
+      "No: todos los bots comparten la misma compu y los mismos logins",
+    ],
+    correctIndex: 2,
+    explanation:
+      "Según su propia documentación, los bots no son un límite de seguridad: comparten compu y logins. Y Auto Review es otro modelo que revisa cada acción, que también se puede equivocar: no es un candado. Por eso las demos se hacen con una cuenta de prueba y no con la real.",
+  },
+  {
+    id: "clase-7-q18",
+    prompt: "Si la compra la decide el agente de tu cliente, ¿qué necesita tu empresa para estar en su lista?",
+    options: [
+      "Mejores banners y un packaging más llamativo",
+      "Ser elegible: datos estructurados, API o conector MCP, e información clara y verificable",
+      "Alcanza con aparecer primero en Google",
+    ],
+    correctIndex: 1,
+    explanation:
+      "El agente no ve tu banner, tu packaging ni tu publicidad: ve datos (precio, stock, reseñas, políticas de devolución). Si no puede leerlos, no te tiene en cuenta. La prueba práctica: ¿el agente de un cliente puede encontrar tu producto, ver si hay stock y comprarlo sin ayuda?",
+  },
+  {
+    id: "clase-7-q19",
+    prompt: "¿Cuál es el orden recomendado para darle permisos a un agente?",
+    options: [
+      "Lectura, borradores, acciones con el sí y recién ahí autonomía",
+      "Autonomía total al principio y después ir recortando si se equivoca",
+      "Borradores, pagos y recién al final lectura",
+    ],
+    correctIndex: 0,
+    explanation:
+      "Es la escalera de autonomía aplicada: permisos graduales. Es el mismo esquema del caso del CEO de Rabbit, que delegó más de 280 tareas en 11 semanas: el agente busca, compara, verifica y propone; él compra y reserva. Nada sale a su nombre sin su OK.",
+  },
+  {
+    id: "clase-7-q20",
+    prompt: "¿Qué significa «delegá resultados, no pasos»?",
+    options: [
+      "Escribirle al agente cada clic que tiene que hacer",
+      "Darle el objetivo, el contexto y cómo se ve un buen resultado, y que él arme el plan",
+      "Pedirle solo cosas que se puedan deshacer",
+    ],
+    correctIndex: 1,
+    explanation:
+      "Es la primera de las siete recomendaciones, y es «primero la spec» en versión personal. Las otras: dale contexto una vez, lo que repetís tres veces automatizalo (rutina o skill), permisos graduales, revisá en puntos de control, modelo según la tarea y medí (tiempo ahorrado y cuántas veces tuviste que corregirlo).",
   },
 ]
 
@@ -1438,7 +1689,8 @@ export const SELF_EVALUATION_CLASSES: SelfEvalClass[] = [
   },
   {
     id: "clase-7",
-    title: "Clase 7: Demo day + Frameworks Emergentes",
+    // title: "Clase 7: Demo day + Frameworks Emergentes",
+    title: "Clase 7: Personal Agents",
     questions: CLASE_7_QUESTIONS,
   },
 ]

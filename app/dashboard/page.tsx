@@ -227,6 +227,7 @@ export default function Dashboard() {
     "Clase 5: De Vibe-Coding a AI-Assisted Engineering": { url: "https://slides.from021.io/udesa-clase-2", type: "link", description: "Esta presentación no se puede ver embebida, se abre en una pestaña nueva." },
     "Clase 6: Lanzamiento y luego qué?": { url: "/class-materials/clase-6/presentacion.pdf", type: "pdf" },
     "Clase 6: Anexo: kit de escalabilidad": { url: "/class-materials/clase-6/kit-de-escalabilidad.pdf", type: "download", description: "Qué mirar cuando tu app se pone lenta o empieza a fallar, qué pedirle a tu agente y cómo vigilarla desde afuera para enterarte antes que tus usuarios." },
+    "Clase 7: Personal Agents": { url: "/class-materials/clase-7/personal-agents/presentacion.html", type: "slides" },
   }
 
   // COHORTE 2 H1 2026
@@ -324,7 +325,8 @@ export default function Dashboard() {
         "Clase 4: Introducción a Herramientas Avanzadas",
         "Clase 5: De Vibe-Coding a AI-Assisted Engineering",
         "Clase 6: Lanzamiento y luego qué?",
-        "Clase 7: Demo Day + Frameworks Emergentes"
+        // "Clase 7: Demo Day + Frameworks Emergentes"
+        "Clase 7: Personal Agents"
       ]
     },
     {
@@ -612,7 +614,7 @@ export default function Dashboard() {
                                                   title={className}
                                                   className="absolute top-0 left-0 w-full h-full rounded-lg border border-border/20"
                                                   allowFullScreen
-                                                  allow="autoplay"
+                                                  allow="autoplay; clipboard-write"
                                                 />
                                                 {material.type === "slides" && (
                                                   <a
